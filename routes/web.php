@@ -11,4 +11,25 @@
 |
 */
 
-Route::get('/', "ArticleController@index");
+Route::get('/', function () {
+	$index = File::get(public_path() . '/dist/index.html');
+
+	// $index = str_replace('href="styles','href="/dist/styles',$index);
+	$index = str_replace('href="styles','href="/dist/styles',$index);
+
+	$index = str_replace('src="','src="/dist/',$index);
+
+    return $index;
+});
+
+Route::get('game/list', 'GameController@getList');
+Route::get('game/getGameDataById', 'GameController@getGameDataById');
+
+Route::get('escn/getDailyList', 'EscnController@getDailyList');
+Route::get('escn/getWordsCloud', 'EscnController@getWordsCloud');
+
+Route::get('fanju/list', 'FanjuController@getList');
+
+// Route::get('game/test', 'GameController@test');
+
+
