@@ -16,12 +16,16 @@ BOT_NAME = 'tutorial'
 SPIDER_MODULES = ['tutorial.spiders']
 NEWSPIDER_MODULE = 'tutorial.spiders'
 
-IMAGES_STORE = '/Users/hongbinzhou/Desktop/fuli'
+# IMAGES_STORE = os.getenv("IMAGES_STORE")
+# print(IMAGES_STORE)
+
+IMAGES_STORE = '/Users/hongbinzhou/www/ng-blog/public/assets/images/'
+
 
 FEED_EXPORT_ENCODING = 'utf-8'
 
 LOG_LEVEL = "WARNING"
-
+# LOG_LEVEL = 'DEBUG'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
@@ -80,7 +84,7 @@ COOKIES_ENABLED = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # 'tutorial.pipelines.TutorialPipeline': 2,
+    # 'tutorial.pipelines.ImagesPipeline': 1,
     "tutorial.pipelines.HupuGifPipeline": 1
 }
 

@@ -28,9 +28,11 @@ class ImagesPipeline(ImagesPipeline):
         return file_name
 
     def item_completed(self, results, item, info):
+        if item.pipe_type != "fanju":
+            return item
+
         image_paths = [x['path'] for ok, x in results if ok]
 
-        # print("Hello")
         # print(image_paths)
 
         if not image_paths:
@@ -52,6 +54,7 @@ class HupuGifPipeline(ImagesPipeline):
             images = []
 
         dir_path = '%s/%s' % (settings.get('IMAGES_STORE'), spider.name)
+
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
 

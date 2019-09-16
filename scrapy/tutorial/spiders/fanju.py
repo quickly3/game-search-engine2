@@ -18,8 +18,9 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 
 from elasticsearch import Elasticsearch
+from scrapy.utils.project import get_project_settings
 
-
+settings = get_project_settings()
 engine = mysql_engine.get_engine()
 storage_dir = '../storage/fanju'
 
@@ -46,10 +47,9 @@ class ImgData(scrapy.Item):
 class AliSpider(scrapy.Spider):
     # 593
     name = "fanju"
-
     #
     page = 1
-
+    total = 0
     start_urls = [
         'https://bangumi.bilibili.com/media/web_api/search/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&pub_date=-1&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20',
     ]
@@ -66,6 +66,10 @@ class AliSpider(scrapy.Spider):
         self.image_urls = []
 
         for item in items:
+
+            self.total += 1
+            print(self.total)
+
             item['doc_type'] = "fanju"
             follow_dealed = False
             play_dealed = False
@@ -76,7 +80,6 @@ class AliSpider(scrapy.Spider):
 
             self.image_urls.append(item['cover'])
 
-            IMAGES_STORE = os.getenv("IMAGES_STORE")
             item['cover_local'] = os.path.basename(item['cover'])
 
             if int(item['order']['pub_date']) > 0:

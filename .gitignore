@@ -29,3 +29,4 @@ public/3rdpartylicenses.txt
 *.pyc
 .DS_Store
 .editorconfig
+public/assets/images/fanju/*

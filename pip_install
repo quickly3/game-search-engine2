@@ -1,0 +1,13 @@
+pip install scrapy
+pip install sqlalchemy
+pip install pymysql
+pip install urlparse3
+pip install python-dotenv
+pip install elasticsearch==6.3.0
+pip install datetime
+pip install requests
+pip install BeautifulSoup4
+
+
+for win:
+pip install pypiwin32
