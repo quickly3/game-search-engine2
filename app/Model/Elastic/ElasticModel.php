@@ -24,7 +24,6 @@ class ElasticModel
         $this->orders = [
             "_score" => "desc",
         ];
-
     }
 
     public function index_maped($index_name)

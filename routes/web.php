@@ -21,6 +21,8 @@
 // });
 
 Route::get('game/list', 'GameController@getList');
+Route::get('game/test', 'GameController@test');
+
 Route::get('game/getGameDataById', 'GameController@getGameDataById');
 
 Route::get('escn/getDailyList', 'EscnController@getDailyList');

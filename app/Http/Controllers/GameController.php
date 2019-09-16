@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Model\Elastic\ElasticModel;
 use Illuminate\Http\Request;
 
+use App\Models\GameModel;
+
 class GameController extends Controller
 {
 
@@ -33,7 +35,6 @@ class GameController extends Controller
             if (trim($keywords) == "") {
                 $keywords = "''";
             }
-
         } else {
             $data = $es;
 
@@ -58,12 +59,15 @@ class GameController extends Controller
 
     public function test(Request $request)
     {
-        $es = new ElasticModel("games", "game");
-        $query = ["match_all" => (object) []];
-        $query_string = "name:英雄";
-        $data = $es->source(["name", "version"])->query_string($query_string, "*")->paginate(10);
+        // $es = new ElasticModel("game", "games");
+        $games = GameModel::search('phone')
+            // specify columns to select
+            ->select(['name'])
+            ->from(0)
+            ->take(10)
+            ->get();
 
-        return response()->json($data);
+        return response()->json($games);
     }
 
     public function getGameDataById(Request $request)
@@ -77,5 +81,4 @@ class GameController extends Controller
 
         return response()->json($data);
     }
-
 }
