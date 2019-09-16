@@ -1,0 +1,16 @@
+// Game Model
+php artisan make:index-configurator EsConfigurator\GameConfigurator
+php artisan make:searchable-model Models\GameModel --index-configurator=EsConfigurator\GameConfigurator
+
+php artisan elastic:create-index "App\EsConfigurator\GameConfigurator"
+php artisan elastic:update-mapping "App\Models\GameModel"
+php artisan elastic:migrate "App\Models\GameModel" games_20190916
+
+
+// Escn Model
+php artisan make:index-configurator EsConfigurator/EscnConfigurator
+php artisan make:searchable-model Models/EscnModel --index-configurator=EsConfigurator\EscnConfigurator
+
+php artisan elastic:create-index "App\EsConfigurator\EscnConfigurator"
+php artisan elastic:update-mapping "App\Models\EscnModel"
+php artisan elastic:migrate "App\Models\EscnModel" escn_20190916

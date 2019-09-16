@@ -5,11 +5,12 @@ namespace App\EsConfigurator;
 use ScoutElastic\IndexConfigurator;
 use ScoutElastic\Migratable;
 
-class GameConfigurator extends IndexConfigurator
+class EscnConfigurator extends IndexConfigurator
 {
     use Migratable;
 
-    protected $name = 'games';
+
+    protected $name = 'escn';
     /**
      * @var array
      */
