@@ -39,6 +39,9 @@ Elasticsearch 日报
 
 > scrapy crawl escn  
 > scrapy crawl escn2
+
+Nba 数据
+
 > scrapy crawl nba_player
 
 B 站弹幕
@@ -57,7 +60,12 @@ nohup scrapy crawl danmu > d.log 2>&1 &
 
 > ???有么
 
-### 数据转换
+### 全量数据同步
+
+> php artisan elastic:migrate "App\Models\GameModel" games_20190916
+> php artisan elastic:migrate "App\Models\EscnModel" escn_20190916
+
+### 增量数据同步
 
 > sudo php artisan MysqlToEs  
 > sudo php artisan EscnToEs
