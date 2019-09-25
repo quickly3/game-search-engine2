@@ -43,7 +43,6 @@ class EscnController extends Controller
         ];
 
         $data->orderBy($orders);
-
         $data = $data->query_string($query_string, "*")->paginate(10);
 
         return response()->json($data);

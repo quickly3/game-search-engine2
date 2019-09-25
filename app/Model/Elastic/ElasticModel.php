@@ -70,14 +70,14 @@ class ElasticModel
             "body" => [
                 "query" => [
                     "query_string" => [
-                        "default_field" => $fields,
+                        // "default_field" => $fields,
                         "query" => $keyword,
+                        "default_operator" => "AND"
                     ],
                 ],
                 "sort" => $this->orders,
             ],
         ];
-
         if (isset($this->highlight)) {
             $params["body"]["highlight"] = $this->highlight;
         }
