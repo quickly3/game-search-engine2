@@ -51,6 +51,7 @@ export class EscnDailyComponent {
     };
 
     search_debounce = function(ky) {
+        this.current_page = 1;
         this.modelChanged.next();
     };
 
