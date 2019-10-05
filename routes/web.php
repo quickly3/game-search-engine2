@@ -31,3 +31,7 @@ Route::get('escn/getWordsCloud', 'EscnController@getWordsCloud');
 Route::get('fanju/list', 'FanjuController@getList');
 
 // Route::get('game/test', 'GameController@test');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
