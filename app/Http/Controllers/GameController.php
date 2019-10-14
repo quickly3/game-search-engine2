@@ -5,19 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Model\Elastic\ElasticModel;
 use Illuminate\Http\Request;
-
 use App\Models\GameModel;
+
+use App\User;
 
 class GameController extends Controller
 {
 
     public function index(Request $request)
     {
-        $index = File::get(public_path() . '/dist/index.html');
-        // $index = str_replace('href="styles','href="/dist/styles',$index);
-        $index = str_replace('href="styles', 'href="/dist/styles', $index);
-        $index = str_replace('src="', 'src="/dist/', $index);
+        // $index = File::get(public_path() . '/dist/index.html');
+        // // $index = str_replace('href="styles','href="/dist/styles',$index);
+        // $index = str_replace('href="styles', 'href="/dist/styles', $index);
+        // $index = str_replace('src="', 'src="/dist/', $index);
 
+        $user = User::create(["name" => "bean", "email" => "quickly3@sohu.com", "password" => password_hash(123456)]);
+        dump($user);
+        die();
         return $index;
     }
 

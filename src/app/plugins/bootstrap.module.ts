@@ -1,14 +1,8 @@
-import { NgModule } from '@angular/core';
-
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgModule } from "@angular/core";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
-    imports: [
-        NgbModule
-    ],
-    exports: [
-        NgbModule
-    ]
+    imports: [NgbModule],
+    exports: [NgbModule]
 })
-
-export class BootstrapModule { }
+export class BootstrapModule {}
