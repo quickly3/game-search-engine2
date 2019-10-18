@@ -30,6 +30,9 @@ Route::get('game/getGameDataById', 'GameController@getGameDataById');
 Route::get('escn/getDailyList', 'EscnController@getDailyList');
 Route::get('escn/getWordsCloud', 'EscnController@getWordsCloud');
 
+Route::get('js/getDailyList', 'JianshuController@getDailyList');
+Route::get('js/getWordsCloud', 'JianshuController@getWordsCloud');
+
 Route::get('fanju/list', 'FanjuController@getList');
 
 // Route::get('game/test', 'GameController@test');

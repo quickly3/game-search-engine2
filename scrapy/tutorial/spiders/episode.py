@@ -24,8 +24,6 @@ from elasticsearch import Elasticsearch
 es = Elasticsearch()
 
 engine = mysql_engine.get_engine()
-
-
 Base = declarative_base()
 
 Session_class = sessionmaker(bind=engine)

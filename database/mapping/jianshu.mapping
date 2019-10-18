@@ -1,0 +1,40 @@
+PUT jianshu
+{
+  "settings" : {
+      "number_of_shards" : 1
+  },
+  "mappings": {
+    "jianshu": {
+      "properties": {
+        "title": {
+          "type": "keyword",
+          "copy_to": "title_text"
+        },
+        "href": {
+          "type": "keyword"
+        },
+        "title_text": {
+          "type": "text",
+          "fielddata": "true",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "desc": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        }
+      }
+    }
+  }
+}

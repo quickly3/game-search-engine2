@@ -16,7 +16,7 @@
                 class="form-control form-control-sm"
                 [(ngModel)]="keywords"
                 (ngModelChange)="search_debounce($event)"
-                placeholder="搜索引擎"
+                placeholder="数据科学家"
             />
             <button
                 type="button"
@@ -40,9 +40,11 @@
                     <span class="title">{{ daily_item.title }}</span>
                 </div>
                 <div>
-                    <a [href]="daily_item.link" target="_blank">{{
-                        daily_item.link
-                    }}</a>
+                    <a
+                        [href]="'https://www.jianshu.com' + daily_item.href"
+                        target="_blank"
+                        >{{ "https://www.jianshu.com" + daily_item.href }}</a
+                    >
                 </div>
             </div>
         </div>

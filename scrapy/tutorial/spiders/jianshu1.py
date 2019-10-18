@@ -44,19 +44,18 @@ class AliSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        url = "https://www.jianshu.com/search/do?q=python&type=collection&page=1&order_by=default"
+        url = "https://www.jianshu.com/search/do?q=python&type=collection&page=3&order_by=default"
 
         jianshu_headers = {
             "Accept": "application/json",
             "Accept-Encoding": "gzip, deflate, br",
             "accept-language": "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7",
             "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
             "Host": " www.jianshu.com",
-            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/533.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/533.36",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
             "origin": "https://www.jianshu.com",
             "pragma": "no-cache",
-            "referer": "https://www.jianshu.com/search?q=python&page=1&type=collection",
+            "referer": "https://www.jianshu.com/search?q=python&page=3&type=collection",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
         }
