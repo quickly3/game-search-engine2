@@ -38,7 +38,7 @@ class JianshuController extends Controller
         $query_string = "title_text:{$keywords}";
 
         $orders = [
-            "_score" => "desc",
+            "title" => "desc",
         ];
 
         $data->orderBy($orders);
