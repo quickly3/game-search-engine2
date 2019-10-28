@@ -5,6 +5,7 @@ import { GamesComponent } from "./games/games.component";
 import { FanjuComponent } from "./fanju/fanju.component";
 import { EscnDailyComponent } from "./escn-daily/escn-daily.component";
 import { JianshuComponent } from "./jianshu/jianshu.component";
+import { JuejinComponent } from "./juejin/juejin.component";
 
 import { GameDetailComponent } from "./game-detail/game-detail.component";
 
@@ -13,6 +14,7 @@ const routes: Routes = [
     { path: "fanju", component: FanjuComponent },
     { path: "escn-daily", component: EscnDailyComponent },
     { path: "jianshu", component: JianshuComponent },
+    { path: "juejin", component: JuejinComponent },
 
     { path: "game-detail/:id", component: GameDetailComponent },
     { path: "", redirectTo: "fanju", pathMatch: "full" },

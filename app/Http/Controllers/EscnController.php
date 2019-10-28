@@ -38,7 +38,7 @@ class EscnController extends Controller
         $query_string = "title:{$keywords}";
 
         $orders = [
-            "id" => "desc",
+            "ver" => "desc",
             "_score" => "desc",
         ];
 

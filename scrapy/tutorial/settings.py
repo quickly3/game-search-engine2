@@ -24,8 +24,8 @@ IMAGES_STORE = '/Users/hongbinzhou/www/ng-blog/public/assets/images/'
 
 FEED_EXPORT_ENCODING = 'utf-8'
 
-# LOG_LEVEL = "WARNING"
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = "WARNING"
+# LOG_LEVEL = 'DEBUG'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'

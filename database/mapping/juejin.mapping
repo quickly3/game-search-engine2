@@ -1,0 +1,53 @@
+PUT juejin
+{
+  "settings" : {
+      "number_of_shards" : 1
+  },
+  "mappings": {
+    "juejin": {
+      "properties": {
+        "title": {
+          "type": "keyword",
+          "copy_to": "title_text"
+        },
+        "href": {
+          "type": "keyword"
+        },
+        "title_text": {
+          "type": "text",
+          "fielddata": "true",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "summaryInfo": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "content": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "createdAt": {
+            "type": "date"
+        }
+      }
+    }
+  }
+}

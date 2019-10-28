@@ -49,6 +49,16 @@
             <li class="nav-item">
                 <a
                     class="nav-link"
+                    href="#/juejin"
+                    [ngClass]="{
+                        active: router.url.indexOf('/juejin') > -1
+                    }"
+                    >Juejin
+                </a>
+            </li>
+            <li class="nav-item">
+                <a
+                    class="nav-link"
                     href="#/games"
                     [ngClass]="{ active: router.url.indexOf('/games') > -1 }"
                     >Games

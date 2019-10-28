@@ -37,7 +37,9 @@
         >
             <div class="des_zone col-md-10 col-8">
                 <div>
-                    <span class="title">{{ daily_item.title }}</span>
+                    <span class="title">{{
+                        daily_item.title + "(第" + daily_item.ver + "期)"
+                    }}</span>
                 </div>
                 <div>
                     <a [href]="daily_item.link" target="_blank">{{

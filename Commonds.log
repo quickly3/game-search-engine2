@@ -13,4 +13,4 @@ php artisan make:searchable-model Models/EscnModel --index-configurator=EsConfig
 
 php artisan elastic:create-index "App\EsConfigurator\EscnConfigurator"
 php artisan elastic:update-mapping "App\Models\EscnModel"
-php artisan elastic:migrate "App\Models\EscnModel" escn_20190916
+sudo php artisan elastic:migrate "App\Models\EscnModel" escn_20190916
