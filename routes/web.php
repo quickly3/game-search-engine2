@@ -35,6 +35,8 @@ Route::get('js/getWordsCloud', 'JianshuController@getWordsCloud');
 
 Route::get('jj/getDailyList', 'JuejinController@getDailyList');
 Route::get('jj/getWordsCloud', 'JuejinController@getWordsCloud');
+Route::post('jj/starsChange', 'JuejinController@starsChange');
+
 
 Route::get('fanju/list', 'FanjuController@getList');
 

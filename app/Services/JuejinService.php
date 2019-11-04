@@ -6,6 +6,18 @@ use App\Model\Elastic\ElasticModel;
 
 class JuejinService
 {
+    public static function updateStarsById($id, $stars)
+    {
+        $index = new ElasticModel("juejin", "juejin");
+        $body = [
+            'doc' => [
+                'stars' => $stars
+            ]
+        ];
+
+        return $index->updateById($id, $body);
+    }
+
     public static function genWordsCloud($tag)
     {
         $cloud_words = [];
@@ -45,7 +57,7 @@ class JuejinService
 
 
 
-        $stop_words = ["基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用"];
+        $stop_words = ["基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018"];
         switch ($tag) {
             case 'php':
                 $ext_stop_words = ["php"];
@@ -60,7 +72,7 @@ class JuejinService
                 $ext_stop_words = ["css"];
                 break;
             case 'typescript':
-                $ext_stop_words = ["typescript"];
+                $ext_stop_words = ["typescript", "2.5", "3.0"];
                 break;
             default:
                 $ext_stop_words = [];

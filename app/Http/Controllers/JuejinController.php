@@ -62,6 +62,15 @@ class JuejinController extends Controller
         return response()->json($words_cloud);
     }
 
+    public function starsChange(Request $request)
+    {
+        $params = $request->input("params", null);
+        $item = $params['item'];
+        $resp = juejinService::updateStarsById($item['_id'], $item["stars"]);
+
+        return response()->json($resp);;
+    }
+
     // public function getGameDataById(Request $request){
     //     $id = $request->input("id","");
 

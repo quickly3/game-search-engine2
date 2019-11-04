@@ -16,7 +16,6 @@ class Blockchain(object):
         ...
         self.chain = []
         self.current_transactions = []
-
         # 创建创世区块
         self.new_block(previous_hash=1, proof=100)
 
@@ -194,9 +193,9 @@ def new_transactions():
     values = request.get_json()
 
     # 检查所需要的字段是否位于POST的data中
-    required = ['seder', 'recipient', 'amount']
-    print(request)
-    if not all(k in values for k in request):
+    required = ['sender', 'recipient', 'amount']
+
+    if not all(k in values for k in required):
         return 'Missing values', 400
 
     # 创建一个新的事物

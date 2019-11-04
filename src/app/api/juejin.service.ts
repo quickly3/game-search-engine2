@@ -18,4 +18,8 @@ export class JuejinService {
     getDailyList = params => {
         return this.http.get("/jj/getDailyList", { params });
     };
+
+    starsChange = params => {
+        return this.http.post("/jj/starsChange", { params });
+    };
 }

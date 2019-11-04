@@ -57,7 +57,12 @@
         >
             <div class="des_zone col-md-10 col-8">
                 <div>
-                    <span class="title">{{ daily_item.title }}</span>
+                    <span class="title">{{ daily_item.title }}</span
+                    >&nbsp;
+                    <app-star-rating
+                        [stars]="daily_item.stars"
+                        (outer)="starsChange($event, daily_item)"
+                    ></app-star-rating>
                 </div>
                 <div>
                     <a

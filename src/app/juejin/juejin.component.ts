@@ -31,7 +31,15 @@ export class JuejinComponent {
     search_by_keywords;
     modelChanged = new Subject<string>();
 
-    tags = ["All", "Python", "PHP", "Javascript", "Css", "Typescript"];
+    tags = [
+        "All",
+        "Python",
+        "PHP",
+        "Javascript",
+        "Css",
+        "Typescript",
+        "Block_chain"
+    ];
 
     constructor(private http: HttpClient, juejinService: JuejinService) {
         this.juejinService = juejinService;
@@ -74,6 +82,11 @@ export class JuejinComponent {
 
         this.juejinService.getDailyList(params).subscribe(data => {
             this.escn_list = data["data"];
+            this.escn_list.map(item => {
+                if (!item.stars) {
+                    item.stars = 0;
+                }
+            });
             // this.escn_list.map(item=>{item.unfold = false});
             this.total_number = data["total"];
         });
@@ -81,6 +94,15 @@ export class JuejinComponent {
 
     pageChange = () => {
         this.search();
+    };
+
+    starsChange = (stars, item) => {
+        if (parseInt(item.stars, 10) !== stars) {
+            item.stars = stars;
+            this.juejinService
+                .starsChange({ item: item })
+                .subscribe(resp => {});
+        }
     };
 
     wordsCloudToKeyWords = function(word) {

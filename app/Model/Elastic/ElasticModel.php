@@ -229,5 +229,22 @@ class ElasticModel
         return $res;
     }
 
+    public function updateById($id,$body){
+        $params = [
+            "index" => $this->index,
+            "type" => $this->index_type,
+            'id' => $id,
+            'body' => $body
+        ];
+
+        $response = $this->client->update($params);
+        return $this;
+    }
+
+    public function updateByQueryString($query,$fields){
+
+    }
+
+
     // public function get
 }
