@@ -60,8 +60,8 @@
                     <span class="title">{{ daily_item.title }}</span
                     >&nbsp;
                     <app-star-rating
-                        [stars]="daily_item.stars"
-                        (outer)="starsChange($event, daily_item)"
+                        [(stars)]="daily_item.stars"
+                        (starsChange)="starsChange($event, daily_item)"
                     ></app-star-rating>
                 </div>
                 <div>

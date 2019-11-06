@@ -38,7 +38,10 @@ export class JuejinComponent {
         "Javascript",
         "Css",
         "Typescript",
-        "Block_chain"
+        "Block_chain",
+        "Game",
+        "Security",
+        "Postgresql"
     ];
 
     constructor(private http: HttpClient, juejinService: JuejinService) {
@@ -55,6 +58,7 @@ export class JuejinComponent {
         this.getWordsCloud();
         this.search();
     }
+    showValue(item): void {}
 
     getWordsCloud = function() {
         this.juejinService
