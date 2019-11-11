@@ -1,0 +1,61 @@
+PUT article
+{
+  "settings" : {
+      "number_of_shards" : 1
+  },
+  "mappings": {
+    "article": {
+      "properties": {
+        "title": {
+          "type": "keyword",
+          "copy_to": "title_text"
+        },
+        "author": {
+          "type": "keyword"
+        },
+        "tag": {
+          "type": "keyword"
+        },
+        "source": {
+          "type": "keyword"
+        },
+        "source_id": {
+          "type": "keyword"
+        },
+        "source_score": {
+          "type": "integer"
+        },
+        "stars": {
+          "type": "integer"
+        },
+        "url": {
+          "type": "keyword"
+        },
+        "title_text": {
+          "type": "text",
+          "fielddata": "true",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "summary": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "created_at": {
+            "type": "date"
+        }
+      }
+    }
+  }
+}

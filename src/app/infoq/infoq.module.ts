@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { JuejinComponent } from "./juejin.component";
+import { InfoqComponent } from "./infoq.component";
 import { CommonModule } from "@angular/common";
 
 import { BootstrapModule } from "app/plugins/bootstrap.module";
@@ -8,7 +8,7 @@ import { FormsModule } from "@angular/forms";
 import { ComponentsModule } from "../components/components.module";
 
 const PAGES_COMPONENTS = [
-    JuejinComponent
+    InfoqComponent
     // NavComponent
 ];
 

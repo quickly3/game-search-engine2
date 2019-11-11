@@ -65,11 +65,9 @@
                     ></app-star-rating>
                 </div>
                 <div>
-                    <a
-                        [href]="'https://juejin.im/entry/' + daily_item.jid"
-                        target="_blank"
-                        >{{ "https://juejin.im/entry/" + daily_item.jid }}</a
-                    >
+                    <a [href]="daily_item.url" target="_blank">{{
+                        daily_item.url
+                    }}</a>
                 </div>
             </div>
         </div>

@@ -22,7 +22,6 @@ export class StarRatingComponent implements OnInit {
         for (let i = 0; i < 5; i++) {
             this.star_objs.push({ clicked: false });
         }
-
         this.toggleStar(this.stars - 1);
     }
 

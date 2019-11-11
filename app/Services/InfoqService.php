@@ -4,11 +4,11 @@ namespace App\Services;
 
 use App\Model\Elastic\ElasticModel;
 
-class JuejinService
+class InfoqService
 {
     public static function updateStarsById($id, $stars)
     {
-        $index = new ElasticModel("juejin", "juejin");
+        $index = new ElasticModel("article", "article");
         $body = [
             'doc' => [
                 'stars' => $stars
@@ -22,7 +22,7 @@ class JuejinService
     {
         $cloud_words = [];
 
-        $es = new ElasticModel("escn", "escn");
+        $es = new ElasticModel("article", "article");
         $data = [
             "aggs" => [
                 "title_words_cloud" => [
@@ -35,14 +35,13 @@ class JuejinService
             "size" => 0
         ];
 
-        if ($tag != "all") {
+        if ($tag != "All") {
             $data['query'] = ["query_string" => ["query" => "tag:{$tag}"]];
         }
 
-
         $params = [
-            "index" => "juejin",
-            "type" => "juejin",
+            "index" => "article",
+            "type" => "article",
             "body" =>  $data
         ];
 
@@ -55,7 +54,7 @@ class JuejinService
         }, $cloud_words);
 
         $stop_words = ["基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018"];
-        switch ($tag) {
+        switch (strtolower($tag)) {
             case 'php':
                 $ext_stop_words = ["php"];
                 break;
@@ -67,6 +66,15 @@ class JuejinService
                 break;
             case 'css':
                 $ext_stop_words = ["css"];
+                break;
+            case 'linux':
+                $ext_stop_words = ["linux"];
+                break;
+            case 'node':
+                $ext_stop_words = ["node"];
+                break;
+            case 'postgresql':
+                $ext_stop_words = ["postgresql"];
                 break;
             case 'typescript':
                 $ext_stop_words = ["typescript", "2.5", "3.0"];

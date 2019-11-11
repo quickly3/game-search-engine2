@@ -7,6 +7,8 @@ import sys
 import sqlalchemy
 import os
 import json
+import datetime
+import time
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -38,6 +40,12 @@ Session_class = sessionmaker(bind=engine)
 Session = Session_class()
 
 
+def clearHighLight(string):
+    string = string.replace("<em>", "")
+    string = string.replace("</em>", "")
+    return string
+
+
 class AliSpider(scrapy.Spider):
     # 593
     name = "infoq"
@@ -45,13 +53,25 @@ class AliSpider(scrapy.Spider):
     domain = 'https://s.geekbang.org/'
 
     tagId = {
-        "PostgreSQL": "PostgreSQL",
+        "Linux": "Linux",
+        # "Postgres": "Postgres",
+        # "Python": "python",
+        # "Php": "php",
+        # "Javascript": "javascript",
+        # "Typescript": "typescript",
+        # "Css": "Css",
+        # "Game": "游戏",
+        # "Security": "安全",
+        # "Node": "Node",
+        # "Js": "Js",
     }
-    tag = "PostgreSQL"
+    tag = "Linux"
+    source = "infoq"
+    tag_index = 0
 
     # urlTmpl = "https://www.infoq.cn/public/v1/article/getList"
     urlTmpl = "https://s.geekbang.org/api/gksearch/search"
-    page = 40
+    page = 0
     pageSize = 20
 
     headers = {
@@ -72,13 +92,35 @@ class AliSpider(scrapy.Spider):
 
     def start_requests(self):
         #     url = self.get_url()
+        self.tag_arr = []
+        for tag in self.tagId:
+            self.tag_arr.append(tag)
+
+        self.tag = self.tag_arr.pop()
+
+        formdata = self.get_formdata()
+
+        temp = json.dumps(formdata)
+        yield scrapy.FormRequest(url=self.urlTmpl, body=temp, method="POST", headers=self.headers)
+
+    def next_request(self, next_tag=False):
+        time.sleep(0.3)
+
+        if next_tag == True:
+            if len(self.tag_arr) == 0:
+                self.crawler.engine.close_spider(self, '关闭爬虫')
+            else:
+                self.page = 0
+                self.tag = self.tag_arr.pop()
+
+        self.page = self.page + 1
         formdata = self.get_formdata()
         temp = json.dumps(formdata)
         print(temp)
-        yield scrapy.FormRequest(url=self.urlTmpl, body=temp, method="POST", headers=self.headers)
+        return scrapy.FormRequest(url=self.urlTmpl, body=temp, method="POST", headers=self.headers)
 
     def get_formdata(self):
-        self.page = self.page + 1
+
         return {"p": self.page, "q": str(self.tagId[self.tag]), "s": self.pageSize, "t": 0}
         # return {"id": "32", "size": "12", "type": "1", "score": "1572004093883"}
 
@@ -87,40 +129,39 @@ class AliSpider(scrapy.Spider):
             page=self.page, pageSize=self.pageSize, tagId=self.tagId[self.tag])
 
     def parse(self, response):
-
         #
         resp = json.loads(response.text)
-        print()
+        if resp['code'] == 0 and len(resp['data']['list']) > 0:
+            bulk = []
+            for item in resp['data']['list']:
 
-        if len(resp['data']['list']) > 0:
+                doc = {}
+                doc['title'] = item['static_title']
+                doc['url'] = item['content_url']
+                doc['summary'] = clearHighLight(item['summary'])
+                doc['created_at'] = datetime.datetime.fromtimestamp(
+                    int(item['release_time']))
+                doc['author'] = item['author']
+                doc['tag'] = self.tag
 
-            #     bulk = []
-            #     for item in resp['d']['entrylist']:
-            #         doc = {}
+                if self.tag == "Postgres":
+                    doc['tag'] = "PostgreSQL"
 
-            #         doc['title'] = item['title']
-            #         doc['href'] = item['originalUrl']
-            #         doc['summaryInfo'] = item['summaryInfo']
-            #         doc['content'] = item['content']
-            #         doc['createdAt'] = item['createdAt']
-            #         doc['tag'] = self.tag
-            #         doc['jid'] = item['objectId']
+                if self.tag == "Js":
+                    doc['tag'] = "Javascript"
 
-            #         bulk.append(
-            #             {"index": {"_index": "juejin", "_type": "juejin"}})
-            #         bulk.append(doc)
+                doc['source'] = self.source
+                doc['source_id'] = item['id']
+                doc['source_score'] = 0
 
-            #     if len(bulk) > 0:
-            #         es.bulk(index="juejin", doc_type="juejin",
-            #                 body=bulk, routing=1)
+                bulk.append(
+                    {"index": {"_index": "article", "_type": "article"}})
+                resp = bulk.append(doc)
 
-            #     self.page = self.page+1
+            if len(bulk) > 0:
+                es.bulk(index="juejin", doc_type="juejin",
+                        body=bulk, routing=1)
 
-            #     url = self.get_url()
-            #     yield scrapy.Request(url)
-
-            # slugs = []
-            # for entity in rs['entries']:
-            #     slugs.append(entity['slug'])
-
-            # print(slugs)
+            yield self.next_request()
+        else:
+            yield self.next_request(next_tag=True)
