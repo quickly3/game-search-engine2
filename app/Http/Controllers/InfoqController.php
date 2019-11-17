@@ -13,7 +13,7 @@ class InfoqController extends Controller
     {
 
         $keywords = $request->input("keywords", "");
-        $tag = ucfirst(strtolower($request->input("tag", "All")));
+        $tag = strtolower($request->input("tag", "All"));
 
         $search_type = trim($request->input("search_type", ""));
 
@@ -31,39 +31,55 @@ class InfoqController extends Controller
             }
             $highlight = [
                 "fields" => [
+                    "summary" => (object) [],
+                    // "title" => (object) [],
                     "title_text" => (object) [],
                 ],
             ];
             $data->highlight($highlight);
         }
 
-        $query_string = "title_text:{$keywords}";
+        $query_string = "(title_text:{$keywords} OR summary:{$keywords})  ";
 
-        if ($tag != "All") {
-            $query_string = $query_string . " && ((title_text:{$tag})^3 OR tag:{$tag} OR summary:{$tag} )";
+        if ($tag != "all") {
+            $query_string = $query_string . " && tag:{$tag}";
         }
 
         $orders = [
+            "created_year" => "desc",
             "_score" => "desc",
+            "created_at" => "desc",
             "title" => "asc",
             "_id" => "desc"
         ];
 
         $data->orderBy($orders);
         $data = $data->query_string($query_string, "*")->paginate(10);
-
         $data['query_string'] = $query_string;
+
+
+        if (!empty($data['data'])) {
+            $data['data'] = array_map(function ($item) {
+                if (isset($item['highlight']) && isset($item['highlight']['summary']) && isset($item['highlight']['summary'][0])) {
+                    $item['summary'] = $item['highlight']['summary'][0];
+                }
+
+                if (isset($item['highlight']) && isset($item['highlight']['title']) && isset($item['highlight']['title'][0])) {
+                    $item['title'] = $item['highlight']['title'][0];
+                }
+
+                return $item;
+            }, $data['data']);
+        }
         return response()->json($data);
     }
 
     public function getWordsCloud(Request $request)
     {
 
-        $tag = ucfirst(strtolower($request->input("tag", "All")));
-
+        $tag = strtolower($request->input("tag", "All"));
         $tag = $tag == "Postgresql" ? "PostgreSQL" : $tag;
         $words_cloud = InfoqService::genWordsCloud($tag);
-
 
         return response()->json($words_cloud);
     }

@@ -15,7 +15,8 @@ import { InfoqService } from "app/api/infoq.service";
 @Component({
     selector: "infoq",
     templateUrl: "./infoq.component.html",
-    styleUrls: ["./infoq.component.scss"]
+    styleUrls: ["./infoq.component.scss"],
+    encapsulation: ViewEncapsulation.None
 })
 export class InfoqComponent {
     escn_list = [];
@@ -42,7 +43,8 @@ export class InfoqComponent {
         "Game",
         "Security",
         "Linux",
-        "Postgresql"
+        "Postgresql",
+        "Block_chain"
     ];
 
     constructor(private http: HttpClient, InfoqService: InfoqService) {

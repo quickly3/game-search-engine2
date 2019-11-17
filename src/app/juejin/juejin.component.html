@@ -59,6 +59,9 @@
                 <div>
                     <span class="title">{{ daily_item.title }}</span
                     >&nbsp;
+                    <span
+                        >({{ daily_item.createdAt | date: "yyyy-MM-dd" }})</span
+                    >
                     <app-star-rating
                         [(stars)]="daily_item.stars"
                         (outer)="starsChange($event, daily_item)"

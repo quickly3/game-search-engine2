@@ -57,18 +57,21 @@
         >
             <div class="des_zone col-md-10 col-8">
                 <div>
-                    <span class="title">{{ daily_item.title }}</span
-                    >&nbsp;
+                    <a [href]="daily_item.url" target="_blank">{{
+                        daily_item.title
+                    }}</a>
+                    &nbsp;
+                    <span
+                        >(
+                        {{ daily_item.created_at | date: "yyyy-MM-dd" }} )</span
+                    >
+                    &nbsp;
                     <app-star-rating
                         [(stars)]="daily_item.stars"
                         (outer)="starsChange($event, daily_item)"
                     ></app-star-rating>
                 </div>
-                <div>
-                    <a [href]="daily_item.url" target="_blank">{{
-                        daily_item.url
-                    }}</a>
-                </div>
+                <div class="summary" [innerHtml]="daily_item.summary"></div>
             </div>
         </div>
     </div>

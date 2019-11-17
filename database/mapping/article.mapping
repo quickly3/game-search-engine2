@@ -1,4 +1,4 @@
-PUT article
+PUT article2
 {
   "settings" : {
       "number_of_shards" : 1
@@ -7,8 +7,7 @@ PUT article
     "article": {
       "properties": {
         "title": {
-          "type": "keyword",
-          "copy_to": "title_text"
+          "type": "keyword"
         },
         "author": {
           "type": "keyword"
@@ -54,6 +53,9 @@ PUT article
         },
         "created_at": {
             "type": "date"
+        },
+        "created_year": {
+            "type": "keyword"
         }
       }
     }

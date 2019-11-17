@@ -16,6 +16,9 @@ class Kernel extends ConsoleKernel
         Commands\MysqlToEs::class,
         Commands\EscnToEs::class,
         Commands\EscnWordCloud::class,
+        Commands\EsClear::class,
+        Commands\EsReindex::class,
+        Commands\EsTrans::class,
     ];
 
     /**
@@ -37,7 +40,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

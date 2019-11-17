@@ -29,3 +29,16 @@
     display: inline-block;
     margin-right: 5px;
 }
+
+.summary {
+    font-size: 14px;
+    em {
+        color: crimson;
+        font-style: inherit;
+    }
+}
+
+.summary > em {
+    color: crimson;
+    font-style: inherit;
+}

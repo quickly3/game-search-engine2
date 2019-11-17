@@ -13,6 +13,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 
+from string import Template
 # settings.py
 from dotenv import load_dotenv
 from pathlib import Path
@@ -44,20 +45,38 @@ class AliSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        url = "https://www.jianshu.com/search/do?q=python&type=collection&page=3&order_by=default"
+        q = "区块链"
+        page = 4
+        version = 530+random.randint(0, 9)
+        # version = 537
+
+        # cache = "no-cache,no-cache"
+        cache = ""
+
+        url_model = Template(
+            "https://www.jianshu.com/search/do?q=${q}&type=collection&page=${page}&order_by=default")
+        refer_model = Template(
+            "https://www.jianshu.com/search?q=${q}&page=${page}&type=collection")
+
+        user_agent_model = Template(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/${version}.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/${version}.36")
+
+        url = url_model.substitute(q=q, page=page)
+        referer = refer_model.substitute(q=q, page=page)
+        user_agent = user_agent_model.substitute(version=version)
 
         jianshu_headers = {
-            "Accept": "application/json",
-            "Accept-Encoding": "gzip, deflate, br",
-            "accept-language": "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7",
-            "Cache-Control": "no-cache",
-            "Host": " www.jianshu.com",
-            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
-            "origin": "https://www.jianshu.com",
+            "authority": "www.jianshu.com",
             "pragma": "no-cache",
-            "referer": "https://www.jianshu.com/search?q=python&page=3&type=collection",
-            "sec-fetch-mode": "cors",
+            "cache-control": cache,
+            "accept": "application/json",
+            "origin": "https://www.jianshu.com",
+            "user-agent": user_agent,
             "sec-fetch-site": "same-origin",
+            "sec-fetch-mode": "cors",
+            "referer": referer,
+            "accept-encoding": "gzip, deflate, br",
+            "accept-language": "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7"
         }
 
         yield scrapy.Request(url, headers=jianshu_headers, method='POST')

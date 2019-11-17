@@ -35,7 +35,7 @@ class InfoqService
             "size" => 0
         ];
 
-        if ($tag != "All") {
+        if ($tag != "all") {
             $data['query'] = ["query_string" => ["query" => "tag:{$tag}"]];
         }
 

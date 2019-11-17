@@ -9,6 +9,7 @@ import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { ComponentsModule } from "./components/components.module";
 import { ModalsModule } from "./components/modals/modals.module";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { MainPipe } from "./pipe/main-pipe.module";
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,7 +21,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
         AngularFontAwesomeModule,
         ComponentsModule,
         ModalsModule,
-        NgbModule
+        NgbModule,
+        MainPipe
     ],
     providers: [],
     bootstrap: [AppComponent]
