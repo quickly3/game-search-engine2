@@ -1,41 +1,80 @@
 <app-nav></app-nav>
-<div class="container">
+<div class="container-fluid">
     <div class="search-header">
         <div class="search-input">
-            <input id="typeahead-basic" type="text" class="form-control form-control-sm" 
-                [(ngModel)]="game_keywords" 
-                [ngbTypeahead]="search_by_keywords" 
+            <input
+                id="typeahead-basic"
+                type="text"
+                class="form-control form-control-sm"
+                [(ngModel)]="game_keywords"
+                [ngbTypeahead]="search_by_keywords"
                 (keydown)="searchKeyDown($event)"
                 (selectItem)="searchMore($event)"
                 placeholder="只狼"
-                />
-            <button type="button" class="btn btn-primary btn-sm" (click)="search()">
+            />
+            <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                (click)="search()"
+            >
                 搜索
                 <i class="fas fa-search"></i>
             </button>
         </div>
     </div>
     <div class="row game_list row">
-        <div class="game_item col-12 row" *ngFor="let game of game_list" routerLink="/game-detail/{{game._id}}" routerLinkActive="active">
+        <div
+            class="game_item col-12 row"
+            *ngFor="let game of game_list"
+            routerLink="/game-detail/{{ game._id }}"
+            routerLinkActive="active"
+        >
             <div class="img_zone col-md-2 col-4">
-                <img class="img" src="{{game.image_url}}" alt=""  routerLink="/game-detail/{{game._id}}" routerLinkActive="active">
+                <img
+                    class="img"
+                    src="{{ game.image_url }}"
+                    alt=""
+                    routerLink="/game-detail/{{ game._id }}"
+                    routerLinkActive="active"
+                />
             </div>
             <div class="des_zone col-md-10 col-8">
                 <div>
-                    <a routerLink="/game-detail/{{game._id}}" routerLinkActive="active" class="title">{{game.name}}</a>
+                    <a
+                        routerLink="/game-detail/{{ game._id }}"
+                        routerLinkActive="active"
+                        class="title"
+                        >{{ game.name }}</a
+                    >
                 </div>
                 <div>
-                    <span class="badge badge-primary" *ngFor="let tag of game.game_tags_string">{{tag}}</span>
+                    <span
+                        class="badge badge-primary"
+                        *ngFor="let tag of game.game_tags_string"
+                        >{{ tag }}</span
+                    >
                 </div>
-                <div [innerHTML]="game.description" class="description" [ngClass]="{'description-height':!game.unfold}"></div>
+                <div
+                    [innerHTML]="game.description"
+                    class="description"
+                    [ngClass]="{ 'description-height': !game.unfold }"
+                ></div>
                 <!-- <span class="unfold" (click)="toggleUnfold(game)"><fa name="caret-down"></fa></span> -->
             </div>
         </div>
     </div>
 
     <div class="pagination">
-        <ngb-pagination class="navigation" [collectionSize]="total_number" [(page)]="current_page"
-            [pageSize]="row" [maxSize]="5" [rotate]="true" size="sm" (pageChange)="pageChange()"></ngb-pagination>
+        <ngb-pagination
+            class="navigation"
+            [collectionSize]="total_number"
+            [(page)]="current_page"
+            [pageSize]="row"
+            [maxSize]="5"
+            [rotate]="true"
+            size="sm"
+            (pageChange)="pageChange()"
+        ></ngb-pagination>
     </div>
 </div>
 

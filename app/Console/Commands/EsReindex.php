@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Model\Elastic\ElasticModel;
 
+use Carbon\Carbon;
+
 
 
 class EsReindex extends Command
@@ -62,7 +64,7 @@ class EsReindex extends Command
             "body" => [
                 "query" => [
                     "query_string" => [
-                        "query" => "created_year:*"
+                        "query" => "source:cnblogs"
                     ]
                 ]
             ]
@@ -74,14 +76,16 @@ class EsReindex extends Command
 
             foreach ($response['hits']['hits'] as $key => $value) {
 
-                $created_year = date("Y", strtotime($value['_source']['created_at']));
+                $created_year = date("Y", strtotime($value['_source']['createdAt']));
                 $params = [
                     'index' => $this->index,
                     'type' => $this->type,
                     'id' => $value['_id'],
                     'body' => [
                         'doc' => [
-                            'created_year' => $created_year
+                            'created_year' => $created_year,
+                            'created_at' => date('c', strtotime($value['_source']['createdAt'])),
+                            'summary' => $value['_source']['summary']
                         ]
                     ]
                 ];

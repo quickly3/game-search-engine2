@@ -1,5 +1,5 @@
 <app-nav></app-nav>
-<div class="container">
+<div class="container-fluid">
     <div class="words_cloud">
         <span
             class="text-info"
@@ -48,44 +48,75 @@
             </div>
         </div>
     </div>
-
-    <div class="row escn_list row">
-        <div
-            class="daily_item col-12 row"
-            *ngFor="let daily_item of escn_list"
-            routerLinkActive="active"
-        >
-            <div class="des_zone col-md-10 col-8">
-                <div>
-                    <a [href]="daily_item.url" target="_blank">{{
-                        daily_item.title
-                    }}</a>
-                    &nbsp;
-                    <span
-                        >(
-                        {{ daily_item.created_at | date: "yyyy-MM-dd" }} )</span
-                    >
-                    &nbsp;
-                    <app-star-rating
-                        [(stars)]="daily_item.stars"
-                        (outer)="starsChange($event, daily_item)"
-                    ></app-star-rating>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="source-selector">
+                <div
+                    class="custom-control custom-radio"
+                    *ngFor="let source of source_list"
+                    (click)="selectSource(source)"
+                >
+                    <input
+                        type="radio"
+                        id=""
+                        name="sourceRadio"
+                        value="{{ source.title }}"
+                        [(ngModel)]="_source"
+                    />
+                    <span class="badge {{ source.source_class }}">{{
+                        source.title
+                    }}</span>
                 </div>
-                <div class="summary" [innerHtml]="daily_item.summary"></div>
             </div>
         </div>
-    </div>
+        <div class="col-md-10">
+            <div class="row escn_list">
+                <div
+                    class="daily_item col-12 row"
+                    *ngFor="let daily_item of escn_list"
+                    routerLinkActive="active"
+                >
+                    <div class="des_zone col-md-10 col-8">
+                        <div>
+                            <a [href]="daily_item.url" target="_blank">{{
+                                daily_item.title
+                            }}</a>
+                            &nbsp;
+                            <span class="badge {{ daily_item.badge_class }}">{{
+                                daily_item.source
+                            }}</span>
+                            &nbsp;
+                            <span
+                                >(
+                                {{ daily_item.created_at | date: "yyyy-MM-dd" }}
+                                )</span
+                            >
+                            &nbsp;
+                            <app-star-rating
+                                [(stars)]="daily_item.stars"
+                                (outer)="starsChange($event, daily_item)"
+                            ></app-star-rating>
+                        </div>
+                        <div
+                            class="summary"
+                            [innerHtml]="daily_item.summary"
+                        ></div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="pagination">
-        <ngb-pagination
-            class="navigation"
-            [collectionSize]="total_number"
-            [(page)]="current_page"
-            [pageSize]="row"
-            [maxSize]="5"
-            [rotate]="true"
-            size="sm"
-            (pageChange)="pageChange()"
-        ></ngb-pagination>
+            <div class="pagination">
+                <ngb-pagination
+                    class="navigation"
+                    [collectionSize]="total_number"
+                    [(page)]="current_page"
+                    [pageSize]="row"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    size="sm"
+                    (pageChange)="pageChange()"
+                ></ngb-pagination>
+            </div>
+        </div>
     </div>
 </div>

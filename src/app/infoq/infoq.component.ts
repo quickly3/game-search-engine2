@@ -28,6 +28,7 @@ export class InfoqComponent {
     words_cloud;
     InfoqService;
     _tag;
+    _source;
 
     search_by_keywords;
     modelChanged = new Subject<string>();
@@ -44,7 +45,31 @@ export class InfoqComponent {
         "Security",
         "Linux",
         "Postgresql",
-        "Block_chain"
+        "Block_chain",
+        "blockchain",
+        "dp",
+        "design",
+        "opensource",
+        "nosql",
+        "gamedev",
+        "web",
+        "algorithm",
+        "translate"
+    ];
+
+    source_badge = {
+        jianshu: "badge-primary",
+        infoq: "badge-success",
+        juejin: "badge-info",
+        cnblogs: "badge-danger"
+    };
+
+    source_list = [
+        { title: "all", source_class: "badge-secondary" },
+        { title: "jianshu", source_class: "badge-primary" },
+        { title: "infoq", source_class: "badge-success" },
+        { title: "juejin", source_class: "badge-info" },
+        { title: "cnblogs", source_class: "badge-danger" }
     ];
 
     constructor(private http: HttpClient, InfoqService: InfoqService) {
@@ -55,6 +80,7 @@ export class InfoqComponent {
         });
 
         this._tag = this.tags[0];
+        this._source = this.source_list[0].title;
     }
 
     ngOnInit(): void {
@@ -84,7 +110,8 @@ export class InfoqComponent {
         let params = {
             page: "" + this.current_page,
             keywords: this.keywords,
-            tag: this._tag
+            tag: this._tag,
+            source: this._source
         };
 
         this.InfoqService.getDailyList(params).subscribe(data => {
@@ -92,6 +119,7 @@ export class InfoqComponent {
             this.escn_list.map(item => {
                 if (!item.stars) {
                     item.stars = 0;
+                    item.badge_class = this.source_badge[item.source];
                 }
             });
             // this.escn_list.map(item=>{item.unfold = false});
@@ -135,6 +163,11 @@ export class InfoqComponent {
         this.keywords = "";
         this.search();
         this.getWordsCloud();
+    };
+
+    selectSource = function(source) {
+        this._source = source.title;
+        this.search();
     };
 
     searchDatasSimple = (term: any) => {

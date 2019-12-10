@@ -13,7 +13,9 @@ class InfoqController extends Controller
     {
 
         $keywords = $request->input("keywords", "");
-        $tag = strtolower($request->input("tag", "All"));
+        $tag = strtolower($request->input("tag", "all"));
+        $source = strtolower($request->input("source", "all"));
+
 
         $search_type = trim($request->input("search_type", ""));
 
@@ -43,6 +45,10 @@ class InfoqController extends Controller
 
         if ($tag != "all") {
             $query_string = $query_string . " && tag:{$tag}";
+        }
+
+        if ($source != "all") {
+            $query_string = $query_string . " && source:{$source}";
         }
 
         $orders = [
