@@ -18,12 +18,17 @@ class InfoqService
         return $index->updateById($id, $body);
     }
 
-    public static function genWordsCloud($tag)
+    public static function genWordsCloud($tag, $source)
     {
         $cloud_words = [];
 
         $es = new ElasticModel("article", "article");
         $data = [
+            "query" => [
+                "query_string" => [
+                    "query" => "*:*"
+                ]
+            ],
             "aggs" => [
                 "title_words_cloud" => [
                     "terms" => [
@@ -36,7 +41,11 @@ class InfoqService
         ];
 
         if ($tag != "all") {
-            $data['query'] = ["query_string" => ["query" => "tag:{$tag}"]];
+            $data['query']['query_string']['query'] .= " && tag:{$tag}";
+        }
+
+        if ($source != "all") {
+            $data['query']['query_string']['query'] .= " && source:{$source}";
         }
 
         $params = [

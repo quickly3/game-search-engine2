@@ -60,7 +60,7 @@ class InfoqController extends Controller
         ];
 
         $data->orderBy($orders);
-        $data = $data->query_string($query_string, "*")->paginate(10);
+        $data = $data->query_string($query_string, "*")->paginate(20);
         $data['query_string'] = $query_string;
 
 
@@ -83,9 +83,12 @@ class InfoqController extends Controller
     public function getWordsCloud(Request $request)
     {
 
-        $tag = strtolower($request->input("tag", "All"));
+        $tag = strtolower($request->input("tag", "all"));
+        $source = strtolower($request->input("source", "all"));
+
+
         $tag = $tag == "Postgresql" ? "PostgreSQL" : $tag;
-        $words_cloud = InfoqService::genWordsCloud($tag);
+        $words_cloud = InfoqService::genWordsCloud($tag, $source);
 
         return response()->json($words_cloud);
     }

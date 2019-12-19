@@ -90,11 +90,12 @@ export class InfoqComponent {
     showValue(item): void {}
 
     getWordsCloud = function() {
-        this.InfoqService.getWordsCloud({ tag: this._tag }).subscribe(
-            words_cloud => {
-                this.words_cloud = words_cloud;
-            }
-        );
+        this.InfoqService.getWordsCloud({
+            tag: this._tag,
+            source: this._source
+        }).subscribe(words_cloud => {
+            this.words_cloud = words_cloud;
+        });
     };
 
     searchKeyDown = function($event) {
@@ -168,6 +169,7 @@ export class InfoqComponent {
     selectSource = function(source) {
         this._source = source.title;
         this.search();
+        this.getWordsCloud();
     };
 
     searchDatasSimple = (term: any) => {

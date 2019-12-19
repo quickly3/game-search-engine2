@@ -54,9 +54,9 @@ class AliSpider(scrapy.Spider):
         "game": "55e7cae700b0114357d01cb0",
         "security": "5597a500e4b08a686ce5efc3",
         "postgresql": "555e9b12e4b00c57d995654e"
-
     }
-    tag = "postgresql"
+
+    tag = "python"
 
     urlTmpl = Template(
         "https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=${tagId}&page=${page}&pageSize=${pageSize}&sort=rankIndex")
@@ -64,16 +64,26 @@ class AliSpider(scrapy.Spider):
     pageSize = 100
 
     def start_requests(self):
+
+        self.tar_arr = []
+
+        for item in self.tagId:
+            self.tar_arr.append({'k': item, 'v': self.tagId[item]})
+
+        self._target = self.tar_arr.pop()
+
         url = self.get_url()
         yield scrapy.Request(url)
 
     def get_url(self):
+
         return self.urlTmpl.substitute(
-            page=self.page, pageSize=self.pageSize, tagId=self.tagId[self.tag])
+            page=self.page, pageSize=self.pageSize, tagId=self._target['v'])
 
     def parse(self, response):
         #
         resp = json.loads(response.text)
+
         if len(resp['d']['entrylist']) > 0:
 
             bulk = []
@@ -81,19 +91,26 @@ class AliSpider(scrapy.Spider):
                 doc = {}
 
                 doc['title'] = item['title']
-                doc['href'] = item['originalUrl']
-                doc['summaryInfo'] = item['summaryInfo']
-                doc['content'] = item['content']
-                doc['createdAt'] = item['createdAt']
+                doc['title_text'] = item['title']
+
+                doc['url'] = item['originalUrl']
+                doc['summary'] = item['summaryInfo']
+                doc['created_at'] = item['createdAt']
+                doc['created_year'] = item['createdAt']
+
                 doc['tag'] = self.tag
-                doc['jid'] = item['objectId']
+                doc['source'] = 'juejin'
+
+                doc['source_id'] = item['objectId']
+
+                doc['stars'] = 0
 
                 bulk.append(
-                    {"index": {"_index": "juejin", "_type": "juejin"}})
+                    {"index": {"_index": "article", "_type": "article"}})
                 bulk.append(doc)
 
             if len(bulk) > 0:
-                es.bulk(index="juejin", doc_type="juejin",
+                es.bulk(index="article", doc_type="article",
                         body=bulk, routing=1)
 
             self.page = self.page+1
@@ -101,8 +118,19 @@ class AliSpider(scrapy.Spider):
             url = self.get_url()
             yield scrapy.Request(url)
 
-        # slugs = []
-        # for entity in rs['entries']:
-        #     slugs.append(entity['slug'])
+        else:
 
-        # print(slugs)
+            if len(self.tar_arr) > 0:
+                self._target = self.tar_arr.pop()
+                self.page = 0
+                url = self.get_url()
+                yield scrapy.Request(url)
+
+            else:
+                print("Spider closeed")
+
+            # slugs = []
+            # for entity in rs['entries']:
+            #     slugs.append(entity['slug'])
+
+            # print(slugs)
