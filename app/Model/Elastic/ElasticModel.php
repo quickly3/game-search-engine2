@@ -229,7 +229,8 @@ class ElasticModel
         return $res;
     }
 
-    public function updateById($id,$body){
+    public function updateById($id, $body)
+    {
         $params = [
             "index" => $this->index,
             "type" => $this->index_type,
@@ -241,8 +242,8 @@ class ElasticModel
         return $this;
     }
 
-    public function updateByQueryString($query,$fields){
-
+    public function updateByQueryString($query, $fields)
+    {
     }
 
 

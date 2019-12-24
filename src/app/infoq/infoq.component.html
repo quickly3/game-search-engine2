@@ -1,13 +1,5 @@
 <app-nav></app-nav>
 <div class="container-fluid">
-    <div class="words_cloud">
-        <span
-            class="text-info"
-            *ngFor="let word of words_cloud"
-            (click)="wordsCloudToKeyWords(word)"
-            >{{ word.key }}</span
-        >
-    </div>
     <div class="search-header">
         <div class="search-input">
             <input
@@ -63,10 +55,16 @@
                         value="{{ source.title }}"
                         [(ngModel)]="_source"
                     />
-                    <span class="badge {{ source.source_class }}">{{
-                        source.title
-                    }}</span>
+                    <div class="icons {{ source.source_class }}"></div>
                 </div>
+            </div>
+            <div class="words_cloud">
+                <span
+                    class="text-info"
+                    *ngFor="let word of words_cloud"
+                    (click)="wordsCloudToKeyWords(word)"
+                    >{{ word.key }}</span
+                >
             </div>
         </div>
         <div class="col-md-10">
@@ -81,12 +79,10 @@
                             <a [href]="daily_item.url" target="_blank">{{
                                 daily_item.title
                             }}</a>
-                            &nbsp;
-                            <span class="badge {{ daily_item.badge_class }}">{{
-                                daily_item.source
-                            }}</span>
-                            &nbsp;
-                            <span
+                            <div
+                                class="icons {{ daily_item.badge_class }}"
+                            ></div>
+                            <span *ngIf="daily_item.created_at"
                                 >(
                                 {{ daily_item.created_at | date: "yyyy-MM-dd" }}
                                 )</span

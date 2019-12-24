@@ -42,3 +42,45 @@
     color: crimson;
     font-style: inherit;
 }
+
+.icons {
+    display: inline-block;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    vertical-align: bottom;
+    height: 18px;
+    width: 18px;
+    margin: 0 0 2px 3px;
+}
+
+.icon-all {
+    background-image: url(/assets/images/ico/all.jpg);
+}
+
+.icon-sf {
+    background-image: url(/assets/images/ico/sf.ico);
+}
+
+.icon-cnblogs {
+    background-image: url(/assets/images/ico/cnblogs.jpg);
+}
+
+.icon-infoq {
+    background-image: url(/assets/images/ico/infoq.ico);
+}
+
+.icon-juejin {
+    background-image: url(/assets/images/ico/juejin.png);
+}
+
+.icon-csdn {
+    background-image: url(/assets/images/ico/csdn.ico);
+}
+
+.icon-jianshu {
+    background-image: url(/assets/images/ico/jianshu.ico);
+}
+
+.icon-oschina {
+    background-image: url(/assets/images/ico/oschina.ico);
+}

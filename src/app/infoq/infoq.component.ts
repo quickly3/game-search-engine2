@@ -57,19 +57,23 @@ export class InfoqComponent {
         "translate"
     ];
 
-    source_badge = {
-        jianshu: "badge-primary",
-        infoq: "badge-success",
-        juejin: "badge-info",
-        cnblogs: "badge-danger"
-    };
+    // source_badge = {
+    //     jianshu: "badge-primary",
+    //     infoq: "badge-success",
+    //     juejin: "badge-info",
+    //     cnblogs: "badge-danger",
+    //     csdn: "badge-warning"
+    // };
 
     source_list = [
-        { title: "all", source_class: "badge-secondary" },
-        { title: "jianshu", source_class: "badge-primary" },
-        { title: "infoq", source_class: "badge-success" },
-        { title: "juejin", source_class: "badge-info" },
-        { title: "cnblogs", source_class: "badge-danger" }
+        { title: "all", source_class: "icon-all" },
+        { title: "jianshu", source_class: "icon-jianshu" },
+        { title: "infoq", source_class: "icon-infoq" },
+        { title: "juejin", source_class: "icon-juejin" },
+        { title: "cnblogs", source_class: "icon-cnblogs" },
+        { title: "csdn", source_class: "icon-csdn" },
+        { title: "oschina", source_class: "icon-oschina" },
+        { title: "sf", source_class: "icon-sf" }
     ];
 
     constructor(private http: HttpClient, InfoqService: InfoqService) {
@@ -120,7 +124,12 @@ export class InfoqComponent {
             this.escn_list.map(item => {
                 if (!item.stars) {
                     item.stars = 0;
-                    item.badge_class = this.source_badge[item.source];
+
+                    for (const i of this.source_list) {
+                        if (item.source == i.title) {
+                            item.badge_class = i.source_class;
+                        }
+                    }
                 }
             });
             // this.escn_list.map(item=>{item.unfold = false});

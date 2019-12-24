@@ -41,6 +41,10 @@ class InfoqController extends Controller
             $data->highlight($highlight);
         }
 
+        if ($keywords != '*') {
+            $keywords = "'" . $keywords . "'";
+        }
+
         $query_string = "(title_text:{$keywords} OR summary:{$keywords})  ";
 
         if ($tag != "all") {

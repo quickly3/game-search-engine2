@@ -44,27 +44,29 @@ Session = Session_class()
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "juejin"
+    name = "csdn"
+    source = "csdn"
 
     domain = 'https://juejin.im'
 
     tagId = {
-        "python": "559a7227e4b08a686d25744f",
-        "php": "555e9a84e4b00c57d9955e1b",
-        "javascript": "55964d83e4b08a686cc6b353",
-        "css": "555eadc1e4b00c57d9962402",
-        "typescript": "55e7d5a360b2d687f60ae13a",
-        "block_chain": "578c92bb2e958a0054375bc9",
-        "game": "55e7cae700b0114357d01cb0",
-        "security": "5597a500e4b08a686ce5efc3",
-        "postgresql": "555e9b12e4b00c57d995654e"
+        "python": "python",
+        "php": "php",
+        "javascript": "javascript",
+        "css": "css",
+        "typescript": "typescript",
+        "block_chain": "区块链",
+        "game": "游戏",
+        "security": "安全",
+        "postgresql": "postgresql"
     }
 
     tag = "python"
 
     urlTmpl = Template(
-        "https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=${tagId}&page=${page}&pageSize=${pageSize}&sort=rankIndex")
-    page = 0
+        'https://so.csdn.net/so/search/s.do?q=${tagId}&t=blog&p=${page}')
+
+    page = 1
     pageSize = 100
 
     def start_requests(self):
@@ -77,39 +79,53 @@ class AliSpider(scrapy.Spider):
         self._target = self.tar_arr.pop()
 
         url = self.get_url()
+
         yield scrapy.Request(url)
 
     def get_url(self):
 
         return self.urlTmpl.substitute(
-            page=self.page, pageSize=self.pageSize, tagId=self._target['v'])
+            page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
         #
-        resp = json.loads(response.text)
+        # resp = json.loads(response.text)
+        items = response.xpath('.//dl[has-class("search-list")]')
 
-        if len(resp['d']['entrylist']) > 0:
+        if len(items) > 0:
 
             bulk = []
-            for item in resp['d']['entrylist']:
+            for item in items:
+                title_a = item.xpath('.//div[@class="limit_width"]/a[1]')
+                titles = title_a.xpath('.//text()').getall()
+                title = "".join(titles)
+
+                url = title_a.xpath('.//@href').get()
+                detail = item.xpath(
+                    './/dd[@class="search-detail"]/text()').get()
+
+                createAt = item.xpath(
+                    './/dd[@class="author-time"]/span[@class="date"]/text()').get()
+
+                createAt = createAt.replace("日期：", "")
+
                 doc = {}
 
-                doc['title'] = item['title']
-                doc['title_text'] = item['title']
+                doc['title'] = title
+                doc['title_text'] = title
 
-                doc['url'] = item['originalUrl']
-                doc['summary'] = item['summaryInfo']
-                doc['created_at'] = item['createdAt']
-                _date = dateparse(item['createdAt'])
+                doc['url'] = url
+                doc['summary'] = detail
+
+                doc['created_at'] = createAt
+                _date = dateparse(createAt)
 
                 year = _date.year
 
                 doc['created_year'] = year
 
                 doc['tag'] = self._target['k']
-                doc['source'] = 'juejin'
-
-                doc['source_id'] = item['objectId']
+                doc['source'] = self.source
 
                 doc['stars'] = 0
 
@@ -122,7 +138,6 @@ class AliSpider(scrapy.Spider):
                         body=bulk, routing=1)
 
             self.page = self.page+1
-
             url = self.get_url()
             yield scrapy.Request(url)
 
@@ -130,15 +145,9 @@ class AliSpider(scrapy.Spider):
 
             if len(self.tar_arr) > 0:
                 self._target = self.tar_arr.pop()
-                self.page = 0
+                self.page = 1
                 url = self.get_url()
                 yield scrapy.Request(url)
 
             else:
                 print("Spider closeed")
-
-            # slugs = []
-            # for entity in rs['entries']:
-            #     slugs.append(entity['slug'])
-
-            # print(slugs)

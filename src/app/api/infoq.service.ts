@@ -12,11 +12,11 @@ export class InfoqService {
     };
 
     searchDatasSimple = params => {
-        return this.http.get("/infoq/getDailyList", { params });
+        return this.http.post("/infoq/getDailyList", params);
     };
 
     getDailyList = params => {
-        return this.http.get("/infoq/getDailyList", { params });
+        return this.http.post("/infoq/getDailyList", params);
     };
 
     starsChange = params => {
