@@ -158,9 +158,9 @@ class AliSpider(scrapy.Spider):
                     {"index": {"_index": "article", "_type": "article"}})
                 resp = bulk.append(doc)
 
-            if len(bulk) > 0:
-                es.bulk(index="juejin", doc_type="juejin",
-                        body=bulk, routing=1)
+            # if len(bulk) > 0:
+            #     es.bulk(index="juejin", doc_type="juejin",
+            #             body=bulk, routing=1)
 
             yield self.next_request()
         else:

@@ -11,7 +11,6 @@ class JianshuController extends Controller
 {
     public function getDailyList(Request $request)
     {
-
         $keywords = $request->input("keywords", "");
         $search_type = trim($request->input("search_type", ""));
 

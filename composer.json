@@ -15,7 +15,8 @@
         "laravel/framework": "5.8.*",
         "laravel/scout": "7.1.3",
         "laravel/tinker": "^1.0",
-        "spatie/laravel-permission": "^2.38"
+        "spatie/laravel-permission": "^2.38",
+        "swooletw/laravel-swoole": "^2.6"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

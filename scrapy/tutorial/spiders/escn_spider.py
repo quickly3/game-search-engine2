@@ -1,7 +1,7 @@
 # -*- coding:UTF-8 -*-
-# 
 #
- 
+#
+
 import scrapy
 import sys
 import sqlalchemy
@@ -23,13 +23,13 @@ DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 # engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD+"@localhost/Game?charset=utf8", encoding='utf-8', echo=False)
-engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD+"@localhost/"+DB_DATABASE+"?charset=utf8", encoding='utf-8', echo=False)
+engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD +
+                       "@localhost/"+DB_DATABASE+"?charset=utf8", encoding='utf-8', echo=False)
 Base = declarative_base()
 
 
 Session_class = sessionmaker(bind=engine)
 Session = Session_class()
-
 
 
 class Game(Base):
@@ -49,44 +49,47 @@ class AliSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
+        has_dup = False
         for item in response.css('.aw-common-list .aw-item'):
 
             title_h4 = item.css('.aw-question-content h4')
-            title = title_h4.css('a::text').extract_first();
-            title = title.strip(" ");
+            title = title_h4.css('a::text').extract_first()
+            title = title.strip(" ")
 
+            link = title_h4.css('a::attr(href)').extract_first()
 
-            link = title_h4.css('a::attr(href)').extract_first();
+            daily_obj = Game(title=title, link=link, state="init")
+            duplicate_record = Session.query(
+                Game).filter(Game.link == link).first()
 
-            daily_obj = Game(title=title, link=link,state="init")    
-
-
-            duplicate_record = Session.query(Game).filter(Game.link==link).first()
-
-            if duplicate_record == None :
+            if duplicate_record == None:
                 # if title.find("Elastic日报") > -1 :
                 Session.add(daily_obj)
                 Session.commit()
             else:
                 next_page_a_link = None
-                os._exit(0);
+                has_dup = True
 
+        if has_dup:
+            print("End")
+            os._exit(0)
 
-        next_page_li = response.css('.pagination li:nth-last-child(2)');
-        next_page_a_text = next_page_li.css('a::text').extract_first();
+        next_page_li = response.css('.pagination li:nth-last-child(2)')
+        next_page_a_text = next_page_li.css('a::text').extract_first()
 
         if next_page_a_text == ">":
-            next_page_a_link = next_page_li.css('a::attr(href)').extract_first();
+            next_page_a_link = next_page_li.css(
+                'a::attr(href)').extract_first()
         else:
 
-            next_page_li = response.css('.pagination li:nth-last-child(1)');
-            next_page_a_text = next_page_li.css('a::text').extract_first();
+            next_page_li = response.css('.pagination li:nth-last-child(1)')
+            next_page_a_text = next_page_li.css('a::text').extract_first()
 
             if next_page_a_text == ">":
-                next_page_a_link = next_page_li.css('a::attr(href)').extract_first();
+                next_page_a_link = next_page_li.css(
+                    'a::attr(href)').extract_first()
             else:
                 next_page_a_link = None
-
 
         if next_page_a_link is not None:
             yield response.follow(next_page_a_link, callback=self.parse)

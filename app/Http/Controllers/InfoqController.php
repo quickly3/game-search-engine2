@@ -11,12 +11,9 @@ class InfoqController extends Controller
 {
     public function getDailyList(Request $request)
     {
-
         $keywords = $request->input("keywords", "");
         $tag = strtolower($request->input("tag", "all"));
         $source = strtolower($request->input("source", "all"));
-
-
         $search_type = trim($request->input("search_type", ""));
 
         $es = new ElasticModel("article", "article");
@@ -60,13 +57,12 @@ class InfoqController extends Controller
             "_score" => "desc",
             "created_at" => "desc",
             "title" => "asc",
-            "_id" => "desc"
+            "_id" => "desc",
         ];
 
         $data->orderBy($orders);
         $data = $data->query_string($query_string, "*")->paginate(20);
         $data['query_string'] = $query_string;
-
 
         if (!empty($data['data'])) {
             $data['data'] = array_map(function ($item) {
@@ -90,7 +86,6 @@ class InfoqController extends Controller
         $tag = strtolower($request->input("tag", "all"));
         $source = strtolower($request->input("source", "all"));
 
-
         $tag = $tag == "Postgresql" ? "PostgreSQL" : $tag;
         $words_cloud = InfoqService::genWordsCloud($tag, $source);
 
@@ -103,18 +98,6 @@ class InfoqController extends Controller
         $item = $params['item'];
         $resp = InfoqService::updateStarsById($item['_id'], $item["stars"]);
 
-        return response()->json($resp);;
+        return response()->json($resp);
     }
-
-    // public function getGameDataById(Request $request){
-    //     $id = $request->input("id","");
-
-    //     $es = new ElasticModel("games","games");
-    //     $query = [  "match_all" => (object)[]];
-    //     $query_string = "name:英雄";
-    //     $data = $es->source(["name","version"])->getById($id,"*");
-
-    //     return response()->json($data);
-    // }
-
 }

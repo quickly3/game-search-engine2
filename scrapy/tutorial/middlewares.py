@@ -5,7 +5,21 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+# from settings import IPPOOL
 from scrapy import signals
+import random
+
+
+IPPOOL = [
+
+    {"ipaddr": "222.90.110.194:8080"},
+    # {"ipaddr": "61.152.81.193: 9100"},
+    # {"ipaddr": "120.204.85.29: 3128"},
+    # {"ipaddr": "219.228.126.86: 8123"},
+    # {"ipaddr": "61.152.81.193: 9100"},
+    # {"ipaddr": "218.82.33.225: 53853"},
+    # {"ipaddr": "223.167.190.17: 42789"}
+]
 
 
 class TutorialSpiderMiddleware(object):
@@ -54,3 +68,14 @@ class TutorialSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class MyproxiesSpiderMiddleware(object):
+
+    def __init__(self, ip=''):
+        self.ip = ip
+
+    def process_request(self, request, spider):
+        thisip = random.choice(IPPOOL)
+        print("this is ip:"+thisip["ipaddr"])
+        request.meta["proxy"] = "http://"+thisip["ipaddr"]
