@@ -25,6 +25,7 @@ Route::get('game/test', 'GameController@test');
 Route::get('game/index', 'GameController@index');
 
 
+
 Route::get('game/getGameDataById', 'GameController@getGameDataById');
 
 Route::get('escn/getDailyList', 'EscnController@getDailyList');
@@ -37,7 +38,7 @@ Route::get('jj/getDailyList', 'JuejinController@getDailyList');
 Route::get('jj/getWordsCloud', 'JuejinController@getWordsCloud');
 Route::post('jj/starsChange', 'JuejinController@starsChange');
 
-Route::post('infoq/getDailyList', 'InfoqController@getDailyList');
+Route::any('infoq/getDailyList', 'InfoqController@getDailyList');
 Route::get('infoq/getWordsCloud', 'InfoqController@getWordsCloud');
 Route::post('infoq/starsChange', 'InfoqController@starsChange');
 
