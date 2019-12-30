@@ -26,7 +26,7 @@
 > 前端开发 监听模式 npm run watch  
 > 部署模式 npm run prod
 
-### 爬虫命令
+### 爬虫
 
 > 爬虫代码在 scrapy 目录下
 
@@ -49,6 +49,8 @@ B 站弹幕
 > scrapy crawl fanju
 > scrapy crawl episode
 > scrapy crawl danmu
+
+Yahoo 美股价爬虫
 
 scrapy crawl episode -a ssid=_
 scrapy crawl danmu -a ssid=_
@@ -73,6 +75,7 @@ nohup scrapy crawl danmu > d.log 2>&1 &
 ### 更多数据源和功能
 
 > 挤时间中...
+> 免费 IP 代理池爬虫
 
 ### 理论模型
 

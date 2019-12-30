@@ -64,7 +64,7 @@ class EsReindex extends Command
             "body" => [
                 "query" => [
                     "query_string" => [
-                        "query" => "source:cnblogs"
+                        "query" => "source:jianshu"
                     ]
                 ]
             ]
@@ -76,16 +76,17 @@ class EsReindex extends Command
 
             foreach ($response['hits']['hits'] as $key => $value) {
 
-                $created_year = date("Y", strtotime($value['_source']['createdAt']));
+                // $created_year = date("Y", strtotime($value['_source']['createdAt']));
+                $url = str_replace("//", "/", $value['_source']['url']);
+                $url = str_replace(":/", "://", $url);
+
                 $params = [
                     'index' => $this->index,
                     'type' => $this->type,
                     'id' => $value['_id'],
                     'body' => [
                         'doc' => [
-                            'created_year' => $created_year,
-                            'created_at' => date('c', strtotime($value['_source']['createdAt'])),
-                            'summary' => $value['_source']['summary']
+                            'url' => $url
                         ]
                     ]
                 ];

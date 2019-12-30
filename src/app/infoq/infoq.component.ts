@@ -73,7 +73,8 @@ export class InfoqComponent {
         { title: "cnblogs", source_class: "icon-cnblogs" },
         { title: "csdn", source_class: "icon-csdn" },
         { title: "oschina", source_class: "icon-oschina" },
-        { title: "sf", source_class: "icon-sf" }
+        { title: "sf", source_class: "icon-sf" },
+        { title: "escn", source_class: "icon-escn" }
     ];
 
     constructor(private http: HttpClient, InfoqService: InfoqService) {
