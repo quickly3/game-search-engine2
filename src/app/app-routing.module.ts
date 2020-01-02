@@ -9,6 +9,7 @@ import { JuejinComponent } from "./juejin/juejin.component";
 import { InfoqComponent } from "./infoq/infoq.component";
 
 import { GameDetailComponent } from "./game-detail/game-detail.component";
+import { ArticleEditorComponent } from "./pages/article-editor/article-editor.component";
 
 const routes: Routes = [
     { path: "games", component: GamesComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: "juejin", component: JuejinComponent },
     { path: "infoq", component: InfoqComponent },
 
+    { path: "article-editor/:id", component: ArticleEditorComponent },
     { path: "game-detail/:id", component: GameDetailComponent },
     { path: "", redirectTo: "fanju", pathMatch: "full" },
     { path: "**", redirectTo: "fanju" }
