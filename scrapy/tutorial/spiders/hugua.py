@@ -48,6 +48,11 @@ class AliSpider(scrapy.Spider):
     tag = "elastic"
 
     def parse(self, response):
+
+        file_path = 'C:\\Users\\Administrator\\Desktop\\tmp\\hugua.txt'
+
+        f = open(file_path, "w")
+
         url = response.css('.downurl>script::text').get()
         url = url.replace("var GvodUrls5 =", "")
         url = url.replace("echoDown(GvodUrls5,5)", "")
@@ -55,7 +60,10 @@ class AliSpider(scrapy.Spider):
         url = url.replace("\"", "")
 
         urls = url.split("###")
+
         for thunder_url in urls:
             line = thunder_url.split("$")
             if thunder_url != "":
-                print(line[1])
+                f.write(line[1]+"\n")
+
+        f.close()

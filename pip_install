@@ -11,3 +11,9 @@ pip install BeautifulSoup4
 
 for win:
 pip install pypiwin32
+
+
+images plugin:
+
+PIL:
+pip install pillow

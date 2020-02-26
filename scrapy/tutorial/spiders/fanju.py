@@ -20,21 +20,22 @@ from sqlalchemy.orm import sessionmaker
 from elasticsearch import Elasticsearch
 from scrapy.utils.project import get_project_settings
 
-settings = get_project_settings()
-engine = mysql_engine.get_engine()
-storage_dir = '../storage/fanju'
 
-if not os.path.isdir(storage_dir):
-    os.mkdir(storage_dir)
+def init():
+    settings = get_project_settings()
+    engine = mysql_engine.get_engine()
+    storage_dir = '../storage/fanju'
 
-Base = declarative_base()
+    if not os.path.isdir(storage_dir):
+        os.mkdir(storage_dir)
 
-Session_class = sessionmaker(bind=engine)
-Session = Session_class()
+    Base = declarative_base()
 
+    Session_class = sessionmaker(bind=engine)
+    Session = Session_class()
 
-es = Elasticsearch()
-es.indices.create(index='fanju', ignore=400)
+    es = Elasticsearch()
+    es.indices.create(index='fanju', ignore=400)
 
 
 class ImgData(scrapy.Item):
