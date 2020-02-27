@@ -3,7 +3,12 @@
 return [
     'client' => [
         'hosts' => [
-            env('SCOUT_ELASTIC_HOST', 'localhost:9200'),
+            [
+                'host' => getenv("ES_HOST"),
+                'port' => getenv("ES_PORT"),
+                'user' => getenv("ES_USER"),
+                'pass' => getenv("ES_PWD")
+            ]
         ],
     ],
     'update_mapping' => env('SCOUT_ELASTIC_UPDATE_MAPPING', true),

@@ -47,6 +47,7 @@ class ElasticModel
         $hosts[] = $main_host;
         $clientBuilder = ClientBuilder::create(); // Instantiate a new ClientBuilder
         $clientBuilder->setHosts($hosts); // Set the hosts
+        $clientBuilder->setBasicAuthentication(getenv("ES_USER"), getenv("ES_PWD"));
         $this->client = $clientBuilder->build();
         $this->source = [];
     }
@@ -155,11 +156,16 @@ class ElasticModel
         $from = ($page - 1) * $this->size;
         $this->request_body["body"]["size"] = $size;
         $this->request_body["body"]["from"] = $from;
+
+        $this->request_body["body"]["track_total_hits"] = true;
+
         $this->setReqRes();
         $res = [];
 
         $res['current_page'] = $page;
-        $res['total'] = $this->reqRes['hits']['total'];
+        $res['total'] = $this->reqRes['hits']['total']['value'];
+
+
 
         $res['last_page'] = ceil($res['total'] / $size);
         $res['from'] = $from;

@@ -64,7 +64,7 @@ nohup scrapy crawl danmu > d.log 2>&1 &
 
 ### 全量数据同步
 
-> php artisan elastic:migrate "App\Models\GameModel" games_20190916
+> php artisan elastic:migrate "App\Models\GameModel" games_20200227
 > php artisan elastic:migrate "App\Models\EscnModel" escn_20190916
 
 ### 增量数据同步
@@ -80,3 +80,8 @@ nohup scrapy crawl danmu > d.log 2>&1 &
 ### 理论模型
 
 > 喵喵喵？
+
+###
+
+部署初始化 laravel scout
+php artisan elastic:create-index "App\EsConfigurator\GameConfigurator"
