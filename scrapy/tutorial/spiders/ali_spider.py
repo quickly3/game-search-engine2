@@ -33,7 +33,7 @@ Session = Session_class()
 
 
 class Game(Base):
-    __tablename__ = 'Game'
+    __tablename__ = 'games'
     id = Column(Integer, primary_key=True)
     name = Column(String(200))
     image_url = Column(String(200))

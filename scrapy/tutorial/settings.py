@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'tutorial.spiders'
 # IMAGES_STORE = os.getenv("IMAGES_STORE")
 # print(IMAGES_STORE)
 
-# IMAGES_STORE = '/Users/hongbinzhou/www/ng-blog/public/assets/images/'
+IMAGES_STORE = '/Users/hongbinzhou/www/ng-blog/public/assets/images/'
 
 
 FEED_EXPORT_ENCODING = 'utf-8'
@@ -108,12 +108,12 @@ COOKIES_ENABLED = False
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     # 'tutorial.pipelines.ImagesPipeline': 1,
-    "tutorial.pipelines.HupuGifPipeline": 1
+    # "tutorial.pipelines.HupuGifPipeline": 1
 }
 
 
 # IMAGES_STORE = os.getenv("IMAGES_STORE")
-# FILES_STORE = '/Users/hongbinzhou/meizi'
+FILES_STORE = '/Users/hongbinzhou/meizi'
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)
