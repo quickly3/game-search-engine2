@@ -7,6 +7,7 @@ pip install elasticsearch==6.3.0
 pip install datetime
 pip install requests
 pip install BeautifulSoup4
+pip install python-dateutil
 
 
 for win:
