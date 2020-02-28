@@ -62,6 +62,7 @@ class InfoqController extends Controller
 
         $data->orderBy($orders);
         $data = $data->query_string($query_string, "*")->paginate(20);
+
         $data['query_string'] = $query_string;
 
         if (!empty($data['data'])) {

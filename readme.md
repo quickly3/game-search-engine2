@@ -85,3 +85,4 @@ nohup scrapy crawl danmu > d.log 2>&1 &
 
 部署初始化 laravel scout
 php artisan elastic:create-index "App\EsConfigurator\GameConfigurator"
+php artisan elastic:create-index "App\EsConfigurator\EscnConfigurator"

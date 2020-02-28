@@ -67,7 +67,6 @@ class ElasticModel
     {
         $params = [
             "index" => $this->index,
-            "type" => $this->index_type,
             "body" => [
                 "query" => [
                     "query_string" => [

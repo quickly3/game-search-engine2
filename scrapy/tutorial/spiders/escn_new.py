@@ -20,9 +20,10 @@ import datetime
 
 
 # settings.py
+es_user = os.getenv("ES_USER")
+es_pwd = os.getenv("ES_PWD")
 
-
-es = Elasticsearch()
+es = Elasticsearch(http_auth=(es_user, es_pwd))
 
 
 def cont_filter(x):
@@ -69,7 +70,8 @@ class AliSpider(scrapy.Spider):
                 _date = datetime.datetime.strptime(_date, '%Y-%m-%d')
 
                 link = title_h4.css('a::attr(href)').extract_first()
-                if _date <= last_create:
+
+                if (last_create != None) and (_date <= last_create):
                     end_crawl = True
                     break
                 else:
@@ -172,11 +174,11 @@ class AliSpider(scrapy.Spider):
 
                 doc['stars'] = 0
                 bulk.append(
-                    {"index": {"_index": "article", "_type": "article"}})
+                    {"index": {"_index": "article"}})
                 bulk.append(doc)
+
         if len(bulk) > 0:
-            resp = es.bulk(index="article", doc_type="article",
-                           body=bulk, routing=1)
+            es.bulk(index="article", body=bulk)
 
         if len(self.page_list) > 0:
             item = self.page_list.pop(0)
