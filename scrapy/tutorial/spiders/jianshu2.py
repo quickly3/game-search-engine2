@@ -1,6 +1,7 @@
 # -*- coding:UTF-8 -*-
 #
 
+from elasticsearch import logger as es_logger
 import scrapy
 import sys
 import sqlalchemy
@@ -24,6 +25,12 @@ from elasticsearch import Elasticsearch
 es_user = os.getenv("ES_USER")
 es_pwd = os.getenv("ES_PWD")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
+
+
+LOGLEVEL = 50
+es_logger.setLevel(LOGLEVEL)
+
+
 # import tuorial.settings as sp_setting
 
 
@@ -166,7 +173,7 @@ class AliSpider(scrapy.Spider):
             "Cookie": "JSESSIONID=2D1E55287F8B056E83FD29B114FBA389"
         }
 
-        self._page = 43
+        self._page = 1
 
         self._coll = self.collection.pop(0)
 
@@ -232,9 +239,9 @@ class AliSpider(scrapy.Spider):
 
             self.url_list.append(href)
 
-            bulk.append(
-                {"index": {"_index": "article"}})
-            bulk.append(doc)
+            # bulk.append(
+            #     {"index": {"_index": "article"}})
+            # bulk.append(doc)
 
         if len(bulk) > 0:
             es.bulk(index="article",
