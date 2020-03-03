@@ -160,7 +160,6 @@ class AliSpider(scrapy.Spider):
                 doc = {}
 
                 doc['title'] = content
-                doc['title_text'] = content
 
                 doc['url'] = link
                 doc['summary'] = title

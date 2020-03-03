@@ -21,7 +21,9 @@ from string import Template
 
 from elasticsearch import Elasticsearch
 
-es = Elasticsearch()
+es_user = os.getenv("ES_USER")
+es_pwd = os.getenv("ES_PWD")
+es = Elasticsearch(http_auth=(es_user, es_pwd))
 # import tuorial.settings as sp_setting
 
 
@@ -52,19 +54,19 @@ class AliSpider(scrapy.Spider):
 
     def __init__(self):
         self.collection = [
-            # {
-            #     "tag": "python",
-            #     "slugs":
-            #     ['22f2ca261b85', '0bab91ded569', '8c01bfa7b98a', '0690e20b7e7d', 'aa0b21cceb92',
-            #      'a480500350e7', '9bc3ae683403', 'bb233a70a20e', '70eae73cf556', '7847442e0728',
-            #      '3e3636c40c41', '813a3b29d5fd', '826a1e944a7d', '3ce88fc43e68', '614849b2a5ad',
-            #      '24e1fbfc147f', 'd53dd7115ed7', '80fa19f59623', 'dfcf1390085c', '5da7e0427999',
-            #      'b0c93dd63315', '24d9279a3f1c', 'f165d63574d2', '38980843c0f2', 'e073fce5432f',
-            #      'f204a5f9aac5', '74c5836708df', '4719b64b55a2', '917335d52a08', '954bbd65c3b3']
-            # },
+            {
+                "tag": "python",
+                "slugs":
+                ['22f2ca261b85', '0bab91ded569', '8c01bfa7b98a', '0690e20b7e7d', 'aa0b21cceb92',
+                 'a480500350e7', '9bc3ae683403', 'bb233a70a20e', '70eae73cf556', '7847442e0728',
+                 '3e3636c40c41', '813a3b29d5fd', '826a1e944a7d', '3ce88fc43e68', '614849b2a5ad',
+                 '24e1fbfc147f', 'd53dd7115ed7', '80fa19f59623', 'dfcf1390085c', '5da7e0427999',
+                 'b0c93dd63315', '24d9279a3f1c', 'f165d63574d2', '38980843c0f2', 'e073fce5432f',
+                 'f204a5f9aac5', '74c5836708df', '4719b64b55a2', '917335d52a08', '954bbd65c3b3']
+            },
             {"tag": "javascript", "slugs":
              [
-                 # 'f489ec955505', 'c261fa3879d6',
+                 'f489ec955505', 'c261fa3879d6',
                  'f63dac4d430e', 'dfdc2bbd1315', '0020d95b7928',
                  '4652107a7847', '38dd7fc9033a', '7c5a95f65440', '4dcf98759530', 'ceb3f53ef4af',
                  'b1f82bbe226e', '69b548699816', '43ae04575967', '0212550c0db3',
@@ -231,12 +233,12 @@ class AliSpider(scrapy.Spider):
             self.url_list.append(href)
 
             bulk.append(
-                {"index": {"_index": "article", "_type": "article"}})
+                {"index": {"_index": "article"}})
             bulk.append(doc)
 
         if len(bulk) > 0:
-            es.bulk(index="article", doc_type="article",
-                    body=bulk, routing=1)
+            es.bulk(index="article",
+                    body=bulk)
 
         # if self._page == 5:
         #     self.init_page_crawl()

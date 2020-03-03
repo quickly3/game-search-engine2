@@ -2,6 +2,12 @@
 
 > 这是一个自动收集游戏信息并提供搜索引擎服务的项目
 
+技术博客类爬虫、搜索引擎：只爬取特定一些分类的博客的 title，link，summary,createdate，存到 elasticsearch 中，用来做类似订阅功能，分析最近热点博客，及基于 Elasticsearch 开发跨站真实搜索引擎的各种实际功能。
+
+游侠网免费游戏搜索引擎：
+
+其他各种爬虫：
+
 ### 网站地址
 
 <http://www.zhouhongbin.com>
