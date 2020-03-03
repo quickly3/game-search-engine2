@@ -147,8 +147,6 @@ class AliSpider(scrapy.Spider):
                 doc = {}
 
                 doc['title'] = title
-                doc['title_text'] = title
-
                 doc['url'] = "https://segmentfault.com/"+url
                 doc['summary'] = detail
 

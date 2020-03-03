@@ -20,24 +20,20 @@ from string import Template
 from dotenv import load_dotenv
 from pathlib import Path
 import random
-from elasticsearch import Elasticsearch
 
-es = Elasticsearch()
+from elasticsearch import Elasticsearch
+from elasticsearch import logger as es_logger
+
+
 env_path = Path('..')/'.env'
 load_dotenv(dotenv_path=env_path)
 
-DB_DATABASE = os.getenv("DB_DATABASE")
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
+es_user = os.getenv("ES_USER")
+es_pwd = os.getenv("ES_PWD")
+log_level = os.getenv("ES_LOG")
 
-# engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD+"@localhost/Game?charset=utf8", encoding='utf-8', echo=False)
-engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD +
-                       "@localhost/"+DB_DATABASE+"?charset=utf8", encoding='utf-8', echo=False)
-Base = declarative_base()
-
-
-Session_class = sessionmaker(bind=engine)
-Session = Session_class()
+es = Elasticsearch(http_auth=(es_user, es_pwd))
+es_logger.setLevel(50)
 
 
 def clearHighLight(string):
@@ -53,42 +49,42 @@ class AliSpider(scrapy.Spider):
     domain = 'https://s.geekbang.org/'
 
     tagId = {
-        # "python": {
-        #     "cid": 108696,
-        #     "max_page": 200
-        # },
-        # "design": {
-        #     "cid": 106892,
-        #     "max_page": 31
-        # },
-        # "php": {
-        #     "cid": 106882,
-        #     "max_page": 75
-        # },
-        # "dp": {
-        #     "cid": 106884,
-        #     "max_page": 34
-        # },
-        # "web": {
-        #     "cid": 106883,
-        #     "max_page": 82
-        # },
-        # "javascript": {
-        #     "cid": 106893,
-        #     "max_page": 200
-        # },
-        # "nosql": {
-        #     "cid": 108743,
-        #     "max_page": 19
-        # },
-        # "mysql": {
-        #     "cid": 108712,
-        #     "max_page": 85
-        # },
-        # "postgresql": {
-        #     "cid": 108767,
-        #     "max_page": 1
-        # },
+        "python": {
+            "cid": 108696,
+            "max_page": 200
+        },
+        "design": {
+            "cid": 106892,
+            "max_page": 31
+        },
+        "php": {
+            "cid": 106882,
+            "max_page": 75
+        },
+        "dp": {
+            "cid": 106884,
+            "max_page": 34
+        },
+        "web": {
+            "cid": 106883,
+            "max_page": 82
+        },
+        "javascript": {
+            "cid": 106893,
+            "max_page": 200
+        },
+        "nosql": {
+            "cid": 108743,
+            "max_page": 19
+        },
+        "mysql": {
+            "cid": 108712,
+            "max_page": 85
+        },
+        "postgresql": {
+            "cid": 108767,
+            "max_page": 1
+        },
         "algorithm": {
             "cid": 108741,
             "max_page": 101
@@ -213,7 +209,6 @@ class AliSpider(scrapy.Spider):
 
                 doc = {}
                 doc['title'] = title
-                doc['title_text'] = title
                 doc['url'] = url
 
                 doc['tag'] = self.tag
@@ -222,17 +217,15 @@ class AliSpider(scrapy.Spider):
                 doc['source_score'] = 0
                 doc['createdAt'] = created_at
                 doc['author'] = author
-                print(doc)
-                os._exit(0)
+
                 bulk.append(
-                    {"index": {"_index": "article", "_type": "article"}})
+                    {"index": {"_index": "article"}})
                 bulk.append(doc)
         else:
             print("Next")
             next_tag = True
 
         if len(bulk) > 0:
-            resp = es.bulk(index="article", doc_type="article",
-                           body=bulk, routing=1)
+            es.bulk(index="article", body=bulk)
 
         yield self.next_request(next_tag)

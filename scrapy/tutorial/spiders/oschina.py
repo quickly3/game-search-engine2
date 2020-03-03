@@ -22,8 +22,12 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 from elasticsearch import Elasticsearch
+from elasticsearch import logger as es_logger
 
-es = Elasticsearch()
+es_user = os.getenv("ES_USER")
+es_pwd = os.getenv("ES_PWD")
+es = Elasticsearch(http_auth=(es_user, es_pwd))
+# es_logger.setLevel(50)
 
 env_path = Path('..')/'.env'
 load_dotenv(dotenv_path=env_path)
@@ -160,7 +164,6 @@ class AliSpider(scrapy.Spider):
                 doc = {}
 
                 doc['title'] = title
-                doc['title_text'] = title
 
                 doc['url'] = url
                 doc['summary'] = detail
@@ -188,12 +191,11 @@ class AliSpider(scrapy.Spider):
                 doc['stars'] = 0
 
                 bulk.append(
-                    {"index": {"_index": "article", "_type": "article"}})
+                    {"index": {"_index": "article"}})
                 bulk.append(doc)
 
             if len(bulk) > 0:
-                resp = es.bulk(index="article", doc_type="article",
-                               body=bulk, routing=1)
+                es.bulk(index="article", body=bulk)
 
         if (self.page == self.max_page) or (len(items) == 0):
             if len(self.tar_arr) > 0:
