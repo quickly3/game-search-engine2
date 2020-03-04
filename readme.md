@@ -34,35 +34,7 @@
 
 ### 爬虫
 
-> 爬虫代码在 scrapy 目录下
-
-游侠网
-
-> scrapy crawl ali  
-> scrapy crawl ali2
-
-Elasticsearch 日报
-
-> scrapy crawl escn  
-> scrapy crawl escn2
-
-Nba 数据
-
-> scrapy crawl nba_player
-
-B 站弹幕
-
-> scrapy crawl fanju
-> scrapy crawl episode
-> scrapy crawl danmu
-
-Yahoo 美股价爬虫
-
-scrapy crawl episode -a ssid=_
-scrapy crawl danmu -a ssid=_
-
-nohup scrapy crawl danmu > d.log &
-nohup scrapy crawl danmu > d.log 2>&1 &
+[爬虫列表](https://github.com/quickly3/game-search-engine2/blob/master/readme/spider.md)
 
 ### 数据挖掘
 
