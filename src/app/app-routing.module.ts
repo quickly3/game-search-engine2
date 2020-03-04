@@ -21,8 +21,8 @@ const routes: Routes = [
 
   { path: "article-editor/:id", component: ArticleEditorComponent },
   { path: "game-detail/:id", component: GameDetailComponent },
-  { path: "", redirectTo: "games", pathMatch: "full" },
-  { path: "**", redirectTo: "games" }
+  { path: "", redirectTo: "infoq", pathMatch: "full" },
+  { path: "**", redirectTo: "infoq" }
 ];
 
 const config: ExtraOptions = {

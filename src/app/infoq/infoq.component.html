@@ -1,118 +1,109 @@
 <app-nav></app-nav>
 <div class="container-fluid">
-    <div class="search-header">
-        <div class="search-input">
-            <input
-                id="typeahead-basic"
-                type="text"
-                class="form-control form-control-sm"
-                [(ngModel)]="keywords"
-                (ngModelChange)="search_debounce($event)"
-                placeholder="数据科学家"
-            />
-            <button
-                type="button"
-                class="btn btn-primary btn-sm"
-                (click)="search()"
-            >
-                搜索
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
+  <div class="search-header">
+    <div class="search-input">
+      <input
+        id="typeahead-basic"
+        type="text"
+        class="form-control form-control-sm"
+        [(ngModel)]="keywords"
+        (ngModelChange)="search_debounce($event)"
+        placeholder="数据科学家"
+      />
+      <button type="button" class="btn btn-primary btn-sm" (click)="search()">
+        搜索
+        <i class="fas fa-search"></i>
+      </button>
     </div>
+  </div>
 
-    <div class="tags">
-        <div class="form-group">
-            <div
-                class="custom-control custom-radio"
-                *ngFor="let tag of tags"
-                (click)="selectTag(tag)"
-            >
-                <input
-                    type="radio"
-                    id=""
-                    name="customRadio"
-                    value="{{ tag }}"
-                    [(ngModel)]="_tag"
-                    class="custom-control-input"
-                />
-                <label class="custom-control-label" for="">{{ tag }}</label>
-            </div>
-        </div>
+  <div class="tags">
+    <div class="form-group">
+      <div
+        class="custom-control custom-radio"
+        *ngFor="let tag of tags"
+        (click)="selectTag(tag)"
+      >
+        <input
+          type="radio"
+          id=""
+          name="customRadio"
+          value="{{ tag }}"
+          [(ngModel)]="_tag"
+          class="custom-control-input"
+        />
+        <label class="custom-control-label" for="">{{ tag }}</label>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-md-2">
-            <div class="source-selector">
-                <div
-                    class="custom-control custom-radio"
-                    *ngFor="let source of source_list"
-                    (click)="selectSource(source)"
-                >
-                    <input
-                        type="radio"
-                        id=""
-                        name="sourceRadio"
-                        value="{{ source.title }}"
-                        [(ngModel)]="_source"
-                    />
-                    <div class="icons {{ source.source_class }}"></div>
-                </div>
-            </div>
-            <div class="words_cloud">
-                <span
-                    class="text-info"
-                    *ngFor="let word of words_cloud"
-                    (click)="wordsCloudToKeyWords(word)"
-                    >{{ word.key }}</span
-                >
-            </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="source-selector">
+        <div
+          class="custom-control custom-radio"
+          *ngFor="let source of source_list"
+          (click)="selectSource(source)"
+        >
+          <input
+            type="radio"
+            id=""
+            name="sourceRadio"
+            value="{{ source.title }}"
+            [(ngModel)]="_source"
+          />
+          <div class="icons {{ source.source_class }}"></div>
         </div>
-        <div class="col-md-10">
-            <div class="row escn_list">
-                <div
-                    class="daily_item col-12 row"
-                    *ngFor="let daily_item of escn_list"
-                    routerLinkActive="active"
-                >
-                    <div class="des_zone col-md-10 col-8">
-                        <div>
-                            <a [href]="daily_item.url" target="_blank">{{
-                                daily_item.title
-                            }}</a>
-                            <div
-                                class="icons {{ daily_item.badge_class }}"
-                            ></div>
-                            <span *ngIf="daily_item.created_at"
-                                >(
-                                {{ daily_item.created_at | date: "yyyy-MM-dd" }}
-                                )</span
-                            >
-                            &nbsp;
+      </div>
+      <div class="words_cloud">
+        <span
+          class="text-info"
+          *ngFor="let word of words_cloud"
+          (click)="wordsCloudToKeyWords(word)"
+          >{{ word.key }}</span
+        >
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="row escn_list">
+        <div
+          class="daily_item col-12 row"
+          *ngFor="let daily_item of escn_list"
+          routerLinkActive="active"
+        >
+          <div class="des_zone col-md-10 col-8">
+            <div>
+              <a [href]="daily_item.url" target="_blank">{{
+                daily_item.title
+              }}</a>
+              <div class="icons {{ daily_item.badge_class }}"></div>
+              <span *ngIf="daily_item.created_at"
+                >(
+                {{ daily_item.created_at | date: "yyyy-MM-dd" }}
+                )</span
+              >
+              <!-- &nbsp;
                             <app-star-rating
                                 [(stars)]="daily_item.stars"
                                 (outer)="starsChange($event, daily_item)"
-                            ></app-star-rating>
-                        </div>
-                        <div
-                            class="summary"
-                            [innerHtml]="daily_item.summary"
-                        ></div>
-                    </div>
-                </div>
+                            ></app-star-rating> -->
             </div>
-
-            <div class="pagination">
-                <ngb-pagination
-                    class="navigation"
-                    [collectionSize]="total_number"
-                    [(page)]="current_page"
-                    [pageSize]="row"
-                    [maxSize]="5"
-                    [rotate]="true"
-                    size="sm"
-                    (pageChange)="pageChange()"
-                ></ngb-pagination>
-            </div>
+            <div class="summary" [innerHtml]="daily_item.summary"></div>
+          </div>
         </div>
+      </div>
+
+      <div class="pagination">
+        <ngb-pagination
+          class="navigation"
+          [collectionSize]="total_number"
+          [(page)]="current_page"
+          [pageSize]="row"
+          [maxSize]="5"
+          [rotate]="true"
+          size="sm"
+          (pageChange)="pageChange()"
+        ></ngb-pagination>
+      </div>
     </div>
+  </div>
 </div>

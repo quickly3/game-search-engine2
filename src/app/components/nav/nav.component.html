@@ -20,7 +20,7 @@
     <ul class="navbar-nav mr-auto">
       <li
         class="nav-item"
-        [ngClass]="{ active: router.url.indexOf('/games') > -1 }"
+        [ngClass]="{ active: router.url.indexOf('/infoq') > -1 }"
       >
         <a class="nav-link" href="#"
           >Home <span class="sr-only">(current)</span></a
@@ -56,7 +56,7 @@
                     >Juejin
                 </a>
             </li> -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a
           class="nav-link"
           href="#/infoq"
@@ -65,15 +65,15 @@
           }"
           >Article
         </a>
-      </li>
-      <!-- <li class="nav-item">
+      </li> -->
+      <li class="nav-item">
         <a
           class="nav-link"
           href="#/games"
           [ngClass]="{ active: router.url.indexOf('/games') > -1 }"
           >Games
         </a>
-      </li> -->
+      </li>
       <li class="nav-item">
         <a
           class="nav-link"
