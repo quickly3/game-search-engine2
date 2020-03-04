@@ -1,8 +1,6 @@
 # 数据采集之爬虫篇
 
-```
-主要使用基于Python scrapy
-```
+主要使用基于 Python scrapy
 
 [Scrapy 官网 https://scrapy.org](https://scrapy.org/)
 
@@ -21,15 +19,11 @@
 
 ### 实例
 
-```
 关于实例：
-大多数实例的设计目的，是为练习在平时设自用爬虫时常用到的功能点，以及为Elasticsearch项目提供实操数据，因此会有多余的业务代码，请根据实际情况自行修改。
-```
+大多数实例的设计目的，是为练习在平时设自用爬虫时常用到的功能点，以及为 Elasticsearch 项目提供实操数据，因此会有多余的业务代码，请根据实际情况自行修改。
 
-```
 Tips:
-最近把存储用Elasticsearch 从6.7 升级到了7.6，部分爬虫的代码还未更新，会产生写入bug，后续会把爬虫代码进行相应升级
-```
+最近把存储用 Elasticsearch 从 6.7 升级到了 7.6，部分爬虫的代码还未更新，会产生写入 bug，后续会把爬虫代码进行相应升级
 
 相关 Python 插件列表：
 
@@ -46,9 +40,7 @@ Tips:
 - [开源中国](#开源中国)
 - [infoq](#infoq)
 
-```
-技术博客类爬虫：只爬取特定一些分类的博客的title，link，summary,createdate，存到elasticsearch中，用来做类似订阅功能，分析最近热点博客，及基于Elasticsearch 开发跨站真实搜索引擎的各种实际功能。
-```
+技术博客类爬虫：只爬取特定一些分类的博客的 title，link，summary,createdate，存到 elasticsearch 中，用来做类似订阅功能，分析最近热点博客，及基于 Elasticsearch 开发跨站真实搜索引擎的各种实际功能。
 
 其他类爬虫：
 
