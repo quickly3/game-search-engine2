@@ -1,7 +1,5 @@
 # -*- coding:UTF-8 -*-
 #
-#
-
 from elasticsearch import Elasticsearch
 from pathlib import Path
 from dotenv import load_dotenv
@@ -17,7 +15,6 @@ import sqlalchemy
 import os
 import re
 import datetime
-
 
 # settings.py
 
