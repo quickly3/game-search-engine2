@@ -1,0 +1,45 @@
+<app-nav></app-nav>
+<div class="main-container container-fluid p-0">
+    <div class="list-content m-auto px-3">
+        <div class="search-header">
+            <div class="search-input">
+              <input
+                id="typeahead-basic"
+                type="text"
+                class="form-control form-control-sm"
+                [(ngModel)]="keywords"
+                (ngModelChange)="search_debounce($event)"
+                placeholder="输入关键词"
+              />
+              <button type="button" class="btn btn-primary btn-sm" (click)="search()">
+                搜索
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col-sm-2 col-4 p-1" *ngFor="let item of list">
+                <a class="title" title="{{item.title}}" href="/#/movie/{{item._id}}">
+                    <div class="cover-warpper">
+                        <img class="cover" [src]="item.image" alt="">
+                    </div>                    
+                    <span>{{item.title}}</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="pagination pt-2">
+            <ngb-pagination
+              class="navigation m-auto"
+              [collectionSize]="total_number"
+              [(page)]="current_page"
+              [pageSize]="row"
+              [maxSize]="5"
+              [rotate]="true"
+              size="sm"
+              (pageChange)="pageChange()"
+            ></ngb-pagination>
+          </div>
+    </div>
+</div>

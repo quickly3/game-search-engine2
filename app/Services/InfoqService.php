@@ -32,7 +32,7 @@ class InfoqService
             "aggs" => [
                 "title_words_cloud" => [
                     "terms" => [
-                        "field" => "title_text",
+                        "field" => "title.text_cn",
                         "size" => 100
                     ]
                 ]
@@ -50,7 +50,6 @@ class InfoqService
 
         $params = [
             "index" => "article",
-            "type" => "article",
             "body" =>  $data
         ];
 
@@ -62,7 +61,7 @@ class InfoqService
             return (object) $item;
         }, $cloud_words);
 
-        $stop_words = ["基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018"];
+        $stop_words = ["基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018","10"];
         switch (strtolower($tag)) {
             case 'php':
                 $ext_stop_words = ["php"];

@@ -12,12 +12,12 @@ class ElasticModel
      *
      * @return void
      */
-    public function __construct($index_name, $type)
+    public function __construct($index_name)
     {
 
         $this->connect();
         $this->index = $this->index_maped($index_name);
-        $this->index_type = $type;
+        // $this->index_type = $type;
         $this->page = 1;
         $this->size = 10;
         $this->from = 0;
@@ -92,7 +92,6 @@ class ElasticModel
     {
         $params = [
             "index" => $this->index,
-            "type" => $this->index_type,
             "id" => $id,
         ];
 

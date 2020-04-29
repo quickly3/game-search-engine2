@@ -10,6 +10,9 @@ import { InfoqComponent } from "./infoq/infoq.component";
 
 import { GameDetailComponent } from "./game-detail/game-detail.component";
 import { ArticleEditorComponent } from "./pages/article-editor/article-editor.component";
+import { MovieComponent } from './movie/movie.component';
+import { MovieDetailComponent } from './movie/detail/movie.detail.component';
+
 
 const routes: Routes = [
   { path: "games", component: GamesComponent },
@@ -18,6 +21,10 @@ const routes: Routes = [
   { path: "jianshu", component: JianshuComponent },
   { path: "juejin", component: JuejinComponent },
   { path: "infoq", component: InfoqComponent },
+  { path: "movie", component: MovieComponent },
+  { path: "movie/:id", component: MovieDetailComponent },
+
+
 
   { path: "article-editor/:id", component: ArticleEditorComponent },
   { path: "game-detail/:id", component: GameDetailComponent },

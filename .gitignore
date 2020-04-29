@@ -30,3 +30,4 @@ public/3rdpartylicenses.txt
 .DS_Store
 .editorconfig
 public/assets/images/fanju/*
+.vscode/settings.json

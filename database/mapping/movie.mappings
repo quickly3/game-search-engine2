@@ -1,0 +1,87 @@
+PUT movie20200429
+{
+  "aliases": {
+    "movie": {}
+  }, 
+  "settings" : {
+      "number_of_shards" : 1,
+      "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "keyword",
+        "fields": {
+          "text_cn":{
+            "type":"text",
+            "analyzer": "ik_max_word"
+          },
+          "search":{
+            "type":"completion"
+          }
+        }
+      },
+      "alias": {
+        "type": "keyword",
+        "fields": {
+          "text_cn":{
+            "type":"text",
+            "analyzer": "ik_max_word"
+          },
+          "search":{
+            "type":"completion"
+          }
+        }
+      },
+      "actors": {
+        "type": "keyword",
+        "fields": {
+          "text_cn":{
+            "type":"text",
+            "analyzer": "ik_max_word"
+          }
+        }
+      },
+      "image": {
+        "type": "keyword"
+      },
+      "lang": {
+        "type": "keyword"
+      },
+      "desc": {
+        "type": "keyword"
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "year": {
+        "type": "integer"
+      },
+      "orgUrl":{
+        "type": "keyword"
+      },
+      "downloadUrls":{
+        "type": "nested",
+        "properties": {
+          "episode":{
+            "type": "integer"
+          },
+          "url":{
+            "type": "keyword"
+          }
+        }
+      },
+      "playUrls":{
+        "type": "nested",
+        "properties": {
+          "episode":{
+            "type": "integer"
+          },
+          "url":{
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

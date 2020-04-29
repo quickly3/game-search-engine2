@@ -1,4 +1,4 @@
-PUT article_20200303
+PUT article_20200414
 {
   "aliases": {
     "article": {}
@@ -14,6 +14,7 @@ PUT article_20200303
         "fields": {
           "text_cn":{
             "type":"text",
+            "fielddata": "true",
             "analyzer": "ik_max_word"
           },
           "auto_completion":{

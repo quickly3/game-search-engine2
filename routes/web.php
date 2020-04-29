@@ -42,6 +42,11 @@ Route::post('infoq/starsChange', 'InfoqController@starsChange');
 
 
 Route::get('fanju/list', 'FanjuController@getList');
+Route::post('movie/getList', 'MovieController@getList');
+
+Route::get('movie/getDetail', 'MovieController@getDetail');
+
+
 
 // Route::get('game/test', 'GameController@test');
 
