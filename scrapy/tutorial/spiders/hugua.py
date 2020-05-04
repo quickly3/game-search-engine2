@@ -41,7 +41,7 @@ class AliSpider(scrapy.Spider):
         # self.pageType = "list"
         # yield scrapy.Request(url='http://www.hugua.cc/dongman/')
 
-        f_path = 'E:\www\game-search-engine2\storage\csv\hugua_list.txt'
+        f_path = 'E:\www\game-search-engine2\storage\csv\hugua_dongman_list.txt'
         f = open(f_path, "r")  
 
         lines = f.readlines()
