@@ -193,7 +193,10 @@ class AliSpider(scrapy.Spider):
 
         doc['orgUrl'] = resp.request.url
         doc['type'] = type
-        doc['year'] = year
+
+        if year.isnumeric():
+            doc['year'] = year
+
         doc['downloadUrls'] = downloadUrlObjs
         doc['playUrls'] = playUrls
 
@@ -206,13 +209,15 @@ class AliSpider(scrapy.Spider):
             actors_arr = [str.strip(x) for x in actors_arr]
             actors_arr = list(filter(None, actors_arr))
             doc['actors'] = actors_arr
-        
+
         bulk.append(
             {"index": {"_index": "movie"}})
         bulk.append(doc)
 
         if len(bulk) > 0:
-            es.bulk(index="movie", body=bulk)
+            resp = es.bulk(index="movie", body=bulk)
+            return resp['errors']
+        return False
 
     def parse(self, resp, record):
 
@@ -221,8 +226,14 @@ class AliSpider(scrapy.Spider):
             return self.next_request();
         else:
 
-            self.analysisPage(resp, record)
-            self.updateRecord(record.id, 1)
+            resp = self.analysisPage(resp, record)
+            
+            if resp:
+                state = 1
+            else:
+                state = 2
+
+            self.updateRecord(record.id, state)
             return self.next_request()
 
     def updateRecord(self, id, state):

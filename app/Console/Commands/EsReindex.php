@@ -50,23 +50,21 @@ class EsReindex extends Command
     {
 
         $this->del_ids = [];
-        $this->index = "article";
-        $this->type = "article";
+        $this->index = "movie";
 
-
-        $es = new ElasticModel($this->index, $this->type);
+        $es = new ElasticModel($this->index);
         $client = $es->client;
         $params = [
             "index" => $this->index,
-            "type" => $this->type,
             "scroll" => "30s",          // how long between scroll requests. should be small!
             "size" => 100,
             "body" => [
                 "query" => [
                     "query_string" => [
-                        "query" => "source:jianshu"
+                        "query" => "*:*"
                     ]
-                ]
+                ],
+                "_source"=> "type"
             ]
         ];
 
@@ -76,17 +74,26 @@ class EsReindex extends Command
 
             foreach ($response['hits']['hits'] as $key => $value) {
 
-                // $created_year = date("Y", strtotime($value['_source']['createdAt']));
-                $url = str_replace("//", "/", $value['_source']['url']);
-                $url = str_replace(":/", "://", $url);
+
+                $types = [
+                    "series"=> ["欧美","国产","日本","香港","韩国","海外","台湾","泰国"],
+                    "comic"=> ["动漫"],
+                    "movie"=> ["剧情片","喜剧片","动作片","恐怖片","爱情片","科幻片","战争片"]
+                ];
+
+                foreach($types as $key => $type){
+                    if(in_array($value['_source']['type'], $type)){
+                        $new_type = $key;
+                        break;
+                    }
+                }
 
                 $params = [
                     'index' => $this->index,
-                    'type' => $this->type,
                     'id' => $value['_id'],
                     'body' => [
                         'doc' => [
-                            'url' => $url
+                            'type' => $new_type
                         ]
                     ]
                 ];

@@ -37,8 +37,18 @@ export class MovieComponent {
         this.search()
 
         this.modelChanged.pipe(debounceTime(300)).subscribe(() => {
-            this.search();
+            // this.search();
         });
+    }
+
+    autoComplete = function(){
+        let params = {
+            keywords: this.keywords,
+        };
+
+        this.movieService.autoComplete(params).subscribe(data=>{
+            console.log(data);
+        })
     }
 
     search = function() {
@@ -49,7 +59,6 @@ export class MovieComponent {
             source: this._source
         };
 
-        console.log(params);
         this.movieService.getList(params).subscribe(data=>{
             this.list = data['data'];
             this.total_number = data["total"];

@@ -1,0 +1,21 @@
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "movie20200429", "alias" : "*" } }
+    ]
+}
+
+
+elasticdump --input=http://127.0.0.1:9200/movie20200504 --output=http://elastic:1qaz@WSX@www.zhouhongbin.com:9200/movie20200504 --type=mapping
+elasticdump --input=http://127.0.0.1:9200/movie20200504 --output=http://elastic:1qaz@WSX@www.zhouhongbin.com:9200/movie20200504
+
+
+POST _reindex
+{
+  "source": {
+    "index": "movie20200429"
+  },
+  "dest": {
+    "index": "movie20200504"
+  }
+} 
