@@ -39,22 +39,22 @@ class AliSpider(scrapy.Spider):
 
     def start_requests(self):
         
-        self.type_list = [
-            {
-                "type":"dianshiju",
-                "url":"http://www.hugua.cc/xiju/index-657.html",
-            },
-            {
-                "type":"dianying",
-                "url":"http://www.hugua.cc/dongzuo/index-573.html",
-            },
-            {
-                "type":"dongman",
-                "url":"http://www.hugua.cc/dongman/index-614.html",
-            }
-        ]
+        types = [
+            "guochan","tvb","oumei","hanguo","haiwai","taiwan","riben","taiguo",
+            "xiju","dongzuo","aiqing","kehuan","kongbu","zhanzheng","juqing",
+            "dongman"
+        ];
 
-        self.fanjuList = []
+        self.type_list = [ ]
+
+        for t in types:
+            obj = {
+                'type':t,
+                'url':"http://www.hugua.cc/"+t+"/"
+            }
+
+            self.type_list.append(obj)
+
         self.curr = self.type_list.pop()
 
         yield scrapy.Request(url=self.curr['url'])
@@ -76,7 +76,7 @@ class AliSpider(scrapy.Spider):
             yield scrapy.Request(url=next_page_url)
         else:
 
-            f_path = 'E:\www\game-search-engine2\storage\csv\hugua_'+self.curr['type']+'_list.txt'
+            f_path = '../storage/csv/hugua_'+self.curr['type']+'_list.txt'
             with open(f_path, 'w') as f:
                 for line in self.fanjuList:
                     f.write(self.domain+line+"\n")

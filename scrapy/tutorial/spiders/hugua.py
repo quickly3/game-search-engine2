@@ -41,7 +41,7 @@ class AliSpider(scrapy.Spider):
         # self.pageType = "list"
         # yield scrapy.Request(url='http://www.hugua.cc/dongman/')
 
-        f_path = 'E:\www\game-search-engine2\storage\csv\hugua_list.txt'
+        f_path = '../storage/csv/hugua_dongman_list.txt'
         f = open(f_path, "r")  
 
         lines = f.readlines()
@@ -90,6 +90,7 @@ class AliSpider(scrapy.Spider):
             image = resp.xpath('//*[@id="detail-focus"]/div[1]/img/@src').get();
             lang = resp.xpath('//*[@id="detail-focus"]/div[2]/dl/dl[4]/dd/span/text()').get()
             type = resp.xpath('//*[@id="detail-focus"]/div[2]/dl/dl[3]/dd/a/text()').get()
+            status = resp.xpath('//*[@id="detail-focus"]/div[2]/dl/dl[3]/dd').xpath('string(.)').get()
 
             alias = resp.xpath('//*[@id="detail-focus"]/div[2]/dl/dd/text()').get()
             actors = resp.xpath('//*[@id="detail-focus"]/div[2]/dl/dl[1]/dd').xpath('string(.)').get()
@@ -168,7 +169,8 @@ class AliSpider(scrapy.Spider):
                 desc = desc[del_end2+6:]
 
             doc['desc'] = str.strip(desc)
-
+            doc['status'] = status
+        
             doc['orgUrl'] = resp.request.url
             doc['type'] = type
             doc['year'] = year

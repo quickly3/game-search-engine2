@@ -42,6 +42,15 @@ PUT movie20200429
           }
         }
       },
+      "status": {
+        "type": "keyword",
+        "fields": {
+          "text_cn":{
+            "type":"text",
+            "analyzer": "ik_max_word"
+          }
+        }
+      },
       "image": {
         "type": "keyword"
       },
