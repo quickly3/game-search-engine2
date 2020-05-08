@@ -1,4 +1,4 @@
-PUT movie20200429
+PUT movie20200504
 {
   "aliases": {
     "movie": {}
@@ -61,6 +61,9 @@ PUT movie20200429
         "type": "keyword"
       },
       "type": {
+        "type": "keyword"
+      },
+      "category": {
         "type": "keyword"
       },
       "year": {
