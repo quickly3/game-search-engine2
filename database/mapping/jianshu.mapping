@@ -4,7 +4,7 @@ PUT jianshu
       "number_of_shards" : 1
   },
   "mappings": {
-    "jianshu": {
+
       "properties": {
         "title": {
           "type": "keyword",
@@ -35,6 +35,6 @@ PUT jianshu
           "analyzer": "ik_max_word"
         }
       }
-    }
+    
   }
 }

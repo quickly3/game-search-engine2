@@ -4,7 +4,7 @@ PUT fanju
       "number_of_shards" : 1
   },
   "mappings": {
-    "fanju": {
+
       "dynamic":false,
       "properties": {
         "doc_type": {
@@ -181,5 +181,5 @@ PUT fanju
         }
       }
     }
-  }
+  
 }

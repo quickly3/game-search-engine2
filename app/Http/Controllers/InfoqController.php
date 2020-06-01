@@ -54,13 +54,14 @@ class InfoqController extends Controller
 
         $orders = [
             "created_year" => "desc",
-            "_score" => "desc",
             "created_at" => "desc",
+            "_score" => "desc",
             "title" => "asc",
             "_id" => "desc",
         ];
 
         $data->orderBy($orders);
+
         $data = $data->query_string($query_string, "*")->paginate(20);
 
         $data['query_string'] = $query_string;

@@ -4,7 +4,7 @@ PUT fanju
       "number_of_shards" : 1
   },
   "mappings": {
-    "fanju": {
+
       "properties": {
         "badge": {
           "type": "keyword"
@@ -92,5 +92,5 @@ PUT fanju
         }
       }
     }
-  }
+
 }
