@@ -148,8 +148,8 @@ class AliSpider(scrapy.Spider):
         for content in contents:
 
             content = content.replace("、", ".")
-            content = content.strip(" ")
             content = content.replace("\n", "")
+            content = content.strip()
 
             match = re.search(r'^\d\.', content)
 

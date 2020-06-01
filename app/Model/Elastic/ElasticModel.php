@@ -47,7 +47,7 @@ class ElasticModel
         $hosts[] = $main_host;
         $clientBuilder = ClientBuilder::create(); // Instantiate a new ClientBuilder
         $clientBuilder->setHosts($hosts); // Set the hosts
-        $clientBuilder->setBasicAuthentication(getenv("ES_USER"), getenv("ES_PWD"));
+        // $clientBuilder->setBasicAuthentication(getenv("ES_USER"), getenv("ES_PWD"));
         $this->client = $clientBuilder->build();
         $this->source = [];
     }
@@ -151,7 +151,8 @@ class ElasticModel
     public function paginate($size)
     {
         $page = (int) Request::input("page", 1);
-        $from = ($page - 1) * $this->size;
+        $from = ($page - 1) * $size;
+
         $this->request_body["body"]["size"] = $size;
         $this->request_body["body"]["from"] = $from;
 
