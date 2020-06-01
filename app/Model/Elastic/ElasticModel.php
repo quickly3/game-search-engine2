@@ -57,6 +57,30 @@ class ElasticModel
         return $this->client->search($params);
     }
 
+    public function autoComplete($text, $field){
+        $params = [
+            "index" => $this->index,
+            "body" => [
+                "suggest" => [
+                    "_suggest" => [
+                        "text" => $text,
+                        "completion" => [
+                            "field" => $field
+                        ]
+                    ]
+                ],
+                "_source" => false
+            ]
+        ];
+        $resp = $this->client->search($params);
+
+        $respFormated = array_map(function($data){
+            return $data["text"];
+        },$resp["suggest"]["_suggest"][0]["options"]);
+
+        return $respFormated;
+    }
+
     public function source($source)
     {
         $this->source = $source;

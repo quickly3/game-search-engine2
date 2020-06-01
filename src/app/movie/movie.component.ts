@@ -1,11 +1,12 @@
 import { Component, ViewEncapsulation } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
-import { Observable, of, Subject } from "rxjs";
+import { Observable, of, Subject, from } from "rxjs";
 import {
     debounceTime,
     distinctUntilChanged,
     map,
+    scan,
     switchMap,
     tap,
     catchError
@@ -23,51 +24,87 @@ export class MovieComponent {
     public total_number = 0;
     public current_page = 1;
     public row = 10;
-    public keywords = "";
+    public keywords:any;
+    public searching = false;
+    public searchFailed = false;
+    public curType;
+    public types = ["movie","series","comic"]
 
-    modelChanged = new Subject<string>();
+    // modelChanged = new Subject<string>();
 
     constructor(
         private readonly http: HttpClient, 
         private readonly movieService: MovieService) {  
 
+        this.curType = this.types[0];
     }
 
     ngOnInit(): void {
         this.search()
 
-        this.modelChanged.pipe(debounceTime(300)).subscribe(() => {
-            // this.search();
-        });
+        // this.modelChanged.pipe(debounceTime(300)).subscribe(() => {
+        //     this.autoComplete();
+        // });
+        this.testRx();
     }
 
-    autoComplete = function(){
-        let params = {
-            keywords: this.keywords,
-        };
+    testRx = ()=>{
 
-        this.movieService.autoComplete(params).subscribe(data=>{
-            console.log(data);
-        })
+        const observable = from([10, 20, 30]);
+        const subscription = observable.subscribe(x => console.log(x));
+        // Later:
+        subscription.unsubscribe();
+
     }
+
+    selecType = (cate) => {
+        this.curType = cate;
+        this.search();
+    }
+
+    autoComplete = (text$: Observable<string>) => 
+        text$.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap(term =>
+                this.movieService.autoComplete({
+                    keywords: this.keywords,
+                })
+                .pipe(
+                    catchError(() => {
+                      return of([]);
+                    }))
+            ),
+          )
 
     search = function() {
         let params = {
             page: "" + this.current_page,
             keywords: this.keywords,
             tag: this._tag,
-            source: this._source
+            source: this._source,
+            type: this.curType,
         };
 
+        if(this.searching){
+            return false;
+        }
+
+        this.searching = true;
         this.movieService.getList(params).subscribe(data=>{
+            this.searching = false;
+
             this.list = data['data'];
             this.total_number = data["total"];
             
         })
     };
 
+    selectItem = function($e){
 
-    search_debounce = function(ky) {
+    }
+
+    search_debounce = function() {
         this.current_page = 1;
         this.modelChanged.next();
     };
