@@ -164,8 +164,6 @@ class ElasticModel
         $res['current_page'] = $page;
         $res['total'] = $this->reqRes['hits']['total']['value'];
 
-
-
         $res['last_page'] = ceil($res['total'] / $size);
         $res['from'] = $from;
         $res['to'] = $from + $size;
