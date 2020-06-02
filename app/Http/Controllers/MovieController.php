@@ -13,6 +13,8 @@ class MovieController extends Controller
     {
         $keywords = $request->input("keywords", "");
         $search_type = trim($request->input("search_type", ""));
+        $type = trim($request->input("type", ""));
+
 
         $es = new ElasticModel("movie");
 
@@ -33,8 +35,12 @@ class MovieController extends Controller
             ];
             $data->highlight($highlight);
         }
-
+        
         $query_string = "title.text_cn:{$keywords}";
+
+        if($type!=""){
+            $query_string = "type:{$type} && ".$query_string;
+        }
 
         $orders = [
             "title" => "desc",
@@ -62,7 +68,22 @@ class MovieController extends Controller
 
         return response()->json($data);
 
+    }
 
+    public function autoComplete(Request $request){
+        $text = $request->input("keywords");
+
+        $es = new ElasticModel("movie");
+
+        $field = "title.search";
+
+        if(trim($text) == ""){
+            $resp = [];
+        }else{
+            $resp = $es->source(["title"])->autoComplete($text,$field);
+        }
+
+        return response()->json($resp);
     }
 
     // public function getGameDataById(Request $request){

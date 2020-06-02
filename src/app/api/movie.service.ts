@@ -19,6 +19,10 @@ export class MovieService {
         return this.http.post("/movie/getList", params);
     };
 
+    autoComplete = params => {
+        return this.http.get("/movie/autoComplete", {params});
+    };
+
     getDetail = params => {
         return this.http.get("/movie/getDetail", {params});
     };

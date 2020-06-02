@@ -45,6 +45,8 @@ Route::get('fanju/list', 'FanjuController@getList');
 Route::post('movie/getList', 'MovieController@getList');
 
 Route::get('movie/getDetail', 'MovieController@getDetail');
+Route::get('movie/autoComplete', 'MovieController@autoComplete');
+
 
 
 
