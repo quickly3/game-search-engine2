@@ -213,9 +213,15 @@ danmu:
 
 #### 胡瓜影院
 
-> 关键词:
+> 关键词:多进程爬虫
+
+命令：  
+`scrapy crawl hugua`
+`scrapy crawl hugua_sql`
+`hugua.bat`
 
 说明：各种免费网站，没有打包下载链接，需要你一集一集的点，很麻烦。
+由于网站的响应速度慢，将爬虫访问地址分成10组，同时开启10个scrapy进程进程爬取
 
 爬虫源码：  
 [https://github.com/quickly3/game-search-engine2/blob/master/scrapy/tutorial/spiders/hugua.py](https://github.com/quickly3/game-search-engine2/blob/master/scrapy/tutorial/spiders/hugua.py)
