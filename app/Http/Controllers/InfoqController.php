@@ -102,4 +102,22 @@ class InfoqController extends Controller
 
         return response()->json($resp);
     }
+
+    public function autoComplete(Request $request){
+        $text = $request->input("keywords");
+
+        $es = new ElasticModel("article");
+
+        $field = "title.auto_completion";
+
+        if(trim($text) == ""){
+            $resp = [];
+        }else{
+            $resp = $es->source(["title"])->autoComplete($text,$field);
+        }
+
+        return response()->json($resp);
+    }
+
+
 }
