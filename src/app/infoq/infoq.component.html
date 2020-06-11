@@ -7,7 +7,7 @@
         type="text"
         class="form-control form-control-sm"
         [(ngModel)]="keywords"
-        (ngModelChange)="search_debounce($event)"
+        [ngbTypeahead]="autoComplete"
         placeholder="数据科学家"
       />
       <button type="button" class="btn btn-primary btn-sm" (click)="search()">

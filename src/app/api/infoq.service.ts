@@ -22,4 +22,9 @@ export class InfoqService {
     starsChange = params => {
         return this.http.post("/infoq/starsChange", { params });
     };
+
+    autoComplete = params => {
+        return this.http.get("/infoq/autoComplete", { params });
+    };
+
 }

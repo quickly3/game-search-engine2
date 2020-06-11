@@ -95,8 +95,7 @@ class ElasticModel
                 "query" => [
                     "query_string" => [
                         // "default_field" => $fields,
-                        "query" => $keyword,
-                        "default_operator" => "AND"
+                        "query" => $keyword
                     ],
                 ],
                 "sort" => $this->orders,
@@ -105,7 +104,6 @@ class ElasticModel
         if (isset($this->highlight)) {
             $params["body"]["highlight"] = $this->highlight;
         }
-
         $this->request_body = $params;
         $this->setSource();
 
@@ -194,6 +192,7 @@ class ElasticModel
         $res['per_page'] = $size;
 
         $res['data'] = $this->getIdRes();
+        
         return $res;
     }
 
