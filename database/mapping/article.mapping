@@ -1,4 +1,4 @@
-PUT article_20200414
+PUT article_20200612
 {
   "aliases": {
     "article": {}
@@ -18,7 +18,8 @@ PUT article_20200414
             "analyzer": "ik_max_word"
           },
           "auto_completion":{
-            "type":"completion"
+            "type":"completion",
+            "analyzer": "ik_max_word"
           }
         }
       },
