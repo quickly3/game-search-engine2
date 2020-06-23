@@ -83,7 +83,7 @@ export class InfoqComponent {
         this.InfoqService = InfoqService;
 
         this.modelChanged.pipe(debounceTime(300)).subscribe(() => {
-            this.search();
+            // this.autoComplete();
         });
 
         this._tag = this.tags[0];
@@ -221,4 +221,13 @@ export class InfoqComponent {
             })
         );
     };
+
+    autoComplete = (text$: Observable<string>) => text$.pipe(
+        debounceTime(300),
+        switchMap(term =>
+            this.InfoqService.autoComplete({
+                keywords: term,
+            })
+        )
+    );
 }

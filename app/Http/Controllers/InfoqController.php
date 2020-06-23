@@ -39,10 +39,12 @@ class InfoqController extends Controller
         }
 
         if ($keywords != '*') {
-            $keywords = "'" . $keywords . "'";
+            $query_string = "(title_text:'{$keywords}' OR summary:'{$keywords}' OR title:(\"{$keywords}\")^10) ";
+        }else{
+            $query_string = "*:*";
         }
 
-        $query_string = "(title_text:{$keywords} OR summary:{$keywords})  ";
+        
 
         if ($tag != "all") {
             $query_string = $query_string . " && tag:{$tag}";
@@ -53,11 +55,10 @@ class InfoqController extends Controller
         }
 
         $orders = [
+            "_score" => "desc",
             "created_year" => "desc",
             "created_at" => "desc",
-            "_score" => "desc",
             "title" => "asc",
-            "_id" => "desc",
         ];
 
         $data->orderBy($orders);
