@@ -20,6 +20,7 @@ from string import Template
 from dotenv import load_dotenv
 from pathlib import Path
 import random
+from dateutil import parser
 
 from elasticsearch import Elasticsearch
 from elasticsearch import logger as es_logger
@@ -208,7 +209,10 @@ class AliSpider(scrapy.Spider):
                 if len(created_at) > 1: 
                     created_at = created_at[1]
                     created_at = str.strip(created_at.replace("发布于", ""))
-                    doc['createdAt'] = created_at
+                    doc['created_at'] = created_at
+                    date = parser.parse(doc['created_at'])
+                    doc['created_year'] = date.strftime("%Y")
+
                 
                 doc['title'] = title
                 doc['url'] = url
