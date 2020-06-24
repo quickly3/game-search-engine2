@@ -24,7 +24,7 @@ export class InfoqComponent {
     escn_list = [];
     total_number = 0;
     current_page = 1;
-    row = 10;
+    row = 20;
 
     keywords = "";
     words_cloud;
@@ -76,7 +76,8 @@ export class InfoqComponent {
         { title: "csdn", source_class: "icon-csdn" },
         { title: "oschina", source_class: "icon-oschina" },
         { title: "sf", source_class: "icon-sf" },
-        { title: "escn", source_class: "icon-escn" }
+        { title: "escn", source_class: "icon-escn" },
+        { title: "elastic", source_class: "icon-elastic" }
     ];
 
     constructor(private http: HttpClient, InfoqService: InfoqService) {
