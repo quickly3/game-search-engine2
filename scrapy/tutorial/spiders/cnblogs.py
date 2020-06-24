@@ -199,8 +199,11 @@ class AliSpider(scrapy.Spider):
                 title = item.xpath('h3/a/text()').get()
                 url = item.xpath('h3/a/@href').get()
 
-                desp = item.xpath(
-                    'p[@class="post_item_summary"]/text()').get()
+                desps = item.xpath(
+                    '*[@class="post_item_summary"]/text()').getall()
+
+                desp = "".join(desps)
+                desp = desp.strip()
 
                 author = item.xpath(
                     'div/a/text()').get()
@@ -209,11 +212,11 @@ class AliSpider(scrapy.Spider):
                 if len(created_at) > 1: 
                     created_at = created_at[1]
                     created_at = str.strip(created_at.replace("发布于", ""))
-                    doc['created_at'] = created_at
-                    date = parser.parse(doc['created_at'])
+                    
+                    date = parser.parse(created_at)
+                    doc['created_at'] = date
                     doc['created_year'] = date.strftime("%Y")
 
-                
                 doc['title'] = title
                 doc['url'] = url
 
@@ -227,6 +230,7 @@ class AliSpider(scrapy.Spider):
                 bulk.append(
                     {"index": {"_index": "article"}})
                 bulk.append(doc)
+
         else:
             print("Next")
             next_tag = True

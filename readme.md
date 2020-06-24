@@ -67,3 +67,6 @@ php artisan elastic:create-index "App\EsConfigurator\EscnConfigurator"
 
 
 scrapy crawl hugua_sql -a seed=1
+
+
+nohup
