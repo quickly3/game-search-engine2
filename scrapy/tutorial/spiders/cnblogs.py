@@ -193,6 +193,7 @@ class AliSpider(scrapy.Spider):
 
         if len(items) > 0:
             for item in items:
+                doc = {}
 
                 title = item.xpath('h3/a/text()').get()
                 url = item.xpath('h3/a/@href').get()
@@ -203,11 +204,12 @@ class AliSpider(scrapy.Spider):
                 author = item.xpath(
                     'div/a/text()').get()
                 created_at = item.xpath('div/text()').getall()
-
-                created_at = created_at[1]
-                created_at = str.strip(created_at.replace("发布于", ""))
-
-                doc = {}
+                
+                if len(created_at) > 1: 
+                    created_at = created_at[1]
+                    created_at = str.strip(created_at.replace("发布于", ""))
+                    doc['createdAt'] = created_at
+                
                 doc['title'] = title
                 doc['url'] = url
 
@@ -215,7 +217,7 @@ class AliSpider(scrapy.Spider):
                 doc['summary'] = desp
                 doc['source'] = self.source
                 doc['source_score'] = 0
-                doc['createdAt'] = created_at
+                
                 doc['author'] = author
 
                 bulk.append(
