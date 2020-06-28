@@ -46,20 +46,18 @@ class EsClear extends Command
      */
     public function handle()
     {
-
         $this->del_ids = [];
 
         $es = new ElasticModel("article", "article");
         $client = $es->client;
         $params = [
             "index" => "article",
-            "type" => "article",
             "scroll" => "30s",          // how long between scroll requests. should be small!
             "size" => 100,
             "body" => [
                 "query" => [
                     "query_string" => [
-                        "query" => "*:*"
+                        "query" => "source:sf"
                     ]
                 ]
             ],
@@ -96,7 +94,6 @@ class EsClear extends Command
 
                 $params = [
                     "index" => "article",
-                    "type" => "article",
                     "body" => [
                         "query" => [
                             "query_string" => [

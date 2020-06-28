@@ -7,6 +7,7 @@
         type="text"
         class="form-control form-control-sm"
         [(ngModel)]="keywords"
+        [focusFirst]="false"
         [ngbTypeahead]="autoComplete"
         placeholder="数据科学家"
       />
@@ -99,7 +100,7 @@
           [(page)]="current_page"
           [pageSize]="row"
           [maxSize]="5"
-          [rotate]="true"
+          [rotate]="false"
           size="sm"
           (pageChange)="pageChange()"
         ></ngb-pagination>

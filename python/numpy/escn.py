@@ -7,7 +7,6 @@ with open('escn.csv') as csv_file:
     data = [data for data in csv_reader]
 
 data_np = np.asarray(data)
-data_np = np.delete(data_np,0,0)
-data_np = np.delete(data_np,[0,1,2,3,6,7,9],1)
 
-np.savetxt('escn_new.csv', data_np, delimiter=',')
+print(data_np)
+# np.savetxt('escn_new.csv', data_np, delimiter=',', fmt="%s")

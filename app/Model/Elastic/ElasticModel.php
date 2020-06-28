@@ -47,7 +47,12 @@ class ElasticModel
         $hosts[] = $main_host;
         $clientBuilder = ClientBuilder::create(); // Instantiate a new ClientBuilder
         $clientBuilder->setHosts($hosts); // Set the hosts
-        $clientBuilder->setBasicAuthentication(getenv("ES_USER"), getenv("ES_PWD"));
+        if("local" === getenv("APP_ENV")){
+
+        }else{
+            $clientBuilder->setBasicAuthentication(getenv("ES_USER"), getenv("ES_PWD"));
+        }
+        
         $this->client = $clientBuilder->build();
         $this->source = [];
     }
