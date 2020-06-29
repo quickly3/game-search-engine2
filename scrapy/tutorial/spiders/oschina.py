@@ -79,8 +79,8 @@ class AliSpider(scrapy.Spider):
         "postgresql": "postgresql",
         "linux": "linux",
         "dp": "设计模式",
-        "design": "架构",
-        "algorithm": "算法",
+        # "design": "架构",
+        # "algorithm": "算法",
     }
 
     tag = "python"
@@ -127,7 +127,9 @@ class AliSpider(scrapy.Spider):
         # if self.page == 1:
         self.max_page = response.xpath(
             './/a[has-class("page-num-item")][last()]/text()').get()
-        self.max_page = int(self.max_page)
+
+        if self.max_page != None:
+            self.max_page = int(self.max_page)
 
         if len(items) > 0:
             bulk = []
