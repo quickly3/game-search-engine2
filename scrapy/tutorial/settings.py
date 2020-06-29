@@ -95,9 +95,9 @@ COOKIES_ENABLED = False
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#     'tutorial.middlewares.MyproxiesSpiderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    'tutorial.middlewares.MyproxiesSpiderMiddleware': 543,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
