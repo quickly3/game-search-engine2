@@ -15,6 +15,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from string import Template
+from dateutil import parser
 
 # settings.py
 from dotenv import load_dotenv
@@ -54,16 +55,16 @@ class AliSpider(scrapy.Spider):
 
     tagId = {
         "Linux": "Linux",
-        # "Postgres": "Postgres",
-        # "Python": "python",
-        # "Php": "php",
-        # "Javascript": "javascript",
-        # "Typescript": "typescript",
-        # "Css": "Css",
-        # "Game": "游戏",
-        # "Security": "安全",
-        # "Node": "Node",
-        # "Js": "Js",
+        "Postgres": "Postgres",
+        "Python": "python",
+        "Php": "php",
+        "Javascript": "javascript",
+        "Typescript": "typescript",
+        "Css": "Css",
+        "Game": "游戏",
+        "Security": "安全",
+        "Node": "Node",
+        "Js": "Js",
     }
     tag = "Linux"
     source = "infoq"
@@ -116,7 +117,7 @@ class AliSpider(scrapy.Spider):
         self.page = self.page + 1
         formdata = self.get_formdata()
         temp = json.dumps(formdata)
-        print(temp)
+
         return scrapy.FormRequest(url=self.urlTmpl, body=temp, method="POST", headers=self.headers)
 
     def get_formdata(self):
@@ -141,6 +142,9 @@ class AliSpider(scrapy.Spider):
                 doc['summary'] = clearHighLight(item['summary'])
                 doc['created_at'] = datetime.datetime.fromtimestamp(
                     int(item['release_time']))
+
+                doc['created_year'] = doc['created_at'].strftime("%Y")
+
                 doc['author'] = item['author']
                 doc['tag'] = self.tag
 

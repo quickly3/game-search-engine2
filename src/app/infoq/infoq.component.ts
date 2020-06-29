@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from "@angular/core";
+import { Component, ViewEncapsulation, HostListener } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { Observable, of, Subject, fromEvent } from "rxjs";
@@ -93,6 +93,23 @@ export class InfoqComponent {
         this._source = this.source_list[0].title;
     }
 
+    @HostListener("window:keydown", ["$event"])
+    handleKeyboardEvent(event: KeyboardEvent) { 
+        if(event.key === "ArrowLeft"){
+            if(this.current_page !== 1){
+                this.current_page--;
+                this.pageChange();
+            }
+        }
+
+        if(event.key === "ArrowRight"){
+            if(this.current_page < this.total_number){
+                this.current_page++;
+                this.pageChange();
+            }
+        }
+    }
+
     ngOnInit(): void {
         this.getWordsCloud();
         this.search();
@@ -107,7 +124,6 @@ export class InfoqComponent {
             }, 1000);
         });
 
-        console.log("just before subscribe");
         observable.subscribe({
             next(x) {
                 console.log("got value " + x);
@@ -201,12 +217,15 @@ export class InfoqComponent {
     selectTag = function(tag) {
         this._tag = tag;
         this.keywords = "";
+        this.current_page = 1;
         this.search();
         this.getWordsCloud();
     };
 
     selectSource = function(source) {
         this._source = source.title;
+        this.keywords = "";
+        this.current_page = 1;
         this.search();
         this.getWordsCloud();
     };
