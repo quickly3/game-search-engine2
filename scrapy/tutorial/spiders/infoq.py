@@ -23,9 +23,13 @@ from pathlib import Path
 import random
 from elasticsearch import Elasticsearch
 
-es = Elasticsearch()
 env_path = Path('..')/'.env'
 load_dotenv(dotenv_path=env_path)
+
+es_user = os.getenv("ES_USER")
+es_pwd = os.getenv("ES_PWD")
+es = Elasticsearch(http_auth=(es_user, es_pwd))
+
 
 DB_DATABASE = os.getenv("DB_DATABASE")
 DB_USERNAME = os.getenv("DB_USERNAME")
