@@ -74,7 +74,7 @@ class AliSpider(scrapy.Spider):
         "css": "css",
         "typescript": "typescript",
         "block_chain": "区块链",
-        "game": "游戏",
+        "gamedev": "游戏",
         "security": "安全",
         # "postgresql": "postgresql",
         # "linux": "linux",
@@ -88,7 +88,7 @@ class AliSpider(scrapy.Spider):
     urlTmpl = Template(
         'https://www.oschina.net/search?scope=blog&q=${tagId}&onlyme=0&onlytitle=0&sort_by_time=1&p=${page}')
 
-    page = 382
+    page = 1
     pageSize = 100
     # max_page = 0
 
