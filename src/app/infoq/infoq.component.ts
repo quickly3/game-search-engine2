@@ -59,13 +59,15 @@ export class InfoqComponent {
         "translate"
     ];
 
-    // source_badge = {
-    //     jianshu: "badge-primary",
-    //     infoq: "badge-success",
-    //     juejin: "badge-info",
-    //     cnblogs: "badge-danger",
-    //     csdn: "badge-warning"
-    // };
+    tags_i18n = {
+        "dp":"设计模式",
+        "opensource":"开源",
+        "blockchain":"区块链",
+        "design":"设计",
+        "gamedev":"游戏开发",
+        "algorithm":"算法",
+        "translate":"翻译"
+    }
 
     source_list = [
         { title: "all", source_class: "icon-all" },

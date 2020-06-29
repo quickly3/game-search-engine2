@@ -16,7 +16,6 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from dateutil.parser import parse as dateparse
 
-
 # settings.py
 from dotenv import load_dotenv
 from pathlib import Path
@@ -64,9 +63,9 @@ class AliSpider(scrapy.Spider):
 
     today = time.strftime("%Y-%m-%d")
     yesterday = (datetime.date.today() +
-                 datetime.timedelta(-1)).strftime("%Y-%m-%d")
+                 datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
     last2day = (datetime.date.today() +
-                datetime.timedelta(-2)).strftime("%Y-%m-%d")
+                datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
 
     tagId = {
         "python": "python",
@@ -89,7 +88,7 @@ class AliSpider(scrapy.Spider):
     urlTmpl = Template(
         'https://www.oschina.net/search?scope=blog&q=${tagId}&onlyme=0&onlytitle=0&sort_by_time=1&p=${page}')
 
-    page = 313
+    page = 1
     pageSize = 100
     # max_page = 0
 
@@ -169,14 +168,17 @@ class AliSpider(scrapy.Spider):
                 doc['summary'] = detail
 
                 if "今天" in createAt:
-                    createAt = createAt.replace("今天", self.today)
+                    createAt = self.today
 
                 if "昨天" in createAt:
-                    createAt = createAt.replace("昨天", self.yesterday)
+                    createAt = self.yesterday
 
                 if "前天" in createAt:
-                    createAt = createAt.replace("前天", self.last2day)
+                    createAt = self.last2day
 
+                if "分钟前" in createAt:
+                    createAt = self.today
+                
                 _date = dateparse(createAt)
 
                 doc['created_at'] = _date.strftime("%Y-%m-%d")

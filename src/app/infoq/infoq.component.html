@@ -17,7 +17,7 @@
       </button>
     </div>
   </div>
-
+  <div style="font-size: 12px;">Blogs found: {{total_number}}</div>
   <div class="tags">
     <div class="form-group">
       <div
@@ -100,7 +100,7 @@
           [(page)]="current_page"
           [pageSize]="row"
           [maxSize]="5"
-          [rotate]="false"
+          [ellipses]="false"
           size="sm"
           (pageChange)="pageChange()"
         ></ngb-pagination>
