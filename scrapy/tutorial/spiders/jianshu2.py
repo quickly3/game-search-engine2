@@ -121,7 +121,7 @@ class AliSpider(scrapy.Spider):
               '330be1f135d7', '568894f7edc8', '9336cf7430c4', '581795eb0ded', '31e94ee29b95',
               '2147a9bed1e4', '9ab7731ded1a', '50c2797cc7bb', '9df4cc39bb0f', '92a9ba26cc72']
              },
-            {"tag": "block_chain", "slugs":
+            {"tag": "blockchain", "slugs":
              ['b17f09dc2831', '7d24bb81f9aa', '76790723269d', 'a63d65402fd7', '65eb459d50cc',
               'b410c42c3933', '9d18f721ec4c', '560477d092db', '5736d9ed99aa', '1b532ee6f848',
               'bcd47c71d7ae', '170c621cedd6', '6cd41bcbf02c', '469d422e39c9', '4ab034109d67',

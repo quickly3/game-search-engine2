@@ -98,7 +98,7 @@ class AliSpider(scrapy.Spider):
             "cid": 108764,
             "max_page": 6
         },
-        "gamedev": {
+        "game": {
             "cid": 108759,
             "max_page": 19
         },

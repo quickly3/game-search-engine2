@@ -66,7 +66,7 @@ class AliSpider(scrapy.Spider):
         "javascript": "javascript",
         "css": "css",
         "typescript": "typescript",
-        "block_chain": "区块链",
+        "blockchain": "区块链",
         "game": "游戏",
         "security": "安全",
         "postgresql": "postgresql",

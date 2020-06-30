@@ -38,7 +38,7 @@ export class JuejinComponent {
         "Javascript",
         "Css",
         "Typescript",
-        "Block_chain",
+        "blockchain",
         "Game",
         "Security",
         "Postgresql"

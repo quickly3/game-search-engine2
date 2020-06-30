@@ -56,7 +56,7 @@ class AliSpider(scrapy.Spider):
         "javascript": "55964d83e4b08a686cc6b353",
         "css": "555eadc1e4b00c57d9962402",
         "typescript": "55e7d5a360b2d687f60ae13a",
-        "block_chain": "578c92bb2e958a0054375bc9",
+        "blockchain": "578c92bb2e958a0054375bc9",
         "game": "55e7cae700b0114357d01cb0",
         "security": "5597a500e4b08a686ce5efc3",
         "postgresql": "555e9b12e4b00c57d995654e"

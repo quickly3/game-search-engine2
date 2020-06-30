@@ -23,6 +23,7 @@ import { InfoqService } from "app/api/infoq.service";
 export class InfoqComponent {
     escn_list = [];
     total_number = 0;
+    total_page = 0;
     current_page = 1;
     row = 20;
 
@@ -36,50 +37,40 @@ export class InfoqComponent {
     modelChanged = new Subject<string>();
 
     tags = [
-        "All",
-        "Python",
-        "PHP",
-        "Javascript",
-        "Css",
-        "Typescript",
-        "Node",
-        "Game",
-        "Security",
-        "Linux",
-        "Postgresql",
-        "Block_chain",
-        "blockchain",
-        "dp",
-        "design",
-        "opensource",
-        "nosql",
-        "gamedev",
-        "web",
-        "algorithm",
-        "translate"
+        {text: "All", i18n: "全部"},
+        {text: "Python", i18n: "Python"},
+        {text: "PHP", i18n: "PHP"},
+        {text: "Javascript", i18n: "Javascript"},
+        {text: "Css", i18n: "Css"},
+        {text: "Typescript", i18n: "Typescript"},
+        {text: "Node", i18n: "Node"},
+        {text: "Game", i18n: "游戏"},
+        {text: "Security", i18n: "安全"},
+        {text: "Linux", i18n: "Linux"},
+        {text: "Postgresql", i18n: "Postgres"},
+        // {text: "blockchain", i18n: "区块链"},
+        {text: "blockchain", i18n: "区块链"},
+        {text: "dp", i18n: "设计模式"},
+        {text: "design", i18n: "设计"},
+        {text: "opensource", i18n: "开源"},
+        {text: "nosql", i18n: "Nosql"},
+        {text: "game", i18n: "游戏"},
+        {text: "web", i18n: "全部"},
+        {text: "algorithm", i18n: "算法"},
+        {text: "translate", i18n: "翻译"}
     ];
 
-    tags_i18n = {
-        "dp":"设计模式",
-        "opensource":"开源",
-        "blockchain":"区块链",
-        "design":"设计",
-        "gamedev":"游戏开发",
-        "algorithm":"算法",
-        "translate":"翻译"
-    }
-
     source_list = [
-        { title: "all", source_class: "icon-all" },
-        { title: "jianshu", source_class: "icon-jianshu" },
-        { title: "infoq", source_class: "icon-infoq" },
-        { title: "juejin", source_class: "icon-juejin" },
-        { title: "cnblogs", source_class: "icon-cnblogs" },
-        { title: "csdn", source_class: "icon-csdn" },
-        { title: "oschina", source_class: "icon-oschina" },
-        { title: "sf", source_class: "icon-sf" },
-        { title: "escn", source_class: "icon-escn" },
-        { title: "elastic", source_class: "icon-elastic" }
+        { title: "all", source_class: "icon-all", text: "全部" },
+        { title: "jianshu", source_class: "icon-jianshu", text: "简书" },
+        { title: "infoq", source_class: "icon-infoq", text: "极客帮" },
+        { title: "juejin", source_class: "icon-juejin", text: "掘金" },
+        { title: "cnblogs", source_class: "icon-cnblogs", text: "博客园" },
+        { title: "csdn", source_class: "icon-csdn", text: "CSDN" },
+        { title: "oschina", source_class: "icon-oschina", text: "开源中国" },
+        { title: "sf", source_class: "icon-sf", text: "思否" },
+        { title: "escn", source_class: "icon-escn", text: "Es中文社区" },
+        { title: "elastic", source_class: "icon-elastic", text: "Es官方" }
     ];
 
     constructor(private http: HttpClient, InfoqService: InfoqService) {
@@ -89,7 +80,7 @@ export class InfoqComponent {
             // this.autoComplete();
         });
 
-        this._tag = this.tags[0];
+        this._tag = this.tags[0].text;
         this._source = this.source_list[0].title;
     }
 
@@ -114,28 +105,28 @@ export class InfoqComponent {
         this.getWordsCloud();
         this.search();
 
-        const observable = new Observable(subscriber => {
-            subscriber.next(1);
-            subscriber.next(2);
-            subscriber.next(3);
-            setTimeout(() => {
-                subscriber.next(4);
-                subscriber.complete();
-            }, 1000);
-        });
+        // const observable = new Observable(subscriber => {
+        //     subscriber.next(1);
+        //     subscriber.next(2);
+        //     subscriber.next(3);
+        //     setTimeout(() => {
+        //         subscriber.next(4);
+        //         subscriber.complete();
+        //     }, 1000);
+        // });
 
-        observable.subscribe({
-            next(x) {
-                console.log("got value " + x);
-            },
-            error(err) {
-                console.error("something wrong occurred: " + err);
-            },
-            complete() {
-                console.log("done");
-            }
-        });
-        console.log("just after subscribe");
+        // observable.subscribe({
+        //     next(x) {
+        //         console.log("got value " + x);
+        //     },
+        //     error(err) {
+        //         console.error("something wrong occurred: " + err);
+        //     },
+        //     complete() {
+        //         console.log("done");
+        //     }
+        // });
+        // console.log("just after subscribe");
     }
     showValue(item): void {}
 
@@ -180,6 +171,8 @@ export class InfoqComponent {
             });
             // this.escn_list.map(item=>{item.unfold = false});
             this.total_number = data["total"];
+            this.total_page = Math.floor(this.total_number / this.row);
+
         });
     };
 

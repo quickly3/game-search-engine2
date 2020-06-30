@@ -17,29 +17,30 @@
       </button>
     </div>
   </div>
-  <div style="font-size: 12px;">Blogs found: {{total_number}}</div>
+  <div style="font-size: 12px;">
+    找到 <strong>{{total_number}}</strong> 条结果 （用时约 <strong>{{total_number}}</strong> 秒） 当前第 <strong>{{current_page}}</strong> 页,共 <strong>{{total_page}}</strong> 页
+  </div>
   <div class="tags">
-    <div class="form-group">
-      <div
-        class="custom-control custom-radio"
-        *ngFor="let tag of tags"
-        (click)="selectTag(tag)"
-      >
-        <input
-          type="radio"
-          id=""
-          name="customRadio"
-          value="{{ tag }}"
-          [(ngModel)]="_tag"
-          class="custom-control-input"
-        />
-        <label class="custom-control-label" for="">{{ tag }}</label>
-      </div>
+    <div
+      class="custom-control custom-radio"
+      *ngFor="let tag of tags"
+      (click)="selectTag(tag.text)"
+    >
+      <input
+        type="radio"
+        name="customRadio"
+        value="{{ tag.text }}"
+        [(ngModel)]="_tag"
+      />
+      <span>{{ tag.i18n }}</span>
     </div>
   </div>
   <div class="row">
     <div class="col-md-2">
-      <div class="source-selector">
+      <div class="option-title">
+        <span>数据来源:</span>
+      </div>
+      <div class="option-zone source-selector">
         <div
           class="custom-control custom-radio"
           *ngFor="let source of source_list"
@@ -47,15 +48,17 @@
         >
           <input
             type="radio"
-            id=""
             name="sourceRadio"
             value="{{ source.title }}"
             [(ngModel)]="_source"
           />
-          <div class="icons {{ source.source_class }}"></div>
+          <div class="icons {{ source.source_class }}" tooltipClass="source-tool" ngbTooltip="{{source.text}}" placement="right" openDelay="500"></div>
         </div>
       </div>
-      <div class="words_cloud">
+      <div class="option-title">
+        <span>词云:</span>
+      </div>
+      <div class="option-zone words_cloud">
         <span
           class="text-info"
           *ngFor="let word of words_cloud"
@@ -73,15 +76,7 @@
         >
           <div class="des_zone col-md-10 col-8">
             <div>
-              <a [href]="daily_item.url" target="_blank">{{
-                daily_item.title
-              }}</a>
-              <div class="icons {{ daily_item.badge_class }}"></div>
-              <span *ngIf="daily_item.created_at"
-                >(
-                {{ daily_item.created_at | date: "yyyy-MM-dd" }}
-                )</span
-              >
+              <a class="title_a" [href]="daily_item.url" target="_blank" [innerHtml]="daily_item.title"></a>
               <!-- &nbsp;
                             <app-star-rating
                                 [(stars)]="daily_item.stars"
@@ -89,6 +84,10 @@
                             ></app-star-rating> -->
             </div>
             <div class="summary" [innerHtml]="daily_item.summary"></div>
+            <div>
+              <div class="icons-sm {{ daily_item.badge_class }}"></div>
+              <span class="created" *ngIf="daily_item.created_at">{{ daily_item.created_at | date: "yyyy-MM-dd" }}</span>
+            </div>
           </div>
         </div>
       </div>

@@ -31,15 +31,14 @@ class InfoqController extends Controller
             $highlight = [
                 "fields" => [
                     "summary" => (object) [],
-                    // "title" => (object) [],
-                    "title_text" => (object) [],
+                    "title.text_cn" => (object) [],
                 ],
             ];
             $data->highlight($highlight);
         }
 
         if ($keywords != '*') {
-            $query_string = "(title_text:'{$keywords}' OR summary:'{$keywords}' OR title:(\"{$keywords}\")^10) ";
+            $query_string = "(title.text_cn:'{$keywords}' OR summary:'{$keywords}' OR title:(\"{$keywords}\")^10) ";
         }else{
             $query_string = "*:*";
         }
@@ -73,8 +72,8 @@ class InfoqController extends Controller
                     $item['summary'] = $item['highlight']['summary'][0];
                 }
 
-                if (isset($item['highlight']) && isset($item['highlight']['title']) && isset($item['highlight']['title'][0])) {
-                    $item['title'] = $item['highlight']['title'][0];
+                if (isset($item['highlight']) && isset($item['highlight']['title.text_cn']) && isset($item['highlight']['title.text_cn'][0])) {
+                    $item['title'] = $item['highlight']['title.text_cn'][0];
                 }
 
                 return $item;

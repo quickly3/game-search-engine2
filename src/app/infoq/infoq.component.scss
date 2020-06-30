@@ -11,9 +11,12 @@
         }
     }
 }
+a:hover{
+    text-decoration:none
+}
 
 .words_cloud {
-    margin: 20px 5px;
+    margin: 0px 5px;
     span {
         font-size: 12px;
         padding-right: 5px;
@@ -27,7 +30,8 @@
 
 .custom-radio {
     display: inline-block;
-    margin-right: 5px;
+    margin-right: 0.5rem;
+    padding-left: 0;
 }
 
 .summary {
@@ -36,6 +40,12 @@
         color: crimson;
         font-style: inherit;
     }
+}
+.title_a{
+    em {
+        color: crimson;
+        font-style: inherit;
+    }  
 }
 
 .summary > em {
@@ -50,7 +60,17 @@
     vertical-align: bottom;
     height: 18px;
     width: 18px;
-    margin: 0 0 2px 3px;
+    margin: 0 0 3px 3px;
+}
+
+.icons-sm {
+    display: inline-block;
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    vertical-align: bottom;
+    height: 14px;
+    width: 14px;
+    margin: 0 4px 4px 3px;
 }
 
 .icon-all {
@@ -91,4 +111,27 @@
 
 .icon-elastic {
     background-image: url(/assets/images/ico/elastic.png);
+}
+
+.created{
+    font-size: 14px;
+    color: #888;
+}
+
+.option-title{
+    font-size: 14px;
+}
+
+.option-zone{
+    margin-bottom: 10px;
+}
+
+.tags{
+    span{
+        padding-left: 3px;
+        font-size: 14px;
+    }
+}
+.source-tool{
+
 }
