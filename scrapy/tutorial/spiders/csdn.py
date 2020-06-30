@@ -106,8 +106,9 @@ class AliSpider(scrapy.Spider):
                 title = "".join(titles)
 
                 url = title_a.xpath('.//@href').get()
-                detail = item.xpath(
-                    './/dd[@class="search-detail"]/text()').get()
+                details = item.xpath(
+                    './/dd[@class="search-detail"]/text()').getall()
+                detail = "".join(details)
 
                 createAt = item.xpath(
                     './/dd[@class="author-time"]/span[@class="date"]/text()').get()
