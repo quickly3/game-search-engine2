@@ -43,8 +43,6 @@ class InfoqController extends Controller
             $query_string = "*:*";
         }
 
-        
-
         if ($tag != "all") {
             $query_string = $query_string . " && tag:{$tag}";
         }

@@ -26,6 +26,7 @@ export class InfoqComponent {
     total_page = 0;
     current_page = 1;
     row = 20;
+    took = 0;
 
     keywords = "";
     words_cloud;
@@ -163,7 +164,7 @@ export class InfoqComponent {
                     item.stars = 0;
 
                     for (const i of this.source_list) {
-                        if (item.source == i.title) {
+                        if (item.source === i.title) {
                             item.badge_class = i.source_class;
                         }
                     }
@@ -171,6 +172,7 @@ export class InfoqComponent {
             });
             // this.escn_list.map(item=>{item.unfold = false});
             this.total_number = data["total"];
+            this.took = data["took"];
             this.total_page = Math.floor(this.total_number / this.row);
 
         });

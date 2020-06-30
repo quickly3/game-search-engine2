@@ -195,6 +195,7 @@ class ElasticModel
         $res['from'] = $from;
         $res['to'] = $from + $size;
         $res['per_page'] = $size;
+        $res['took'] = $this->reqRes['took'];
 
         $res['data'] = $this->getIdRes();
         
