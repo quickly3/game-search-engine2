@@ -83,6 +83,7 @@
                                 (outer)="starsChange($event, daily_item)"
                             ></app-star-rating> -->
             </div>
+            <div class="link"><span class="text-secondary">{{ daily_item.url }}</span></div>
             <div class="summary" [innerHtml]="daily_item.summary"></div>
             <div>
               <div class="icons-sm {{ daily_item.badge_class }}"></div>
