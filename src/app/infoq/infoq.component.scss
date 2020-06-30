@@ -127,7 +127,9 @@ a:hover{
 }
 
 .tags{
+    margin-bottom: 10px;
     span{
+        cursor: pointer;
         padding-left: 3px;
         font-size: 14px;
     }
