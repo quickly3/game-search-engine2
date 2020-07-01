@@ -220,7 +220,7 @@ class AliSpider(scrapy.Spider):
 
             doc = {
                 "title": title.strip(),
-                "url": href,
+                "url": self.domain+href,
                 "summary": desc.strip(),
                 "tag": self._coll['tag'],
                 "author": author,

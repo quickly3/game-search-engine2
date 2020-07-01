@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, HostListener } from "@angular/core";
+import { Component, ViewEncapsulation, HostListener, ViewChild } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { Observable, of, Subject, fromEvent } from "rxjs";
@@ -13,6 +13,7 @@ import {
     catchError
 } from "rxjs/operators";
 import { InfoqService } from "app/api/infoq.service";
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: "infoq",
@@ -33,9 +34,11 @@ export class InfoqComponent {
     InfoqService;
     _tag;
     _source;
+    ngbTypeahead;
 
     search_by_keywords;
     modelChanged = new Subject<string>();
+    @ViewChild("instance", {static: true})instance: NgbTypeahead;
 
     tags = [
         {text: "All", i18n: "全部"},
@@ -131,6 +134,13 @@ export class InfoqComponent {
     }
     showValue(item): void {}
 
+    searchOnKeydown(e) {
+        if (e.key === "Enter") {
+            this.instance.dismissPopup();
+            this.search();
+        }
+    }
+
     getWordsCloud = function() {
         this.InfoqService.getWordsCloud({
             tag: this._tag,
@@ -174,7 +184,7 @@ export class InfoqComponent {
             this.total_number = data["total"];
             this.took = data["took"];
             this.total_page = Math.floor(this.total_number / this.row);
-
+            this.instance.dismissPopup();
         });
     };
 

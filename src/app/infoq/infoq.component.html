@@ -8,7 +8,9 @@
         class="form-control form-control-sm"
         [(ngModel)]="keywords"
         [focusFirst]="false"
+        (keydown)="searchOnKeydown($event)"
         [ngbTypeahead]="autoComplete"
+        #instance="ngbTypeahead"
         placeholder="搜索"
       />
       <button type="button" class="btn btn-primary btn-sm" (click)="search()">
