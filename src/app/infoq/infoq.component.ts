@@ -82,7 +82,7 @@ export class InfoqComponent {
         });
 
         this._tag = this.tags[0].text;
-        this._source = this.source_list[0].title;
+        this._source = this.source_list[0];
     }
 
     @HostListener("window:keydown", ["$event"])
@@ -134,7 +134,7 @@ export class InfoqComponent {
     getWordsCloud = function() {
         this.InfoqService.getWordsCloud({
             tag: this._tag,
-            source: this._source
+            source: this._source.title
         }).subscribe(words_cloud => {
             this.words_cloud = words_cloud;
         });
@@ -154,7 +154,7 @@ export class InfoqComponent {
             page: "" + this.current_page,
             keywords: this.keywords,
             tag: this._tag,
-            source: this._source
+            source: this._source.title
         };
 
         this.InfoqService.getDailyList(params).subscribe(data => {
@@ -218,7 +218,7 @@ export class InfoqComponent {
     };
 
     selectSource = function(source) {
-        this._source = source.title;
+        this._source = source;
         this.keywords = "";
         this.current_page = 1;
         this.search();

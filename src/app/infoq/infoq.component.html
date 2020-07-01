@@ -18,7 +18,7 @@
     </div>
   </div>
   <div style="font-size: 12px;">
-    找到 <strong>{{total_number}}</strong> 条结果 （用时约 <strong>{{took}}</strong> ms） 当前第 <strong>{{current_page}}</strong> 页,共 <strong>{{total_page}}</strong> 页
+    找到 <strong>{{total_number}}</strong> 条结果 （用时约 <strong>{{took}}</strong> ms） 当前第 <strong>{{current_page}}</strong> 页,共 <strong>{{total_page}}</strong> 页 数据来源 <strong>{{_source.text}}</strong>
   </div>
   <div class="tags">
     <div
@@ -50,9 +50,9 @@
             type="radio"
             name="sourceRadio"
             value="{{ source.title }}"
-            [(ngModel)]="_source"
+            [(ngModel)]="_source.title"
           />
-          <div class="icons {{ source.source_class }}" tooltipClass="source-tool" ngbTooltip="{{source.text}}" placement="right" openDelay="500"></div>
+          <div class="icons {{ source.source_class }}"></div>
         </div>
       </div>
       <div class="option-title">
