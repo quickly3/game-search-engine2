@@ -56,44 +56,16 @@ class InfoqService
         $data = $es->client->search($params);
         $resp = (object) $data;
         $cloud_words = $resp->aggregations['title_words_cloud']['buckets'];
-
+ 
         $cloud_words = array_map(function ($item) {
             return (object) $item;
         }, $cloud_words);
 
-        $stop_words = ["基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018","10"];
-        switch (strtolower($tag)) {
-            case 'php':
-                $ext_stop_words = ["php"];
-                break;
-            case 'python':
-                $ext_stop_words = ["python"];
-                break;
-            case 'javascript':
-                $ext_stop_words = ["javascript", "js"];
-                break;
-            case 'css':
-                $ext_stop_words = ["css"];
-                break;
-            case 'linux':
-                $ext_stop_words = ["linux"];
-                break;
-            case 'node':
-                $ext_stop_words = ["node"];
-                break;
-            case 'postgresql':
-                $ext_stop_words = ["postgresql"];
-                break;
-            case 'typescript':
-                $ext_stop_words = ["typescript", "2.5", "3.0"];
-                break;
-            default:
-                $ext_stop_words = [];
-                break;
-        }
-
-        $stop_words = array_merge($stop_words, $ext_stop_words);
-
+        $stop_words = [
+            "基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018","10",
+            "php", "python", "javascript", "js", "css", "linux", "node","postgresql", "typescript",
+            "java", "vue", "web","react"
+        ];
 
         $cloud_words = array_filter($cloud_words, function ($item) use ($stop_words) {
 
