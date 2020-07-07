@@ -68,14 +68,14 @@ class AliSpider(scrapy.Spider):
                 datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
 
     tagId = {
-        "python": "python",
+        # "python": "python",
         "php": "php",
-        "javascript": "javascript",
-        "css": "css",
-        "typescript": "typescript",
-        "blockchain": "区块链",
-        "game": "游戏",
-        "security": "安全",
+        # "javascript": "javascript",
+        # "css": "css",
+        # "typescript": "typescript",
+        # "blockchain": "区块链",
+        # "game": "游戏",
+        # "security": "安全",
         # "postgresql": "postgresql",
         # "linux": "linux",
         # "dp": "设计模式",
@@ -88,7 +88,7 @@ class AliSpider(scrapy.Spider):
     urlTmpl = Template(
         'https://www.oschina.net/search?scope=blog&q=${tagId}&onlyme=0&onlytitle=0&sort_by_time=1&p=${page}')
 
-    page = 1
+    page = 64
     pageSize = 100
     # max_page = 0
 
