@@ -59,7 +59,7 @@ export class InfoqComponent {
         {text: "opensource", i18n: "开源"},
         {text: "nosql", i18n: "Nosql"},
         {text: "game", i18n: "游戏"},
-        {text: "web", i18n: "全部"},
+        {text: "web", i18n: "网页开发"},
         {text: "algorithm", i18n: "算法"},
         {text: "translate", i18n: "翻译"}
     ];
