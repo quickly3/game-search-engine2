@@ -99,8 +99,8 @@ class AliSpider(scrapy.Spider):
     def parse(self, response, _id):
         resp = json.loads(response.text)
 
-        logging.info("_id",_id)
-        logging.info("last_score",self.last_score)
+        logging.info("_id: "+str(_id))
+        logging.info("last_score: "+str(self.last_score))
 
         if len(resp['data']) == 0:
             if len(self.ids)>0:
