@@ -167,7 +167,7 @@ class AliSpider(scrapy.Spider):
                 resp = bulk.append(doc)
 
             if len(bulk) > 0:
-                es.bulk(index="juejin", body=bulk)
+                es.bulk(index="infoq", body=bulk)
 
             yield self.next_request()
         else:
