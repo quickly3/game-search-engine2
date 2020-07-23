@@ -24,6 +24,8 @@ import random
 import numpy
 import pandas as pd
 from elasticsearch import Elasticsearch
+import logging
+
 
 env_path = Path('..')/'.env'
 load_dotenv(dotenv_path=env_path)
@@ -97,8 +99,8 @@ class AliSpider(scrapy.Spider):
     def parse(self, response, _id):
         resp = json.loads(response.text)
 
-        print("_id",_id)
-        print("last_score",self.last_score)
+        logging.info("_id",_id)
+        logging.info("last_score",self.last_score)
 
         if len(resp['data']) == 0:
             if len(self.ids)>0:
