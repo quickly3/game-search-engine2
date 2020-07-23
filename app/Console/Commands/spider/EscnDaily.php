@@ -4,6 +4,7 @@ namespace App\Console\Commands\spider;
 
 use Illuminate\Console\Command;
 use App\Model\Elastic\ElasticModel;
+use Illuminate\Support\Facades\Log;
 
 
 class EscnDaily extends Command
@@ -48,17 +49,10 @@ class EscnDaily extends Command
         $shells = [
             "scrapy crawl escn_new"
         ];
-
-        // 获取当前目录
-        dump(getcwd());
-        // 改变目录
         chdir("scrapy");
-        // 获得当前目录
-        dump(getcwd());
-
         foreach($shells as $s){
             system($s, $status);
-            dump($status);
+            Log::info($status);
         }
     }
 }
