@@ -50,11 +50,11 @@ class EscnDaily extends Command
         ];
 
         // 获取当前目录
-        print(getcwd());
+        dump(getcwd());
         // 改变目录
         chdir("scrapy");
         // 获得当前目录
-        print(getcwd());
+        dump(getcwd());
 
         foreach($shells as $s){
             system($s, $status);
