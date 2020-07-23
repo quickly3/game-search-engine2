@@ -60,7 +60,7 @@ class AliSpider(scrapy.Spider):
         112,135,93,140,158,143,128,1133,130,114,120,
         110,160,150,131,123,1112,1132,149,1126,151,136,
         115,155,153,1116,1129,1119,1139,1125,1114,124,
-        1130,1138        
+        1130,1138   
     ]
     
     topic_list = []
@@ -93,21 +93,29 @@ class AliSpider(scrapy.Spider):
         return json.dumps(formdata)
 
     def start_requests(self):
-        _id = self.ids.pop()
-        yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = _id), method="POST",headers=self.headers, callback=lambda response, _id=_id: self.parse(response, _id))
+        last = {
+            "id":self.ids.pop(0),
+            "score":0
+        }
 
-    def parse(self, response, _id):
+        yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = last['id']), method="POST",headers=self.headers, callback=lambda response, last=last: self.parse(response, last))
+
+    def parse(self, response, last):
         resp = json.loads(response.text)
 
-        logging.info("_id: "+str(_id))
-        logging.info("last_score: "+str(self.last_score))
+        logging.info("_id: "+str(last['id']))
+        logging.info("score: "+str(last['score']))
+
 
         if len(resp['data']) == 0:
             if len(self.ids)>0:
-                _id = self.ids.pop()
-                yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = _id), method="POST",headers=self.headers, callback=lambda response, _id=_id: self.parse(response, _id))
+                new_last = {
+                    "id":self.ids.pop(0),
+                    "score":0
+                }
+                yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = new_last['id']), method="POST",headers=self.headers, callback=lambda response, last=new_last: self.parse(response, last))
             else:
-                print("spider end")
+                print("spider end 1")
                 os._exit(0)
         else:
             bulk = []
@@ -140,14 +148,19 @@ class AliSpider(scrapy.Spider):
             if len(bulk) > 0:
                 es.bulk(index="article", body=bulk)
 
-            self.last_score = last_score = resp['data'][-1]['score']
+            last_score = resp['data'][-1]['score']
             
-            if self.last_score == last_score:
+            if last['score'] == last_score:
                 if len(self.ids)>0:
-                    _id = self.ids.pop()
-                    last_score = 0
+                    new_last = {
+                        "id":self.ids.pop(0),
+                        "score":0
+                    }
+                    yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = new_last['id']), method="POST",headers=self.headers, callback=lambda response, last=new_last: self.parse(response, last))
                 else:
-                    print("spider end")
+                    print("spider end 2")
                     os._exit(0)
+
+            last['score'] =  last_score
             
-            yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(score=last_score,id=_id), method="POST",headers=self.headers, callback=lambda response, _id=_id: self.parse(response, _id))
+            yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(score=last_score,id=last['id']), method="POST",headers=self.headers, callback=lambda response, last=last: self.parse(response, last))
