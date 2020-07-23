@@ -57,7 +57,7 @@ class EsClear extends Command
             "body" => [
                 "query" => [
                     "query_string" => [
-                        "query" => "*:*"
+                        "query" => "source:infoq"
                     ]
                 ]
             ],
