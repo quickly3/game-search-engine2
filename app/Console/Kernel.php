@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         Commands\EsClear::class,
         Commands\EsReindex::class,
         Commands\EsTrans::class,
+        Commands\spider\EscnDaily::class,
     ];
 
     /**
@@ -29,8 +30,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('EscnDaily')->dailyAt('11:20');
+        // $schedule->command('pwd')->everyMinute();    
+
     }
 
     /**

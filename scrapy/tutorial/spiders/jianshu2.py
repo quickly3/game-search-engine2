@@ -133,6 +133,15 @@ class AliSpider(scrapy.Spider):
              }
         ]
 
+
+        # self.collection = [
+        #     {"tag": "blockchain", "slugs":[
+        #         "9ca077f0fae8",
+        #         "e79b4bfdbc43","af2e113fc022","3ba7528b6116",
+        #         "df30e70dc95e"
+        #     ]}
+        # ]
+
         # slugs = {}
         # for tag in self.collection:
         #     for slug in tag['slugs']:
