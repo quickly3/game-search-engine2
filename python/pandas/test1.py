@@ -21,7 +21,8 @@ df = pd.read_csv(file,delimiter=",")
 df2 = df.copy()
 
 # where update
-df2 = df2[df2['created_year'] == 2020]
+# df2 = df2[df2['created_year'] == 2020]
 
+df3 = df2.query("created_year>2019")
 
-print(df2)
+print(df3.loc[0])
