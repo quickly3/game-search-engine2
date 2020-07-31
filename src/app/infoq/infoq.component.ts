@@ -107,6 +107,7 @@ export class InfoqComponent {
 
     ngOnInit(): void {
         this.getWordsCloud();
+        this.getTags();
         this.search();
 
         // const observable = new Observable(subscriber => {
@@ -147,6 +148,15 @@ export class InfoqComponent {
             source: this._source.title
         }).subscribe(words_cloud => {
             this.words_cloud = words_cloud;
+        });
+    };
+
+    getTags = function() {
+        this.InfoqService.getTags({
+            source: this._source.title
+        }).subscribe(tags => {
+            console.log(tags)
+            // this.words_cloud = words_cloud;
         });
     };
 

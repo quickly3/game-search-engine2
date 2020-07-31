@@ -40,6 +40,8 @@ Route::any('infoq/getDailyList', 'InfoqController@getDailyList');
 Route::get('infoq/getWordsCloud', 'InfoqController@getWordsCloud');
 Route::post('infoq/starsChange', 'InfoqController@starsChange');
 Route::get('infoq/autoComplete', 'InfoqController@autoComplete');
+Route::get('infoq/getTags', 'InfoqController@getTags');
+
 
 
 Route::get('fanju/list', 'FanjuController@getList');

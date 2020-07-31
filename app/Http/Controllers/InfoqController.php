@@ -117,5 +117,12 @@ class InfoqController extends Controller
         return response()->json($resp);
     }
 
+    public function getTags(Request $request)
+    {   
+        $source = strtolower($request->input("source", "all"));
+        $tags = InfoqService::getTags($source);
+        return response()->json($tags);
+    }
+
 
 }
