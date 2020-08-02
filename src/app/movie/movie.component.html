@@ -2,9 +2,15 @@
 <div class="main-container container-fluid p-0">
     <div class="list-content px-3">
       <div class="search-header">
-          <div>
-            <a *ngFor="let type of types" (click)="selecType(type)">{{type}}</a>
-          </div>
+
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li *ngFor="let type of types" class="breadcrumb-item" [ngClass]="{'active':curType == type }" aria-current="page" (click)="selecType(type)">
+                <a *ngIf="curType != type" href="javacript:;">{{type}}</a>
+                <span *ngIf="curType == type">{{type}}</span>
+              </li>
+            </ol>
+          </nav>
 
           <div class="search-input">
             <ng-template #rt let-r="result" let-t="term">

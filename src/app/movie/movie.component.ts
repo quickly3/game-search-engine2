@@ -45,16 +45,6 @@ export class MovieComponent {
         // this.modelChanged.pipe(debounceTime(300)).subscribe(() => {
         //     this.autoComplete();
         // });
-        this.testRx();
-    }
-
-    testRx = ()=>{
-
-        const observable = from([10, 20, 30]);
-        const subscription = observable.subscribe(x => console.log(x));
-        // Later:
-        subscription.unsubscribe();
-
     }
 
     selecType = (cate) => {

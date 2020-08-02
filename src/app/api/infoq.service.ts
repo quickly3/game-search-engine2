@@ -16,7 +16,7 @@ export class InfoqService {
     };
 
     getTags = params => {
-        return this.http.get("/infoq/getTags", params);
+        return this.http.get("/infoq/getTags", {params});
     };    
 
     getDailyList = params => {

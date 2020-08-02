@@ -28,6 +28,7 @@ export class InfoqComponent {
     current_page = 1;
     row = 20;
     took = 0;
+    show_more=false;
 
     keywords = "";
     words_cloud;
@@ -40,7 +41,9 @@ export class InfoqComponent {
     modelChanged = new Subject<string>();
     @ViewChild("instance", {static: true})instance: NgbTypeahead;
 
-    tags = [
+    tags = []
+
+    tags_i18n = [
         {text: "All", i18n: "全部"},
         {text: "Python", i18n: "Python"},
         {text: "PHP", i18n: "PHP"},
@@ -84,7 +87,7 @@ export class InfoqComponent {
             // this.autoComplete();
         });
 
-        this._tag = this.tags[0].text;
+        // this._tag = this.tags[0].text;
         this._source = this.source_list[0];
     }
 
@@ -152,11 +155,27 @@ export class InfoqComponent {
     };
 
     getTags = function() {
+        console.log(this._source.title)
         this.InfoqService.getTags({
             source: this._source.title
         }).subscribe(tags => {
-            console.log(tags)
-            // this.words_cloud = words_cloud;
+            let total = 0;
+            const _tags = tags.map((i)=>{
+
+                const matchedItem = this.tags_i18n.find((item)=>{  
+                    return item.text == i.key
+                })
+                total += i.doc_count;
+                return {
+                    text: i.key,
+                    count: i.doc_count,
+                    i18n: matchedItem?matchedItem.i18n:i.key
+                }
+            })
+
+            this.tags = _tags;
+            this.tags.unshift({text: "all", i18n: "全部",count:total})
+            this._tag = this.tags[0].text;
         });
     };
 
@@ -243,6 +262,7 @@ export class InfoqComponent {
         this.current_page = 1;
         this.search();
         this.getWordsCloud();
+        this.getTags();
     };
 
     searchDatasSimple = (term: any) => {

@@ -22,7 +22,7 @@
   <div style="font-size: 12px;">
     找到 <strong>{{total_number}}</strong> 条结果 （用时约 <strong>{{took}}</strong> ms） 当前第 <strong>{{current_page}}</strong> 页,共 <strong>{{total_page}}</strong> 页 数据来源 <strong>{{_source.text}}</strong>
   </div>
-  <div class="tags">
+  <div class="tags" [ngClass]="{'tags-switch':!show_more}">
     <div
       class="custom-control custom-radio"
       *ngFor="let tag of tags"
@@ -34,8 +34,12 @@
         value="{{ tag.text }}"
         [(ngModel)]="_tag"
       />
-      <span>{{ tag.i18n }}</span>
+      <span>{{ tag.i18n }} ({{tag.count}})</span>
     </div>
+  </div>
+  <div  class="more-tags" (click)="show_more = !show_more;">
+    <a *ngIf="!show_more" href="javascript:;">more</a>
+    <a *ngIf="show_more" href="javascript:;">close</a>
   </div>
   <div class="row">
     <div class="col-md-2">

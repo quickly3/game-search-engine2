@@ -12,7 +12,7 @@ class InfoqController extends Controller
     public function getDailyList(Request $request)
     {
         $keywords = $request->input("keywords", "");
-        $tag = strtolower($request->input("tag", "all"));
+        $tag = $request->input("tag", "all");
         $source = strtolower($request->input("source", "all"));
         $search_type = trim($request->input("search_type", ""));
 

@@ -1,6 +1,6 @@
 <app-nav></app-nav>
-<div class="main-container container-fluid p-0">
-    <div class="detail-content m-auto px-3">
+<div class="main-container container-fluid p-0" >
+    <div class="detail-content m-auto px-3"  *ngIf="movie">
         <div class="row">
             <div class="movie-detail col-md-2 p-1">
                 <div class="cover-warpper">
@@ -18,7 +18,7 @@
                 <span>播放地址</span>
                 <div>
                     <span *ngFor="let playUrl of movie.playUrls">
-                        <a href="{{playUrl.url}}">第{{playUrl.episode}}集</a>
+                        <a href="{{playUrl.url}}" target="__BLANK__">第{{playUrl.episode}}集</a>
                     </span>
                 </div>
             </div>

@@ -130,14 +130,26 @@ a:hover{
     margin-bottom: 10px;
 }
 
+.tags-switch{
+    overflow: hidden ;
+    display: -webkit-box ;
+    -webkit-line-clamp: 2 ;
+    -webkit-box-orient: vertical ;
+    word-break: break-all ;
+}
+
 .tags{
-    margin-bottom: 10px;
     span{
         cursor: pointer;
         padding-left: 3px;
         font-size: 14px;
     }
 }
+.more-tags{
+    font-size: 10px;
+    line-height: 10px;
+}
+
 .source-tool{
 
 }
