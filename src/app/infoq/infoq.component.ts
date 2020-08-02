@@ -258,6 +258,7 @@ export class InfoqComponent {
 
     selectSource = function(source) {
         this._source = source;
+        this._tag = 'all'
         this.keywords = "";
         this.current_page = 1;
         this.search();

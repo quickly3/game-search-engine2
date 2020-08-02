@@ -34,7 +34,8 @@
         value="{{ tag.text }}"
         [(ngModel)]="_tag"
       />
-      <span>{{ tag.i18n }} ({{tag.count}})</span>
+      <span>{{ tag.i18n }}</span>
+      <span *ngIf="tag.text!='all'">({{tag.count}})</span>
     </div>
   </div>
   <div  class="more-tags" (click)="show_more = !show_more;">
