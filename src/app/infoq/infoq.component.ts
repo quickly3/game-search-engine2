@@ -33,7 +33,7 @@ export class InfoqComponent {
     keywords = "";
     words_cloud;
     InfoqService;
-    _tag;
+    _tag='all';
     _source;
     ngbTypeahead;
 
