@@ -140,7 +140,7 @@ class AliSpider(scrapy.Spider):
             contents = response.xpath(
                 '//*[@id="markdown_out"]/p/text()').getall()
             links = response.xpath(
-                '//*[@id="markdown_out"]/p/a/text()').getall()
+                '//*[@id="markdown_out"]/p/a/@href').getall()
 
         pattern = re.compile(r'^\d\.')
 
