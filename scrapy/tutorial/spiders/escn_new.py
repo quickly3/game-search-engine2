@@ -133,7 +133,7 @@ class AliSpider(scrapy.Spider):
         conuter = 0
 
         contents = response.css("#markdown_out::text").extract()
-        links = response.css("#markdown_out a::text").extract()
+        links = response.css("#markdown_out a::attr(href)").extract()
 
         contents = list(filter(cont_filter, contents))
         if len(contents) == 0:
