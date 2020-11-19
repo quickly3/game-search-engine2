@@ -47,7 +47,7 @@ class EscnDaily extends Command
     public function handle()
     {
         $shells = [
-            "python3 -m scrapy crawl escn_new > esDaily.log"
+            "python3 -m scrapy crawl escn_new"
         ];
         chdir("scrapy");
         foreach($shells as $s){
