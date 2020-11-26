@@ -112,14 +112,20 @@ class RequestHandler(BaseHTTPRequestHandler):
             "Authorization": "Bearer " + token
         }
 
-        if text == '年轻人不讲武德':
-            text = "你们耗子尾汁"
+        reponse = 'xxx';
+
+        if '年轻人不讲武德' in text :
+            reponse = "希望耗子尾汁"
+
+        if 'give me 5' in text :
+            reponse = "5"
+
 
         req_body = {
             "chat_id": chat_id,
             "msg_type": "text",
             "content": {
-                "text": text
+                "text": reponse
             }
         }
 
