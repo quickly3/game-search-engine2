@@ -49,7 +49,7 @@ class EscnDaily extends Command
         $shells = [
             "python3 -m scrapy crawl escn_new"
         ];
-        chdir("scrapy");
+        chdir("/home/ubuntu/www/ng-blog/scrapy");
         foreach($shells as $s){
             system($s, $status);
             Log::info($status);
