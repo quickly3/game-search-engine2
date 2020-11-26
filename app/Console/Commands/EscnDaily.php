@@ -47,9 +47,8 @@ class EscnDaily extends Command
     public function handle()
     {
         $shells = [
-            "python3 -m scrapy crawl escn_new"
+            "cd /home/ubuntu/www/ng-blog/scrapy && python3 -m scrapy crawl escn_new"
         ];
-        chdir("/home/ubuntu/www/ng-blog/scrapy");
         foreach($shells as $s){
             $status = exec($s);
             Log::info($status);
