@@ -51,7 +51,7 @@ class EscnDaily extends Command
         ];
         chdir("/home/ubuntu/www/ng-blog/scrapy");
         foreach($shells as $s){
-            system($s, $status);
+            $status = exec($s);
             Log::info($status);
         }
     }
