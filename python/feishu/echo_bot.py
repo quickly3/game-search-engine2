@@ -7,9 +7,9 @@ import json
 from urllib import request, parse
 
 
-APP_ID = "cli_9f34b4425061100c"
-APP_SECRET = "6UlWYxpeEvCjMyDRc4mfTdzNUFXbAyiB"
-APP_VERIFICATION_TOKEN = "iVVQhN9NQAfQbtJXhFTKHeJ6J4F4xnjs"
+APP_ID = "XXX"
+APP_SECRET = "XXX"
+APP_VERIFICATION_TOKEN = "XXX"
 
 class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
