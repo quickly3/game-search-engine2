@@ -47,6 +47,8 @@ class RequestHandler(BaseHTTPRequestHandler):
     def handle_message(self, event):
         # 此处只处理 text 类型消息，其他类型消息忽略
         msg_type = event.get("msg_type", "")
+        chat_type = event.get("chat_type", "")
+
         if msg_type != "text":
             print("unknown msg_type =", msg_type)
             self.response("")
@@ -58,10 +60,17 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.response("")
             return
 
-        # 机器人 echo 收到的消息
-        self.send_message(access_token, event.get("open_id"), event.get("text"))
-        self.response("")
-        return
+        if chat_type == "private":
+            # 机器人 echo 收到的消息
+            self.send_message(access_token, event.get("open_id"), event.get("text"))
+            self.response("")
+            return
+
+        if chat_type == "group":
+            # 机器人 echo 收到的消息
+            self.send_group_message(access_token, event.get("open_chat_id"), event.get("text"))
+            self.response("")
+            return
 
     def response(self, body):
         self.send_response(200)
@@ -95,6 +104,38 @@ class RequestHandler(BaseHTTPRequestHandler):
             return ""
         return rsp_dict.get("tenant_access_token", "")
 
+    def send_group_message(self, token, chat_id, text):
+        url = "https://open.feishu.cn/open-apis/message/v4/send/"
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        }
+
+        if text == '年轻人不讲武德':
+            text = "你们耗子尾汁"
+
+        req_body = {
+            "chat_id": chat_id,
+            "msg_type": "text",
+            "content": {
+                "text": text
+            }
+        }
+
+        data = bytes(json.dumps(req_body), encoding='utf8')
+        req = request.Request(url=url, data=data, headers=headers, method='POST')
+        try:
+            response = request.urlopen(req)
+        except Exception as e:
+            print(e.read().decode())
+            return
+
+        rsp_body = response.read().decode('utf-8')
+        rsp_dict = json.loads(rsp_body)
+        code = rsp_dict.get("code", -1)
+        if code != 0:
+            print("send message error, code = ", code, ", msg =", rsp_dict.get("msg", ""))
     def send_message(self, token, open_id, text):
         url = "https://open.feishu.cn/open-apis/message/v4/send/"
 
@@ -123,6 +164,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         code = rsp_dict.get("code", -1)
         if code != 0:
             print("send message error, code = ", code, ", msg =", rsp_dict.get("msg", ""))
+
 
 def run():
     port = 8000
