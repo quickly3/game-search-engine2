@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\spider;
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Model\Elastic\ElasticModel;
