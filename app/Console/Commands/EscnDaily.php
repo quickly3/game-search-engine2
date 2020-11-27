@@ -47,7 +47,7 @@ class EscnDaily extends Command
     public function handle()
     {
         $shells = [
-            "/bin/sh /home/ubuntu/www/ng-blog/shell/scrapy.sh"
+            "/bin/sh /home/ubuntu/www/ng-blog/shell/escn_new.sh"
         ];
         foreach($shells as $s){
             $status = exec($s);
