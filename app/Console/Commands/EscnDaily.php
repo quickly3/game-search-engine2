@@ -50,8 +50,12 @@ class EscnDaily extends Command
             "/bin/sh /home/ubuntu/www/ng-blog/shell/escn_new.sh"
         ];
         foreach($shells as $s){
-            $status = exec($s);
-            Log::info($status);
+            system($s, $status);
+            if( $status ){
+                Log::info("shell命令执行失败");
+            } else {
+                Log::info("shell命令成功执行");
+            }
         }
     }
 }
