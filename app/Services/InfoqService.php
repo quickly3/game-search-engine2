@@ -124,4 +124,32 @@ class InfoqService
         return $tags;
     }
 
+    public static function getLastDayArticle()
+    {
+
+        $today = date('Y-m-d',strtotime("-1 day"));
+        // $today = "2020-12-09";
+        $es = new ElasticModel("article");
+        $data = [
+            "query" => [
+                "query_string" => [
+                    "query" => "source:escn && created_at:{$today}"
+                ]
+            ]
+        ];
+
+        $params = [
+            "index" => "article",
+            "body" =>  $data
+        ];
+
+        $data = $es->client->search($params);
+        $resp = (object) $data;
+
+        $data = array_map(function($item){ 
+            return $item['_source'];
+        },$resp->hits['hits']);
+        return $data;
+    }
+
 }

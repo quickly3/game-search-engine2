@@ -59,5 +59,5 @@ class EscnService
 
         $cloud_words = array_merge($cloud_words,[]);	
         return $cloud_words;	
-	}
+    }
 }

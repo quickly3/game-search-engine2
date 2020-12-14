@@ -50,7 +50,7 @@ class FSRobotService
             foreach ($resp->data->groups as $k => $v) {
                 dump($v->name);
                 dump($v->chat_id);
-                $this->show_group_info($v->chat_id);
+                // $this->show_group_info($v->chat_id);
             }
         }
     }
@@ -87,8 +87,9 @@ class FSRobotService
         $response = $client->request($method,$url,$options);
         if($response->getStatusCode() === 200){
             $resp = json_decode($response->getBody());
-            $open_ids = array_map(function($item){ return $item->open_id; },$resp->data->members);
-            $this->get_user_info($open_ids);
+            dump($resp);
+            // $open_ids = array_map(function($item){ return $item->open_id; },$resp->data->members);
+            // $this->get_user_info($open_ids);
         }
     }
 
@@ -162,4 +163,134 @@ class FSRobotService
             dump($resp);
         }  
     }
+
+    function sendToBean($title, $articles){
+        $open_id = 'ou_7ba56fd9ecc84f4115ba863607f3d898';
+        $contents = [];
+
+        foreach ($articles as $i => $c) {
+            $index = $i+1;
+            $contents[] = [
+                [
+                    "tag"=> "text",
+                    "un_escape"=>true,
+                    "text"=> "{$index}. {$c['title']}"                    
+                ]
+            ];
+            $contents[] = [
+                [
+                    "tag"=> "text",
+                    "un_escape"=>true,
+                    "text"=> "{$c['url']}"                      
+                ]
+            ];
+            $contents[] = [
+                [
+                    "tag"=> "text",
+                    "un_escape"=>true,
+                    "text"=> ""                      
+                ]
+            ];
+        }
+
+        if(empty($contents)){
+            return null;
+        }
+
+        $body = [
+            "open_id"=>$open_id,
+            "msg_type"=>"post",
+            "content"=>[
+                "post"=>[
+                    "zh_cn"=>[
+                        "title"=>$title,
+                        "content"=> $contents
+                    ]
+                ]
+            ]
+        ];
+
+        $method = 'POST';
+        $url = 'https://open.feishu.cn/open-apis/message/v4/send/';
+        $options = [
+            'json'=>$body,
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request($method,$url,$options);
+
+        if($response->getStatusCode() === 200){
+            $resp = json_decode($response->getBody());
+            dump($resp);
+        }  
+    }
+
+    function sendToGroup($title, $articles){
+        $chat_id = 'oc_59384feeb3ab194bdc0f9f385da7354f';
+        $contents = [];
+
+        foreach ($articles as $i => $c) {
+            $index = $i+1;
+            $contents[] = [
+                [
+                    "tag"=> "text",
+                    "un_escape"=>true,
+                    "text"=> "{$index}. {$c['title']}"                    
+                ]
+            ];
+            $contents[] = [
+                [
+                    "tag"=> "text",
+                    "un_escape"=>true,
+                    "text"=> "{$c['url']}"                      
+                ]
+            ];
+            $contents[] = [
+                [
+                    "tag"=> "text",
+                    "un_escape"=>true,
+                    "text"=> ""                      
+                ]
+            ];
+        }
+
+        if(empty($contents)){
+            return null;
+        }
+
+        $body = [
+            "chat_id"=>$chat_id,
+            "msg_type"=>"post",
+            "content"=>[
+                "post"=>[
+                    "zh_cn"=>[
+                        "title"=>$title,
+                        "content"=> $contents
+                    ]
+                ]
+            ]
+        ];
+
+        $method = 'POST';
+        $url = 'https://open.feishu.cn/open-apis/message/v4/send/';
+        $options = [
+            'json'=>$body,
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request($method,$url,$options);
+
+        if($response->getStatusCode() === 200){
+            $resp = json_decode($response->getBody());
+            dump($resp);
+        }  
+    }
+
+
 }

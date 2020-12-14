@@ -14,6 +14,7 @@
     "babenkoivan/scout-elasticsearch-driver": "4.0.3",
     "elasticsearch/elasticsearch": "7.3.0",
     "fideloper/proxy": "^4.0",
+    "guzzlehttp/guzzle": "^7.2",
     "laravel/framework": "5.8.*",
     "laravel/scout": "7.2.1",
     "laravel/tinker": "^1.0",

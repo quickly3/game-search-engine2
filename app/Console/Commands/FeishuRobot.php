@@ -48,9 +48,11 @@ class FeishuRobot extends Command
 
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        // $fs_robot->show_group_info("oc_59384feeb3ab194bdc0f9f385da7354f");
 
-        $fs_robot->sendUserHtml("ou_7ba56fd9ecc84f4115ba863607f3d898");
+        $fs_robot->show_chart_list();
+        
+        // $fs_robot->show_group_info("oc_59384feeb3ab194bdc0f9f385da7354f");
+        // $fs_robot->sendUserHtml("ou_7ba56fd9ecc84f4115ba863607f3d898");
 
     }
 }

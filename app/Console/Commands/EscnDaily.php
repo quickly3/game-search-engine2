@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Model\Elastic\ElasticModel;
-use Illuminate\Support\Facades\Log;
+use App\Services\FSRobotService;
+use App\Services\InfoqService;
 
 
 class EscnDaily extends Command
@@ -46,16 +46,24 @@ class EscnDaily extends Command
      */
     public function handle()
     {
-        $shells = [
-            "/bin/sh /home/ubuntu/www/ng-blog/shell/escn_new.sh"
-        ];
-        foreach($shells as $s){
-            system($s, $status);
-            if( $status ){
-                Log::info("shell命令执行失败");
-            } else {
-                Log::info("shell命令成功执行");
+
+        $info =new InfoqService();
+        $articles = $info::getLastDayArticle();
+        $group = [];
+        foreach ($articles as $a) {
+            if(!isset($group[$a['summary']])){
+                $group[$a['summary']] = [$a];
+            }else{
+                $group[$a['summary']][] = $a;
             }
+        }
+
+        $fs_robot = new FSRobotService();
+        $fs_robot->set_app_access_token();
+
+        foreach ($group as $title => $articles) {
+            // $fs_robot->sendToGroup($title, $articles);
+            $fs_robot->sendToBean($title, $articles);
         }
     }
 }
