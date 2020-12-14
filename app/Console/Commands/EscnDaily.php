@@ -62,8 +62,8 @@ class EscnDaily extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            // $fs_robot->sendToGroup($title, $articles);
-            $fs_robot->sendToBean($title, $articles);
+            $fs_robot->sendToGroup($title, $articles);
+            // $fs_robot->sendToBean($title, $articles);
         }
     }
 }
