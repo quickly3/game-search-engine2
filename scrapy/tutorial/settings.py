@@ -30,8 +30,8 @@ FEED_EXPORT_ENCODING = 'utf-8'
 LOG_LEVEL = 'DEBUG'
 
 to_day = datetime.datetime.now()
-log_file_path = 'log/scrapy_{}_{}_{}.log'.format(to_day.year, to_day.month, to_day.day)
-LOG_FILE = log_file_path
+# log_file_path = 'log/scrapy_{}_{}_{}.log'.format(to_day.year, to_day.month, to_day.day)
+# LOG_FILE = log_file_path
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
