@@ -33,3 +33,4 @@ public/3rdpartylicenses.txt
 .editorconfig
 public/assets/images/fanju/*
 .vscode/settings.json
+jianshu_slugs.npy
