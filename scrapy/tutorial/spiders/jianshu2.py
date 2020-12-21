@@ -132,3 +132,6 @@ class AliSpider(scrapy.Spider):
 
         if url != False:
             yield scrapy.Request(url, headers=self.headers1)
+        else :
+            print("end")
+            

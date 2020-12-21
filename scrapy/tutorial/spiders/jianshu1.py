@@ -85,7 +85,6 @@ class JianShu1Spider(scrapy.Spider):
     def start_requests(self):
         yield self.query()
 
-
     def parse(self, response):
         rs = json.loads(response.text)
         slugs = []
@@ -93,7 +92,7 @@ class JianShu1Spider(scrapy.Spider):
             slugs.append(entity['slug'])
 
         if self.q in self.slugs :
-            self.slugs[self.q].append(slugs)
+            self.slugs[self.q] = self.slugs[self.q] + slugs
         else :
             self.slugs[self.q] = slugs
 
@@ -102,4 +101,3 @@ class JianShu1Spider(scrapy.Spider):
             np.save(fileName, self.slugs)
         else:
             yield self.query()
-
