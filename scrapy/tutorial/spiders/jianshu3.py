@@ -101,7 +101,7 @@ class AliSpider(scrapy.Spider):
 
     def parse(self, response, id):
 
-        if response.status == 400:
+        if response.status != 400:
             resp = response.xpath('//*[@id="__NEXT_DATA__"]/text()').get()
             resp = json.loads(resp)
 
