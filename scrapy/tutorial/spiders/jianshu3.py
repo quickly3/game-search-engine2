@@ -13,6 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
+import time, datetime
 
 # settings.py
 from dotenv import load_dotenv
@@ -28,27 +29,6 @@ es_pwd = os.getenv("ES_PWD")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
 es_logger.setLevel(50)
 
-
-# import tuorial.settings as sp_setting
-
-
-env_path = Path('..')/'.env'
-load_dotenv(dotenv_path=env_path)
-
-# DB_DATABASE = os.getenv("DB_DATABASE")
-# DB_USERNAME = os.getenv("DB_USERNAME")
-# DB_PASSWORD = os.getenv("DB_PASSWORD")
-
-# engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD+"@localhost/Game?charset=utf8", encoding='utf-8', echo=False)
-# engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD +
-#                        "@localhost/"+DB_DATABASE+"?charset=utf8", encoding='utf-8', echo=False)
-# Base = declarative_base()
-
-
-# Session_class = sessionmaker(bind=engine)
-# Session = Session_class()
-
-
 class AliSpider(scrapy.Spider):
     # 593
     name = "jianshu3"
@@ -56,6 +36,9 @@ class AliSpider(scrapy.Spider):
     domain = 'https://www.jianshu.com'
     url_list = []
     slug_end = True
+    current = 0
+    handle_httpstatus_list = [404]
+    scroll_id = None
 
     def __init__(self):
 
@@ -72,83 +55,75 @@ class AliSpider(scrapy.Spider):
             "x-requested-with": "XMLHttpRequest"
         }
 
+    def getCount(self):
+        body = {
+            "query":{
+                "query_string": {
+                    "query": "source:jianshu && -created_at:*"
+                }
+            }
+        }
+        resp = es.count(index="article",body=body)
+        self.count = resp['count']
+
     def getSlugUrl(self):
+        self.current+=1
 
-        if self.slug_end:
+        if self.scroll_id == None:
+            body = {
+                "query":{
+                    "query_string": {
+                        "query": "source:jianshu && -created_at:*"
+                    }
+                }
+            }
+            query = es.search(index="article",body=body,size=1,scroll="1m")
+            self.scroll_id = query['_scroll_id']
+        else:
 
-            if len(self._coll['slugs']) == 0:
-                if len(self.collection) == 0:
-                    self.crawler.engine.close_spider(self, '关闭爬虫')
-                else:
-                    self._coll = self.collection.pop(0)
+            query = es.scroll(scroll_id=self.scroll_id,scroll="1m")
+            self.scroll_id = query['_scroll_id']            
 
-            self._slug = self._coll['slugs'].pop(0)
-            self.slug_end = False
-
-        self._page = self._page+1
-        return self.url_model.substitute(slug=self._slug, page=self._page)
+        hits = query['hits']['hits']
+        if len(hits) >0 :
+            return {
+                "url":hits[0]['_source']['url'],
+                "id":hits[0]['_id']
+            }
+        else:
+            return False
 
     def start_requests(self):
-        url = self.getSlugUrl()
-        yield scrapy.Request(url, headers=self.headers1)
+        self.getCount()
+        data = self.getSlugUrl()
+        print(str(self.current)+"/"+str(self.count));
+        yield scrapy.Request(url=data['url'], headers=self.headers1, callback=lambda response, id=data['id']: self.parse(response, id))
 
-    def init_page_crawl(self):
-        self.slug_end = True
-        self.url_list = []
-        self._page = 0
+    def parse(self, response, id):
 
-    def parse(self, response):
+        if response.status == 400:
+            resp = response.xpath('//*[@id="__NEXT_DATA__"]/text()').get()
+            resp = json.loads(resp)
 
-        objs = response.xpath(
-            '//li/div')
-        bulk = []
-
-        if len(objs) == 0:
-            self.init_page_crawl()
-
-        for obj in objs:
-            title = obj.xpath('a/text()').get()
-            href = obj.xpath('a/@href').get()
-            desc = obj.xpath('p/text()').get()
-            author = obj.xpath('div/a/text()').get()
-
-            if title == None:
-                continue
-
-            doc = {
-                "title": title.strip(),
-                "url": href,
-                "summary": desc.strip(),
-                "tag": self._coll['tag'],
-                "author": author,
-                # "created_at": href,
-                # "created_year": href,
-                "source": "jianshu",
-                "stars": 0
+            timestamp = resp['props']['initialState']['note']['data']['first_shared_at']
+            timestamp = time.localtime(timestamp)
+            
+            created_at = time.strftime("%Y-%m-%dT%H:%M:%S", timestamp)
+            created_year = time.strftime("%Y", timestamp)
+            updateBody = {
+                "script":{
+                    "inline":"ctx._source.created_at = params.created_at;ctx._source.created_year = params.created_year;",
+                    "lang":"painless",
+                    "params":{
+                        "created_at":created_at,
+                        "created_year":created_year
+                    }
+                }
             }
+            es.update(index='article',id=id,body=updateBody)
 
-            # if href in self.url_list:
-            #     self.init_page_crawl()
-            #     break
+        data = self.getSlugUrl()
+        if data != False:
+            print(str(self.current)+"/"+str(self.count));
+            yield scrapy.Request(url=data['url'], headers=self.headers1, callback=lambda response, id=data['id']: self.parse(response, id))
 
-            self.url_list.append(href)
-
-            bulk.append(
-                {"index": {"_index": "article"}})
-            bulk.append(doc)
-
-        if len(bulk) > 0:
-            es.bulk(index="article",
-                    body=bulk)
-
-        # if self._page == 5:
-        #     self.init_page_crawl()
-
-        url = self.getSlugUrl()
-
-        if url != False:
-            # time.sleep(1)
-            yield scrapy.Request(url, headers=self.headers1)
-        # urls = response.xpath(
-        #     '/html/body/div[1]/div/div[1]/div[2]/ul/li/div/a/@href').getall()
-        # print(urls)
