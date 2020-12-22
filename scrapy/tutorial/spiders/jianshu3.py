@@ -37,7 +37,7 @@ class AliSpider(scrapy.Spider):
     url_list = []
     slug_end = True
     current = 0
-    handle_httpstatus_list = [404]
+    handle_httpstatus_list = [404,503]
     scroll_id = None
 
     def __init__(self):
