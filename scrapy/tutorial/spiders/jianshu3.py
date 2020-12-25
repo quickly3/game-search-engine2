@@ -73,7 +73,7 @@ class AliSpider(scrapy.Spider):
             body = {
                 "query":{
                     "query_string": {
-                        "query": "source:jianshu && -created_at:*"
+                        "query": "source:jianshu && -valid:false && -created_at:*"
                     }
                 }
             }
@@ -101,26 +101,37 @@ class AliSpider(scrapy.Spider):
 
     def parse(self, response, id):
 
+        updateBody = {
+            "script":{
+                "inline":"ctx._source.valid = false;",
+                "lang":"painless"
+            }
+        }
+
         if response.status == 200:
             resp = response.xpath('//*[@id="__NEXT_DATA__"]/text()').get()
-            resp = json.loads(resp)
 
-            timestamp = resp['props']['initialState']['note']['data']['first_shared_at']
-            timestamp = time.localtime(timestamp)
-            
-            created_at = time.strftime("%Y-%m-%dT%H:%M:%S", timestamp)
-            created_year = time.strftime("%Y", timestamp)
-            updateBody = {
-                "script":{
-                    "inline":"ctx._source.created_at = params.created_at;ctx._source.created_year = params.created_year;",
-                    "lang":"painless",
-                    "params":{
-                        "created_at":created_at,
-                        "created_year":created_year
+            if resp:
+                resp = json.loads(resp)
+
+                timestamp = resp['props']['initialState']['note']['data']['first_shared_at']
+                timestamp = time.localtime(timestamp)
+                
+                created_at = time.strftime("%Y-%m-%dT%H:%M:%S", timestamp)
+                created_year = time.strftime("%Y", timestamp)
+                
+                updateBody = {
+                    "script":{
+                        "inline":"ctx._source.created_at = params.created_at;ctx._source.created_year = params.created_year;",
+                        "lang":"painless",
+                        "params":{
+                            "created_at":created_at,
+                            "created_year":created_year
+                        }
                     }
                 }
-            }
-            es.update(index='article',id=id,body=updateBody)
+
+        es.update(index='article',id=id,body=updateBody)
 
         data = self.getSlugUrl()
         if data != False:

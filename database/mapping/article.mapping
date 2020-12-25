@@ -48,6 +48,9 @@ PUT article_20200612
         "type": "text",
         "analyzer": "ik_max_word"
       },
+      "valid":{
+        "type": "boolean"
+      },
       "created_at": {
           "type": "date"
       },
