@@ -35,7 +35,7 @@ class AliSpider(scrapy.Spider):
     url_model = Template(
         "https://www.jianshu.com/search/do?q=${q}&type=note&page=${page}&order_by=published_at")
 
-    page = 100
+    page = 0
 
     refer_model = Template(
         "https://www.jianshu.com/search/do?q=${q}&type=note&page=${page}&order_by=published_at")
