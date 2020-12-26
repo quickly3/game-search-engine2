@@ -35,7 +35,7 @@ class AliSpider(scrapy.Spider):
     url_model = Template(
         "https://www.jianshu.com/search/do?q=${q}&type=note&page=${page}&order_by=published_at")
 
-    page = 0
+    page = 100
 
     refer_model = Template(
         "https://www.jianshu.com/search/do?q=${q}&type=note&page=${page}&order_by=published_at")
@@ -88,6 +88,7 @@ class AliSpider(scrapy.Spider):
         objs = rs['entries']
 
         bulk = []
+        pattern = re.compile(r'<[^>]+>',re.S)
 
         if len(objs) > 0:
 
@@ -98,6 +99,9 @@ class AliSpider(scrapy.Spider):
                 author = obj['user']['nickname']
                 _datetime_arr = obj['first_shared_at'].split(".")
                 created_at = _datetime_arr[0]
+
+                title = pattern.sub('', title)
+                desc = pattern.sub('', desc)
 
                 mat2 = re.search(r"(\d{4})", created_at)
                 created_year = mat2.group(0)
@@ -122,10 +126,10 @@ class AliSpider(scrapy.Spider):
             if len(bulk) > 0:
                 es.bulk(index="article",
                         body=bulk)
-            else:
-                self.index+=1
-                self.page=0
+        else:
+            self.index+=1
+            self.page=0
 
-            if self.index < len(self.c):
-                data = self.getSlugUrl()
-                yield scrapy.Request(data['url'], headers=data['headers'], method='POST')
+        if self.index < len(self.c):
+            data = self.getSlugUrl()
+            yield scrapy.Request(data['url'], headers=data['headers'], method='POST')
