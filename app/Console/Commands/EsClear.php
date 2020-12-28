@@ -61,6 +61,9 @@ class EsClear extends Command
                     ]
                 ]
             ],
+            "sort" => [
+                "created_at" => "desc"
+            ],
             "_source" => ["url"]
         ];
 
@@ -88,10 +91,7 @@ class EsClear extends Command
         foreach ($this->del_ids as $url => $ids) {
             $current++;
             if (count($ids) > 1) {
-
-
                 $_id = $ids[0];
-
                 $params = [
                     "index" => "article",
                     "body" => [
