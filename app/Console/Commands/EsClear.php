@@ -62,7 +62,9 @@ class EsClear extends Command
                 ]
             ],
             "sort" => [
-                "created_at" => "desc"
+                "created_at" => [
+                    "order" => "desc"
+                ]
             ],
             "_source" => ["url"]
         ];
