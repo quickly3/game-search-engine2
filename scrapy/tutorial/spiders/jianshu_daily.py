@@ -6,10 +6,10 @@ import scrapy
 import json
 from string import Template
 import random
-from datetime import datetime
 import os
 from dotenv import load_dotenv
 import re
+import time,datetime
 
 from elasticsearch import Elasticsearch
 from elasticsearch import logger as es_logger
@@ -44,6 +44,8 @@ class AliSpider(scrapy.Spider):
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/${version}.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/${version}.36")
 
     index = 0
+    last_tag_ts = 0
+    toNextTag = False
 
     def getSlugUrl(self):
 
@@ -80,7 +82,32 @@ class AliSpider(scrapy.Spider):
 
     def start_requests(self):
         data = self.getSlugUrl()
+        self.getLastTagDateTime()
+
         yield scrapy.Request(data['url'], headers=data['headers'], method='POST')
+
+    def getLastRecord(self):
+        query_tpl = Template("source:jianshu && tag:${tag}")
+        body = {
+            "query":{
+                "query_string": {
+                    "query": query_tpl.substitute(tag=self.q)
+                }
+            },
+            "sort": [
+                {
+                    "created_at": {
+                        "order": "desc"
+                    }
+                }
+            ],
+            "size": 1
+        }
+        resp = es.search(index="article",body=body)
+        if int(resp['hits']['total']['value']) > 0:
+            created_at = resp['hits']['hits'][0]['_source']['created_at']
+            date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S.%fZ')
+            self.last_tag_ts = date_time_obj.timestamp()
 
     def parse(self, response):
 
@@ -98,6 +125,14 @@ class AliSpider(scrapy.Spider):
                 desc = obj['content']
                 author = obj['user']['nickname']
                 _datetime_arr = obj['first_shared_at'].split(".")
+                date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                ts = date_time_obj.timestamp()
+
+                if ts < self.last_tag_ts:
+                    self.toNextTag = True
+                    print("Too old")
+                    continue
+
                 created_at = _datetime_arr[0]
 
                 title = pattern.sub('', title)
@@ -129,6 +164,11 @@ class AliSpider(scrapy.Spider):
         else:
             self.index+=1
             self.page=0
+
+        if self.toNextTag:
+            self.toNextTag = False
+            self.index+=1
+            self.page=0           
 
         if self.index < len(self.c):
             data = self.getSlugUrl()

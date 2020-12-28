@@ -19,7 +19,6 @@ es_pwd = os.getenv("ES_PWD")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
 es_logger.setLevel(50)
 
-
 class AliSpider(scrapy.Spider):
     # 593
     name = "jianshu_query"
