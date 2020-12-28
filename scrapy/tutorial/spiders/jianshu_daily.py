@@ -82,7 +82,7 @@ class AliSpider(scrapy.Spider):
 
     def start_requests(self):
         data = self.getSlugUrl()
-        self.getLastTagDateTime()
+        self.getLastRecord()
 
         yield scrapy.Request(data['url'], headers=data['headers'], method='POST')
 
@@ -167,6 +167,7 @@ class AliSpider(scrapy.Spider):
 
         if self.toNextTag:
             self.toNextTag = False
+            self.getLastRecord()
             self.index+=1
             self.page=0           
 
