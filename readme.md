@@ -70,3 +70,6 @@ scrapy crawl hugua_sql -a seed=1
 
 
 nohup python nohup.py >> nohup.log 2>&1 &
+
+
+pproxy -l http://:8181 -r socks5://127.0.0.1:10000 -vv

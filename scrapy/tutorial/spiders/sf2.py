@@ -16,7 +16,6 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from dateutil.parser import parse as dateparse
 
-
 # settings.py
 from dotenv import load_dotenv
 from pathlib import Path
