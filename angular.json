@@ -10,8 +10,7 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss",
-          "style": "scss"
+          "styleext": "scss"
         }
       },
       "architect": {
@@ -32,8 +31,7 @@
               "src/styles.scss",
               "node_modules/font-awesome/css/font-awesome.css"
             ],
-            "scripts": [],
-            "aot": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -45,6 +43,8 @@
               ],
               "optimization": true,
               "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -55,10 +55,6 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
                 }
               ]
             }
