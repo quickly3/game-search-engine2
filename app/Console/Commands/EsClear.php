@@ -15,7 +15,7 @@ class EsClear extends Command
      * @var string
      * @translator laravelacademy.org
      */
-    protected $signature = 'EsClear {--source=*}';
+    protected $signature = 'EsClear {source?}';
 
     /**
      * The console command description.
@@ -47,7 +47,11 @@ class EsClear extends Command
     public function handle()
     {
         $this->del_ids = [];
-        $this->source = $this->option("source");
+        $this->source = $this->argument("source");
+
+        if(!$this->source){
+            $this->source = "*";
+        }
 
         $es = new ElasticModel("article", "article");
         $client = $es->client;
