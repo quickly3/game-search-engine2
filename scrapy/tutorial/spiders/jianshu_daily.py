@@ -166,8 +166,9 @@ class AliSpider(scrapy.Spider):
 
         if self.toNextTag:
             self.toNextTag = False
-            self.getLastRecord()
             self.index+=1
+            self.q = self.c[self.index]
+            self.getLastRecord()
             self.page=0           
 
         if self.index < len(self.c):
