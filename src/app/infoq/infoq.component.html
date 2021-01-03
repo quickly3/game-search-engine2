@@ -95,6 +95,10 @@
             <div>
               <div class="icons-sm {{ daily_item.badge_class }}"></div>
               <span class="created" *ngIf="daily_item.created_at">{{ daily_item.created_at | date: "yyyy-MM-dd" }}</span>
+              <span 
+                class="badge badge-primary article_tag"
+                *ngFor="let tag of daily_item.tag"
+              >{{tag}}</span>
             </div>
             <div class="link"><span class="text-secondary">{{ daily_item.url | slice:0:100 }}</span></div>
           </div>

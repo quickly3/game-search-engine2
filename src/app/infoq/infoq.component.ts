@@ -208,6 +208,9 @@ export class InfoqComponent {
                         }
                     }
                 }
+                if (!Array.isArray(item.tag)){
+                    item.tag = [item.tag]
+                }
             });
             // this.escn_list.map(item=>{item.unfold = false});
             this.total_number = data["total"];
