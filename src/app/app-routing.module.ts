@@ -33,8 +33,15 @@ const routes: Routes = [
 ];
 
 const config: ExtraOptions = {
-  useHash: true
-  // enableTracing: true
+    useHash: true
+    // enableTracing: true
+    ,
+    relativeLinkResolution: 'legacy'
+}{
+    useHash: true
+    // enableTracing: true
+    ,
+    relativeLinkResolution: 'legacy'
 };
 
 @NgModule({

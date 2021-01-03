@@ -10,7 +10,7 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class GameDetailComponent {
-    @ViewChild('carousel1', { static: false }) carousel1: any;
+    @ViewChild('carousel1') carousel1: any;
 
     gameService: any;
     game_id: string;
