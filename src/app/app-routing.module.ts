@@ -23,9 +23,6 @@ const routes: Routes = [
   { path: "infoq", component: InfoqComponent },
   { path: "movie", component: MovieComponent },
   { path: "movie/:id", component: MovieDetailComponent },
-
-
-
   { path: "article-editor/:id", component: ArticleEditorComponent },
   { path: "game-detail/:id", component: GameDetailComponent },
   { path: "", redirectTo: "infoq", pathMatch: "full" },
