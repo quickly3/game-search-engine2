@@ -37,7 +37,7 @@ es = Elasticsearch(http_auth=(es_user, es_pwd))
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "infoq_t2"
+    name = "infoq_daily"
 
     mainUrl = "https://www.infoq.cn/public/v1/article/getList"
 
@@ -92,19 +92,25 @@ class AliSpider(scrapy.Spider):
             formdata['score'] = int(score)
         return json.dumps(formdata)
 
+
     def start_requests(self):
         last = {
             "id":self.ids.pop(0),
             "score":0
         }
 
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))*1000
+        self.end_time = start_time + 86400000
+
         yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = last['id']), method="POST",headers=self.headers, callback=lambda response, last=last: self.parse(response, last))
 
     def parse(self, response, last):
         resp = json.loads(response.text)
-
         logging.info("_id: "+str(last['id']))
         logging.info("score: "+str(last['score']))
+        self.next_id = False
 
 
         if len(resp['data']) == 0:
@@ -125,6 +131,10 @@ class AliSpider(scrapy.Spider):
                 doc['title'] = item['article_title']
                 doc['url'] = "https://www.infoq.cn/article/"+item['uuid']
                 doc['summary'] = item['article_summary']
+
+                if item['publish_time'] < self.start_time :
+                    self.next_id=True
+                    break;
 
                 doc['created_at'] = datetime.datetime.fromtimestamp(
                     int(item['publish_time'])/1000,None)
@@ -150,7 +160,7 @@ class AliSpider(scrapy.Spider):
 
             last_score = resp['data'][-1]['score']
             
-            if last['score'] == last_score:
+            if (last['score'] == last_score ) or self.next_id:
                 if len(self.ids)>0:
                     new_last = {
                         "id":self.ids.pop(0),
