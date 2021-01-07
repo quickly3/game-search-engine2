@@ -98,20 +98,19 @@ class AliSpider(scrapy.Spider):
             "id":self.ids.pop(0),
             "score":0
         }
-
+        print(last['id'])
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
-        start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))*1000
-        self.end_time = start_time + 86400000
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))*1000
+        self.end_time = self.start_time + 86400000
 
         yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = last['id']), method="POST",headers=self.headers, callback=lambda response, last=last: self.parse(response, last))
 
     def parse(self, response, last):
         resp = json.loads(response.text)
-        logging.info("_id: "+str(last['id']))
-        logging.info("score: "+str(last['score']))
+        # logging.info("_id: "+str(last['id']))
+        # logging.info("score: "+str(last['score']))
         self.next_id = False
-
 
         if len(resp['data']) == 0:
             if len(self.ids)>0:
@@ -119,6 +118,7 @@ class AliSpider(scrapy.Spider):
                     "id":self.ids.pop(0),
                     "score":0
                 }
+                print(new_last['id'])
                 yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = new_last['id']), method="POST",headers=self.headers, callback=lambda response, last=new_last: self.parse(response, last))
             else:
                 print("spider end 1")
@@ -135,6 +135,11 @@ class AliSpider(scrapy.Spider):
                 if item['publish_time'] < self.start_time :
                     self.next_id=True
                     break;
+
+                if item['publish_time'] > self.end_time :
+                    self.next_id=True
+                    break;
+
 
                 doc['created_at'] = datetime.datetime.fromtimestamp(
                     int(item['publish_time'])/1000,None)
@@ -166,6 +171,7 @@ class AliSpider(scrapy.Spider):
                         "id":self.ids.pop(0),
                         "score":0
                     }
+                    print(new_last['id'])
                     yield scrapy.FormRequest(url=self.mainUrl,body=self.get_body(id = new_last['id']), method="POST",headers=self.headers, callback=lambda response, last=new_last: self.parse(response, last))
                 else:
                     print("spider end 2")
