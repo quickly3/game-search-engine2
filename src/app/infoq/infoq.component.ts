@@ -269,6 +269,12 @@ export class InfoqComponent {
         this.getTags();
     };
 
+    keywordSearch(){
+        this.current_page = 1;
+        this.search();
+    }
+
+
     searchDatasSimple = (term: any) => {
         const params = {
             page: "1",
