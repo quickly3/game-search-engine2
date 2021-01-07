@@ -106,7 +106,7 @@ class AliSpider(scrapy.Spider):
         resp = es.search(index="article",body=body)
         if int(resp['hits']['total']['value']) > 0:
             created_at = resp['hits']['hits'][0]['_source']['created_at']
-            date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S')
+            date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
             self.last_tag_ts = date_time_obj.timestamp()
 
     def parse(self, response):
@@ -148,7 +148,7 @@ class AliSpider(scrapy.Spider):
                     "author": author,
                     "source": "jianshu",
                     "stars": 0,
-                    "created_at":created_at,
+                    "created_at":created_at+"Z",
                     "created_year":created_year,
                     "valid":True
                 }
