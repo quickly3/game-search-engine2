@@ -155,7 +155,7 @@ class AliSpider(scrapy.Spider):
                         createdAt = str(createdAt).replace(" 00:00:00","T00:00:00Z")
 
                     if isDatetime != None:
-                        createdAt = "T00:00:00Z"
+                        createdAt = createdAt+"T00:00:00Z"
 
                     detail = item.xpath(
                         './/p[contains(@class,"excerpt")]/text()').get()
