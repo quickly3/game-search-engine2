@@ -177,7 +177,7 @@ class AliSpider(scrapy.Spider):
                         createdAt = str(createdAt).replace(" 00:00:00","T00:00:00Z")
 
                     if isDatetime != None:
-                        createdAt = "T00:00:00Z"
+                        createdAt = createdAt+"T00:00:00Z"
 
                     date_time_obj = datetime.datetime.strptime(createdAt, '%Y-%m-%dT%H:%M:%SZ')
                     ts = date_time_obj.timestamp()
