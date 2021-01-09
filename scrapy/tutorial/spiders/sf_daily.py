@@ -31,7 +31,7 @@ es = Elasticsearch(http_auth=(es_user, es_pwd))
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "sf2"
+    name = "sf_daily"
 
     # 593
     source = "sf"
@@ -89,27 +89,48 @@ class AliSpider(scrapy.Spider):
         "upgrade-insecure-requests": "1",
     }
 
-    # urlTmpl = Template(
-    #     'https://www.oschina.net/search?scope=blog&q=${tagId}&onlyme=0&onlytitle=0&sort_by_time=1&p=${page}')
     urlTmpl = Template(
         'https://segmentfault.com/t/${tagId}/blogs?page=${page}'
         )
 
     page = 1
-    # max_page = 0
+    last_tag_ts = 0
+    toNextTag = False
 
     def start_requests(self):
 
         self.tar_arr = []
-
         for item in self.tagId:
             self.tar_arr.append({'k': item, 'v': self.tagId[item]})
 
         self._target = self.tar_arr.pop()
-
+        self.getLastRecord()
         url = self.get_url()
-
         yield scrapy.Request(url, headers=self.headers)
+
+
+    def getLastRecord(self):
+        query_tpl = Template("source:sf && tag:${tag}")
+        body = {
+            "query":{
+                "query_string": {
+                    "query": query_tpl.substitute(tag=self._target['k'])
+                }
+            },
+            "sort": [
+                {
+                    "created_at": {
+                        "order": "desc"
+                    }
+                }
+            ],
+            "size": 1
+        }
+        resp = es.search(index="article",body=body)
+        if int(resp['hits']['total']['value']) > 0:
+            created_at = resp['hits']['hits'][0]['_source']['created_at']
+            date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
+            self.last_tag_ts = date_time_obj.timestamp()
 
     def get_url(self):
 
@@ -148,6 +169,7 @@ class AliSpider(scrapy.Spider):
                         min = createdAt.replace("分钟前","").strip()
                         c = time.time() - int(min) * 60
                         createdAt = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime(c))
+                        print(createdAt)
 
                     if isCurYear != None:
                         createdAt = "2021-"+createdAt
@@ -156,6 +178,16 @@ class AliSpider(scrapy.Spider):
 
                     if isDatetime != None:
                         createdAt = "T00:00:00Z"
+
+                    date_time_obj = datetime.datetime.strptime(createdAt, '%Y-%m-%dT%H:%M:%SZ')
+                    ts = date_time_obj.timestamp()
+                    print(ts)
+                    print(self.last_tag_ts)
+
+                    if ts < self.last_tag_ts:
+                        self.toNextTag = True
+                        print("Too old")
+                        continue
 
                     detail = item.xpath(
                         './/p[contains(@class,"excerpt")]/text()').get()
@@ -177,9 +209,12 @@ class AliSpider(scrapy.Spider):
                 if len(bulk) > 0:
                     es.bulk(index="article", body=bulk)
 
-            if len(items) == 0:
+            if (len(items) == 0) or self.toNextTag:
+                self.toNextTag = False
                 if len(self.tar_arr) > 0:
                     self._target = self.tar_arr.pop()
+                    self.getLastRecord()
+
                     self.page = 1
                     url = self.get_url()
                     yield scrapy.Request(url, headers=self.headers)
