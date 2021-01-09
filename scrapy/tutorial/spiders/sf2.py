@@ -8,6 +8,7 @@ import sqlalchemy
 import os
 import time
 import datetime
+import re
 
 from string import Template
 from sqlalchemy import create_engine
@@ -28,29 +29,13 @@ es_user = os.getenv("ES_USER")
 es_pwd = os.getenv("ES_PWD")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
 
-env_path = Path('..')/'.env'
-load_dotenv(dotenv_path=env_path)
-
-DB_DATABASE = os.getenv("DB_DATABASE")
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-
-# engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD+"@localhost/Game?charset=utf8", encoding='utf-8', echo=False)
-engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD +
-                       "@localhost/"+DB_DATABASE+"?charset=utf8", encoding='utf-8', echo=False)
-Base = declarative_base()
-
-
-Session_class = sessionmaker(bind=engine)
-Session = Session_class()
-
-
 class AliSpider(scrapy.Spider):
     # 593
     name = "sf2"
 
     # 593
     source = "sf"
+    handle_httpstatus_list = [404,503]
 
     today = time.strftime("%Y-%m-%d")
     yesterday = (datetime.date.today() +
@@ -60,16 +45,35 @@ class AliSpider(scrapy.Spider):
 
     tagId = {
         "python": "python",
-        # "php": "php",
-        # "javascript": "javascript",
-        # "css": "css",
-        # "typescript":   "typescript",
-        # "blockchain": "区块链",
-        # "postgresql": "postgresql",
-        # "linux": "linux"
+        "php": "php",
+        "javascript": "javascript",
+        "css": "css",
+        "typescript":   "typescript",
+        "blockchain": "区块链",
+        "postgresql": "postgresql",
+        "linux": "linux",
+        "ubuntu": "ubuntu",
+        "node": "node.js",
+        "html": "html",
+        "html5": "html5",
+        "css3": "css3",
+        "ai": "人工智能",
+        "npl": "自然语言处理",
+        "dataprocessing": "数据挖掘",
+        "bigdata": "大数据",
+        "machine-learn": "机器学习",
+        "deep-learn": "深度学习",
+        "mysql": "mysql",
+        "composer": "composer",
+        "nginx": "nginx",
+        "db": "数据库",
+        "postgresql": "postgresql",
+        "redis": "redis",
+        "elasticsearch": "elasticsearch",
+        "solr": "solr",
+        "search-engine": "搜索引擎",
+        "elastic": "elastic"
     }
-
-    tag = "python"
 
     headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -113,60 +117,74 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
+        
+        if response.status == 200:
+            items = response.xpath(
+                '//*[@class="summary"]')
 
-        items = response.xpath(
-            '//*[@class="summary"]')
+            if len(items) > 0:
+                bulk = []
+                for item in items:
 
-        print(len(items))
+                    title_a = item.xpath('.//h2/a')
+                    titles = title_a.xpath('.//text()').getall()
+                    title = "".join(titles)
+                    title = title.strip()
 
-        if len(items) > 0:
-            bulk = []
-            for item in items:
+                    url = title_a.xpath('.//@href').get()
+                    createdAtZone = item.xpath('.//ul/li/span/text()').getall()
+                    author = item.xpath('.//ul/li/span/a/text()').get()
+                    createdAt = createdAtZone[1].strip().replace(" ","").replace("发布于","").replace("\n","")
 
-                title_a = item.xpath('.//h2/a')
+                    isToday = re.match(r'今天', createdAt)
+                    isMinAgo = re.match(r'.*分钟前.*', createdAt)
+                    isCurYear = re.match(r'.*.月.日.*', createdAt)
 
-                titles = title_a.xpath('.//text()').getall()
+                    if isToday != None:
+                        createdAt = self.today + "T" +createdAt.replace("今天","") + ":00Z"
 
-                title = "".join(titles)
+                    if isMinAgo != None:
+                        min = createdAt.replace("分钟前","").strip()
+                        c = time.time() - int(min) * 60
+                        createdAt = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime(c))
+                        print(createdAt)
 
-                title = title.strip()
+                    if isCurYear != None:
+                        createdAt = "2021-"+createdAt
+                        createdAt = datetime.datetime.strptime(createdAt, "%Y-%m月%d日")
+                        createdAt = str(createdAt).replace(" 00:00:00","T00:00:00Z")
 
-                url = title_a.xpath('.//@href').get()
+                    detail = item.xpath(
+                        './/p[contains(@class,"excerpt")]/text()').get()
 
-                details = item.xpath(
-                    './/p[@class="excerpt mt10"][1]/text()').getall()
+                    doc = {}
+                    doc['title'] = title
+                    doc['url'] = "https://segmentfault.com/"+url
+                    doc['summary'] = detail
+                    doc['tag'] = self._target['k']
+                    doc['source'] = self.source
+                    doc['author'] = author
+                    doc['created_at'] = createdAt
+                    doc['stars'] = 0
 
-                detail = "".join(details)
-                detail = detail.strip()
+                    bulk.append(
+                        {"index": {"_index": "article"}})
+                    bulk.append(doc)
 
-                doc = {}
+                if len(bulk) > 0:
+                    es.bulk(index="article", body=bulk)
 
-                doc['title'] = title
-                doc['url'] = "https://segmentfault.com/"+url
-                doc['summary'] = detail
+            if len(items) == 0:
+                if len(self.tar_arr) > 0:
+                    self._target = self.tar_arr.pop()
+                    self.page = 1
+                    url = self.get_url()
+                    yield scrapy.Request(url, headers=self.headers)
 
-                doc['tag'] = self._target['k']
-                doc['source'] = self.source
-
-                doc['stars'] = 0
-
-                bulk.append(
-                    {"index": {"_index": "article"}})
-                bulk.append(doc)
-
-            # if len(bulk) > 0:
-                # es.bulk(index="article", body=bulk)
-
-        if len(items) == 0:
-            if len(self.tar_arr) > 0:
-                self._target = self.tar_arr.pop()
-                self.page = 1
+                else:
+                    print("Spider closeed")
+            else:
+                self.page = self.page+1
                 url = self.get_url()
                 yield scrapy.Request(url, headers=self.headers)
-
-            else:
-                print("Spider closeed")
-        else:
-            self.page = self.page+1
-            url = self.get_url()
-            yield scrapy.Request(url, headers=self.headers)
+            
