@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\EscnToEs::class,
         Commands\EscnWordCloud::class,
         Commands\EsClear::class,
+        Commands\EsClearLast::class,
         Commands\EsReindex::class,
         Commands\EsTrans::class,
         Commands\EscnDaily::class,
