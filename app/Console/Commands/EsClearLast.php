@@ -47,7 +47,7 @@ class EsClearLast extends Command
     public function handle()
     {
         $this->del_ids = [];
-        $lastDay = date("Y-m-d");
+        $lastDay = date("Y-m-d",strtotime("-1 day"));
 
         $es = new ElasticModel("article", "article");
         $client = $es->client;
