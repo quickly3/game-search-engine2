@@ -159,7 +159,7 @@ class AliSpider(scrapy.Spider):
 
                     isToday = re.match(r'今天', createdAt)
                     isMinAgo = re.match(r'.*分钟前.*', createdAt)
-                    isCurYear = re.match(r'.*.月.日.*', createdAt)
+                    isCurYear = re.match(r'\d{1,2}月\d{1,2}日', createdAt)
                     isDatetime = re.match(r'\d{4}-\d{1,2}-\d{1,2}', createdAt)
 
                     if isToday != None:
@@ -181,8 +181,6 @@ class AliSpider(scrapy.Spider):
 
                     date_time_obj = datetime.datetime.strptime(createdAt, '%Y-%m-%dT%H:%M:%SZ')
                     ts = date_time_obj.timestamp()
-                    print(ts)
-                    print(self.last_tag_ts)
 
                     if ts < self.last_tag_ts:
                         self.toNextTag = True
