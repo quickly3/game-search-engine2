@@ -31,8 +31,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('EscnDaily')->dailyAt('18:00');
-        // $schedule->command('pwd')->everyMinute();    
+        $schedule->command('EscnDaily')->dailyAt('18:00');
     }
 
     /**
