@@ -134,11 +134,11 @@ class AliSpider(scrapy.Spider):
 
                 if item['publish_time'] < self.start_time :
                     self.next_id=True
-                    break;
+                    continue;
 
                 if item['publish_time'] > self.end_time :
                     self.next_id=True
-                    break;
+                    continue;
 
 
                 doc['created_at'] = datetime.datetime.fromtimestamp(

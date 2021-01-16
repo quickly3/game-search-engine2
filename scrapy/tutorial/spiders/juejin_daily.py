@@ -31,124 +31,151 @@ es_pwd = os.getenv("ES_PWD")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
 es_logger.setLevel(50)
 
-DB_DATABASE = os.getenv("DB_DATABASE")
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-
-engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD +
-                       "@localhost/"+DB_DATABASE+"?charset=utf8", encoding='utf-8', echo=False)
-Base = declarative_base()
-
-
-Session_class = sessionmaker(bind=engine)
-Session = Session_class()
-
-
 class AliSpider(scrapy.Spider):
     # 593
     name = "juejin_daily"
 
     domain = 'https://juejin.im'
+    postUrl = "https://juejin.cn/post/"
 
-    tagId = {
-        "python": "559a7227e4b08a686d25744f",
-        "php": "555e9a84e4b00c57d9955e1b",
-        "javascript": "6809640398105870343",
-        "css": "555eadc1e4b00c57d9962402",
-        "typescript": "55e7d5a360b2d687f60ae13a",
-        "blockchain": "578c92bb2e958a0054375bc9",
-        "game": "55e7cae700b0114357d01cb0",
-        "security": "5597a500e4b08a686ce5efc3",
-        "postgresql": "555e9b12e4b00c57d995654e"
-    }
+    tags = [
+        {"id":"6809640406058270733","tag":"设计"},
+        # {"id":"6809641131131797511","tag":"大数据"},
+        # {"id":"6809640708618584077","tag":"Kafka"},
+        # {"id":"6809640390522568717","tag":"PostgreSQL"},
+        # {"id":"6809640543006490638","tag":"TypeScript"},
+        # {"id":"6809640485192204295","tag":"数据可视化"},
+        # {"id":"6809640526904557582","tag":"数据挖掘"},
+        # {"id":"6809640428866895886","tag":"图片资源"},
+        # {"id":"6809640424882307080","tag":"创业"},
+        # {"id":"6809640396788858887","tag":"Docker"},
+        # {"id":"6809640373774712840","tag":"Git"},
+        # {"id":"6809640653266354190","tag":"微信小程序"},
+        # {"id":"6809640482725953550","tag":"程序员"},
+        # {"id":"6809640794794754061","tag":"Elasticsearch"},
+        # {"id":"6809640728428281869","tag":"Scrapy"},
+        # {"id":"6809640571171241998","tag":"Laravel"},
+        # {"id":"6809640642101116936","tag":"人工智能"},
+        # {"id":"6809640537583255559","tag":"React Native"},
+        # {"id":"6809640578855206920","tag":"Mac"},
+        # {"id":"6809640381920051207","tag":"Chrome"},
+        # {"id":"6809640505912066055","tag":"正则表达式"},
+        # {"id":"6809640525595934734","tag":"机器学习"},
+        # {"id":"6809640516439769095","tag":"黑客"},
+        # {"id":"6809640366896054286","tag":"MySQL"},
+        # {"id":"6809640540305358862","tag":"HTTP"},
+        # {"id":"6809640380334604295","tag":"Google"},
+        # {"id":"6809640411473117197","tag":"ECMAScript 6"},
+        # {"id":"6809640458684203021","tag":"全栈"},
+        # {"id":"6809640419505209358","tag":"开源"},
+        # {"id":"6809640392770715656","tag":"HTML"},
+        # {"id":"6809640467731316749","tag":"设计模式"},
+        # {"id":"6809640402103042061","tag":"前端框架"},
+        # {"id":"6809640499062767624","tag":"算法"},
+        # {"id":"6809640456868085768","tag":"代码规范"},
+        # {"id":"6809640375880253447","tag":"GitHub"},
+        # {"id":"6809637776909139982","tag":"Angular.js"},
+        # {"id":"6809640528267706382","tag":"Webpack"},
+        # {"id":"6809640357354012685","tag":"React.js"},
+        # {"id":"6809640361531539470","tag":"Node.js"},
+        # {"id":"6809640394175971342","tag":"CSS"},
+        # {"id":"6809640398105870343","tag":"JavaScript"},
+        # {"id":"6809640365574848526","tag":"PHP"},
+        # {"id":"6809640488954494983","tag":"Nginx"},
+        # {"id":"6809640501776482317","tag":"架构"},
+        # {"id":"6809640385980137480","tag":"Linux"},
+        # {"id":"6809640462614265863","tag":"产品经理"},
+        # {"id":"6809640600502009863","tag":"数据库"},
+        # {"id":"6809640621406421006","tag":"产品"},
+        # {"id":"6809640574459576334","tag":"运维"},
+        # {"id":"6809640408797167623","tag":"后端"},
+        # {"id":"6809640407484334093","tag":"前端"},
+        # {"id":"6809640448827588622","tag":"Python"},
+    ]
 
-    url = "https://api.juejin.cn/recommend_api/v1/article/recommend_cate_tag_feed"
+    url = "https://api.juejin.cn/recommend_api/v1/article/recommend_tag_feed"
 
     cursor = 0
 
+
     def start_requests(self):
 
-        self.tar_arr = []
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+        self.end_time = self.start_time + 86400
 
-        for item in self.tagId:
-            self.tar_arr.append({'k': item, 'v': self.tagId[item]})
-
-        self._target = self.tar_arr.pop()
-        
-        payload = {
-            "cate_id": "6809637767543259144",
-            "cursor": "0",
-            "id_type": 2,
-            "limit": 20,
-            "sort_type": 300,
-            "tag_id": "6809640407484334093"
-        }
-
+        self._target = self.tags.pop()
+        payload = self.getPayload()
         yield JsonRequest(self.url,data=payload)
 
+    def getPayload(self):
+        t = time.time()
+        payload = {
+            "cursor": str(self.cursor),
+            "id_type": 2,
+            "sort_type": 300,
+            "tag_ids": [self._target['id']],
+        }
+        return payload;
 
     def parse(self, response):
+
+        self.next_tag = False
 
         rs = json.loads(response.text)
         items = rs['data']
 
+        self.cursor = rs['cursor']
+            
+        has_more = rs['has_more']
+        bulk = []
+
         for item in items:
-            print(item['article_info'])
-            doc['title'] = item['article_info']['title']
+            article_info = item['article_info']
+            doc = {}
+            doc['title'] = article_info['title']
+            doc['url'] = self.postUrl+article_info['article_id']
+            doc['summary'] = article_info['brief_content']
+            _datetime = datetime.datetime.fromtimestamp(int(article_info['ctime']),None)
+            ts = int(article_info['ctime'])
 
+            doc['created_at'] = _datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        #
-        # resp = json.loads(response.text)
+            if ts < self.start_time :
+                self.next_tag=True
+                has_more = False;
+                print("too old")
+                continue;
 
-        # if len(resp['d']['entrylist']) > 0:
+            if ts > self.end_time :
+                self.next_tag=True
+                has_more = False;
+                print("too new")
 
-        #     bulk = []
-        #     for item in resp['d']['entrylist']:
-        #         doc = {}
+                continue;
 
-        #         
+            doc['created_year'] = _datetime.strftime("%Y")
+            doc['tag'] = self._target['tag']
+            doc['source'] = 'juejin'
+            doc['source_id'] = item['article_id']
+            doc['stars'] = 0
 
-        #         doc['url'] = item['originalUrl']
-        #         doc['summary'] = item['summaryInfo']
-        #         doc['created_at'] = item['createdAt']
-        #         _date = dateparse(item['createdAt'])
+            bulk.append(
+                {"index": {"_index": "article"}})
+            bulk.append(doc)
 
-        #         year = _date.year
+        if len(bulk) > 0:
+            es.bulk(index="article", body=bulk)
 
-        #         doc['created_year'] = year
-
-        #         doc['tag'] = self._target['k']
-        #         doc['source'] = 'juejin'
-
-        #         doc['source_id'] = item['objectId']
-
-        #         doc['stars'] = 0
-
-        #         bulk.append(
-        #             {"index": {"_index": "article"}})
-        #         bulk.append(doc)
-
-        #     if len(bulk) > 0:
-        #         es.bulk(index="article", body=bulk)
-
-        #     self.page = self.page+1
-
-        #     url = self.get_url()
-        #     yield scrapy.Request(url)
-
-        # else:
-
-            # if len(self.tar_arr) > 0:
-            #     self._target = self.tar_arr.pop()
-            #     self.page = 0
-            #     url = self.get_url()
-            #     yield scrapy.Request(url)
-
-            # else:
-            #     print("Spider closeed")
-
-            # slugs = []
-            # for entity in rs['entries']:
-            #     slugs.append(entity['slug'])
-
-            # print(slugs)
+        if has_more == True:
+            payload = self.getPayload()
+            yield JsonRequest(self.url,data=payload)
+        else:
+            if len(self.tags) > 0:
+                self.cursor = 0
+                self._target = self.tags.pop()
+                payload = self.getPayload()
+                yield JsonRequest(self.url,data=payload)
+            else:
+                print("Crawler end");

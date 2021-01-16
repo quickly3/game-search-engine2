@@ -143,8 +143,6 @@ class AliSpider(scrapy.Spider):
 
         if len(bulk) > 0:
             es.bulk(index="article", body=bulk)
-        payload = self.getPayload()
-        yield JsonRequest(self.url,data=payload)
 
         if has_more == True:
             payload = self.getPayload()
