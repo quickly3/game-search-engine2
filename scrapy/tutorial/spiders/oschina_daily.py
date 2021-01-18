@@ -35,6 +35,12 @@ class AliSpider(scrapy.Spider):
     domain = 'https://www.oschina.net'
     # 593
     source = "oschina"
+    
+    custom_settings = {
+        "DOWNLOADER_MIDDLEWARES":{
+            'tutorial.middlewares.MyproxiesSpiderMiddleware': 543
+        }
+    }
 
     today = time.strftime("%Y-%m-%d")
     yesterday = (datetime.date.today() +

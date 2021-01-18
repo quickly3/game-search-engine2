@@ -9,7 +9,7 @@
 from scrapy import signals
 import random
 
-
+# http://www.nimadaili.com/https/
 IPPOOL = [
 
     {"ipaddr": "58.220.95.35:10174"},
