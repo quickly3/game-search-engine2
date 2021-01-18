@@ -30,7 +30,7 @@ es = Elasticsearch(http_auth=(es_user, es_pwd))
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "oschina"
+    name = "oschina_daily"
 
     domain = 'https://www.oschina.net'
     # 593
@@ -51,11 +51,11 @@ class AliSpider(scrapy.Spider):
         "blockchain": "区块链",
         "game": "游戏",
         "security": "安全",
-        # "postgresql": "postgresql",
-        # "linux": "linux",
-        # "dp": "设计模式",
-        # "design": "架构",
-        # "algorithm": "算法",
+        "postgresql": "postgresql",
+        "linux": "linux",
+        "dp": "设计模式",
+        "design": "架构",
+        "algorithm": "算法",
     }
 
     tag = "python"
@@ -63,9 +63,8 @@ class AliSpider(scrapy.Spider):
     urlTmpl = Template(
         'https://www.oschina.net/search?scope=blog&q=${tagId}&onlyme=0&onlytitle=0&sort_by_time=1&p=${page}')
 
-    page = 177
+    page = 64
     pageSize = 100
-    # max_page = 0
 
     def start_requests(self):
 
@@ -78,6 +77,11 @@ class AliSpider(scrapy.Spider):
         }
 
         self.tar_arr = []
+
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+        self.end_time = self.start_time + 86400
 
         for item in self.tagId:
             self.tar_arr.append({'k': item, 'v': self.tagId[item]})
@@ -94,7 +98,8 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
-
+        next_tag = False
+        
         items = response.xpath(
             './/div[has-class("search-list-container")]/div[@class="item"]')
 
@@ -156,6 +161,18 @@ class AliSpider(scrapy.Spider):
                 
                 _date = dateparse(createAt)
 
+                ts = _date.timestamp()
+
+                if ts < self.start_time :
+                    next_tag=True
+                    print("too old")
+                    continue;
+
+                if ts > self.end_time :
+                    next_tag=True
+                    print("too new")
+                    continue;
+
                 doc['created_at'] = _date.strftime("%Y-%m-%dT%H:%M:%SZ")
 
                 year = _date.year
@@ -174,7 +191,7 @@ class AliSpider(scrapy.Spider):
             if len(bulk) > 0:
                 es.bulk(index="article", body=bulk)
 
-        if (self.page == self.max_page) or (len(items) == 0):
+        if (self.page == self.max_page) or (len(items) == 0) or next_tag:
             if len(self.tar_arr) > 0:
                 self._target = self.tar_arr.pop()
                 self.page = 1

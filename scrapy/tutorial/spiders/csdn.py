@@ -52,7 +52,7 @@ class AliSpider(scrapy.Spider):
     tag = "python"
 
     urlTmpl = Template(
-        'https://so.csdn.net/so/search/s.do?q=${tagId}&t=blog&p=${page}')
+        'https://so.csdn.net/so/search/blog?q=${tagId}&t=blog&p=${page}')
 
     page = 1
     pageSize = 100
@@ -78,7 +78,7 @@ class AliSpider(scrapy.Spider):
     def parse(self, response):
         items = response.xpath('.//dl[has-class("search-list")]')
         
-        print(response.text)
+        print(len(items))
 
         if len(items) > 0:
 
