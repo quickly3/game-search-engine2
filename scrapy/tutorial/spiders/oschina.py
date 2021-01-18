@@ -72,12 +72,20 @@ class AliSpider(scrapy.Spider):
         headers = {
             "Accept": "text/html, */*; q=0.01",
             "Accept-Encoding": "gzip, deflate, br",
-            "X-Requested-With": "XMLHttpRequest",
-            # "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
             "Accept-Language": "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
             "Host": "www.oschina.net",
-            "Pragma": "no-cache"
+            "Pragma": "no-cache",
+            "Referer": "https://www.oschina.net/search?scope=blog&q=python&onlyme=0&onlytitle=0&sort_by_time=1&p=1",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "X-PJAX": "true",
+            "X-PJAX-Container": ".search-container",
+            "X-Requested-With": "XMLHttpRequest",
         }
 
         self.tar_arr = []
