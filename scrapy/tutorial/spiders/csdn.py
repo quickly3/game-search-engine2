@@ -30,6 +30,11 @@ es_pwd = os.getenv("ES_PWD")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
 es_logger.setLevel(50)
 
+def clearHighLight(string):
+    string = string.replace("<em>", "")
+    string = string.replace("</em>", "")
+    return string
+
 class AliSpider(scrapy.Spider):
     # 593
     name = "csdn"
@@ -43,18 +48,18 @@ class AliSpider(scrapy.Spider):
         "javascript": "javascript",
         "css": "css",
         "typescript": "typescript",
-        "blockchain": "区块链",
         "game": "游戏",
         "security": "安全",
+        "blockchain": "区块链",
         "postgresql": "postgresql"
     }
 
     tag = "python"
 
     urlTmpl = Template(
-        'https://so.csdn.net/so/search/blog?q=${tagId}&t=blog&p=${page}')
+        'https://so.csdn.net/api/v2/search?q=${tagId}&t=blog&p=${page}')
 
-    page = 1
+    page = 2
     pageSize = 100
 
     def start_requests(self):
@@ -76,41 +81,20 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
-        items = response.xpath('.//dl[has-class("search-list")]')
-        
-        print(len(items))
+        resp = json.loads(response.text)
+        items = resp['result_vos']
 
         if len(items) > 0:
-
             bulk = []
             for item in items:
-                title_a = item.xpath('.//div[@class="limit_width"]/a[1]')
-                titles = title_a.xpath('.//text()').getall()
-                title = "".join(titles)
-
-                url = title_a.xpath('.//@href').get()
-                details = item.xpath(
-                    './/dd[@class="search-detail"]/text()').getall()
-                detail = "".join(details)
-
-                createAt = item.xpath(
-                    './/dd[@class="author-time"]/span[@class="date"]/text()').get()
-
-                createAt = createAt.replace("日期：", "")
-
                 doc = {}
+                doc['title'] = clearHighLight(item['title'])
+                doc['url'] = item['url']
+                doc['summary'] = item['description']
+                doc['author'] = clearHighLight(item['nickname'])
 
-                doc['title'] = title
-
-                doc['url'] = url
-                doc['summary'] = detail
-
-                doc['created_at'] = createAt
-                _date = dateparse(createAt)
-
-                year = _date.year
-
-                doc['created_year'] = year
+                doc['created_at'] = item['create_time_str']+"T00:00:00Z"
+                doc['created_year'] = dateparse(item['create_time_str']).year
 
                 doc['tag'] = self._target['k']
                 doc['source'] = self.source
@@ -128,9 +112,7 @@ class AliSpider(scrapy.Spider):
             self.page = self.page+1
             url = self.get_url()
             yield scrapy.Request(url)
-
         else:
-
             if len(self.tar_arr) > 0:
                 self._target = self.tar_arr.pop()
                 self.page = 1
