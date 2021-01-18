@@ -5,7 +5,7 @@ url = "https://www.oschina.net/search?scope=blog&q=python&onlyme=0&onlytitle=0&s
 headers = {
     "Accept": "text/html, */*; q=0.01",
     "Accept-Encoding": "gzip, deflate, br",
-    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36 OPR/48.0.2685.52",
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     "Accept-Language": "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7",
     "Cache-Control": "no-cache",
