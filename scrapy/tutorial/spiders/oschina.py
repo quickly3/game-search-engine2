@@ -42,10 +42,6 @@ class AliSpider(scrapy.Spider):
     last2day = (datetime.date.today() +
                 datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
 
-    custom_settings = {
-        "COOKIES_ENABLED":True
-    }
-
     tagId = {
         "python": "python",
         "php": "php",
@@ -86,6 +82,7 @@ class AliSpider(scrapy.Spider):
         "X-PJAX": "true",
         "X-PJAX-Container": ".search-container",
         "X-Requested-With": "XMLHttpRequest",
+        "Cookie": "_ga=GA1.2.186448612.1576823180; __gads=ID=9759499603a966d2:T=1587006988:S=ALNI_MaHUCvHBDV4_9p3hvYSCpQ0OHpY1A; _user_behavior_=7c8e975a-2707-44d8-93af-28d6d29010d4; Hm_lvt_a411c4d1664dd70048ee98afe7b28f0b=1610426992; Hm_lpvt_a411c4d1664dd70048ee98afe7b28f0b=1610965672"
     }
 
     def start_requests(self):
