@@ -45,7 +45,7 @@ def clearHighLight(string):
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "cnblogs"
+    name = "cb_daily"
 
     domain = 'https://s.geekbang.org/'
 
@@ -184,12 +184,10 @@ class AliSpider(scrapy.Spider):
 
                 doc['title'] = title
                 doc['url'] = url
-
                 doc['tag'] = self.tag
                 doc['summary'] = desp
                 doc['source'] = self.source
                 doc['source_score'] = 0
-                
                 doc['author'] = author
 
                 bulk.append(
