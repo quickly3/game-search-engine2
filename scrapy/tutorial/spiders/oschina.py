@@ -68,7 +68,7 @@ class AliSpider(scrapy.Spider):
     headers = {
         "Accept": "text/html, */*; q=0.01",
         "Accept-Encoding": "gzip, deflate, br",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/72.0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/72.0",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         "Accept-Language": "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7",
         "Cache-Control": "no-cache",
