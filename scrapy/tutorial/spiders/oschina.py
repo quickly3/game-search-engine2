@@ -52,14 +52,14 @@ class AliSpider(scrapy.Spider):
         "javascript": "javascript",
         "css": "css",
         "typescript": "typescript",
-        "blockchain": "区块链",
-        "game": "游戏",
-        "security": "安全",
-        "postgresql": "postgresql",
-        "linux": "linux",
-        "dp": "设计模式",
-        "design": "架构",
-        "algorithm": "算法",
+        # "blockchain": "区块链",
+        # "game": "游戏",
+        # "security": "安全",
+        # "postgresql": "postgresql",
+        # "linux": "linux",
+        # "dp": "设计模式",
+        # "design": "架构",
+        # "algorithm": "算法",
     }
 
     tag = "python"
