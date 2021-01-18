@@ -10,6 +10,7 @@ import json
 import time
 from dateutil.parser import parse as dateparse
 import datetime
+import re
 
 
 from sqlalchemy import create_engine
@@ -89,7 +90,7 @@ class AliSpider(scrapy.Spider):
             for item in items:
                 doc = {}
                 doc['title'] = clearHighLight(item['title'])
-                doc['url'] = item['url']
+                doc['url'] = re.sub(r'\?.*','',item['url'])
                 doc['summary'] = clearHighLight(item['description'])
                 doc['author'] = clearHighLight(item['nickname'])
 

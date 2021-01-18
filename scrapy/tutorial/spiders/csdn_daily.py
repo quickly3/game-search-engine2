@@ -89,7 +89,7 @@ class AliSpider(scrapy.Spider):
             for item in items:
                 doc = {}
                 doc['title'] = clearHighLight(item['title'])
-                doc['url'] = item['url']
+                doc['url'] = re.sub(r'\?.*','',item['url'])
                 doc['summary'] = clearHighLight(item['description'])
                 doc['author'] = clearHighLight(item['nickname'])
 
