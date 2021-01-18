@@ -90,7 +90,7 @@ class AliSpider(scrapy.Spider):
                 doc = {}
                 doc['title'] = clearHighLight(item['title'])
                 doc['url'] = item['url']
-                doc['summary'] = item['description']
+                doc['summary'] = clearHighLight(item['description'])
                 doc['author'] = clearHighLight(item['nickname'])
 
                 doc['created_at'] = item['create_time_str']+"T00:00:00Z"
