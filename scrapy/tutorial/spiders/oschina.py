@@ -35,6 +35,7 @@ class AliSpider(scrapy.Spider):
     domain = 'https://www.oschina.net'
     # 593
     source = "oschina"
+    handle_httpstatus_list = [403]
 
     today = time.strftime("%Y-%m-%d")
     yesterday = (datetime.date.today() +
@@ -48,14 +49,14 @@ class AliSpider(scrapy.Spider):
         "javascript": "javascript",
         "css": "css",
         "typescript": "typescript",
-        # "blockchain": "区块链",
-        # "game": "游戏",
-        # "security": "安全",
-        # "postgresql": "postgresql",
-        # "linux": "linux",
-        # "dp": "设计模式",
-        # "design": "架构",
-        # "algorithm": "算法",
+        "blockchain": "区块链",
+        "game": "游戏",
+        "security": "安全",
+        "postgresql": "postgresql",
+        "linux": "linux",
+        "dp": "设计模式",
+        "design": "架构",
+        "algorithm": "算法",
     }
 
     tag = "python"
@@ -84,7 +85,7 @@ class AliSpider(scrapy.Spider):
         "X-Requested-With": "XMLHttpRequest",
         "Cookie": "_ga=GA1.2.186448612.1576823180; __gads=ID=9759499603a966d2:T=1587006988:S=ALNI_MaHUCvHBDV4_9p3hvYSCpQ0OHpY1A; _user_behavior_=7c8e975a-2707-44d8-93af-28d6d29010d4; Hm_lvt_a411c4d1664dd70048ee98afe7b28f0b=1610426992; Hm_lpvt_a411c4d1664dd70048ee98afe7b28f0b=1610965672"
     }
-    
+
     def start_requests(self):
 
         self.tar_arr = []

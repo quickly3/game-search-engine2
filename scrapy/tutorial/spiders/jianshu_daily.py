@@ -51,7 +51,6 @@ class AliSpider(scrapy.Spider):
 
         self.page+=1
         self.q = self.c[self.index]
-
         version = 530+random.randint(0, 9)
 
         url = self.url_model.substitute(q=self.q, page=self.page)
