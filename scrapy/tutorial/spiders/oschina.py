@@ -32,6 +32,12 @@ class AliSpider(scrapy.Spider):
     # 593
     name = "oschina"
 
+    custom_settings = {
+        "DOWNLOADER_MIDDLEWARES":{
+            'tutorial.middlewares.MyproxiesSpiderMiddleware': 543
+        }
+    }
+
     domain = 'https://www.oschina.net'
     # 593
     source = "oschina"
