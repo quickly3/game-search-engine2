@@ -57,7 +57,7 @@ class AliSpider(scrapy.Spider):
     tag = "python"
 
     urlTmpl = Template(
-        'https://so.csdn.net/api/v2/search?q=${tagId}&t=blog&p=${page}&s=0&tm=90&lv=-1&ft=0&l=&u=')
+        'https://so.csdn.net/api/v2/search?q=${tagId}&t=blog&p=${page}&s=0&tm=30&lv=-1&ft=0&l=&u=')
 
     page = 2
     pageSize = 100
