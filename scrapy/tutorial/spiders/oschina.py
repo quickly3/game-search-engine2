@@ -95,7 +95,7 @@ class AliSpider(scrapy.Spider):
 
         url = self.get_url()
 
-        yield scrapy.Request(url,headers=headers)
+        yield scrapy.Request(url)
 
     def get_url(self):
 
@@ -188,11 +188,11 @@ class AliSpider(scrapy.Spider):
                 self._target = self.tar_arr.pop()
                 self.page = 1
                 url = self.get_url()
-                yield scrapy.Request(url,headers=headers)
+                yield scrapy.Request(url)
 
             else:
                 print("Spider closeed")
         else:
             self.page = self.page+1
             url = self.get_url()
-            yield scrapy.Request(url,headers=headers)
+            yield scrapy.Request(url)
