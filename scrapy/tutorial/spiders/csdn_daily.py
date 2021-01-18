@@ -10,6 +10,7 @@ import json
 import time
 from dateutil.parser import parse as dateparse
 import datetime
+import re
 
 
 from sqlalchemy import create_engine
