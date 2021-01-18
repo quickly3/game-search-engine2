@@ -26,7 +26,7 @@ proxy = {
     "http":"122.195.254.114:4207"
 }
 
-r = requests.get(url,headers=headers)
+r = requests.get(url,headers=headers,proxies=proxy)
 
 
 print(r.status_code)
