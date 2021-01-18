@@ -23,7 +23,7 @@ headers = {
 }
 
 proxy = {
-    "http":"122.195.254.114:4207"
+    "https":"58.220.95.35:10174"
 }
 
 r = requests.get(url,headers=headers,proxies=proxy)
