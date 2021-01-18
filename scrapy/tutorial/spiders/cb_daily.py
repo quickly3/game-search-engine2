@@ -36,15 +36,7 @@ log_level = os.getenv("ES_LOG")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
 es_logger.setLevel(50)
 
-
-def clearHighLight(string):
-    string = string.replace("<em>", "")
-    string = string.replace("</em>", "")
-    return string
-
-
 class AliSpider(scrapy.Spider):
-    # 593
     name = "cb_daily"
 
     domain = 'https://s.geekbang.org/'
@@ -125,6 +117,13 @@ class AliSpider(scrapy.Spider):
         self.tag = self.tag_arr.pop()
         self.cateId = self.tagId[self.tag]['cid']
 
+
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+        self.end_time = self.start_time + 86400
+
+
         formdata = self.get_formdata()
 
         temp = json.dumps(formdata)
@@ -182,17 +181,30 @@ class AliSpider(scrapy.Spider):
                     doc['created_at'] = date_time_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
                     doc['created_year'] = date_time_obj.strftime("%Y")
 
-                doc['title'] = title
-                doc['url'] = url
-                doc['tag'] = self.tag
-                doc['summary'] = desp
-                doc['source'] = self.source
-                doc['source_score'] = 0
-                doc['author'] = author
+                    ts = date_time_obj.timestamp()
 
-                bulk.append(
-                    {"index": {"_index": "article"}})
-                bulk.append(doc)
+                    if ts < self.start_time :
+                        next_tag=True
+                        print("too old")
+                        continue;
+
+                    if ts > self.end_time :
+                        next_tag=True
+                        print("too new")
+                        continue;
+
+
+                    doc['title'] = title
+                    doc['url'] = url
+                    doc['tag'] = self.tag
+                    doc['summary'] = desp
+                    doc['source'] = self.source
+                    doc['source_score'] = 0
+                    doc['author'] = author
+
+                    bulk.append(
+                        {"index": {"_index": "article"}})
+                    bulk.append(doc)
 
         else:
             print("Next")

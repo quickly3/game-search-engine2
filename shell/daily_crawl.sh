@@ -7,6 +7,8 @@ nohup python3 -m scrapy crawl jianshu_daily >> /home/ubuntu/www/ng-blog/storage/
 nohup python3 -m scrapy crawl infoq_daily >> /home/ubuntu/www/ng-blog/storage/logs/infoq_daily.log 2>&1
 nohup python3 -m scrapy crawl sf_daily >> /home/ubuntu/www/ng-blog/storage/logs/sf_daily.log 2>&1
 nohup python3 -m scrapy crawl juejin_daily >> /home/ubuntu/www/ng-blog/storage/logs/juejin_daily.log 2>&1
+nohup python3 -m scrapy crawl cb_daily >> /home/ubuntu/www/ng-blog/storage/logs/cb_daily.log 2>&1
+
 
 
 cd /home/ubuntu/www/ng-blog

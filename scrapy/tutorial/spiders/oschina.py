@@ -28,31 +28,6 @@ es_pwd = os.getenv("ES_PWD")
 es = Elasticsearch(http_auth=(es_user, es_pwd))
 # es_logger.setLevel(50)
 
-env_path = Path('..')/'.env'
-load_dotenv(dotenv_path=env_path)
-
-DB_DATABASE = os.getenv("DB_DATABASE")
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-
-# engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD+"@localhost/Game?charset=utf8", encoding='utf-8', echo=False)
-engine = create_engine("mysql+pymysql://"+DB_USERNAME+":"+DB_PASSWORD +
-                       "@localhost/"+DB_DATABASE+"?charset=utf8", encoding='utf-8', echo=False)
-Base = declarative_base()
-
-
-Session_class = sessionmaker(bind=engine)
-Session = Session_class()
-
-
-# class Game(Base):
-#     __tablename__ = 'EsDaily'
-#     id = Column(Integer, primary_key=True)
-#     title = Column(String(200))
-#     link = Column(String(200))
-#     state = Column(String(200))
-
-
 class AliSpider(scrapy.Spider):
     # 593
     name = "oschina"
@@ -68,19 +43,19 @@ class AliSpider(scrapy.Spider):
                 datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
 
     tagId = {
-        # "python": "python",
+        "python": "python",
         "php": "php",
-        # "javascript": "javascript",
-        # "css": "css",
-        # "typescript": "typescript",
-        # "blockchain": "区块链",
-        # "game": "游戏",
-        # "security": "安全",
-        # "postgresql": "postgresql",
-        # "linux": "linux",
-        # "dp": "设计模式",
-        # "design": "架构",
-        # "algorithm": "算法",
+        "javascript": "javascript",
+        "css": "css",
+        "typescript": "typescript",
+        "blockchain": "区块链",
+        "game": "游戏",
+        "security": "安全",
+        "postgresql": "postgresql",
+        "linux": "linux",
+        "dp": "设计模式",
+        "design": "架构",
+        "algorithm": "算法",
     }
 
     tag = "python"
@@ -119,12 +94,10 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
-        #
-        # resp = json.loads(response.text)
+
         items = response.xpath(
             './/div[has-class("search-list-container")]/div[@class="item"]')
 
-        # if self.page == 1:
         self.max_page = response.xpath(
             './/a[has-class("page-num-item")][last()]/text()').get()
 
@@ -183,7 +156,7 @@ class AliSpider(scrapy.Spider):
                 
                 _date = dateparse(createAt)
 
-                doc['created_at'] = _date.strftime("%Y-%m-%d")
+                doc['created_at'] = _date.strftime("%Y-%m-%dT%H:%M:%SZ")
 
                 year = _date.year
 
