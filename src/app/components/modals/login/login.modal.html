@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Profile deletion</h4>
+    <button
+        type="button"
+        class="close"
+        aria-describedby="modal-title"
+        (click)="modal.dismiss('Cross click')"
+    >
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <input
+            type="email"
+            ngbAutofocus
+            [(ngModel)]="email"
+            class="form-control"
+            id="user"
+            placeholder="user"
+        />
+    </div>
+    <div class="form-group">
+        <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="password"
+            id="pwd"
+            placeholder="password"
+        />
+    </div>
+    <div *ngIf="message != ''" class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+</div>
+<div class="modal-footer">
+    <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.dismiss('cancel click')"
+    >
+        Cancel
+    </button>
+    <button type="button" class="btn btn-danger" (click)="login()">
+        Ok
+    </button>
+</div>
