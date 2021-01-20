@@ -36,11 +36,11 @@ class AliSpider(scrapy.Spider):
     # 593
     source = "oschina"
     
-    custom_settings = {
-        "DOWNLOADER_MIDDLEWARES":{
-            'tutorial.middlewares.MyproxiesSpiderMiddleware': 543
-        }
-    }
+    # custom_settings = {
+    #     "DOWNLOADER_MIDDLEWARES":{
+    #         'tutorial.middlewares.MyproxiesSpiderMiddleware': 543
+    #     }
+    # }
 
     today = time.strftime("%Y-%m-%d")
     yesterday = (datetime.date.today() +
