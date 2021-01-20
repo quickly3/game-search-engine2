@@ -3,10 +3,9 @@ import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import { AppRoutingModule } from "app/app-routing.module";
-import { AppComponent } from "app/app.component";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
 import { ComponentsModule } from "./components/components.module";
-import { ModalsModule } from "./components/modals/modals.module";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { MainPipe } from "./pipe/main-pipe.module";
 
@@ -18,7 +17,6 @@ import { MainPipe } from "./pipe/main-pipe.module";
         HttpClientModule,
         AppRoutingModule,
         ComponentsModule,
-        ModalsModule,
         NgbModule,
         MainPipe
     ],

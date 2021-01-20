@@ -12,7 +12,7 @@ import {
     tap,
     catchError
 } from "rxjs/operators";
-import { InfoqService } from "app/api/infoq.service";
+import { InfoqService } from "../api/infoq.service";
 import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
