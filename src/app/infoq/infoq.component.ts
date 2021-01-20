@@ -13,7 +13,7 @@ import {
     catchError
 } from "rxjs/operators";
 import { InfoqService } from "app/api/infoq.service";
-import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: "infoq",
@@ -28,23 +28,20 @@ export class InfoqComponent {
     current_page = 1;
     row = 20;
     took = 0;
-    show_more= false;
+    show_more=false;
 
     keywords = "";
     words_cloud;
     InfoqService;
-    _tag= "all";
+    _tag='all';
     _source;
     ngbTypeahead;
-    startDate = "";
-    endDate = "";
-
 
     search_by_keywords;
     modelChanged = new Subject<string>();
     @ViewChild("instance", {static: true})instance: NgbTypeahead;
 
-    tags = [];
+    tags = []
 
     tags_i18n = [
         {text: "All", i18n: "全部"},
@@ -95,16 +92,16 @@ export class InfoqComponent {
     }
 
     @HostListener("window:keydown", ["$event"])
-    handleKeyboardEvent(event: KeyboardEvent) {
-        if (event.key === "ArrowLeft"){
-            if (this.current_page !== 1){
+    handleKeyboardEvent(event: KeyboardEvent) { 
+        if(event.key === "ArrowLeft"){
+            if(this.current_page !== 1){
                 this.current_page--;
                 this.pageChange();
             }
         }
 
-        if (event.key === "ArrowRight"){
-            if (this.current_page < this.total_number){
+        if(event.key === "ArrowRight"){
+            if(this.current_page < this.total_number){
                 this.current_page++;
                 this.pageChange();
             }
@@ -158,26 +155,26 @@ export class InfoqComponent {
     };
 
     getTags = function() {
-        console.log(this._source.title);
+        console.log(this._source.title)
         this.InfoqService.getTags({
             source: this._source.title
         }).subscribe(tags => {
             let total = 0;
-            const _tags = tags.map((i) => {
+            const _tags = tags.map((i)=>{
 
-                const matchedItem = this.tags_i18n.find((item) => {
-                    return item.text == i.key;
-                });
+                const matchedItem = this.tags_i18n.find((item)=>{  
+                    return item.text == i.key
+                })
                 total += i.doc_count;
                 return {
                     text: i.key,
                     count: i.doc_count,
-                    i18n: matchedItem ? matchedItem.i18n : i.key
-                };
-            });
+                    i18n: matchedItem?matchedItem.i18n:i.key
+                }
+            })
 
             this.tags = _tags;
-            this.tags.unshift({text: "all", i18n: "全部", count: total});
+            this.tags.unshift({text: "all", i18n: "全部",count:total})
             this._tag = this.tags[0].text;
         });
     };
@@ -192,13 +189,11 @@ export class InfoqComponent {
     };
 
     search = function() {
-        const params = {
+        let params = {
             page: "" + this.current_page,
             keywords: this.keywords,
             tag: this._tag,
-            source: this._source.title,
-            startDate: this.startDate,
-            endDate: this.endDate,
+            source: this._source.title
         };
 
         this.InfoqService.getDailyList(params).subscribe(data => {
@@ -214,7 +209,7 @@ export class InfoqComponent {
                     }
                 }
                 if (!Array.isArray(item.tag)){
-                    item.tag = [item.tag];
+                    item.tag = [item.tag]
                 }
             });
             // this.escn_list.map(item=>{item.unfold = false});
@@ -227,14 +222,14 @@ export class InfoqComponent {
 
     pageChange = () => {
         this.search();
-    }
+    };
 
     starsChange = (stars, item) => {
         if (parseInt(item.stars, 10) !== stars) {
             item.stars = stars;
             this.InfoqService.starsChange({ item: item }).subscribe(resp => {});
         }
-    }
+    };
 
     wordsCloudToKeyWords = function(word) {
         this.current_page = 1;
@@ -254,7 +249,7 @@ export class InfoqComponent {
                     })
                 )
             )
-        )
+        );
 
     selectTag = function(tag) {
         this._tag = tag;
@@ -266,7 +261,7 @@ export class InfoqComponent {
 
     selectSource = function(source) {
         this._source = source;
-        this._tag = "all";
+        this._tag = 'all'
         this.keywords = "";
         this.current_page = 1;
         this.search();
@@ -292,7 +287,7 @@ export class InfoqComponent {
                 return titles;
             })
         );
-    }
+    };
 
     autoComplete = (text$: Observable<string>) => text$.pipe(
         debounceTime(300),
@@ -301,5 +296,5 @@ export class InfoqComponent {
                 keywords: term,
             })
         )
-    )
+    );
 }
