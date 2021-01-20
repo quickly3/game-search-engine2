@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from "@angular/core";
 
 import { Observable, of } from "rxjs";
 import { debounceTime, map, switchMap, tap, catchError } from "rxjs/operators";
-import { GameService } from "../api/game.service";
+import { GameService } from "app/api/gameService";
 
 @Component({
     // tslint:disable-next-line: component-selector

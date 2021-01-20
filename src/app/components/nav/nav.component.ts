@@ -1,6 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { LoginModalComponent } from "../modals/login/login.modal";
+
+const MODALS = {
+    login: LoginModalComponent
+};
 
 @Component({
     selector: "app-nav",
@@ -14,9 +19,16 @@ export class NavComponent implements OnInit {
     }
 
     ngOnInit() {
+        // console.log(this.router);
+        // this.router.url.then()
+        // this.router.url.subscribe(url => console.log(url[0].path));
     }
 
     toggleNav() {
         this.navShow = !this.navShow;
+    }
+
+    open(name: string) {
+        this._modalService.open(MODALS[name]);
     }
 }
