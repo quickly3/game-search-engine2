@@ -7,6 +7,7 @@ import { AppRoutingModule } from "app/app-routing.module";
 import { FormsModule } from "@angular/forms";
 import { ComponentsModule } from "../components/components.module";
 import { MainPipe } from "../pipe/main-pipe.module";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 const PAGES_COMPONENTS = [
     InfoqComponent
@@ -20,7 +21,8 @@ const PAGES_COMPONENTS = [
         AppRoutingModule,
         BootstrapModule,
         ComponentsModule,
-        MainPipe
+        MainPipe,
+        NgbModule
         // AngularFontAwesomeModule
     ],
     declarations: [...PAGES_COMPONENTS]

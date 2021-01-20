@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "app/app-routing.module";
 import { AppComponent } from "app/app.component";
-import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { ComponentsModule } from "./components/components.module";
 import { ModalsModule } from "./components/modals/modals.module";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -18,7 +17,6 @@ import { MainPipe } from "./pipe/main-pipe.module";
         BrowserAnimationsModule,
         HttpClientModule,
         AppRoutingModule,
-        AngularFontAwesomeModule,
         ComponentsModule,
         ModalsModule,
         NgbModule,
