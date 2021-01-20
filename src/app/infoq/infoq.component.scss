@@ -59,7 +59,15 @@ a:hover{
     color: crimson;
     font-style: inherit;
 }
-
+.datepicker{
+    position: relative;
+    margin-top: 5px ;
+    .picker-btn{
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+}
 .icons {
     display: inline-block;
     background-size: 18px 18px;

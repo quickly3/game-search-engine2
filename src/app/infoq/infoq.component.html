@@ -63,6 +63,39 @@
         </div>
       </div>
       <div class="option-title">
+        <span>发布时间:</span>
+      </div>
+      <div class="option-zone source-selector">
+        <div class="datepicker">
+          <input 
+            type="text" 
+            class="form-control form-control-sm" 
+            ngbDatepicker #start_date="ngbDatepicker"
+            placeholder="开始时间"
+            [(ngModel)]="startDate"
+            >
+          <button 
+            class="picker-btn btn btn-primary btn-sm"
+            (click)="start_date.toggle()">
+            <i class="far fa-calendar-alt"></i>
+          </button>
+        </div>
+        <div class="datepicker">
+          <input 
+            type="text" 
+            class="form-control form-control-sm" 
+            ngbDatepicker #end_date="ngbDatepicker"
+            placeholder="结束时间"
+            [(ngModel)]="endDate"
+            >
+          <button 
+            class="picker-btn btn btn-primary btn-sm" 
+            (click)="end_date.toggle()">
+            <i class="far fa-calendar-alt"></i>
+          </button>
+        </div>
+      </div>
+      <div class="option-title">
         <span>词云:</span>
       </div>
       <div class="option-zone words_cloud">
