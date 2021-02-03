@@ -58,7 +58,7 @@ class InfoqController extends Controller
         }
 
         if($endDate){
-            $query_string = $query_string . " && [* TO created_at:{$endDate}]";
+            $query_string = $query_string . " && created_at:[* TO {$endDate}]";
         }
 
 
