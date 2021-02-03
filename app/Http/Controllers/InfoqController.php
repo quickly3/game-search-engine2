@@ -15,6 +15,8 @@ class InfoqController extends Controller
         $tag = $request->input("tag", "all");
         $source = strtolower($request->input("source", "all"));
         $search_type = trim($request->input("search_type", ""));
+        $startDate = $request->input("startDate", null);
+        $endDate = $request->input("endDate", null);
 
         $es = new ElasticModel("article", "article");
 
@@ -51,11 +53,20 @@ class InfoqController extends Controller
             $query_string = $query_string . " && source:{$source}";
         }
 
+        if($startDate){
+            $query_string = $query_string . " && created_at:[{$startDate} TO *]";
+        }
+
+        if($endDate){
+            $query_string = $query_string . " && [* TO created_at:{$endDate}]";
+        }
+
+
         $orders = [
-            "_score" => "desc",
             "created_year" => "desc",
             "created_at" => "desc",
             "title" => "asc",
+            "_score" => "desc",
         ];
 
         $data->orderBy($orders);

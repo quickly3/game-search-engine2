@@ -13,7 +13,7 @@ import {
     catchError
 } from "rxjs/operators";
 import { InfoqService } from "app/api/infoq.service";
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: "infoq",
@@ -36,6 +36,9 @@ export class InfoqComponent {
     _tag='all';
     _source;
     ngbTypeahead;
+    startDate:any
+    endDate:any
+    startDateIsInvalid = false
 
     search_by_keywords;
     modelChanged = new Subject<string>();
@@ -189,12 +192,23 @@ export class InfoqComponent {
     };
 
     search = function() {
+
         let params = {
             page: "" + this.current_page,
             keywords: this.keywords,
             tag: this._tag,
-            source: this._source.title
+            source: this._source.title,
+            startDate: this.startDate,
+            endDate: this.endDate,
         };
+
+        if(this.startDate && this.startDate.year){
+            params.startDate = (new Date(this.startDate.year, this.startDate.month - 1, this.startDate.day)).toISOString();
+        }
+
+        if(this.endDate && this.endDate.year){
+            params.endDate = (new Date(this.endDate.year, this.endDate.month - 1, this.endDate.day+1)).toISOString();
+        }
 
         this.InfoqService.getDailyList(params).subscribe(data => {
             this.escn_list = data["data"];
@@ -253,7 +267,7 @@ export class InfoqComponent {
 
     selectTag = function(tag) {
         this._tag = tag;
-        this.keywords = "";
+        // this.keywords = "";
         this.current_page = 1;
         this.search();
         this.getWordsCloud();
@@ -262,7 +276,7 @@ export class InfoqComponent {
     selectSource = function(source) {
         this._source = source;
         this._tag = 'all'
-        this.keywords = "";
+        // this.keywords = "";
         this.current_page = 1;
         this.search();
         this.getWordsCloud();
@@ -297,4 +311,23 @@ export class InfoqComponent {
             })
         )
     );
+
+    dateSelected = ($event)=>{
+        let startDate = null;
+        let endDate = null;
+
+        if(this.startDate && this.startDate.year){
+            startDate = new NgbDate(this.startDate.year, this.startDate.month, this.startDate.day);  
+        }
+
+        if(this.endDate && this.endDate.year){
+            endDate = new NgbDate(this.endDate.year, this.endDate.month, this.endDate.day); 
+        }
+
+        if(endDate && startDate){
+            if(startDate.after(endDate)){
+
+            }
+        }
+    }
 }
