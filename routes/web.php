@@ -42,6 +42,8 @@ Route::post('infoq/starsChange', 'InfoqController@starsChange');
 Route::get('infoq/autoComplete', 'InfoqController@autoComplete');
 Route::get('infoq/getTags', 'InfoqController@getTags');
 
+Route::get('article/index', 'ArticleController@index');
+
 
 
 Route::get('fanju/list', 'FanjuController@getList');
