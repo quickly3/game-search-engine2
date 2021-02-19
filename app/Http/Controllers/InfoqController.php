@@ -63,10 +63,10 @@ class InfoqController extends Controller
 
 
         $orders = [
+            "_score" => "desc",
             "created_year" => "desc",
             "created_at" => "desc",
             "title" => "asc",
-            "_score" => "desc",
         ];
 
         $data->orderBy($orders);
