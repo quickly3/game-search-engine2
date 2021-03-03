@@ -136,6 +136,10 @@ a:hover{
 
 .option-title{
     font-size: 14px;
+    .date-badge{
+        cursor: pointer;
+        margin: 0 5px;
+    }
 }
 
 .option-zone{

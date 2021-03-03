@@ -13,7 +13,8 @@ import {
     catchError
 } from "rxjs/operators";
 import { InfoqService } from "app/api/infoq.service";
-import { NgbDate, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbDateStruct, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from "moment-timezone";
 
 @Component({
     selector: "infoq",
@@ -36,8 +37,8 @@ export class InfoqComponent {
     _tag='all';
     _source;
     ngbTypeahead;
-    startDate:any
-    endDate:any
+    startDate:NgbDateStruct
+    endDate:NgbDateStruct
     startDateIsInvalid = false
 
     search_by_keywords;
@@ -329,5 +330,41 @@ export class InfoqComponent {
 
             }
         }
+    }
+
+    toDate = (date)=>{
+
+        const today = moment(moment().format("YYYY-MM-DD 00:00:00"));
+        const tomorrow = moment(moment().add(1, 'days').format("YYYY-MM-DD 00:00:00"));
+        const yesterday = moment(moment().subtract(1, 'days').format("YYYY-MM-DD 00:00:00"));
+
+        if(date == 'today'){
+            this.startDate = {
+                year:today.year(),
+                month:today.month()+1,
+                day:today.day(),
+            }
+
+            this.endDate = {
+                year:tomorrow.year(),
+                month:tomorrow.month()+1,
+                day:tomorrow.day(),
+            }
+        }
+
+        if(date == 'yesterday'){
+            this.startDate = {
+                year:yesterday.year(),
+                month:yesterday.month()+1,
+                day:yesterday.day(),
+            }
+
+            this.endDate = {
+                year:today.year(),
+                month:today.month()+1,
+                day:today.day(),
+            }
+        }
+        
     }
 }
