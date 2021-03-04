@@ -1,22 +1,36 @@
 <app-nav></app-nav>
 <div class="container-fluid">
   <div class="search-header">
-    <div class="search-input">
-      <input
-        id="typeahead-basic"
-        type="text"
-        class="form-control form-control-sm"
-        [(ngModel)]="keywords"
-        [focusFirst]="false"
-        (keydown)="searchOnKeydown($event)"
-        [ngbTypeahead]="autoComplete"
-        #instance="ngbTypeahead"
-        placeholder="搜索"
-      />
-      <button type="button" class="btn btn-primary btn-sm" (click)="keywordSearch()">
-        搜索
-        <i class="fas fa-search"></i>
-      </button>
+    <div class="search-input row">
+      <div class="col-md"></div>
+      <div class="col-md">
+        <div class=search-zone>
+          <input
+            id="typeahead-basic"
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="keywords"
+            [focusFirst]="false"
+            (keydown)="searchOnKeydown($event)"
+            [ngbTypeahead]="autoComplete"
+            #instance="ngbTypeahead"
+            placeholder="搜索"
+          />
+          <button type="button" class="btn btn-primary btn-sm" (click)="keywordSearch()">
+            搜索
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-md">
+        <div ngbDropdown class="d-inline-block sort-by">
+          <button class="btn btn-outline-secondary btn-sm" id="dropdownBasic1" ngbDropdownToggle>排序方式</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem *ngFor="let item of sortItems" (click)="selectSortBy(item)">{{item.label}}</button>
+          </div>
+        </div>
+        <span class="text-secondary" style="font-size:14px;">{{sortBy.label}}</span>
+      </div>
     </div>
   </div>
   <div style="font-size: 12px;">

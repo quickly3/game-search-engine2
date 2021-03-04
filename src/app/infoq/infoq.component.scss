@@ -1,13 +1,25 @@
 .search-header {
     .search-input {
-        width: 300px;
-        margin: 0 auto;
-        margin: 10px auto;
         input {
             width: 200px;
             display: inline-block;
             vertical-align: top;
             margin-right: 15px;
+        }
+        .search-zone{
+            width: 300px;
+            margin: 10px auto;
+        }
+        .sort-by{
+            display: inline-block;
+            margin: 10px;
+            .dropdown-menu{
+                padding: 0.1em 0;
+                .dropdown-item{
+                    font-size: 14px;
+                    padding: 5px 10px;
+                }
+            }
         }
     }
 }
@@ -174,3 +186,14 @@ a:hover{
 .source-tool{
 
 }
+
+@media(max-width:669px){
+    .search-header {
+        .search-input {
+            .sort-by{
+                margin: 0 10px 5px 0;
+            }
+        }
+    }
+}
+

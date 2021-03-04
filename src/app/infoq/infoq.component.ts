@@ -71,6 +71,15 @@ export class InfoqComponent {
         {text: "translate", i18n: "翻译"}
     ];
 
+    
+    sortItems = [
+        {value:"multi",label:"综合"},
+        {value:"date",label:"日期"},
+        {value:"score",label:"搜索相关度"},
+    ]
+
+    sortBy = this.sortItems[0]
+
     source_list = [
         { title: "all", source_class: "icon-all", text: "全部" },
         { title: "jianshu", source_class: "icon-jianshu", text: "简书" },
@@ -201,6 +210,7 @@ export class InfoqComponent {
             source: this._source.title,
             startDate: this.startDate,
             endDate: this.endDate,
+            sortBy:this.sortBy
         };
 
         if(this.startDate && this.startDate.year){
@@ -334,22 +344,21 @@ export class InfoqComponent {
 
     toDate = (date)=>{
 
-        const today = moment(moment().format("YYYY-MM-DD 00:00:00"));
-        const tomorrow = moment(moment().add(1, 'days').format("YYYY-MM-DD 00:00:00"));
-        const yesterday = moment(moment().subtract(1, 'days').format("YYYY-MM-DD 00:00:00"));
-        const ago7day = moment(moment().subtract(7, 'days').format("YYYY-MM-DD 00:00:00"));
+        const today = moment();
+        const tomorrow = moment().add(1, 'days');
+        const yesterday = moment().subtract(1, 'd');
+        const ago7day = moment().subtract(7, 'd')
 
         if(date == 'today'){
             this.startDate = {
                 year:today.year(),
                 month:today.month()+1,
-                day:today.day(),
+                day:today.date(),
             }
-
             this.endDate = {
                 year:tomorrow.year(),
                 month:tomorrow.month()+1,
-                day:tomorrow.day(),
+                day:tomorrow.date(),
             }
         }
 
@@ -357,13 +366,12 @@ export class InfoqComponent {
             this.startDate = {
                 year:yesterday.year(),
                 month:yesterday.month()+1,
-                day:yesterday.day(),
+                day:yesterday.date(),
             }
-
             this.endDate = {
                 year:today.year(),
                 month:today.month()+1,
-                day:today.day(),
+                day:today.date(),
             }
         }
 
@@ -371,15 +379,19 @@ export class InfoqComponent {
             this.startDate = {
                 year:ago7day.year(),
                 month:ago7day.month()+1,
-                day:ago7day.day(),
+                day:ago7day.date(),
             }
-
             this.endDate = {
-                year:today.year(),
-                month:today.month()+1,
-                day:today.day(),
+                year:tomorrow.year(),
+                month:tomorrow.month()+1,
+                day:tomorrow.date(),
             }
         }
 
     }
+
+    selectSortBy = (sortBy)=>{
+        this.sortBy = sortBy;   
+    }
+
 }
