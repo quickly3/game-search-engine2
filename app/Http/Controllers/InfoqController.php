@@ -17,6 +17,9 @@ class InfoqController extends Controller
         $search_type = trim($request->input("search_type", ""));
         $startDate = $request->input("startDate", null);
         $endDate = $request->input("endDate", null);
+        $sortBy = $request->input("sortBy", null);
+
+
 
         $es = new ElasticModel("article", "article");
 
@@ -62,12 +65,42 @@ class InfoqController extends Controller
         }
 
 
-        $orders = [
-            "_score" => "desc",
-            "created_year" => "desc",
-            "created_at" => "desc",
-            "title" => "asc",
-        ];
+
+        switch($sortBy['value']){
+            case "date":
+                $orders = [
+                    "created_at" => "desc",
+                    "_score" => "desc",
+                    "created_year" => "desc",
+                    "title" => "asc",
+                ];
+
+                break;
+            case "score":
+                $orders = [
+                    "_score" => "desc",
+                    "created_year" => "desc",
+                    "created_at" => "desc",
+                    "title" => "asc",
+                ];
+                break;
+            case "multi":
+                $orders = [
+                    "created_at" => "desc",
+                    "_score" => "desc",
+                    "created_year" => "desc",
+                    "title" => "asc",
+                ];
+
+                break;
+            default:
+                $orders = [
+                    "created_at" => "desc",
+                    "_score" => "desc",
+                    "created_year" => "desc",
+                    "title" => "asc",
+                ];
+        }
 
         $data->orderBy($orders);
 
