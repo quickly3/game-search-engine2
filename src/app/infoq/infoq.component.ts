@@ -337,6 +337,7 @@ export class InfoqComponent {
         const today = moment(moment().format("YYYY-MM-DD 00:00:00"));
         const tomorrow = moment(moment().add(1, 'days').format("YYYY-MM-DD 00:00:00"));
         const yesterday = moment(moment().subtract(1, 'days').format("YYYY-MM-DD 00:00:00"));
+        const ago7day = moment(moment().subtract(7, 'days').format("YYYY-MM-DD 00:00:00"));
 
         if(date == 'today'){
             this.startDate = {
@@ -365,6 +366,20 @@ export class InfoqComponent {
                 day:today.day(),
             }
         }
-        
+
+        if(date == 'week'){
+            this.startDate = {
+                year:ago7day.year(),
+                month:ago7day.month()+1,
+                day:ago7day.day(),
+            }
+
+            this.endDate = {
+                year:today.year(),
+                month:today.month()+1,
+                day:today.day(),
+            }
+        }
+
     }
 }
