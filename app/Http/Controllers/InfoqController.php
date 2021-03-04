@@ -64,8 +64,6 @@ class InfoqController extends Controller
             $query_string = $query_string . " && created_at:[* TO {$endDate}]";
         }
 
-
-
         switch($sortBy['value']){
             case "date":
                 $orders = [

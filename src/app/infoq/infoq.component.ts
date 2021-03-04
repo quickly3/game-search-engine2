@@ -392,6 +392,7 @@ export class InfoqComponent {
 
     selectSortBy = (sortBy)=>{
         this.sortBy = sortBy;   
+        this.search();
     }
 
 }
