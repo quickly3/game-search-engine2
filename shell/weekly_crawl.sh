@@ -7,6 +7,6 @@ nohup python3 -m scrapy crawl elastic_cn >> /home/ubuntu/www/ng-blog/storage/log
 
 
 cd /home/ubuntu/www/ng-blog
-nohup sudo php artisan EsClear elastic_cn >> /home/ubuntu/www/ng-blog/storage/logs/elastic_cn.log 2>&1
+nohup sudo php artisan EsClear elastic >> /home/ubuntu/www/ng-blog/storage/logs/elastic_cn.log 2>&1
 # nohup sudo php artisan EsClear csdn >> /home/ubuntu/www/ng-blog/storage/logs/csdn.log 2>&1
 
