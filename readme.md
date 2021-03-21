@@ -1,12 +1,26 @@
-# Game Search Engine
+# Search Gank
 
-> 这是一个自动收集游戏信息并提供搜索引擎服务的项目
+> 这是一个专业的IT类信息搜索引擎
 
-技术博客类爬虫、搜索引擎：只爬取特定一些分类的博客的 title，link，summary,createdate，存到 elasticsearch 中，用来做类似订阅功能，分析最近热点博客，及基于 Elasticsearch 开发跨站真实搜索引擎的各种实际功能。
+当前主要技术栈：
+> 后端框架 Laravel 8.x  
+> 前端框架 Angular 11.x  
+> 爬虫框架 Scrapy 2.4    
+> 搜索引擎核心 ElasticSearch 7.x 
 
-游侠网免费游戏搜索引擎：
+当前已收录信息网站：
+> Infq  
+> SegmentFault  
+> 掘金  
+> 博客园  
+> 简书  
+> CSDN  
+> 开源中国  
+> Elasticsearch 官方博客  
+> Elasticsearch 中文社区精品日报  
 
 其他各种爬虫：
+游侠网免费游戏搜索引擎：
 
 ### 网站地址
 
@@ -14,11 +28,7 @@
 
 ### 主要开源技术
 
-> 后端框架 Laravel 5.8  
-> 前端框架 Angular 8
-> 爬虫框架 Scrapy 1.4  
-> 搜索引擎 ElasticSearch 6.5  
-> 关系数据库 mysql 5.7
+
 
 ### 爬虫数据源
 
