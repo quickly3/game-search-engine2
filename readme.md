@@ -2,13 +2,13 @@
 
 > 这是一个专业的IT类信息搜索引擎
 
-当前主要技术栈：
+### 主要开源技术
 > 后端框架 Laravel 8.x  
 > 前端框架 Angular 11.x  
 > 爬虫框架 Scrapy 2.4    
 > 搜索引擎核心 ElasticSearch 7.x 
 
-当前已收录信息网站：
+### 当前已收录信息网站
 > Infq  
 > SegmentFault  
 > 掘金  
@@ -26,7 +26,7 @@
 
 <http://www.searchgank.com>
 
-### 主要开源技术
+
 
 
 
