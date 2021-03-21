@@ -18,7 +18,7 @@
           />
           <button type="button" class="btn btn-primary btn-sm" (click)="keywordSearch()">
             搜索
-            <i class="fas fa-search"></i>
+            <fa-icon [icon]="faSearch"></fa-icon>
           </button>
         </div>
       </div>
@@ -64,7 +64,7 @@
       <div class="option-zone source-selector">
         <div
           class="custom-control custom-radio"
-          *ngFor="let source of source_list"
+          *ngFor="let source of sourceList"
           (click)="selectSource(source)"
         >
           <input
@@ -96,7 +96,7 @@
           <button 
             class="picker-btn btn btn-primary btn-sm"
             (click)="start_date.toggle()">
-            <i class="far fa-calendar-alt"></i>
+            <fa-icon [icon]="faCalendarAlt"></fa-icon>
           </button>
         </div>
         <div class="datepicker">
@@ -111,13 +111,10 @@
           <button 
             class="picker-btn btn btn-primary btn-sm" 
             (click)="end_date.toggle()">
-            <i class="far fa-calendar-alt"></i>
+            <fa-icon [icon]="faCalendarAlt"></fa-icon>
           </button>
         </div>
       </div>
-
-
-
       <div class="option-title">
         <span>词云:</span>
       </div>
