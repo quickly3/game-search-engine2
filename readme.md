@@ -19,12 +19,12 @@
 > Elasticsearch 官方博客  
 > Elasticsearch 中文社区精品日报  
 
-其他各种爬虫：
-游侠网免费游戏搜索引擎：
+其他服务：
+游侠网免费游戏搜索
 
 ### 网站地址
 
-<http://www.zhouhongbin.com>
+<http://www.searchgank.com>
 
 ### 主要开源技术
 
