@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Elastic\ElasticModel;
 use App\Services\InfoqService;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class InfoqController extends Controller
 {
@@ -57,11 +58,13 @@ class InfoqController extends Controller
         }
 
         if($startDate){
-            $query_string = $query_string . " && created_at:[{$startDate} TO *]";
+            $startStr = Carbon::create($startDate['year'], $startDate['month'], $startDate['day'], 0, 0, 0, 'GMT');
+            $query_string = $query_string . " && created_at:[{$startStr->toDateTimeLocalString()} TO *]";
         }
 
         if($endDate){
-            $query_string = $query_string . " && created_at:[* TO {$endDate}]";
+            $endStr = Carbon::create($endDate['year'], $endDate['month'], $endDate['day'], 0, 0, 0, 'GMT');
+            $query_string = $query_string . " && created_at:[* TO {$endStr->toDateTimeLocalString()}]";
         }
 
         switch($sortBy['value']){
