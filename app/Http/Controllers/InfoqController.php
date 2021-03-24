@@ -59,12 +59,14 @@ class InfoqController extends Controller
 
         if($startDate){
             $startStr = Carbon::create($startDate['year'], $startDate['month'], $startDate['day'], 0, 0, 0, 'GMT');
-            $query_string = $query_string . " && created_at:[{$startStr->toDateTimeLocalString()} TO *]";
+            $startStr = $startStr->toDateTimeLocalString();
+            $query_string = $query_string . " && created_at:[{$startStr} TO *]";
         }
 
         if($endDate){
             $endStr = Carbon::create($endDate['year'], $endDate['month'], $endDate['day'], 0, 0, 0, 'GMT');
-            $query_string = $query_string . " && created_at:[* TO {$endStr->toDateTimeLocalString()}]";
+            $endStr = $endStr->toDateTimeLocalString();
+            $query_string = $query_string . " && created_at:[* TO {$endStr})";
         }
 
         switch($sortBy['value']){
