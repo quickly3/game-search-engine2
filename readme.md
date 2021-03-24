@@ -1,27 +1,88 @@
-# Ng11
+# Search Gank
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.5.
+> 这是一个专业的IT类信息搜索引擎
 
-## Development server
+### 主要开源技术
+> 后端框架 Laravel 8.x  
+> 前端框架 Angular 11.x  
+> 爬虫框架 Scrapy 2.4    
+> 搜索引擎核心 ElasticSearch 7.x 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### 当前已收录信息网站
+> Infq  
+> SegmentFault  
+> 掘金  
+> 博客园  
+> 简书  
+> CSDN  
+> 开源中国  
+> Elasticsearch 官方博客  
+> Elasticsearch 中文社区精品日报  
 
-## Code scaffolding
+其他服务：
+游侠网免费游戏搜索
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 网站地址
 
-## Build
+<http://www.searchgank.com>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### 爬虫数据源
 
-## Further help
+> 游侠网
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### 安装部署
+
+> npm install  
+> composer install  
+> php artisan key:generate  
+> 前端开发 监听模式 npm run watch  
+> 部署模式 npm run prod
+
+### 爬虫
+
+[爬虫列表](https://github.com/quickly3/game-search-engine2/blob/master/readme/spider.md)
+
+### 数据挖掘
+
+> ???有么
+
+### 全量数据同步
+
+> php artisan elastic:migrate "App\Models\GameModel" games_20200227
+> php artisan elastic:migrate "App\Models\EscnModel" escn_20190916
+
+### 增量数据同步
+
+> sudo php artisan MysqlToEs  
+> sudo php artisan EscnToEs
+
+### 更多数据源和功能
+
+> 挤时间中...
+> 免费 IP 代理池爬虫
+
+### 理论模型
+
+> 喵喵喵？
+
+###
+
+部署初始化 laravel scout
+php artisan elastic:create-index "App\EsConfigurator\GameConfigurator"
+php artisan elastic:create-index "App\EsConfigurator\EscnConfigurator"
+
+
+scrapy crawl hugua_sql -a seed=1
+
+
+nohup python nohup.py >> nohup.log 2>&1 &
+
+
+pproxy -l http://:8181 -r socks5://127.0.0.1:10000 -vv
+
+0 9 * * * /bin/sh /home/ubuntu/www/ng-blog/shell/daily_crawl.sh  >> /home/ubuntu/www/daily.log 2>&1
+0 0 * * 1 /bin/sh /home/ubuntu/www/ng-blog/shell/weekly_crawl.sh  >> /home/ubuntu/www/weekly.log 2>&1
