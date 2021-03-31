@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, of, Subject, fromEvent } from 'rxjs';
 
+import domtoimage from 'dom-to-image';
+
 import {
     debounceTime,
     distinctUntilChanged,
@@ -208,8 +210,22 @@ export class InfoqComponent {
         this.modelChanged.next();
     }
 
+    domtoimage = ()=>{
+        const des_zone = document.getElementsByClassName('summary');
+
+        domtoimage.toPng(des_zone[0]).then( (dataUrl) => {
+            var img = new Image();
+            img.src = dataUrl;
+            document.body.appendChild(img);
+        })
+        .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+        });
+    }
+
     search = () => {
 
+        
         const params = {
             page: '' + this.current_page,
             keywords: this.keywords,

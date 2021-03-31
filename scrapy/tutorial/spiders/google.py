@@ -30,9 +30,6 @@ class AliSpider(scrapy.Spider):
         prefix = 'https://www.google.com/search?';
         
         self.companies = self.companies + list(map(lambda x: x+" linkedin",self.companies))
-
-        print(self.companies);
-
         for keyword in self.companies:
             urlencodeKeyword = urlencode({'q':keyword});
             url = prefix+urlencodeKeyword
