@@ -36,7 +36,7 @@ class AliSpider(scrapy.Spider):
             yield scrapy.FormRequest(url=url, method="GET",callback=lambda response, keyword=keyword: self.parse(response, keyword))
 
     def parse(self, response, keyword):
-
+        print(response)
 
                     
 
