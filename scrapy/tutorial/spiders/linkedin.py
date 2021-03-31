@@ -47,7 +47,7 @@ class AliSpider(scrapy.Spider):
     def start_requests(self):
         url = 'https://www.linkedin.com/company/inceptionpad-inc'
         
-        cookieFile = '/Users/hongbinzhou/www/ng-blog/scrapy/tutorial/spiders/cookies.json'
+        cookieFile = 'tutorial/spiders/cookies.json'
 
         with open(cookieFile) as json_file:
             cookies = json.load(json_file)
