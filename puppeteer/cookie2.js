@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const {jsPDF} = require('jspdf');
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -16,17 +15,13 @@ const {jsPDF} = require('jspdf');
     waitUntil: 'networkidle2'
   });
 
-
   await page.screenshot();
-
   const submit = '.submit';
   await page.type('input[type=email]', 'tanlu@inceptionpad.com')
   await page.type('input[type=password]', 'Password1!')
-
   await page.waitForSelector(submit)
   await page.click(submit)
   await page.waitForNavigation()
-
 
   const page2 = page;
   await page2.setViewport({
@@ -37,50 +32,6 @@ const {jsPDF} = require('jspdf');
   await page2.goto(url, {
     waitUntil: 'networkidle2'
   });
-
-  await page2.screenshot();
-
-  const resp = await page2.evaluate(() => {
-      const pdfHideNodes = ['bread-crumb', 'nav-links', 'nav-options', 'actions-wrapper'];
-      
-      pdfHideNodes.forEach(selector=>{
-        var elements = document.getElementsByClassName(selector);
-        elements.forEach((ele) => {
-          ele.style.opacity = '0';
-        });
-      })
-
-      return {
-        clientHeight:document.body.clientHeight,
-        scrollHeight:document.body.scrollHeight      
-      }
-  })
-
-
-  height = resp.clientHeight
-
-  await page2.setViewport({
-    width : width,
-    height : height
-  })
-
-  const pdf = 'final.pdf'
-
-  const image_buff = await page2.screenshot({fullPage:true});
-
-
-  const image = 'data:image/jpeg;base64,' + image_buff.toString('base64');
-
   await browser.close();
-
-
-  if (width > height) {
-    _pdf = new jsPDF('landscape', 'pt', [width, height]);
-  } else {
-    _pdf = new jsPDF('', 'pt', [width, height]);
-  }
-
-  _pdf.addImage(image, 'JPEG', 0, 0, width, height);
-  _pdf.save(pdf)
-
+ 
 })();

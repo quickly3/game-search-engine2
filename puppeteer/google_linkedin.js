@@ -13,7 +13,7 @@ const ScrapePage = async (url) => {
             "--no-sandbox", 
         ],
         "timeout": 15000,
-        "headless": true
+        "headless": false
     }
     const browser = await puppeteer.launch(options);
     const page = await browser.newPage();
@@ -58,5 +58,5 @@ const ScrapePage = async (url) => {
         }
     })
 }
-url = "https://www.baidu.com/s?wd=site%3Alinkedin.com%20inceptionpad";
+url = "https://www.google.com/search?q=site:linkedin.com+inceptionpad";
 ScrapePage(url);
