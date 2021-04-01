@@ -7,7 +7,7 @@ const fs = require('fs')
 const ScrapePage = async (url) => {
     options = {
         "args": [
-            '--no-sandbox'
+            '--disable-gpu'
         ],
         "timeout": 15000,
         "headless": true

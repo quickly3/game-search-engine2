@@ -8,7 +8,7 @@ const ScrapePage = async (url) => {
     options = {
         "useChrome": false,
         "args": [
-            "--no-sandbox", 
+            "--disable-gpu", 
         ],
         "headless": true
     }
