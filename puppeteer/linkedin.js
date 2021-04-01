@@ -6,38 +6,38 @@ const fs = require('fs')
 
 const ScrapePage = async(url)=>{
 
-    file = '/Users/hongbinzhou/Downloads/linkedin1.jpeg'
-    file2 = '/Users/hongbinzhou/Downloads/linkedin2.jpeg'
+    // file = '/Users/hongbinzhou/Downloads/linkedin1.jpeg'
+    // file2 = '/Users/hongbinzhou/Downloads/linkedin2.jpeg'
     
-    if(fs.existsSync(file)){
-        fs.unlinkSync(file);
-    }
+    // if(fs.existsSync(file)){
+    //     fs.unlinkSync(file);
+    // }
 
     const browser = await puppeteer.launch({
         headless: true,
     });
 
-    const width = 1920 
-    let height = 1200
+    // const width = 1920 
+    // let height = 1200
 
     const page = await browser.newPage();
     let result = []
 
-    await page.setViewport({
-        width : width,
-        height : height
-    })
+    // await page.setViewport({
+    //     width : width,
+    //     height : height
+    // })
 
     await page.goto(url,{
         waitUntil: 'networkidle2'
     });
     
-    await page.screenshot({path:file});
+    // await page.screenshot({path:file});
     // await page.setCookie(...cookies);
 
     link = '#content_left > div:nth-child(1)  > h3 > a'
 
-        
+    console.log(link)
     await page.waitForSelector(link)
     await page.click(link)
 
@@ -45,6 +45,7 @@ const ScrapePage = async(url)=>{
         pages = await browser.pages();
         if(pages.length == 3){
             page2 = pages[2]
+            console.log(page2.url())
             nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
             await page2.waitForSelector(nameSelector,{
                 timeout:10000
