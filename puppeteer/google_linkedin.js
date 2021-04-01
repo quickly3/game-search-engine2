@@ -15,9 +15,7 @@ const ScrapePage = async (url) => {
         "timeout": 15000,
         "headless": true
     }
-    const browser = await puppeteer.launch({
-        headless: true,
-    });
+    const browser = await puppeteer.launch(options);
     const page = await browser.newPage();
     let result = []
 
