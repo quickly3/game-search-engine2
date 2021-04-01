@@ -6,7 +6,6 @@ const fs = require('fs')
 
 const ScrapePage = async (url) => {
     options = {
-        "useChrome": false,
         "args": [
             "--disable-gpu", 
         ],

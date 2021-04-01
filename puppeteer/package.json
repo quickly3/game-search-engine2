@@ -9,8 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/sleep": "0.0.8",
     "aws-sdk": "^2.864.0",
     "jspdf": "^2.3.1",
-    "puppeteer": "7.1.0"
+    "puppeteer": "7.1.0",
+    "sleep": "^6.3.0"
   }
 }
