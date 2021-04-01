@@ -9,9 +9,9 @@ const ScrapePage = async (url) => {
         "useChrome": false,
         "stealth": false,
         "args": [
-            "--remote-debugging-port=9222", 
-            "--no-sandbox", 
-        ],
+            '--no-sandbox', 
+            '--disable-setuid-sandbox', 
+            '--single-process'],
         "timeout": 15000,
         "headless": true
     }
