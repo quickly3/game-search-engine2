@@ -13,7 +13,7 @@ const ScrapePage = async (url) => {
             "--no-sandbox", 
         ],
         "timeout": 15000,
-        "headless": false
+        "headless": true
     }
     const browser = await puppeteer.launch(options);
     const page = await browser.newPage();
@@ -27,7 +27,7 @@ const ScrapePage = async (url) => {
 
     console.log(link)
     await page.waitForSelector(link)
-    
+
     const linkNode = await page.$(link); 
     const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
     await linkNode.click({button: 'middle'});    
