@@ -6,12 +6,9 @@ const fs = require('fs')
 
 const ScrapePage = async (url) => {
     options = {
-        "useChrome": false,
-        "stealth": false,
         "args": [
-            '--no-sandbox', 
-            '--disable-setuid-sandbox', 
-            '--single-process'],
+            '--no-sandbox'
+        ],
         "timeout": 15000,
         "headless": true
     }
