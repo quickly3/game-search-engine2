@@ -15,7 +15,7 @@ const ScrapePage = async(url)=>{
 
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process']
+        args: ['--disable-gpu']
     });
     console.log(1)
 
