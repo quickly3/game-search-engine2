@@ -8,14 +8,13 @@ const ScrapePage = async(url)=>{
 
     file = '/Users/hongbinzhou/Downloads/linkedin1.jpeg'
     file2 = '/Users/hongbinzhou/Downloads/linkedin2.jpeg'
-    file3 = '/Users/hongbinzhou/Downloads/linkedin3.jpeg'
-
+    
     if(fs.existsSync(file)){
         fs.unlinkSync(file);
     }
 
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
     });
 
     const width = 1920 
@@ -42,18 +41,31 @@ const ScrapePage = async(url)=>{
     await page.waitForSelector(link)
     await page.click(link)
 
-    pages = await browser.pages();
-    page2 = pages[2]
+    page.on('popup',async()=>{
+        pages = await browser.pages();
+        if(pages.length == 3){
+            page2 = pages[2]
+            nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
+            await page2.waitForSelector(nameSelector,{
+                timeout:10000
+            })
 
-    // console.log(await page.content())
-    await page2.reload({
-        waitUntil: 'networkidle2'
+            page2.on('console',msg=>{
+                for(let i = 0; i < msg.args.length; i++)[
+                    console.log(`${i}:${msg.args[i]}`)
+                ]
+            })
+            const resp = await page2.evaluate(() => {
+                nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
+                companyName = document.querySelector(nameSelector).textContent
+                return {companyName};
+            })
+            console.log(page2.url())
+            console.log(resp)
+            await browser.close();
+
+        }
     })
-    await page2.waitForNavigation()
-    console.log(await page2.content())
-
-
-
 }
 url = "https://www.baidu.com/s?wd=site%3Alinkedin.com%20inceptionpad";
 ScrapePage(url);
