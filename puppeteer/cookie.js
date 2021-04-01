@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 
 (async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   const page = await browser.newPage();
   const url = 'https://clients.dev.titanhouse.com/titan/93825832-fd5a-4137-b02e-e8ae9115ec63'
