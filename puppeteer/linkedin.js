@@ -16,11 +16,13 @@ const ScrapePage = async(url)=>{
     const browser = await puppeteer.launch({
         headless: true,
     });
+    console.log(1)
 
     // const width = 1920 
     // let height = 1200
 
     const page = await browser.newPage();
+    console.log(2)
     let result = []
 
     // await page.setViewport({
@@ -31,14 +33,17 @@ const ScrapePage = async(url)=>{
     await page.goto(url,{
         waitUntil: 'networkidle2'
     });
+
+    console.log(3)
     
     // await page.screenshot({path:file});
     // await page.setCookie(...cookies);
 
     link = '#content_left > div:nth-child(1)  > h3 > a'
 
-    console.log(link)
     await page.waitForSelector(link)
+    console.log(link)
+
     await page.click(link)
 
     page.on('popup',async()=>{
