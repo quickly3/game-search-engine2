@@ -3,7 +3,7 @@ const PageParse = require('./PageParse.js');
 
 const ScrapePage = async(name,options)=>{
     
-    url = `https://www.baidu.com/s?wd=site%3Awww.linkedin.com%20${encodeURI(name)}`;
+    url = `https://www.baidu.com/s?wd=site%3Alinkedin.com%20${encodeURI(name)}`;
     const browser = await puppeteer.launch(options);
 
     const page = await browser.newPage();

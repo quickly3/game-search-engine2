@@ -28,7 +28,6 @@ const bootstrap = async()=>{
         userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
         // proxy = proxys[Math.floor(Math.random() * proxys.length)]
         ScrapePages = [baidu2,google1,google2]
-        ScrapePages = [baidu2]
         _ScrapePage = ScrapePages[Math.floor(Math.random() * ScrapePages.length)]
 
         console.log(name)
