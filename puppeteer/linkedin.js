@@ -63,7 +63,7 @@ const bootstrap = async()=>{
         resp.search_engine = _ScrapePage.name;
         resp.user_agent = userAgent;
         let current = Date.parse(new Date());
-        resp.cost = current-start;
+        resp.cost = Math.floor((current-start)/1000);
         console.log(resp);
 
         if(!resp.success){

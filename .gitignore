@@ -34,3 +34,6 @@ public/3rdpartylicenses.txt
 public/assets/images/fanju/*
 .vscode/settings.json
 jianshu_slugs.npy
+linkedin_company.csv
+failed_agents.csv
+failed_company.csv
