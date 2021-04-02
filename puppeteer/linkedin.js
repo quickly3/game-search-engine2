@@ -42,7 +42,7 @@ const bootstrap = async()=>{
                 `--user-agent=${userAgent}`,
                 // `--proxy-server=${proxy}`,
             ],
-            headless: false
+            headless: true
         }
 
 
