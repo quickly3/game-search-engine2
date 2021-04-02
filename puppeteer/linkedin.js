@@ -2,13 +2,28 @@ const sleep = require('sleep');
 const baidu2 = require('./bl2.js');
 const google1 = require('./gl1.js');
 const google2 = require('./gl2.js');
+const ObjectsToCsv = require('objects-to-csv')
+var fs = require('fs');
+
 
 
 const bootstrap = async()=>{
 
-    var fs = require('fs');
+    let start = Date.parse(new Date());
+
     var userAgents = fs.readFileSync('user-agents.txt').toString().split("\n");
     var proxys = fs.readFileSync('proxy.txt').toString().split("\n");
+
+    file1 = './linkedin_company.csv';
+    file2 = './failed_agents.csv';
+    file3 = './failed_company.csv';
+
+    [file1,file2,file3].map((file)=>{
+        if(fs.existsSync(file)){
+            fs.unlinkSync(file)
+        }
+    })
+
 
     companies = [
         '3S Media','522 Productions','A-Town Bar and Grill','Abbott Laboratories/Quintiles Commercial',
@@ -22,35 +37,70 @@ const bootstrap = async()=>{
         'Bergen Community College','BoxTone Inc','24 Hour Fitness','2U','3Com Corporation',
         'Advantech','AECOM, Inc','AEG Worldwide','Aerva, Inc','Aether Systems'
     ]
+    lastComapnyRetry = 0;
 
-    for (const i in companies) {
-        name = companies[i]
+    while(companies[0]){
+        name = companies[0]
         userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
         // proxy = proxys[Math.floor(Math.random() * proxys.length)]
         ScrapePages = [baidu2,google1,google2]
+        // ScrapePages = [google1]
+
         _ScrapePage = ScrapePages[Math.floor(Math.random() * ScrapePages.length)]
-
-        console.log(name)
-        // console.log(proxy)
-        console.log(userAgent)
-
+        
         options = {
             args: [
                 "--disable-gpu",
-                "--no-sandbox", 
                 `--user-agent=${userAgent}`,
                 // `--proxy-server=${proxy}`,
             ],
             headless: true
         }
 
-
-
         const resp = await _ScrapePage(name,options);
+
+        resp.keyword = name;
+        resp.search_engine = _ScrapePage.name;
+        resp.user_agent = userAgent;
+        let current = Date.parse(new Date());
+        resp.cost = current-start;
         console.log(resp);
 
-        if(resp.msg == 'proxy timeout'){
-            return false;
+        if(!resp.success){
+
+            if(resp.msg == 'engine page failed'){
+                const csvFailed = new ObjectsToCsv([{user_agent:resp.user_agent}]);
+                await csvFailed.toDisk(file2,{append:true});
+            }
+    
+            if(resp.msg == 'Linnkedin Render failed'){
+                lastComapnyRetry = lastComapnyRetry + 1
+            }
+        }
+
+        if(resp.success && (lastComapnyRetry < 5)){
+            lastComapnyRetry = 0;
+            const csv = new ObjectsToCsv([resp]);
+            await csv.toDisk(file1,{append:true});
+
+            companies.shift();
+            if(companies.length ==  0){
+                console.log('end');
+                return false;
+            }
+            
+        }else{
+            if(lastComapnyRetry == 5){
+                companies.shift();
+                if(companies.length ==  0){
+                    console.log('end');
+                    return false;
+                }
+                const companyFailed = new ObjectsToCsv([{name:resp.keyword}]);
+                await companyFailed.toDisk(file3,{append:true});
+                lastComapnyRetry = 0;
+            }
+
         }
 
         const random = Math.floor(Math.random() *10 - 5);

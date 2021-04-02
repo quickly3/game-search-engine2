@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const PageParse = require('./PageParse.js');
 
-const ScrapePage = async(name,options)=>{
+const bl2 = async(name,options)=>{
     
     url = `https://www.baidu.com/s?wd=site%3Alinkedin.com%20${encodeURI(name)}`;
     const browser = await puppeteer.launch(options);
@@ -22,7 +22,19 @@ const ScrapePage = async(name,options)=>{
 
     link = '#content_left > div:nth-child(1)  > h3 > a'
 
-    await page.waitForSelector(link)
+
+    try {
+        await page.waitForSelector(link,{
+            timeout:5000
+        })
+    } catch (error) {
+        await browser.close();
+        return {
+            success:false,
+            msg:'engine page failed'
+        }
+    }
+
     const linkNode = await page.$(link); 
     const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
     await linkNode.click({button: 'middle'});    
@@ -30,27 +42,46 @@ const ScrapePage = async(name,options)=>{
     await page2.bringToFront();     
 
     nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
-    success = false;
+   
     let resp = {}
+    resp.success = false;
+
     try {
         await page2.waitForSelector(nameSelector,{
-            timeout:5000
+            timeout:10000
         })
-        resp = await page2.evaluate((params) => {
-            return params.PageParse(document);
-        },{PageParse})
+
+        resp.url = page2.url();
+        
+        resp = await page2.evaluate(() => {
+            company = {}
+            nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
+            name = document.querySelector(nameSelector).textContent
+            name = name?name.trim():name;
+            company.name = name
+
+            tableDateSelector = '#main-content > section.core-rail > section.about-us.section-container > dl > div'
+            tableDateNodes = document.querySelectorAll(tableDateSelector)
+            
+            for (let i = 0; i < tableDateNodes.length; i++) {
+                key = tableDateNodes[i].querySelector('dt').textContent
+                value = tableDateNodes[i].querySelector('dd').textContent
+                key = key?key.trim():key;
+                value = value?value.trim():value;
+                company[key] = value;
+            }
+            return company;
+        })
+
         if(resp.name){
-            success = true;
+            resp.success = true;
         }
-        console.log(resp);
     } catch (error) {
-        console.log("Linnkedin Render failed");
+        resp.msg = "Linnkedin Render failed"
     }finally{            
         await browser.close();
+        return resp;
     }
-    return {
-        success,
-        resp
-    };
+
 }
-module.exports = ScrapePage;
+module.exports = bl2;

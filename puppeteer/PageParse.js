@@ -1,5 +1,5 @@
 
-const PageParse = async(document)=>{
+const PageParse = (document)=>{
     company = {}
     nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
     company.name = document.querySelector(nameSelector).textContent
@@ -24,5 +24,4 @@ const PageParse = async(document)=>{
 
     return company;
 }
-
 module.exports = PageParse;
