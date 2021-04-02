@@ -1,10 +1,9 @@
 const puppeteer = require('puppeteer');
+const PageParse = require('./PageParse.js');
 
-const ScrapePage = async (name,options) => {
-
-    name = name.replace(/ /g,'+')
-    url = `https://www.google.com/search?q=site:www.linkedin.com+${name}`;
-
+const ScrapePage = async(name,options)=>{
+    
+    url = `https://www.baidu.com/s?wd=site%3Awww.linkedin.com%20${encodeURI(name)}`;
     const browser = await puppeteer.launch(options);
 
     const page = await browser.newPage();
@@ -21,27 +20,14 @@ const ScrapePage = async (name,options) => {
         }
     }
 
+    link = '#content_left > div:nth-child(1)  > h3 > a'
 
-    link = '#rso > div:nth-child(1) > div:nth-child(1) > div > div:nth-child(1) > a > h3'
-
-    try {
-        await page.waitForSelector(link,{
-            timeout:5000
-        })
-    } catch (error) {
-        try {
-            await page.waitForSelector(link2,{
-                timeout:5000
-            })
-            link = link2;
-        } catch (error) {
-            return {
-                success:false
-            }
-        }
-    }
-
-    await page.click(link)
+    await page.waitForSelector(link)
+    const linkNode = await page.$(link); 
+    const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
+    await linkNode.click({button: 'middle'});    
+    const page2 = await newPagePromise;  
+    await page2.bringToFront();     
 
     nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
     success = false;
@@ -67,5 +53,4 @@ const ScrapePage = async (name,options) => {
         resp
     };
 }
-
 module.exports = ScrapePage;
