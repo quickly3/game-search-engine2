@@ -10,7 +10,7 @@ const bl2 = async(name,options)=>{
     try {
         await page.goto(url, {
             waitUntil: 'networkidle2',
-            timeout:10000
+            timeout:5000
         });
     } catch (error) {
         await browser.close();
@@ -44,6 +44,7 @@ const bl2 = async(name,options)=>{
     nameSelector = '#main-content > section.core-rail > section.top-card-layout > div > div.top-card-layout__entity-info-container > div:nth-child(1) > h1'
    
     let resp = {}
+    
     resp.success = false;
 
     try {

@@ -22,24 +22,53 @@ const gl2 = async (name,options) => {
     }
 
 
-    link = '#main > div:nth-child(4) > div > div:nth-child(1) > a'
-    link2 = '#rso > div:nth-child(1) > div:nth-child(1) > div > div:nth-child(1) > a > h3'
-
+    robot = false;
+    robotNode = 'body > div:nth-child(1) > div > b'
     try {
-        await page.waitForSelector(link,{
+        await page.waitForSelector(robotNode,{
             timeout:5000
         })
+        robotTxt = await page.evaluate((robotNode) => {
+            node = document.querySelector(robotNode)
+            return node?node.textContent:'';
+        },robotNode)
+        if(robotTxt == 'About this page'){
+            robot = true;
+        }
     } catch (error) {
+
+    }
+
+    if(robot){
+        await browser.close();
+        return {
+            success:false,
+            msg:'robot found'
+        }
+    }
+
+
+    link = '#main > div:nth-child(4) > div > div:nth-child(1) > a'
+    link2 = '#rso > div:nth-child(1) > div:nth-child(1) > div > div:nth-child(1) > a'
+    link3 = '#rso > div:nth-child(1) > div > div:nth-child(1) > a'
+    links = [link,link2,link3]
+    
+    while(true){
+        link = links[0]
         try {
-            await page.waitForSelector(link2,{
+            await page.waitForSelector(link,{
                 timeout:5000
             })
-            link = link2;
+            break;
         } catch (error) {
-            await browser.close();
-            return {
-                success:false,
-                msg:'engine page failed'
+            if(links.length > 0){
+                links.shift();
+            }else{
+                await browser.close();
+                return {
+                    success:false,
+                    msg:'engine page failed'
+                }
             }
         }
     }

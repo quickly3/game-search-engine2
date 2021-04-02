@@ -17,6 +17,7 @@ const bootstrap = async()=>{
     file1 = './linkedin_company.csv';
     file2 = './failed_agents.csv';
     file3 = './failed_company.csv';
+    file4 = './failed_robot.csv';
 
     [file1,file2,file3].map((file)=>{
         if(fs.existsSync(file)){
@@ -42,9 +43,13 @@ const bootstrap = async()=>{
     while(companies[0]){
         name = companies[0]
         userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
-        // proxy = proxys[Math.floor(Math.random() * proxys.length)]
-        ScrapePages = [baidu2,google1,google2]
-        // ScrapePages = [google1]
+
+        // userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"
+
+        // Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0
+        proxy = proxys[Math.floor(Math.random() * proxys.length)]
+        // ScrapePages = [baidu2,google1,google2]
+        ScrapePages = [baidu2]
 
         _ScrapePage = ScrapePages[Math.floor(Math.random() * ScrapePages.length)]
         
@@ -54,7 +59,7 @@ const bootstrap = async()=>{
                 `--user-agent=${userAgent}`,
                 // `--proxy-server=${proxy}`,
             ],
-            headless: true
+            headless: false
         }
 
         const resp = await _ScrapePage(name,options);
@@ -72,7 +77,15 @@ const bootstrap = async()=>{
                 const csvFailed = new ObjectsToCsv([{user_agent:resp.user_agent}]);
                 await csvFailed.toDisk(file2,{append:true});
             }
-    
+
+            if(resp.msg == 'robot found'){
+                const csvFailed = new ObjectsToCsv([{
+                    user_agent:resp.user_agent,
+                    search_engine:userAgent
+                }]);
+                await csvFailed.toDisk(file4,{append:true});
+            }
+
             if(resp.msg == 'Linnkedin Render failed'){
                 lastComapnyRetry = lastComapnyRetry + 1
             }

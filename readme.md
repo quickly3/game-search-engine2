@@ -86,3 +86,6 @@ pproxy -l http://:8181 -r socks5://127.0.0.1:10000 -vv
 
 0 9 * * * /bin/sh /home/ubuntu/www/ng-blog/shell/daily_crawl.sh  >> /home/ubuntu/www/daily.log 2>&1
 0 0 * * 1 /bin/sh /home/ubuntu/www/ng-blog/shell/weekly_crawl.sh  >> /home/ubuntu/www/weekly.log 2>&1
+
+
+nohup node linkedin.js > linked.log 2>&1 &
