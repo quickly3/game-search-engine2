@@ -48,8 +48,8 @@ const bootstrap = async()=>{
 
         // Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0
         proxy = proxys[Math.floor(Math.random() * proxys.length)]
-        // ScrapePages = [baidu2,google1,google2]
-        ScrapePages = [baidu2]
+        ScrapePages = [baidu2,google1,google2]
+        // ScrapePages = [baidu2]
 
         _ScrapePage = ScrapePages[Math.floor(Math.random() * ScrapePages.length)]
         
@@ -59,7 +59,7 @@ const bootstrap = async()=>{
                 `--user-agent=${userAgent}`,
                 // `--proxy-server=${proxy}`,
             ],
-            headless: false
+            headless: true
         }
 
         const resp = await _ScrapePage(name,options);
