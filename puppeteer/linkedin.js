@@ -19,12 +19,11 @@ const bootstrap = async()=>{
     file3 = './failed_company.csv';
     file4 = './failed_robot.csv';
 
-    [file1,file2,file3].map((file)=>{
+    [file1,file2,file3,file4].map((file)=>{
         if(fs.existsSync(file)){
             fs.unlinkSync(file)
         }
     })
-
 
     companies = [
         '3S Media','522 Productions','A-Town Bar and Grill','Abbott Laboratories/Quintiles Commercial',
