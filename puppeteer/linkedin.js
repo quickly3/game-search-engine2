@@ -26,7 +26,7 @@ const bootstrap = async()=>{
     })
 
     companies = [
-        '3S Media','522 Productions','A-Town Bar and Grill','Abbott Laboratories/Quintiles Commercial',
+        // '3S Media','522 Productions','A-Town Bar and Grill','Abbott Laboratories/Quintiles Commercial',
         'Abercrombie & Fitch','Absolute Software','Abstract','Accents by Design','Accenture',
         'Access Funding, LLC','ACE Hardware Corporation','Fortren Funding LLC','Acendre',
         'Achieved Solutions','Acquia','Acterna','Actian, Corporation','Actuate (opentext)',
@@ -58,7 +58,7 @@ const bootstrap = async()=>{
                 `--user-agent=${userAgent}`,
                 // `--proxy-server=${proxy}`,
             ],
-            headless: true
+            headless: false
         }
 
         const resp = await _ScrapePage(name,options);
@@ -111,6 +111,7 @@ const bootstrap = async()=>{
                 const companyFailed = new ObjectsToCsv([{name:resp.keyword}]);
                 await companyFailed.toDisk(file3,{append:true});
                 lastComapnyRetry = 0;
+                // await sleep.sleep(300);
             }
 
         }

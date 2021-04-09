@@ -27,7 +27,7 @@ class AliSpider(scrapy.Spider):
     # companies = ['InceptionPad']
 
     def start_requests(self):
-        prefix = 'https://www.google.com/search?';
+        prefix = 'https://www.google.com/search?q=site:www.linkedin.com+';
         
         self.companies = self.companies + list(map(lambda x: x+" linkedin",self.companies))
         for keyword in self.companies:
