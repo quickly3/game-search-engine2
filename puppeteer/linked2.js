@@ -30,7 +30,7 @@ const bootstrap = async()=>{
     var companies = data.toString().split("\n");
     companies.shift();
 
-    companies = companies.map(e=>e.replace(/\"/,""));
+    companies = companies.map(e=>e.replace(/\"/g,""));
 
     // companies = [
     //     'Acterna',
