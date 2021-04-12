@@ -60,6 +60,7 @@ const google = async (name,options,browser) => {
             },link)
             if(linkedin_url){
                 success = true;
+                invalid_keyword = true;
             }
             break;
         } catch (error) {
