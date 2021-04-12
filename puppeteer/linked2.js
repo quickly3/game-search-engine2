@@ -32,48 +32,31 @@ const bootstrap = async()=>{
 
     companies = companies.map(e=>e.replace(/\"/g,""));
 
-    // companies = [
-    //     'Acterna',
-    //     'Access Funding, LLC','ACE Hardware Corporation','Fortren Funding LLC','Acendre',
-    //     '3S Media','522 Productions','A-Town Bar and Grill','Abbott Laboratories/Quintiles Commercial',
-    //     'Abercrombie & Fitch','Absolute Software','Abstract','Accents by Design','Accenture',
-    //     'Achieved Solutions','Acquia','Acterna','Actian, Corporation','Actuate (opentext)',
-    //     'Acuity Audio Visual','AD PAGES MARKETING','ADF Solutions, Inc','Adobe','Adrian College',
-    //     'American University','BaseInfoSec','Adtran','Advance Business Systems',
-    //     'Advanced & Emerging Technologies','Advanced Computer Concepts','Advantage Green, Inc',
-    //     'InceptionPad',
-    //     'Bergen Community College','BoxTone Inc','24 Hour Fitness','2U','3Com Corporation',
-    //     'Advantech','AECOM, Inc','AEG Worldwide','Aerva, Inc','Aether Systems'
-    // ]
     lastComapnyRetry = 0;
 
-    // userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"
-
-    userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
     headless = true
 
-    options = {
-        args: [
-            "--disable-gpu",
-            `--user-agent=${userAgent}`,
-            // `--proxy-server=${proxy}`,
-        ],
-        headless: headless
-    }
-
-    let browser = await puppeteer.launch(options);
-
     while(companies[0]){
-        name = companies[0]
 
+        userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
+        options = {
+            args: [
+                "--disable-gpu",
+                `--user-agent=${userAgent}`,
+            ],
+            headless: headless
+        }
+    
+        let browser = await puppeteer.launch(options);
+
+        name = companies[0]
 
         // Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0
         proxy = proxys[Math.floor(Math.random() * proxys.length)]
         // ScrapePages = [baidu2,google1,google2]
-        ScrapePages = [google]
+        ScrapePages = [baidu]
 
         _ScrapePage = ScrapePages[Math.floor(Math.random() * ScrapePages.length)]
-        
 
         const resp = await _ScrapePage(name,options,browser);
 
@@ -164,9 +147,11 @@ const bootstrap = async()=>{
             }
             companies.shift();
         }
+        await browser.close();
 
         const random = Math.floor(Math.random() * 10 - 5);
-        await sleep.sleep(10+random);
+        await sleep.sleep(17+random);
+
     }
 }
 bootstrap();

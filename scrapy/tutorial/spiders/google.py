@@ -6,33 +6,58 @@ import urllib.parse as urlparse
 from urllib.parse import parse_qs
 from urllib.parse import urlencode
 import json
+import os
 
 class AliSpider(scrapy.Spider):
     # 593
     name = "google"
+    companies = []
+    
 
-    companies = [
-        'InceptionPad',
-        'Bergen Community College','BoxTone Inc','24 Hour Fitness','2U','3Com Corporation',
-        '3S Media','522 Productions','A-Town Bar and Grill','Abbott Laboratories/Quintiles Commercial',
-        'Abercrombie & Fitch','Absolute Software','Abstract','Accents by Design','Accenture',
-        'Access Funding, LLC','ACE Hardware Corporation','Fortren Funding LLC','Acendre',
-        'Achieved Solutions','Acquia','Acterna','Actian, Corporation','Actuate (opentext)',
-        'Acuity Audio Visual','AD PAGES MARKETING','ADF Solutions, Inc','Adobe','Adrian College',
-        'American University','BaseInfoSec','Adtran','Advance Business Systems',
-        'Advanced & Emerging Technologies','Advanced Computer Concepts','Advantage Green, Inc',
-        'Advantech','AECOM, Inc','AEG Worldwide','Aerva, Inc','Aether Systems'
-    ]
+    # companies = [
+    #     'InceptionPad',
+    #     'Bergen Community College','BoxTone Inc','24 Hour Fitness','2U','3Com Corporation',
+    #     '3S Media','522 Productions','A-Town Bar and Grill','Abbott Laboratories/Quintiles Commercial',
+    #     'Abercrombie & Fitch','Absolute Software','Abstract','Accents by Design','Accenture',
+    #     'Access Funding, LLC','ACE Hardware Corporation','Fortren Funding LLC','Acendre',
+    #     'Achieved Solutions','Acquia','Acterna','Actian, Corporation','Actuate (opentext)',
+    #     'Acuity Audio Visual','AD PAGES MARKETING','ADF Solutions, Inc','Adobe','Adrian College',
+    #     'American University','BaseInfoSec','Adtran','Advance Business Systems',
+    #     'Advanced & Emerging Technologies','Advanced Computer Concepts','Advantage Green, Inc',
+    #     'Advantech','AECOM, Inc','AEG Worldwide','Aerva, Inc','Aether Systems'
+    # ]
 
     # companies = ['InceptionPad']
 
     def start_requests(self):
-        prefix = 'https://www.google.com/search?q=site:www.linkedin.com+';
+        prefix = 'https://www.google.com/search?';
         
-        self.companies = self.companies + list(map(lambda x: x+" linkedin",self.companies))
+        with open("companies.csv") as fp:
+            self.companies = fp.readlines()
+
+        fp.close()
+
+
+        with open("companies.csv") as fp:
+            self.companies = fp.readlines()
+
+        fp.close()
+        
+        self.file2 = "linked_companies.csv"
+        self.file3 = "failed_companies.csv"
+
+        # if os.path.isfile(file2):
+        #     os.unlink(file2)
+
+ 
+
+        self.companies = list(map(lambda x: x.replace("\n",""),self.companies))
+
         for keyword in self.companies:
-            urlencodeKeyword = urlencode({'q':keyword});
+            
+            urlencodeKeyword = urlencode({'q':"site:www.linkedin.com "+keyword});
             url = prefix+urlencodeKeyword
+
             yield scrapy.FormRequest(url=url, method="GET",callback=lambda response, keyword=keyword: self.parse(response, keyword))
 
     def exactlyMatch(self,item):
@@ -92,34 +117,25 @@ class AliSpider(scrapy.Spider):
         return company
 
     def parse(self, response, keyword):
-        htmlFile = f"/Users/hongbinzhou/Downloads/companies/{keyword}.html"
-        jsonFile = f"/Users/hongbinzhou/Downloads/companies/{keyword}.json"
 
-        f = open(htmlFile, "w")
-        f.write(response.text)
-        f.close()
+        f2 = open(file2, "a+")
+        f3 = open(file3, "a+")
+
+        href = response.xpath('//*[@id="main"]/div[3]/div/div[1]/a/@href').get();
+
+        if href :
+            linkedin_url = self.redirectLinkParse(href);
+            f2.write(linkedin_url['href'])
+            
+        else:
+            f3.write(keyword)
+        f2.close()
+        f3.close()
+
         
-        items = response.xpath('//*[@id="main"]/div');
-        list = []
-        for i in range(len(items)):
-            if i > 1:
-                item = items[i];
-                imageMark = item.xpath('div/div[1]/div[1]/span/a/span/span/text()').get();
-                exactly = item.xpath('div/div[1]/span[1]/h3/div/text()').get();
-                if imageMark == 'Images':
-                    continue;
 
-                if exactly:
-                    company = self.exactlyMatch(item)
-                else:
-                    company = self.commonMatch(item)
 
-                list.append(company)
-                
-        with open(jsonFile, 'w') as fout:
-            json.dump(list, fout)
 
-                    
 
 
         

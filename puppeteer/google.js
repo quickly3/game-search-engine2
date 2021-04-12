@@ -1,3 +1,5 @@
+const queryString = require('query-string');
+
 const google = async (name,options,browser) => {
     name = name.replace(/ /g,'+')
     url = `https://www.google.com/search?q=site:www.linkedin.com+${name}`;
@@ -58,9 +60,16 @@ const google = async (name,options,browser) => {
                     return linkNode.getAttribute("href");
                 }
             },link)
+
+            if(linkedin_url.indexOf('/url') > -1){
+                var urlObj = queryString.parseUrl(linkedin_url)
+                linkedin_url = urlObj.query.q
+            }
+
             if(linkedin_url){
                 success = true;
                 invalid_keyword = false;
+
             }
             break;
         } catch (error) {
