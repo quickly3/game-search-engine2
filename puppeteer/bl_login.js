@@ -1,6 +1,6 @@
 const bl_login = async(name,options,browser)=>{
     
-    url = `https://www.baidu.com/s?wd=site%3Alinkedin.com%20${encodeURI(name)}`;
+    url = `https://www.baidu.com/s?wd=site%3Awww.linkedin.com%20${encodeURI(name)}`;
 
     const page = await browser.newPage();
     try {
@@ -59,6 +59,15 @@ const bl_login = async(name,options,browser)=>{
                     invalid_keyword = true;
                     linkedin_url = null;
                 }
+
+                if(redirect_url.indexOf('https://www.linkedin.com/pulse')>-1){
+                    success = false;
+                    invalid_keyword = true;
+                    linkedin_url = null;
+                }
+
+                
+
             }
         }
     })

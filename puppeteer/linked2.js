@@ -50,6 +50,7 @@ const bootstrap = async()=>{
         let browser = await puppeteer.launch(options);
 
         name = companies[0]
+        name = name.replace(/\([^\)]*\)/g," ");
 
         // Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0
         proxy = proxys[Math.floor(Math.random() * proxys.length)]
@@ -97,7 +98,7 @@ const bootstrap = async()=>{
 
             }
 
-            if(resp.msg == 'Linnkedin Render failed'){
+            if(resp.msg == 'engine page failed'){
                 lastComapnyRetry = lastComapnyRetry + 1
             }
 
@@ -113,7 +114,7 @@ const bootstrap = async()=>{
                 next = true;
             }
 
-            if(lastComapnyRetry == 5){
+            if(lastComapnyRetry >= 5){
                 const companyFailed = new ObjectsToCsv([{
                     "company":resp.keyword,
                     "linkedin_url":resp.linkedin_url,
@@ -149,8 +150,9 @@ const bootstrap = async()=>{
         }
         await browser.close();
 
-        const random = Math.floor(Math.random() * 10 - 5);
-        await sleep.sleep(17+random);
+        // const random = Math.floor(Math.random() * 10 - 5);
+        // await sleep.sleep(17+random);
+        await sleep.sleep(5);
 
     }
 }
