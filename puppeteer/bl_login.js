@@ -1,6 +1,6 @@
 const bl_login = async(name,options,browser)=>{
     
-    url = `https://www.baidu.com/s?wd=site%3Awww.linkedin.com%20${encodeURI(name)}`;
+    url = `https://www.baidu.com/s?wd=site%3A(www.linkedin.com)%20${encodeURI(name)}`;
 
     const page = await browser.newPage();
     try {
