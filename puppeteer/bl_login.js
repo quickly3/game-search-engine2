@@ -1,6 +1,6 @@
 const bl_login = async(name,options,browser)=>{
-    
-    url = `https://www.baidu.com/s?wd=site%3A(www.linkedin.com)%20${encodeURI(name)}`;
+    name = name.replace(/ /g,'+')
+    url = `https://www.baidu.com/s?wd=site%3a(www.linkedin.com)+${name}`;
 
     const page = await browser.newPage();
     try {
@@ -19,7 +19,7 @@ const bl_login = async(name,options,browser)=>{
     link = '#content_left > div:nth-child(1)  > h3 > a'
     try {
         await page.waitForSelector(link,{
-            timeout:5000
+            timeout:50000
         })
     } catch (error) {
         await page.close();
@@ -65,9 +65,6 @@ const bl_login = async(name,options,browser)=>{
                     invalid_keyword = true;
                     linkedin_url = null;
                 }
-
-                
-
             }
         }
     })

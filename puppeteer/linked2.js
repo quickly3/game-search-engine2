@@ -1,6 +1,7 @@
 const sleep = require('sleep');
 const google = require('./google.js');
 const baidu = require('./bl_login.js');
+const bing = require('./bing.js');
 
 
 
@@ -55,7 +56,7 @@ const bootstrap = async()=>{
         // Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0
         proxy = proxys[Math.floor(Math.random() * proxys.length)]
         // ScrapePages = [baidu2,google1,google2]
-        ScrapePages = [baidu]
+        ScrapePages = [bing]
 
         _ScrapePage = ScrapePages[Math.floor(Math.random() * ScrapePages.length)]
 
