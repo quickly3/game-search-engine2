@@ -153,7 +153,7 @@ const bootstrap = async()=>{
 
         // const random = Math.floor(Math.random() * 10 - 5);
         // await sleep.sleep(17+random);
-        await sleep.sleep(5);
+        await sleep.sleep(10);
 
     }
 }

@@ -154,6 +154,7 @@ class AliSpider(scrapy.Spider):
             bulk.append(
                 {"index": {"_index": "article"}})
             bulk.append(doc)
+            
         if len(bulk) > 0:
             es.bulk(index="article", body=bulk)
 
