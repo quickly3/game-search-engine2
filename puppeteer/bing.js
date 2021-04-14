@@ -62,6 +62,7 @@ const bing = async(name,options,browser)=>{
             success:success,
             invalid_keyword:invalid_keyword,
             linkedin_url:linkedin_url,
+            msg:'result no found',
             robot:false
         }
         await page.close();

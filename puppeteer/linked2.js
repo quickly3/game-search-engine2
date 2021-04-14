@@ -108,7 +108,7 @@ const bootstrap = async()=>{
                     "company":resp.keyword,
                     "linkedin_url":resp.linkedin_url,
                     "time cost":resp.cost,
-                    "msg":"no available result",
+                    "msg":resp.msg,
                     "success":resp.success.toString()
                 }]);
                 await csv.toDisk(file1,{append:true});
@@ -153,7 +153,7 @@ const bootstrap = async()=>{
 
         // const random = Math.floor(Math.random() * 10 - 5);
         // await sleep.sleep(17+random);
-        await sleep.sleep(10);
+        await sleep.sleep(5);
 
     }
 }
