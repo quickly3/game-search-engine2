@@ -39,7 +39,7 @@ def clearHighLight(string):
 class AliSpider(scrapy.Spider):
     # 593
     name = "oschina_project_daily"
-    source = "project"
+    source = "oschina"
     tag = "project"
 
     domain = 'https://www.oschina.net'
