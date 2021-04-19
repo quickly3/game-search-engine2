@@ -1,6 +1,7 @@
 const bing = async(name,options,browser)=>{
     
-    url = `https://www.bing.com/search?q=site%3a(www.linkedin.com)+${encodeURI(name)}`;
+    url = `https://www.bing.com/search?q=site%3awww.linkedin.com+${encodeURI(name)}`;
+    url = url.replace("&","%26");
 
     const page = await browser.newPage();
     try {
@@ -17,11 +18,15 @@ const bing = async(name,options,browser)=>{
         }
     }
 
+    // const path = '/Users/hongbinzhou/Downloads/final.jpeg'
+    // const image_buff = await page.screenshot({type:'jpeg', path:path});
+
     linkedin_url = null;
     invalid_keyword = true
     success = false;
 
     link = '#b_results > li:nth-child(1) > h2 > a'
+
     try {
         await page.waitForSelector(link,{
             timeout:5000
@@ -51,7 +56,31 @@ const bing = async(name,options,browser)=>{
                 linkedin_url = null;
             }
 
+            if(redirect_url.indexOf('https://www.linkedin.com/directory')>-1){
+                success = false;
+                invalid_keyword = true;
+                linkedin_url = null;
+            }
+
             if(redirect_url.indexOf('https://www.linkedin.com/pulse')>-1){
+                success = false;
+                invalid_keyword = true;
+                linkedin_url = null;
+            }
+
+            if(redirect_url.indexOf('https://www.linkedin.com/salary')>-1){
+                success = false;
+                invalid_keyword = true;
+                linkedin_url = null;
+            }
+
+            if(redirect_url.indexOf('https://www.linkedin.com/pub')>-1){
+                success = false;
+                invalid_keyword = true;
+                linkedin_url = null;
+            }
+
+            if(redirect_url.indexOf('https://www.linkedin.com/learning')>-1){
                 success = false;
                 invalid_keyword = true;
                 linkedin_url = null;

@@ -3,8 +3,6 @@ const google = require('./google.js');
 const baidu = require('./bl_login.js');
 const bing = require('./bing.js');
 
-
-
 const ObjectsToCsv = require('objects-to-csv')
 var fs = require('fs');
 const puppeteer = require('puppeteer');
@@ -28,6 +26,7 @@ const bootstrap = async()=>{
     companies_file = './companies.csv';
     data = fs.readFileSync(companies_file);
 
+
     var companies = data.toString().split("\n");
     companies.shift();
 
@@ -39,7 +38,8 @@ const bootstrap = async()=>{
 
     while(companies[0]){
 
-        userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
+        // userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
+        userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36'
         options = {
             args: [
                 "--disable-gpu",
@@ -52,6 +52,9 @@ const bootstrap = async()=>{
 
         name = companies[0]
         name = name.replace(/\([^\)]*\)/g," ");
+        name = name.replace(" Incorporated","");
+        name = name.replace(", Incorporated","");
+        
 
         // Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0
         proxy = proxys[Math.floor(Math.random() * proxys.length)]
@@ -85,7 +88,8 @@ const bootstrap = async()=>{
             if(resp.robot){
                 lastComapnyRetry = lastComapnyRetry + 1
 
-                userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
+                // userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
+                userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36'
                 options = {
                     args: [
                         "--disable-gpu",

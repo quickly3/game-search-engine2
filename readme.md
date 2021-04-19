@@ -89,3 +89,6 @@ pproxy -l http://:8181 -r socks5://127.0.0.1:10000 -vv
 
 
 nohup node linked2.js > linked2.log 2>&1 &
+
+
+nohup scrapy crawl oschina >> /home/ubuntu/www/ng-blog/storage/logs/oschina.log 2>&1
