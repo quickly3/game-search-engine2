@@ -88,7 +88,6 @@ class AliSpider(scrapy.Spider):
         if len(items) > 0:
             bulk = []
             for item in items:
-                print(item)
                 doc = {}
                 doc['title'] = clearHighLight(item['title'])
                 doc['url'] = re.sub(r'\?.*','',item['url'])
