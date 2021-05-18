@@ -88,10 +88,11 @@ class AliSpider(scrapy.Spider):
         if len(items) > 0:
             bulk = []
             for item in items:
+                print(item)
                 doc = {}
                 doc['title'] = clearHighLight(item['title'])
                 doc['url'] = re.sub(r'\?.*','',item['url'])
-                doc['summary'] = clearHighLight(item['description'])
+                doc['summary'] = clearHighLight(item['digest'])
                 doc['author'] = clearHighLight(item['nickname'])
 
                 doc['created_at'] = item['create_time_str']+"T00:00:00Z"
