@@ -6,7 +6,7 @@ import scrapy
 import os
 
 from string import Template
-from dateutil.parser import parse as dateparse
+from dateutil import parser
 
 
 # settings.py
@@ -28,11 +28,11 @@ class AliSpider(scrapy.Spider):
     # 593
     name = "itpub_z"
 
-    domain = 'https://z.itpub.net/'
+    domain = 'https://z.itpub.net'
     # 593
     source = "itpub"
 
-    page = 1
+    page = 1974
     pageSize = 100
 
     def start_requests(self):
@@ -40,34 +40,40 @@ class AliSpider(scrapy.Spider):
 
         yield scrapy.Request(url)
 
+    def get_next_page(self):
+        self.page = self.page + 1;
+        return 'https://z.itpub.net/?page=%s'%(str(self.page))
+        
+
     def parse(self, response):
         items = response.xpath('/html/body/div[3]/div[1]/div[4]/ul/li')
-
+        if len(items) == 0:
+            os._exit(0)
         bulk = []
         for item in items:
             doc = {}
             doc['title'] = item.xpath("a/div/div[2]/h4/text()").get();
+            doc['url'] = self.domain + item.xpath("a/@href").get();
+            doc['summary'] = item.xpath("a/div/div[2]/p/text()").get();
+            doc['author'] = item.xpath("a/div/div[2]/div/span[1]/text()").get();
+            doc['created_at'] = item.xpath("a/div/div[2]/div/span[2]/text()").get();
+
             if not doc['title']:
                 doc['title'] = item.xpath("a/div/div/h4/text()").get();
+                doc['summary'] = item.xpath("a/div/div/p/text()").get();
+                doc['author'] = item.xpath("a/div/div/div/span[1]/text()").get();
+                doc['created_at'] = item.xpath("a/div/div/div/span[2]/text()").get();
 
+            date = parser.parse(doc['created_at'])
+            doc['created_year'] = date.strftime("%Y")
+            doc['source'] = self.source
             print(doc)
+            bulk.append(
+                {"index": {"_index": "article"}})
+            bulk.append(doc)
 
-            # doc['url'] = "https://www.elastic.co"+blog['url']
-            # doc['created_at'] = blog['publish_date']
+        if len(bulk) > 0:
+            resp = es.bulk(index="article", body=bulk)
 
-            # date = parser.parse(doc['created_at'])
-
-            # doc['created_year'] = date.strftime("%Y")
-
-            # doc['summary'] = blog['abstract_l10n']
-            # doc['source'] = "elastic"
-            # doc['tag'] = blog['category'][0]['title']
-
-            # auths = list(map(lambda x: x['title'] ,blog['author']))
-
-            # if len(auths) >0:
-            #     doc['author'] = "•".join(auths)
-
-            # bulk.append(
-            #     {"index": {"_index": "article"}})
-            # bulk.append(doc)
+        next_page = self.get_next_page()
+        yield scrapy.Request(next_page)
