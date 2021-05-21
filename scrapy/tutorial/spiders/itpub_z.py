@@ -32,7 +32,7 @@ class AliSpider(scrapy.Spider):
     # 593
     source = "itpub"
 
-    page = 1974
+    page = 1
     pageSize = 100
 
     def start_requests(self):
@@ -47,8 +47,10 @@ class AliSpider(scrapy.Spider):
 
     def parse(self, response):
         items = response.xpath('/html/body/div[3]/div[1]/div[4]/ul/li')
+
         if len(items) == 0:
             os._exit(0)
+
         bulk = []
         for item in items:
             doc = {}
@@ -65,9 +67,9 @@ class AliSpider(scrapy.Spider):
                 doc['created_at'] = item.xpath("a/div/div/div/span[2]/text()").get();
 
             date = parser.parse(doc['created_at'])
+            doc['created_at'] = date.isoformat();
             doc['created_year'] = date.strftime("%Y")
             doc['source'] = self.source
-            print(doc)
             bulk.append(
                 {"index": {"_index": "article"}})
             bulk.append(doc)
