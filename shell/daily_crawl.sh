@@ -13,6 +13,9 @@ nohup python3 -m scrapy crawl csdn_daily >> /home/ubuntu/www/ng-blog/storage/log
 nohup python3 -m scrapy crawl oschina_news_daily >> /home/ubuntu/www/ng-blog/storage/logs/oschina_news_daily.log 2>&1
 nohup python3 -m scrapy crawl oschina_project_daily >> /home/ubuntu/www/ng-blog/storage/logs/oschina_project_daily.log 2>&1
 nohup python3 -m scrapy crawl itpub_z_daily >> /home/ubuntu/www/ng-blog/storage/logs/itpub_z_daily.log 2>&1
+nohup python3 -m scrapy crawl data_whale_daily >> /home/ubuntu/www/ng-blog/storage/logs/data_whale_daily.log 2>&1
+
+
 
 cd /home/ubuntu/www/ng-blog
 nohup sudo php artisan EsClearLast >> /home/ubuntu/www/ng-blog/storage/logs/EsClearLast.log 2>&1
