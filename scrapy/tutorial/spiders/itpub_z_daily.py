@@ -4,6 +4,9 @@
 
 import scrapy
 import os
+import time
+import datetime
+from dateutil.parser import parse as dateparse
 
 from string import Template
 from dateutil import parser
@@ -26,7 +29,7 @@ load_dotenv(dotenv_path=env_path)
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "itpub_z"
+    name = "itpub_z_daily"
 
     domain = 'https://z.itpub.net'
     # 593
@@ -38,7 +41,12 @@ class AliSpider(scrapy.Spider):
     def start_requests(self):
         url = 'https://z.itpub.net/?page=%s'%(str(self.page))
 
+        yesterday = (datetime.date.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+
+
         yield scrapy.Request(url)
+        
 
     def get_next_page(self):
         self.page = self.page + 1;
@@ -46,6 +54,7 @@ class AliSpider(scrapy.Spider):
         
 
     def parse(self, response):
+        to_next = True;
         items = response.xpath('/html/body/div[3]/div[1]/div[4]/ul/li')
 
         if len(items) == 0:
@@ -83,9 +92,14 @@ class AliSpider(scrapy.Spider):
                 doc['created_at'] = item.xpath("a/div/div/*/*/div/span[2]/text()").get();
             if not doc['created_at']:
                 doc['created_at'] = item.xpath("a/div/div/*/*/*/div/span[2]/text()").get();
+            
+            _date = dateparse(doc['created_at'])
 
-            # print(item.xpath("a/div/div/*").getall())
-                
+            if _date.timestamp() < self.start_time :
+                to_next = False
+                print("too old")
+                continue;
+
             date = parser.parse(doc['created_at'])
             doc['created_at'] = date.isoformat();
             doc['created_year'] = date.strftime("%Y")
@@ -94,10 +108,9 @@ class AliSpider(scrapy.Spider):
                 {"index": {"_index": "article"}})
             bulk.append(doc)
 
-
-
         if len(bulk) > 0:
             resp = es.bulk(index="article", body=bulk)
 
-        next_page = self.get_next_page()
-        yield scrapy.Request(next_page)
+        if to_next:
+            next_page = self.get_next_page()
+            yield scrapy.Request(next_page)
