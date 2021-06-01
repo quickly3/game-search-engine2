@@ -93,7 +93,9 @@ export class InfoqComponent {
         { title: 'sf', source_class: 'icon-sf', text: '思否' },
         { title: 'escn', source_class: 'icon-escn', text: 'Es中文社区' },
         { title: 'elastic', source_class: 'icon-elastic', text: 'Es官方' },
-        { title: 'itpub', source_class: 'icon-itpub', text: 'itpub' }
+        { title: 'itpub', source_class: 'icon-itpub', text: 'itpub' },
+        { title: 'data_whale', source_class: 'icon-datawhale', text: '和鲸数据' }
+
     ];
 
     // tslint:disable-next-line: no-shadowed-variable
