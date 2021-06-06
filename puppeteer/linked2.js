@@ -38,8 +38,8 @@ const bootstrap = async()=>{
 
     while(companies[0]){
 
-        // userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
-        userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36'
+        userAgent = userAgents[Math.floor(Math.random() * userAgents.length)]
+        // userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36'
         options = {
             args: [
                 "--disable-gpu",
@@ -54,6 +54,7 @@ const bootstrap = async()=>{
         name = name.replace(/\([^\)]*\)/g," ");
         name = name.replace(" Incorporated","");
         name = name.replace(", Incorporated","");
+        name = name.replace(/,? (Inc|LLc|ltd|COMPANY|Corp|Corporation)/gi,"");
         
 
         // Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0

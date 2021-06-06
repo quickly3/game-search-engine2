@@ -45,7 +45,5 @@ ide2upload.js
 ide_logined.csv
 invalid_ind.csv
 invalid_ind_str.csv
-puppeteer/companies_linkedin2.csv
-puppeteer/companies_linkedin2.numbers
-puppeteer/companies_linkedin_merge.csv
-ide_logined-4-19.csv
+puppeteer/*.csv
+
