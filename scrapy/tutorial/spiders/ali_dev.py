@@ -30,7 +30,7 @@ class AliSpider(scrapy.Spider):
     page = 1
 
     def start_requests(self):
-        url = 'https://developer.aliyun.com/developer/api/index/listIndexFeed'
+        url = 'https://developer.aliyun.com/developer/api/index/listIndexFeed?gmtCreated=1598584222000&objectId=771137&bizCategory=yq-article> (referer: https://developer.aliyun.com/developer/api/index/listIndexFeed?gmtCreated=1598597268000&objectId=771147&bizCategory=yq-article'
         yield scrapy.Request(url)
 
     def get_url(self):
@@ -43,6 +43,10 @@ class AliSpider(scrapy.Spider):
         if len(items) > 0 or self.page < 5000:
             bulk = []
             for item in items:
+
+                if item['moduleType'] != "article":
+                    continue;
+
                 obj = item['object']
                 doc = {}
                 doc['title'] = obj['title']
