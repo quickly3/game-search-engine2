@@ -20,7 +20,7 @@ es_logger.setLevel(50)
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "ali_dev"
+    name = "ali_dev_daily"
     source = "ali_dev"
 
     domain = 'https://developer.aliyun.com/'

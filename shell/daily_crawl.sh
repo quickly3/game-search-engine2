@@ -14,6 +14,8 @@ nohup python3 -m scrapy crawl oschina_news_daily >> /home/ubuntu/www/ng-blog/sto
 nohup python3 -m scrapy crawl oschina_project_daily >> /home/ubuntu/www/ng-blog/storage/logs/oschina_project_daily.log 2>&1
 nohup python3 -m scrapy crawl itpub_z_daily >> /home/ubuntu/www/ng-blog/storage/logs/itpub_z_daily.log 2>&1
 nohup python3 -m scrapy crawl data_whale_daily >> /home/ubuntu/www/ng-blog/storage/logs/data_whale_daily.log 2>&1
+nohup python3 -m scrapy crawl ali_dev_daily >> /home/ubuntu/www/ng-blog/storage/logs/ali_dev_daily.log 2>&1
+
 
 
 
