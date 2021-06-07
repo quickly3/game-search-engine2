@@ -30,6 +30,9 @@ class AliSpider(scrapy.Spider):
     page = 1
 
     def start_requests(self):
+        yesterday = (datetime.date.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+
         url = 'https://developer.aliyun.com/developer/api/index/listIndexFeed'
         yield scrapy.Request(url)
 
@@ -41,6 +44,7 @@ class AliSpider(scrapy.Spider):
         items = resp['data']
 
         if len(items) > 0 or self.page < 5000:
+            to_next = True
             bulk = []
             for item in items:
 
@@ -55,6 +59,13 @@ class AliSpider(scrapy.Spider):
                 doc['author'] = obj['author']
 
                 doc['created_at'] = obj['gmtCreated']
+
+                _date = dateparse(doc['created_at'])
+                if _date.timestamp() < self.start_time :
+                    to_next = False
+                    print("too old")
+                    continue;
+
                 doc['created_year'] = dateparse(doc['created_at']).year
 
                 doc['source'] = self.source
@@ -66,10 +77,11 @@ class AliSpider(scrapy.Spider):
             if len(bulk) > 0:
                 es.bulk(index="article",body=bulk)
             
-            self.objectId = items[-1]['objectId']
-            self.gmtCreated = items[-1]['objectCreate']
-            self.page+=1
-            yield scrapy.Request(self.get_url())
+            if to_next:
+                self.objectId = items[-1]['objectId']
+                self.gmtCreated = items[-1]['objectCreate']
+                self.page+=1
+                yield scrapy.Request(self.get_url())
         else:
             os._exit(0)
 

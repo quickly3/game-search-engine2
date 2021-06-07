@@ -94,7 +94,8 @@ export class InfoqComponent {
         { title: 'escn', source_class: 'icon-escn', text: 'Es中文社区' },
         { title: 'elastic', source_class: 'icon-elastic', text: 'Es官方' },
         { title: 'itpub', source_class: 'icon-itpub', text: 'itpub' },
-        { title: 'data_whale', source_class: 'icon-datawhale', text: '和鲸数据' }
+        { title: 'data_whale', source_class: 'icon-datawhale', text: '和鲸数据' },
+        { title: 'ali_dev', source_class: 'icon-alidev', text: '阿里开发者社区' }
 
     ];
 
