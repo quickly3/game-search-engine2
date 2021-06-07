@@ -148,6 +148,7 @@
             <div>
               <div class="icons-sm {{ daily_item.badge_class }}"></div>
               <span class="created" *ngIf="daily_item.created_at">{{ daily_item.created_at | date: "yyyy-MM-dd" }}</span>
+              <span class="author" *ngIf="daily_item.author">{{ daily_item.author }}</span>
               <span 
                 class="badge badge-primary article_tag"
                 *ngFor="let tag of daily_item.tag"

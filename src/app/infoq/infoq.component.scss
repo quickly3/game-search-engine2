@@ -99,6 +99,7 @@ a:hover{
     height: 14px;
     width: 14px;
     margin: 0 4px 4px 3px;
+    border: 1px solid #e6e6e6;
 }
 
 .icon-all {
@@ -154,8 +155,15 @@ a:hover{
 }
 
 .created{
-    font-size: 14px;
+    font-size: 12px;
     color: #888;
+    margin-right: 10px;
+}
+
+.author{
+    font-size: 12px;
+    color: #888;
+    margin-right: 10px;
 }
 
 .option-title{
@@ -193,6 +201,8 @@ a:hover{
 
 .article_tag{
     margin: 0 2px;
+    font-size: 12px;
+    padding: 0.2em;
 }
 
 .source-tool{
