@@ -38,12 +38,34 @@ class AliSpider(scrapy.Spider):
     page = 1
     pageSize = 100
 
+
+    def getLastRecord(self):
+        body = {
+            "query":{
+                "query_string": {
+                    "query": "source:itpub"
+                }
+            },
+            "sort": [
+                {
+                    "created_at": {
+                        "order": "desc"
+                    }
+                }
+            ],
+            "size": 1
+        }
+        resp = es.search(index="article",body=body)
+        if int(resp['hits']['total']['value']) > 0:
+            created_at = resp['hits']['hits'][0]['_source']['created_at']
+            date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S')
+            self.start_time = date_time_obj.timestamp()
+
+
     def start_requests(self):
         url = 'https://z.itpub.net/?page=%s'%(str(self.page))
 
-        yesterday = (datetime.date.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
-
+        self.getLastRecord()
 
         yield scrapy.Request(url)
         
