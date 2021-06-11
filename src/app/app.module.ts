@@ -10,12 +10,14 @@ import { ComponentsModule } from './components/components.module';
 import { NgbModule,NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainPipe } from './pipe/main-pipe.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
+import { GraphComponent } from './graph/graph.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     InfoqComponent,
+    GraphComponent,
   ],
   imports: [
     BrowserModule,
