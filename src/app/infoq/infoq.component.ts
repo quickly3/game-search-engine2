@@ -166,7 +166,6 @@ export class InfoqComponent {
                 this.instance.dismissPopup();
                 this.search();
             }
-
         }
     }
 
@@ -214,7 +213,7 @@ export class InfoqComponent {
 
     search = () => {
 
-        
+
         const params = {
             page: '' + this.current_page,
             keywords: this.keywords,

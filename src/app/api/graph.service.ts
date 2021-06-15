@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 export class GraphService {
     constructor(private http: HttpClient) {}
 
-    getWordsCloud = () => {
+    getTotalGraph = () => {
         return this.http.get('/graph/index');
     }
 }
