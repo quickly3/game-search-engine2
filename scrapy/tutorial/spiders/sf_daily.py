@@ -138,7 +138,7 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
-        
+
         if response.status == 200:
             items = response.xpath(
                 '//*[@class="summary"]')
@@ -192,7 +192,7 @@ class AliSpider(scrapy.Spider):
 
                     doc = {}
                     doc['title'] = title
-                    doc['url'] = "https://segmentfault.com/"+url
+                    doc['url'] = "https://segmentfault.com"+url
                     doc['summary'] = detail
                     doc['tag'] = self._target['k']
                     doc['source'] = self.source
@@ -223,4 +223,4 @@ class AliSpider(scrapy.Spider):
                 self.page = self.page+1
                 url = self.get_url()
                 yield scrapy.Request(url, headers=self.headers)
-            
+
