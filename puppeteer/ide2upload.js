@@ -71,13 +71,6 @@ for (const company of dataObjs.data){
 
 
 for (const company of dataObjs.data){
-
-    if(names.indexOf(company.li_name)>-1){
-        continue;
-    }else{
-        names.push(company.li_name)
-    }
-
     if(!company.datas){
         continue;
     }
@@ -87,6 +80,20 @@ for (const company of dataObjs.data){
     }else{
         datasObj = parseData(company.datas)
     }
+
+    if(names.indexOf(company.li_name)>-1){
+        // to do
+        for(const org of uploadFileArr){
+            if(org.linkedInURL === company.linkedin_url.replace(/\/about/g,'')){
+                org.alias = org.alias + " || " + company.name;
+                continue;
+            }
+        }
+        continue;
+    }else{
+        names.push(company.li_name)
+    }
+
 
     if(datasObj){
         if(company.li_name == '#LNF'){
