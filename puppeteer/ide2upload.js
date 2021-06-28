@@ -41,7 +41,7 @@ invalid_ind = []
 uploadFileArr = []
 
 names = []
-urlIds = []
+nameIds = []
 
 for (const company of dataObjs.data){
     if(company.name.trim() == ''){
@@ -52,8 +52,8 @@ for (const company of dataObjs.data){
     }
 
     let inIds = false;
-    for(const obj of urlIds){
-        if(obj.url === company.linkedin_url){
+    for(const obj of nameIds){
+        if(obj.name === company.name){
             obj.ids = obj.ids + ',' + company.expIds
             inIds = true;
             continue;
@@ -61,8 +61,8 @@ for (const company of dataObjs.data){
     }
 
     if(!inIds){
-        urlIds.push({
-            url:company.linkedin_url?company.linkedin_url.replace(/\/about/g,''):'',
+        nameIds.push({
+            name:company.name,
             ids:company.expIds
         })
     }
@@ -140,5 +140,5 @@ invalid_ind = [...new Set(invalid_ind)]
 fs.writeFileSync('invalid_ind.csv',invalid_ind.join("\n") ,"utf8");
 
 
-urlIdsStr = Papa.unparse(urlIds,{header:true})
-fs.writeFileSync('urlIdsStr.csv',urlIdsStr ,"utf8");
+nameIdsStr = Papa.unparse(nameIds,{header:true})
+fs.writeFileSync('nameIdsStr.csv',nameIdsStr ,"utf8");
