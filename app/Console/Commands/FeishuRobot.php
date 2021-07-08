@@ -64,7 +64,7 @@ class FeishuRobot extends Command
 
     public function sendDailyMessageToMe(){
         $info =new InfoqService();
-        $articles = $info::getLastDayArticle();
+        $articles = $info::getLastDayInfoqArticle();
         $group = [];
         foreach ($articles as $a) {
             if(!isset($group[$a['summary']])){
@@ -77,11 +77,8 @@ class FeishuRobot extends Command
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
 
-        $fs_robot->chat_id = 'ou_7ba56fd9ecc84f4115ba863607f3d898';
-
         foreach ($group as $title => $articles) {
             $fs_robot->sendToGroup($title, $articles);
-            // $fs_robot->sendToBean($title, $articles);
         }
     }
 }

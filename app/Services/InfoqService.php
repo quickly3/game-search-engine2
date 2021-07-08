@@ -56,7 +56,7 @@ class InfoqService
         $data = $es->client->search($params);
         $resp = (object) $data;
         $cloud_words = $resp->aggregations['title_words_cloud']['buckets'];
- 
+
         $cloud_words = array_map(function ($item) {
             return (object) $item;
         }, $cloud_words);
@@ -120,7 +120,7 @@ class InfoqService
         $data = $es->client->search($params);
         $resp = (object) $data;
         $tags = $resp->aggregations['tags']['buckets'];
- 
+
         return $tags;
     }
 
@@ -146,7 +146,35 @@ class InfoqService
         $data = $es->client->search($params);
         $resp = (object) $data;
 
-        $data = array_map(function($item){ 
+        $data = array_map(function($item){
+            return $item['_source'];
+        },$resp->hits['hits']);
+        return $data;
+    }
+
+    public static function getLastDayInfoqArticle()
+    {
+
+        $lastDay = date('Y-m-d',strtotime("-1 day"));
+        // $today = "2020-12-09";
+        $es = new ElasticModel("article");
+        $data = [
+            "query" => [
+                "query_string" => [
+                    "query" => "source:escn && created_at:{$lastDay}"
+                ]
+            ]
+        ];
+
+        $params = [
+            "index" => "article",
+            "body" =>  $data
+        ];
+
+        $data = $es->client->search($params);
+        $resp = (object) $data;
+
+        $data = array_map(function($item){
             return $item['_source'];
         },$resp->hits['hits']);
         return $data;
