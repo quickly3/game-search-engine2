@@ -229,7 +229,7 @@ class FSRobotService
     }
 
     function sendToGroup($title, $articles, $chat_id = 'oc_59384feeb3ab194bdc0f9f385da7354f'){
-        if(!$this->chat_id){
+        if(!isset($this->chat_id)){
             $this->chat_id = $chat_id;
         }
         $contents = [];
