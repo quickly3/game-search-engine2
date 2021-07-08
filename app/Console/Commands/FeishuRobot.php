@@ -64,7 +64,7 @@ class FeishuRobot extends Command
 
     public function sendDailyMessageToMe(){
         $info =new InfoqService();
-        $articles = $info::getLastDayInfoqArticle();
+        $articles = $info::getLastDayInfoqArticle('infoq');
         $group = [];
         foreach ($articles as $a) {
             if(!isset($group[$a['summary']])){
