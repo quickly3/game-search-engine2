@@ -78,7 +78,7 @@ class FeishuRobot extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            $fs_robot->sendToGroup($title, $articles);
+            $fs_robot->sendToGroup($title, $articles,"ou_7ba56fd9ecc84f4115ba863607f3d898");
         }
     }
 }
