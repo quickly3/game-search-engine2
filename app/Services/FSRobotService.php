@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class FSRobotService 
+class FSRobotService
 {
     public function __construct()
     {
@@ -95,7 +95,7 @@ class FSRobotService
 
     // ou_7ba56fd9ecc84f4115ba863607f3d898
     function get_user_info($open_ids){
-        $ids_string =  join(array_map(function($item){ return "open_ids={$item}";},$open_ids),"&");
+        $ids_string =  join("&", array_map(function($item){ return "open_ids={$item}";},$open_ids));
 
         $method = 'GET';
         $url = "https://open.feishu.cn/open-apis/contact/v1/user/batch_get?{$ids_string}";
@@ -110,7 +110,7 @@ class FSRobotService
         if($response->getStatusCode() === 200){
             $resp = json_decode($response->getBody());
             dump($resp);
-        }        
+        }
     }
 
     function sendUserHtml($open_id){
@@ -161,7 +161,7 @@ class FSRobotService
         if($response->getStatusCode() === 200){
             $resp = json_decode($response->getBody());
             dump($resp);
-        }  
+        }
     }
 
     function sendToBean($title, $articles){
@@ -174,21 +174,21 @@ class FSRobotService
                 [
                     "tag"=> "text",
                     "un_escape"=>true,
-                    "text"=> "{$index}. {$c['title']}"                    
+                    "text"=> "{$index}. {$c['title']}"
                 ]
             ];
             $contents[] = [
                 [
                     "tag"=> "text",
                     "un_escape"=>true,
-                    "text"=> "{$c['url']}"                      
+                    "text"=> "{$c['url']}"
                 ]
             ];
             $contents[] = [
                 [
                     "tag"=> "text",
                     "un_escape"=>true,
-                    "text"=> ""                      
+                    "text"=> ""
                 ]
             ];
         }
@@ -225,11 +225,13 @@ class FSRobotService
         if($response->getStatusCode() === 200){
             $resp = json_decode($response->getBody());
             dump($resp);
-        }  
+        }
     }
 
     function sendToGroup($title, $articles){
-        $chat_id = 'oc_59384feeb3ab194bdc0f9f385da7354f';
+        if(!$this->chat_id){
+            $chat_id = 'oc_59384feeb3ab194bdc0f9f385da7354f';
+        }
         $contents = [];
 
         foreach ($articles as $i => $c) {
@@ -238,21 +240,21 @@ class FSRobotService
                 [
                     "tag"=> "text",
                     "un_escape"=>true,
-                    "text"=> "{$index}. {$c['title']}"                    
+                    "text"=> "{$index}. {$c['title']}"
                 ]
             ];
             $contents[] = [
                 [
                     "tag"=> "text",
                     "un_escape"=>true,
-                    "text"=> "{$c['url']}"                      
+                    "text"=> "{$c['url']}"
                 ]
             ];
             $contents[] = [
                 [
                     "tag"=> "text",
                     "un_escape"=>true,
-                    "text"=> ""                      
+                    "text"=> ""
                 ]
             ];
         }
@@ -262,7 +264,7 @@ class FSRobotService
         }
 
         $body = [
-            "chat_id"=>$chat_id,
+            "chat_id"=>$this->chat_id,
             "msg_type"=>"post",
             "content"=>[
                 "post"=>[
@@ -289,8 +291,25 @@ class FSRobotService
         if($response->getStatusCode() === 200){
             $resp = json_decode($response->getBody());
             dump($resp);
-        }  
+        }
     }
 
+    function getMessages($chat_id){
+        $method = 'GET';
+        $url = "https://open.feishu.cn/open-apis/im/v1/messages?container_id_type=chat&container_id={$chat_id}";
+        $options = [
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request($method,$url,$options);
+
+        if($response->getStatusCode() === 200){
+            $resp = json_decode($response->getBody());
+            dump($resp);
+        }
+    }
 
 }
