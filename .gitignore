@@ -45,4 +45,5 @@ ide_logined.csv
 invalid_ind.csv
 invalid_ind_str.csv
 puppeteer/*.csv
+*.mp3
 
