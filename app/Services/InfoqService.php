@@ -163,7 +163,8 @@ class InfoqService
                 "query_string" => [
                     "query" => "source:{$source} && created_at:{$lastDay}"
                 ]
-            ]
+            ],
+            "size"=>20
         ];
 
         $params = [

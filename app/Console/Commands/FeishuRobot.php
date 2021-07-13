@@ -65,20 +65,12 @@ class FeishuRobot extends Command
     public function sendDailyMessageToMe(){
         $info =new InfoqService();
         $articles = $info::getLastDayInfoqArticle('infoq');
-        $group = [];
-        foreach ($articles as $a) {
-            if(!isset($group[$a['summary']])){
-                $group[$a['summary']] = [$a];
-            }else{
-                $group[$a['summary']][] = $a;
-            }
-        }
 
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+        $title = "InfoQ 热门话题（{$yesterday}）";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-
-        foreach ($group as $title => $articles) {
-            $fs_robot->sendToGroup($title, $articles);
-        }
+        $fs_robot->sendToGroup2($title, $articles);
+        // sendToBean
     }
 }

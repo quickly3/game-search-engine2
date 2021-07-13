@@ -294,6 +294,59 @@ class FSRobotService
         }
     }
 
+    function sendToGroup2($title, $articles, $chat_id = 'oc_59384feeb3ab194bdc0f9f385da7354f'){
+        if(!isset($this->chat_id)){
+            $this->chat_id = $chat_id;
+        }
+        $contents = [];
+
+        foreach ($articles as $i => $c) {
+            $index = $i+1;
+            $contents[] = [
+                [
+                    "tag"=> "a",
+                    "href"=>"{$c['url']}",
+                    "text"=> "{$index}. {$c['title']}"
+                ]
+            ];
+        }
+
+        if(empty($contents)){
+            return null;
+        }
+
+        $body = [
+            "chat_id"=>$this->chat_id,
+            "msg_type"=>"post",
+            "content"=>[
+                "post"=>[
+                    "zh_cn"=>[
+                        "title"=>$title,
+                        "content"=> $contents
+                    ]
+                ]
+            ]
+        ];
+
+        $method = 'POST';
+        $url = 'https://open.feishu.cn/open-apis/message/v4/send/';
+        $options = [
+            'json'=>$body,
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request($method,$url,$options);
+
+        if($response->getStatusCode() === 200){
+            $resp = json_decode($response->getBody());
+            dump($resp);
+        }
+    }
+
+
     function getMessages($chat_id){
         $method = 'GET';
         $url = "https://open.feishu.cn/open-apis/im/v1/messages?container_id_type=chat&container_id={$chat_id}";
