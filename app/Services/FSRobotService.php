@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use PhpParser\Node\Stmt\TryCatch;
+
 class FSRobotService
 {
     public function __construct()
@@ -363,6 +365,38 @@ class FSRobotService
             $resp = json_decode($response->getBody());
             dump($resp);
         }
+    }
+
+    function fileUpload($file_name){
+        $method = 'POST';
+        $url = "https://open.feishu.cn/open-apis/im/v1/files";
+        $body = [
+            "file_type" => 'mp3',
+            "file_name" => $file_name,
+            // "file" => $file
+        ];
+
+        $options = [
+            'json'=> $body,
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}",
+                "Content-Type"=>"application/octet-stream"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        try {
+            $response = $client->request($method,$url,$options);
+        } catch (\Throwable $e) {
+            dump( $e);
+            //throw $th;
+        }
+
+
+        // if($response->getStatusCode() === 200){
+        //     $resp = json_decode($response->getBody());
+        //     dump($resp['msg']);
+        // }
     }
 
 }

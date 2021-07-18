@@ -46,9 +46,8 @@ class EscnDaily extends Command
      */
     public function handle()
     {
-
-        $this->sendDailyEscn();
         $this->sendDailyInofQ();
+        $this->sendDailyEscn();
     }
 
     public function sendDailyEscn(){
@@ -67,7 +66,7 @@ class EscnDaily extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            $fs_robot->sendToGroup($title, $articles);
+            $fs_robot->sendToGroup2($title, $articles);
             // $fs_robot->sendToBean($title, $articles);
         }
     }
