@@ -52,7 +52,7 @@ export default class PieComponent implements OnInit, OnChanges {
         this.svg = d3
           .select('figure#pie')
           .html('');
-          
+
         this.svg = d3
           .select('figure#pie')
           .append('svg')

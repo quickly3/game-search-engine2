@@ -9,7 +9,12 @@ import { map } from 'rxjs/operators';
 export class GraphService {
     constructor(private http: HttpClient) {}
 
-    getTotalGraph = () => {
-        return this.http.get('/graph/index');
+    getDailyGraph = () => {
+        return this.http.get('/graph/getDailyGraph');
     }
+
+    getTotalGraph = () => {
+        return this.http.get('/graph/getTotalGraph');
+    }
+
 }

@@ -52,10 +52,8 @@ Route::post('movie/getList', 'MovieController@getList');
 Route::get('movie/getDetail', 'MovieController@getDetail');
 Route::get('movie/autoComplete', 'MovieController@autoComplete');
 
-Route::get('graph/index', 'GraphController@index');
-
-
-
+Route::get('graph/getDailyGraph', 'GraphController@getDailyGraph');
+Route::get('graph/getTotalGraph', 'GraphController@getTotalGraph');
 
 // Route::get('game/test', 'GameController@test');
 

@@ -7,8 +7,13 @@ use App\Services\GraphService;
 
 class GraphController extends Controller
 {
-    function index(){
+    function getDailyGraph(){
         $graph  = new GraphService();
         return $graph->getDailyGraph();
     }
+
+    function getTotalGraph(){
+        $graph  = new GraphService();
+        return $graph->getTotalGraph();
+    }    
 }

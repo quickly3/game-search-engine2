@@ -10,6 +10,7 @@ import { Datum } from '../interface/Datum';
 export class GraphComponent implements OnInit {
   private graphService: GraphService;
   pieData: Datum[] = [];
+  horizontalData: Datum[] = [];
 
   constructor(graphService: GraphService) {
     this.graphService = graphService;
@@ -27,6 +28,15 @@ export class GraphComponent implements OnInit {
         });
       }
       this.pieData = pieData;
+
+      const total = pieData.map(i => i.value).reduce((x, y) => x + y);
+
+      this.horizontalData = pieData.map(d => {
+        return {
+          name: d.name,
+          value: Math.floor((d.value / total) * 100) / 100
+        };
+      });
     });
   }
 }
