@@ -46,7 +46,11 @@ class EscnDaily extends Command
      */
     public function handle()
     {
+        $this->sendDailyInofQ();
+        $this->sendDailyEscn();
+    }
 
+    public function sendDailyEscn(){
         $info =new InfoqService();
         $articles = $info::getLastDayArticle();
         $group = [];
@@ -62,8 +66,22 @@ class EscnDaily extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            $fs_robot->sendToGroup($title, $articles);
+            $fs_robot->sendToGroup2($title, $articles);
             // $fs_robot->sendToBean($title, $articles);
         }
     }
+
+
+    public function sendDailyInofQ(){
+        $info = new InfoqService();
+        $articles = $info::getLastDayInfoqArticle('infoq');
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+        $title = "InfoQ 热门话题（{$yesterday}）";
+        $fs_robot = new FSRobotService();
+        $fs_robot->set_app_access_token();
+        $fs_robot->sendToGroup2($title, $articles);
+        // $fs_robot->sendToBean($title, $articles);
+    }
+
 }

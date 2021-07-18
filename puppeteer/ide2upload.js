@@ -41,7 +41,7 @@ invalid_ind = []
 uploadFileArr = []
 
 names = []
-urlIds = []
+nameIds = []
 
 for (const company of dataObjs.data){
     if(company.name.trim() == ''){
@@ -52,8 +52,8 @@ for (const company of dataObjs.data){
     }
 
     let inIds = false;
-    for(const obj of urlIds){
-        if(obj.url === company.linkedin_url){
+    for(const obj of nameIds){
+        if(obj.name === company.name){
             obj.ids = obj.ids + ',' + company.expIds
             inIds = true;
             continue;
@@ -61,8 +61,8 @@ for (const company of dataObjs.data){
     }
 
     if(!inIds){
-        urlIds.push({
-            url:company.linkedin_url?company.linkedin_url.replace(/\/about/g,''):'',
+        nameIds.push({
+            name:company.name,
             ids:company.expIds
         })
     }
@@ -71,13 +71,6 @@ for (const company of dataObjs.data){
 
 
 for (const company of dataObjs.data){
-
-    if(names.indexOf(company.li_name)>-1){
-        continue;
-    }else{
-        names.push(company.li_name)
-    }
-
     if(!company.datas){
         continue;
     }
@@ -87,6 +80,20 @@ for (const company of dataObjs.data){
     }else{
         datasObj = parseData(company.datas)
     }
+
+    if(names.indexOf(company.li_name)>-1){
+        // to do
+        for(const org of uploadFileArr){
+            if(org.linkedInURL === company.linkedin_url.replace(/\/about/g,'')){
+                org.alias = org.alias + " || " + company.name;
+                continue;
+            }
+        }
+        continue;
+    }else{
+        names.push(company.li_name)
+    }
+
 
     if(datasObj){
         if(company.li_name == '#LNF'){
@@ -140,5 +147,5 @@ invalid_ind = [...new Set(invalid_ind)]
 fs.writeFileSync('invalid_ind.csv',invalid_ind.join("\n") ,"utf8");
 
 
-urlIdsStr = Papa.unparse(urlIds,{header:true})
-fs.writeFileSync('urlIdsStr.csv',urlIdsStr ,"utf8");
+nameIdsStr = Papa.unparse(nameIds,{header:true})
+fs.writeFileSync('nameIdsStr.csv',nameIdsStr ,"utf8");
