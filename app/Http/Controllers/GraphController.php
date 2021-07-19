@@ -7,7 +7,8 @@ use App\Services\GraphService;
 
 class GraphController extends Controller
 {
-    function getDailyGraph(){
+
+    function getLastDayData(){
         $graph  = new GraphService();
         return $graph->getDailyGraph();
     }
@@ -15,5 +16,5 @@ class GraphController extends Controller
     function getTotalGraph(){
         $graph  = new GraphService();
         return $graph->getTotalGraph();
-    }    
+    }
 }

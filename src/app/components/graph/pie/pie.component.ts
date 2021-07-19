@@ -10,6 +10,8 @@ import { Datum } from 'src/app/interface/Datum';
 export default class PieComponent implements OnInit, OnChanges {
 
     @Input() data: Datum[] = [];
+    @Input() dataId: string = "";
+
     private svg: any;
 
     ngOnInit(): void {
@@ -49,12 +51,13 @@ export default class PieComponent implements OnInit, OnChanges {
         const pie = d3.pie<Datum>().value((d: any) => d.value);
 
         const arcs = pie(this.data);
+        const _eleSelector = `figure#${this.dataId}`
         this.svg = d3
-          .select('figure#pie')
+          .select(_eleSelector)
           .html('');
 
         this.svg = d3
-          .select('figure#pie')
+          .select(_eleSelector)
           .append('svg')
           .attr('viewBox', [-width / 2, -height / 2, width, height].join(' '));
 
