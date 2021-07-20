@@ -76,7 +76,7 @@ class AliSpider(scrapy.Spider):
             doc['created_at'] = _datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
             doc['created_year'] = _datetime.strftime("%Y")
 
-            doc['tag'] = item['category']['category_url']
+            doc['tag'] = [item['category']['category_url'],"news"]
             doc['source'] = 'juejin'
             doc['source_id'] = item['content_id']
             doc['stars'] = 0
@@ -91,9 +91,5 @@ class AliSpider(scrapy.Spider):
             payload = self.getPayload()
             yield JsonRequest(self.url,data=payload)
         else:
-            if len(self.tags) > 0:
-                self.cursor = 0
-                payload = self.getPayload()
-                yield JsonRequest(self.url,data=payload)
-            else:
-                print("Crawler end");
+            print("Crawler end");
+
