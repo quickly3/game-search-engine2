@@ -121,13 +121,11 @@ class AliSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        self.next_tag = False
-
         rs = json.loads(response.text)
         items = rs['data']
 
         self.cursor = rs['cursor']
-            
+
         has_more = rs['has_more']
         bulk = []
 
@@ -143,16 +141,12 @@ class AliSpider(scrapy.Spider):
             doc['created_at'] = _datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
 
             if ts < self.start_time :
-                self.next_tag=True
                 has_more = False;
                 print("too old")
                 continue;
 
             if ts > self.end_time :
-                self.next_tag=True
-                has_more = False;
                 print("too new")
-
                 continue;
 
             doc['created_year'] = _datetime.strftime("%Y")
