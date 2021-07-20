@@ -20,7 +20,7 @@ es_logger.setLevel(50)
 
 class AliSpider(scrapy.Spider):
     # 593
-    name = "ali_dev_daily"
+    name = "ali_dev"
     source = "ali_dev"
 
     domain = 'https://developer.aliyun.com/'
@@ -65,7 +65,7 @@ class AliSpider(scrapy.Spider):
 
             if len(bulk) > 0:
                 es.bulk(index="article",body=bulk)
-            
+
             self.objectId = items[-1]['objectId']
             self.gmtCreated = items[-1]['objectCreate']
             self.page+=1

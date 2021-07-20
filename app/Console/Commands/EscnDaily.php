@@ -47,6 +47,7 @@ class EscnDaily extends Command
     public function handle()
     {
         $this->sendDailyInofQ();
+        sleep(10);
         $this->sendDailyEscn();
     }
 
