@@ -19,7 +19,7 @@ class InfoqController extends Controller
         $startDate = $request->input("startDate", null);
         $endDate = $request->input("endDate", null);
         $sortBy = $request->input("sortBy", null);
-
+        $author = $request->input("author", '');
 
 
         $es = new ElasticModel("article", "article");
@@ -55,6 +55,10 @@ class InfoqController extends Controller
 
         if ($source != "all") {
             $query_string = $query_string . " && source:{$source}";
+        }
+
+        if ($author != "") {
+            $query_string = $query_string . " && author:{$author}";
         }
 
         if($startDate){
@@ -165,7 +169,7 @@ class InfoqController extends Controller
     }
 
     public function getTags(Request $request)
-    {   
+    {
         $source = strtolower($request->input("source", "all"));
         $tags = InfoqService::getTags($source);
         return response()->json($tags);

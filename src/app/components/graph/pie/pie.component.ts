@@ -23,8 +23,8 @@ export default class PieComponent implements OnInit, OnChanges {
     }
 
     private drawPie(): void {
-        const width = 500;
-        const height = 500;
+        const width = 400;
+        const height = 400;
 
         const color = d3
           .scaleOrdinal()

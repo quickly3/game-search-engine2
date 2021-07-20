@@ -42,6 +42,11 @@ a:hover{
     word-break: break-all;
 }
 
+.daily_item_title_model {
+    margin-bottom: 5px;
+    word-break: break-all;
+}
+
 .custom-radio {
     display: inline-block;
     margin-right: 0.5rem;
@@ -61,7 +66,7 @@ a:hover{
     em {
         color: crimson;
         font-style: inherit;
-    }  
+    }
 }
 .link{
     font-size: 10px;
@@ -79,6 +84,10 @@ a:hover{
         top: 0px;
         right: 0px;
     }
+}
+
+.author-search{
+    margin-bottom: 10px ;
 }
 
 .icons {

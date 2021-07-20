@@ -42,9 +42,11 @@ export class InfoqComponent {
     startDate: NgbDateStruct | undefined;
     endDate: NgbDateStruct | undefined;
     startDateIsInvalid = false;
+    author = ''
 
     searchByKeywords: any;
     modelChanged = new Subject<string>();
+    authorChangedDebounce = new Subject<string>();
     @ViewChild('instance', {static: true})instance: NgbTypeahead | undefined;
 
     tags:any[] = [];
@@ -82,6 +84,13 @@ export class InfoqComponent {
 
     sortBy = this.sortItems[0];
 
+    displayModelItems = [
+        {value: 'summary', label: '简介模式'},
+        {value: 'title', label: '标题模式'},
+    ];
+
+    displayModel = this.displayModelItems[0];
+
     sourceList = [
         { title: 'all', source_class: 'icon-all', text: '全部' },
         { title: 'jianshu', source_class: 'icon-jianshu', text: '简书' },
@@ -105,6 +114,10 @@ export class InfoqComponent {
 
         this.modelChanged.pipe(debounceTime(300)).subscribe(() => {
             // this.autoComplete();
+        });
+
+        this.authorChangedDebounce.pipe(debounceTime(300)).subscribe(() => {
+            this.search();
         });
 
         // this._tag = this.tags[0].text;
@@ -206,6 +219,10 @@ export class InfoqComponent {
         this.search();
     }
 
+    authorChanged = ($event: any) => {
+        // this.authorChangedDebounce.next($event)
+    }
+
     search_debounce = (ky: any) => {
         this.current_page = 1;
         this.modelChanged.next();
@@ -221,7 +238,9 @@ export class InfoqComponent {
             source: this._source.title,
             startDate: this.startDate,
             endDate: this.endDate,
-            sortBy: this.sortBy
+            sortBy: this.sortBy,
+            author: this.author,
+            displayModel: this.displayModel
         };
 
         if (this.startDate && this.startDate.year){
@@ -405,6 +424,11 @@ export class InfoqComponent {
 
     selectSortBy = (sortBy: { value: string; label: string; }) => {
         this.sortBy = sortBy;
+        this.search();
+    }
+
+    selectDisplayModel = (displayModel: { value: string; label: string; }) => {
+        this.displayModel = displayModel;
         this.search();
     }
 
