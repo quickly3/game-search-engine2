@@ -46,10 +46,8 @@ class EscnDaily extends Command
      */
     public function handle()
     {
-        $this->sendDailyInofQ();
-        sleep(3);
         $this->sendDailyEscn();
-        sleep(3);
+        $this->sendDailyInofQ();
         $this->sendDailyJueJin();
     }
 
@@ -69,8 +67,8 @@ class EscnDaily extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            $fs_robot->sendToGroup2($title, $articles);
-            // $fs_robot->sendToBean($title, $articles);
+            // $fs_robot->sendToGroup2($title, $articles);
+            $fs_robot->sendToBean($title, $articles);
         }
     }
 
@@ -84,8 +82,8 @@ class EscnDaily extends Command
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
         // dump($articles);
-        $fs_robot->sendToGroup2($title, $articles);
-        // $fs_robot->sendToBean($title, $articles);
+        // $fs_robot->sendToGroup2($title, $articles);
+        $fs_robot->sendToBean($title, $articles);
     }
 
     public function sendDailyInofQ(){
@@ -96,8 +94,8 @@ class EscnDaily extends Command
         $title = "InfoQ 热门话题（{$yesterday}）";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        $fs_robot->sendToGroup2($title, $articles);
-        // $fs_robot->sendToBean($title, $articles);
+        // $fs_robot->sendToGroup2($title, $articles);
+        $fs_robot->sendToBean($title, $articles);
     }
 
 }
