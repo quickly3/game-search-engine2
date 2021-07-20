@@ -152,7 +152,7 @@ class InfoqService
         return $data;
     }
 
-    public static function getLastDayInfoqArticle($source)
+    public static function getLastDayArticleByQuery($query)
     {
 
         $lastDay = date('Y-m-d',strtotime("-1 day"));
@@ -161,10 +161,17 @@ class InfoqService
         $data = [
             "query" => [
                 "query_string" => [
-                    "query" => "source:{$source} && created_at:{$lastDay}"
+                    "query" => "{$query} && created_at:{$lastDay}"
                 ]
             ],
-            "size"=>20
+            "size"=>20,
+            "sort" => [
+                [
+                    "created_at"=> [
+                        "order"=> "desc"
+                    ]
+                ]
+            ]
         ];
 
         $params = [

@@ -47,8 +47,10 @@ class EscnDaily extends Command
     public function handle()
     {
         $this->sendDailyInofQ();
-        sleep(10);
+        sleep(3);
         $this->sendDailyEscn();
+        sleep(3);
+        $this->sendDailyJueJin();
     }
 
     public function sendDailyEscn(){
@@ -73,9 +75,22 @@ class EscnDaily extends Command
     }
 
 
+    public function sendDailyJueJin(){
+        $info = new InfoqService();
+        $articles = $info::getLastDayArticleByQuery('source:juejin && tag:news');
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+        $title = "掘金资讯（{$yesterday}）";
+        $fs_robot = new FSRobotService();
+        $fs_robot->set_app_access_token();
+        // dump($articles);
+        $fs_robot->sendToGroup2($title, $articles);
+        // $fs_robot->sendToBean($title, $articles);
+    }
+
     public function sendDailyInofQ(){
         $info = new InfoqService();
-        $articles = $info::getLastDayInfoqArticle('infoq');
+        $articles = $info::getLastDayArticleByQuery('source:infoq');
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
         $title = "InfoQ 热门话题（{$yesterday}）";
