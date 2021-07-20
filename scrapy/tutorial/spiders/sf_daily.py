@@ -141,21 +141,21 @@ class AliSpider(scrapy.Spider):
 
         if response.status == 200:
             items = response.xpath(
-                '//*[@class="summary"]')
-
+                '//*[@class="item-wrap py-3 list-group-item"]/div[@class="content"]')
             if len(items) > 0:
                 bulk = []
                 for item in items:
 
-                    title_a = item.xpath('.//h2/a')
+                    title_a = item.xpath('.//h5/a')
                     titles = title_a.xpath('.//text()').getall()
                     title = "".join(titles)
                     title = title.strip()
-
                     url = title_a.xpath('.//@href').get()
-                    createdAtZone = item.xpath('.//ul/li/span/text()').getall()
-                    author = item.xpath('.//ul/li/span/a/text()').get()
-                    createdAt = createdAtZone[1].strip().replace(" ","").replace("发布于","").replace("\n","")
+
+                    createdAtZone = item.xpath('.//div/span[2]/text()').get()
+                    author = item.xpath('.//div/a[2]/span/text()').get()
+                    createdAt = createdAtZone.strip().replace(" ","").replace("发布于","").replace("\n","")
+
 
                     isToday = re.match(r'今天', createdAt)
                     isMinAgo = re.match(r'.*分钟前.*', createdAt)
@@ -187,13 +187,13 @@ class AliSpider(scrapy.Spider):
                         print("Too old")
                         continue
 
-                    detail = item.xpath(
-                        './/p[contains(@class,"excerpt")]/text()').get()
+                    # detail = item.xpath(
+                    #     './/p[contains(@class,"excerpt")]/text()').get()
 
                     doc = {}
                     doc['title'] = title
                     doc['url'] = "https://segmentfault.com"+url
-                    doc['summary'] = detail
+                    # doc['summary'] = detail
                     doc['tag'] = self._target['k']
                     doc['source'] = self.source
                     doc['author'] = author
