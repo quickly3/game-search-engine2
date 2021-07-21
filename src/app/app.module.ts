@@ -11,7 +11,8 @@ import { NgbModule,NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainPipe } from './pipe/main-pipe.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { GraphComponent } from './graph/graph.component'; 
+import { GraphComponent } from './graph/graph.component';
+import { NuMarkdownModule } from '@ng-util/markdown';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { GraphComponent } from './graph/graph.component';
     NgbTypeaheadModule,
     MainPipe,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    NuMarkdownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

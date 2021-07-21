@@ -16,4 +16,9 @@ export class GraphService {
     getLastDayData = () => {
         return this.http.get('/graph/getLastDayData');
     }
+
+    dailyMd = () => {
+        return this.http.get('/graph/dailyMd');
+    }
+
 }

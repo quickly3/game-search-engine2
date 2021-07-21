@@ -55,8 +55,10 @@ Route::get('movie/autoComplete', 'MovieController@autoComplete');
 
 Route::get('graph/index', 'GraphController@getDailyGraph');
 Route::get('graph/getTotalGraph', 'GraphController@getTotalGraph');
-
 Route::get('graph/getLastDayData', 'GraphController@getLastDayData');
+
+
+Route::get('graph/dailyMd', 'GraphController@dailyMd');
 
 // Route::get('game/test', 'GameController@test');
 

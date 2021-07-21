@@ -50,10 +50,8 @@ class AliSpider(scrapy.Spider):
     pageSize = 50
 
     today = time.strftime("%Y-%m-%d")
-    yesterday = (datetime.date.today() +
-                 datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-    last2day = (datetime.date.today() +
-                datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
+    yesterday = (datetime.date.today() +datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+    last2day = (datetime.date.today() +datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
 
     headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -124,7 +122,7 @@ class AliSpider(scrapy.Spider):
 
             if "分钟前" in createdAt:
                 createdAt = self.today
-            
+
             _date = dateparse(createdAt)
 
             ts = _date.timestamp()
@@ -159,7 +157,7 @@ class AliSpider(scrapy.Spider):
 
         if next_tag:
             return False
-        
+
         if self.page < 50:
             self.page = self.page+1
             url = self.get_url()
