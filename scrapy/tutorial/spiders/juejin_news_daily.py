@@ -45,7 +45,7 @@ class AliSpider(scrapy.Spider):
     def start_requests(self):
 
         today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=2)
+        yesterday = today - datetime.timedelta(days=1)
         self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
         self.end_time = self.start_time + 86400
 
