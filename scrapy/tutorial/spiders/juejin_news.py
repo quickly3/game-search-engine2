@@ -72,9 +72,9 @@ class AliSpider(scrapy.Spider):
             doc['title'] = content_info['title']
             doc['url'] = self.postUrl+content_info['content_id']
             doc['summary'] = content_info['brief']
-            _datetime = datetime.datetime.fromtimestamp(int(content_info['ctime']),None)
-            doc['created_at'] = _datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
-            doc['created_year'] = _datetime.strftime("%Y")
+
+            doc['created_at'] = datetime.datetime.fromtimestamp(int(content_info['ctime']),None)
+            doc['created_year'] = doc['created_at'].strftime("%Y")
 
             doc['tag'] = [item['category']['category_url'],"news"]
             doc['source'] = 'juejin'

@@ -135,10 +135,10 @@ class AliSpider(scrapy.Spider):
             doc['title'] = article_info['title']
             doc['url'] = self.postUrl+article_info['article_id']
             doc['summary'] = article_info['brief_content']
-            _datetime = datetime.datetime.fromtimestamp(int(article_info['ctime']),None)
-            ts = int(article_info['ctime'])
 
-            doc['created_at'] = _datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
+            doc['created_at'] = datetime.datetime.fromtimestamp(int(article_info['ctime']),None)
+            doc['created_year'] = doc['created_at'].strftime("%Y")
+            ts = int(article_info['ctime'])
 
             if ts < self.start_time :
                 has_more = False;
