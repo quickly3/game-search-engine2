@@ -50,8 +50,8 @@ class AliSpider(scrapy.Spider):
     pageSize = 50
 
     today = time.strftime("%Y-%m-%d")
-    yesterday = (datetime.date.today() +datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
-    last2day = (datetime.date.today() +datetime.timedelta(days=-3)).strftime("%Y-%m-%d")
+    yesterday = (datetime.date.today() +datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+    last2day = (datetime.date.today() +datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
 
     headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
