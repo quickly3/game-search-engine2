@@ -66,7 +66,7 @@ class EsClear extends Command
                     ]
                 ]
             ],
-            "_source" => ["url"]
+            "_source" => ["url","tag"]
         ];
 
         $response = $client->search($params);
@@ -74,10 +74,16 @@ class EsClear extends Command
         while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0) {
 
             foreach ($response['hits']['hits'] as $key => $value) {
-                if (!isset($this->del_ids[$value['_source']['url']])) {
-                    $this->del_ids[$value['_source']['url']] = [$value['_id']];
+                $url = $value['_source']['url'];
+                $tags = $value['_source']['tag'];
+                if (!isset($this->del_ids[$url])) {
+                    $this->del_ids[$url] = [$value['_id']];
                 } else {
-                    $this->del_ids[$value['_source']['url']][] = $value['_id'];
+                    if(in_array("news",$tags)){
+                        array_unshift($this->del_ids[$url],$value['_id']);
+                    }else{
+                        $this->del_ids[$url][] = $value['_id'];
+                    }
                 }
             }
             $scroll_id = $response['_scroll_id'];
