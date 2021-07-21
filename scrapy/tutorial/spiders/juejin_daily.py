@@ -149,7 +149,6 @@ class AliSpider(scrapy.Spider):
                 print("too new")
                 continue;
 
-            doc['created_year'] = _datetime.strftime("%Y")
             doc['tag'] = self._target['tag']
             doc['source'] = 'juejin'
             doc['source_id'] = item['article_id']
