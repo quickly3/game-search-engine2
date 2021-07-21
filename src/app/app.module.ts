@@ -12,6 +12,7 @@ import { MainPipe } from './pipe/main-pipe.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { GraphComponent } from './graph/graph.component';
+import { NewsComponent } from './news/news.component';
 import { NuMarkdownModule } from '@ng-util/markdown';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { NuMarkdownModule } from '@ng-util/markdown';
     AppComponent,
     InfoqComponent,
     GraphComponent,
+    NewsComponent,
   ],
   imports: [
     BrowserModule,

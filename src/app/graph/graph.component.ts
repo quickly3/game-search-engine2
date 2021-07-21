@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { GraphService } from "../api/graph.service";
-import { Datum } from "../interface/Datum";
-import * as json2md from "json2md";
+import { Component, OnInit } from '@angular/core';
+import { GraphService } from '../api/graph.service';
+import { Datum } from '../interface/Datum';
+import * as json2md from 'json2md';
 
 @Component({
-    selector: "app-graph",
-    templateUrl: "./graph.component.html",
-    styleUrls: ["./graph.component.scss"],
+    selector: 'app-graph',
+    templateUrl: './graph.component.html',
+    styleUrls: ['./graph.component.scss'],
 })
 export class GraphComponent implements OnInit {
     private graphService: GraphService;
@@ -60,58 +60,27 @@ export class GraphComponent implements OnInit {
     }
 
     getDailyMd() {
-        this.graphService.dailyMd().subscribe((data: any) => {
-            const dd = json2md([
-                { h1: "JSON To Markdown" },
-                { blockquote: "A JSON to Markdown converter." },
-                {
-                    img: [
-                        {
-                            title: "Some image",
-                            source: "https://example.com/some-image.png",
-                        },
-                        {
-                            title: "Another image",
-                            source: "https://example.com/some-image1.png",
-                        },
-                        {
-                            title: "Yet another image",
-                            source: "https://example.com/some-image2.png",
-                        },
-                    ],
-                },
-                { h2: "Features" },
-                {
-                    ul: [
-                        "Easy to use",
-                        "You can programmatically generate Markdown content",
-                        "...",
-                    ],
-                },
-                { h2: "How to contribute" },
-                {
-                    ol: [
-                        "Fork the project",
-                        "Create your branch",
-                        "Raise a pull request",
-                    ],
-                },
-                { h2: "Code blocks" },
-                { p: "Below you can see a code block example." },
-                {
-                    code: {
-                        language: "js",
-                        content: [
-                            "function sum (a, b) {",
-                            "   return a + b",
-                            "}",
-                            "sum(1, 2)",
-                        ],
-                    },
-                },
-            ]);
+        this.graphService.dailyMd().subscribe((resp: any) => {
 
-            this.MdData = dd;
+            const dd: any[] = [
+                {h2: resp.title}
+            ];
+
+            for (const item of resp.data){
+                if (item.data.length > 0){
+                    dd.push({h5: item.title});
+                    for (const item2 of item.data){
+                        dd.push({
+                            link: {
+                                title: item2.title,
+                                source: item2.url
+                            }
+                        });
+                    }
+                }
+            }
+
+            this.MdData = json2md(dd);
         });
     }
 }
