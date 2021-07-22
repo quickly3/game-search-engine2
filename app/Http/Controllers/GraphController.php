@@ -26,7 +26,8 @@ class GraphController extends Controller
         $escn = $info::getLastDayArticleByQuery('source:escn');
         $juejin = $info::getLastDayArticleByQuery('source:juejin && tag:news');
         $infoq = $info::getLastDayArticleByQuery('source:infoq');
-        
+        $oschina = $info::getLastDayArticleByQuery('source:oschina && tag:news');
+
         $yesterday = date('Y-m-d',strtotime("-1 day"));
 
         $resp = [
@@ -40,7 +41,11 @@ class GraphController extends Controller
             ],
             [
                 "title" => "InfoQ 热门话题（{$yesterday}）",
-                "data" => $infoq 
+                "data" => $infoq
+            ],
+            [
+                "title" => "开源资讯（{$yesterday}）",
+                "data" => $oschina
             ]
         ];
         return [

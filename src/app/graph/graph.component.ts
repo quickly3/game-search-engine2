@@ -22,7 +22,6 @@ export class GraphComponent implements OnInit {
     ngOnInit() {
         this.getTotalData();
         this.getlastDayData();
-        this.getDailyMd();
     }
 
     getTotalData() {
@@ -35,14 +34,6 @@ export class GraphComponent implements OnInit {
                 });
             }
             this.totalData = totalData;
-
-            //   const total = pieData.map(i => i.value).reduce((x, y) => x + y);
-            //   this.horizontalData = pieData.map(d => {
-            //     return {
-            //       name: d.name,
-            //       value: Math.floor((d.value / total) * 100) / 100
-            //     };
-            //   });
         });
     }
 
@@ -56,31 +47,6 @@ export class GraphComponent implements OnInit {
                 });
             }
             this.lastDayData = lastDayData;
-        });
-    }
-
-    getDailyMd() {
-        this.graphService.dailyMd().subscribe((resp: any) => {
-
-            const dd: any[] = [
-                {h2: resp.title}
-            ];
-
-            for (const item of resp.data){
-                if (item.data.length > 0){
-                    dd.push({h5: item.title});
-                    for (const item2 of item.data){
-                        dd.push({
-                            link: {
-                                title: item2.title,
-                                source: item2.url
-                            }
-                        });
-                    }
-                }
-            }
-
-            this.MdData = json2md(dd);
         });
     }
 }
