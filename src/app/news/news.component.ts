@@ -31,18 +31,18 @@ export class NewsComponent implements OnInit {
             for (const item of resp.data){
                 if (item.data.length > 0){
                     dd.push({h5: item.title});
-                    for (const item2 of item.data){
+                    item.data.forEach((item2:any,i:any)=>{
                         dd.push({
                             link: {
-                                title: item2.title,
+                                title: `${i+1}. ${item2.title}`,
                                 source: item2.url
                             }
                         });
-                    }
+                    });
                 }
             }
 
-            this.MdData = json2md(dd);
+            this.MdData = json2md(dd).replace(/\n\n/g,'  \n');
         });
     }
 
