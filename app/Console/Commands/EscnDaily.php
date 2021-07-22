@@ -49,6 +49,7 @@ class EscnDaily extends Command
         $this->sendDailyEscn();
         $this->sendDailyInofQ();
         $this->sendDailyJueJin();
+        $this->sendDailyOschina();
     }
 
     public function sendDailyEscn(){
@@ -95,6 +96,19 @@ class EscnDaily extends Command
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
         $fs_robot->sendToGroup2($title, $articles);
+        // $fs_robot->sendToBean($title, $articles);
+    }
+
+    public function sendDailyOschina(){
+        $info = new InfoqService();
+        $articles = $info::getLastDayArticleByQuery('source:oschina && tag:news');
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+        $title = "开源资讯（{$yesterday}）";
+        $fs_robot = new FSRobotService();
+        $fs_robot->set_app_access_token();
+        $fs_robot->sendToGroup2($title, $articles);
+
         // $fs_robot->sendToBean($title, $articles);
     }
 
