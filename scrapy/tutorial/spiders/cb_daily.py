@@ -39,7 +39,6 @@ es_logger.setLevel(50)
 class AliSpider(scrapy.Spider):
     name = "cb_daily"
 
-    domain = 'https://s.geekbang.org/'
 
     tagId = {
         "python": {
@@ -174,7 +173,7 @@ class AliSpider(scrapy.Spider):
                     '*/a[@class="post-item-author"]/span/text()').get()
                 created_at = item.xpath('*/span[@class="post-meta-item"]/span/text()').getall()
 
-                if len(created_at) > 0: 
+                if len(created_at) > 0:
                     created_at = created_at[0]
                     date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
 

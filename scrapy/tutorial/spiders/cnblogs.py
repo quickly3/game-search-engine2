@@ -47,8 +47,6 @@ class AliSpider(scrapy.Spider):
     # 593
     name = "cnblogs"
 
-    domain = 'https://s.geekbang.org/'
-
     tagId = {
         "python": {
             "cid": 108696,
@@ -175,7 +173,7 @@ class AliSpider(scrapy.Spider):
                     '*/a[@class="post-item-author"]/span/text()').get()
                 created_at = item.xpath('*/span[@class="post-meta-item"]/span/text()').getall()
 
-                if len(created_at) > 0: 
+                if len(created_at) > 0:
                     created_at = created_at[0]
                     date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
 
@@ -189,7 +187,7 @@ class AliSpider(scrapy.Spider):
                 doc['summary'] = desp
                 doc['source'] = self.source
                 doc['source_score'] = 0
-                
+
                 doc['author'] = author
 
                 bulk.append(
