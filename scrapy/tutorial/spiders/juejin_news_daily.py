@@ -89,10 +89,7 @@ class AliSpider(scrapy.Spider):
 
             if ts > self.end_time :
                 print("too new")
-
                 continue;
-
-            print(doc['title']);
 
             doc['tag'] = [item['category']['category_url'],"news"]
             doc['source'] = 'juejin'
