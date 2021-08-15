@@ -19,7 +19,7 @@ class SfAuthorSpider(scrapy.Spider):
 
     offset = '';
     source = 'sf'
-    domain = 'https://segmentfault.com/'
+    domain = 'https://segmentfault.com'
 
 
     def start_requests(self):
@@ -42,7 +42,7 @@ class SfAuthorSpider(scrapy.Spider):
             doc['url'] = self.domain+item['url']
 
             doc['summary'] =item['excerpt']
-            # doc['tag'] = ['']
+            doc['tag'] = ['by_author']
             doc['source'] = self.source
 
             doc['author'] = item['user']['name']
