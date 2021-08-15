@@ -55,14 +55,13 @@ class SfAuthorSpider(scrapy.Spider):
 
             doc['stars'] = 0
 
-            print(doc)
-
             bulk.append(
                 {"index": {"_index": "article"}})
             bulk.append(doc)
 
         if len(bulk) > 0:
-            es.bulk(index="article", body=bulk)
+            resp = es.bulk(index="article", body=bulk)
+            print(resp)
 
 
         url = self.urlTpl.substitute(offset=self.offset)
