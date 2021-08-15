@@ -35,7 +35,7 @@ class AliSpider(scrapy.Spider):
     domain = 'https://www.oschina.net'
     # 593
     source = "oschina"
-    
+
     # custom_settings = {
     #     "DOWNLOADER_MIDDLEWARES":{
     #         'tutorial.middlewares.MyproxiesSpiderMiddleware': 543
@@ -105,7 +105,7 @@ class AliSpider(scrapy.Spider):
 
     def parse(self, response):
         next_tag = False
-        
+
         items = response.xpath(
             './/div[has-class("search-list-container")]/div[@class="item"]')
 
@@ -164,7 +164,7 @@ class AliSpider(scrapy.Spider):
 
                 if "分钟前" in createAt:
                     createAt = self.today
-                
+
                 _date = dateparse(createAt)
 
                 ts = _date.timestamp()
