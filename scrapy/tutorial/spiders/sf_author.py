@@ -50,10 +50,12 @@ class SfAuthorSpider(scrapy.Spider):
 
             timeObj = datetime.datetime.fromtimestamp(int(item['modified']),None)
 
-            doc['created_at'] = timeObj.strftime("%Y-%m-%d %H:%M:%S")
+            doc['created_at'] = timeObj.isoformat()
             doc['created_year'] = timeObj.strftime("%Y")
 
             doc['stars'] = 0
+
+            print(doc)
 
             bulk.append(
                 {"index": {"_index": "article"}})
