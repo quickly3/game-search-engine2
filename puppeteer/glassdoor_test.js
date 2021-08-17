@@ -6,16 +6,19 @@ var fs = require('fs');
 
 const bootstrap = async()=>{
 
-    headless = false;
+    headless = true;
     options = {
-        headless: headless
+        headless: headless,
+        args: [
+            "--disable-gpu",
+        ]
     }
 
     var browser = await puppeteer.launch(options);
 
 
     async function crawl(url){
-        
+
         const page = await browser.newPage();
         page.setCacheEnabled(false)
         try {
@@ -38,7 +41,7 @@ const bootstrap = async()=>{
 
             datas = await page.evaluate((datasSelector)=>{
                 data = {}
-                texts = $(datasSelector).map((i,d)=> $(d).text()).map((i,t)=>{  
+                texts = $(datasSelector).map((i,d)=> $(d).text()).map((i,t)=>{
                     const arr = t.split(":");
                     data[arr[0]] = arr[1]
                 });
