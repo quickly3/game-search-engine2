@@ -28,6 +28,7 @@ const bootstrap = async()=>{
             });
         } catch (error) {
             console.error(error)
+            console.error('init')
             await page.close();
             return
         }
@@ -36,7 +37,7 @@ const bootstrap = async()=>{
         nameSelector = '#EmpHeroAndEmpInfo > div.empInfo.tbl.hideHH > div.header.cell.info > h1 > span'
         try {
             await page.waitForSelector(datasSelector,{
-                timeout:10000
+                timeout:5000
             })
 
             datas = await page.evaluate((datasSelector)=>{
@@ -57,6 +58,7 @@ const bootstrap = async()=>{
 
         } catch (error) {
             console.error(error);
+            console.error('selector')
             await page.close();
         }
 
