@@ -59,9 +59,6 @@ async function getDataFromBingCB(org){
         await cb_crawler.close();
         return false;
     }
-
-    
-   
 }
 
 

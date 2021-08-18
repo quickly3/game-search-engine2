@@ -1,4 +1,5 @@
 import PuppeteerBase from "./puppeteerBase"
+import { proxyRequest } from 'puppeteer-proxy';
 import * as fs from "fs"
 
 export default class Crunchbase extends PuppeteerBase {
@@ -9,6 +10,18 @@ export default class Crunchbase extends PuppeteerBase {
 
         // const page = await this.browser.newPage();
         const page = (await this.browser.pages())[0];
+
+        await page.setRequestInterception(true);
+
+        page.on('request', async (request) => {
+            await proxyRequest({
+            page,
+            proxyUrl: 'https://64.235.204.107:8080',
+            request,
+            });
+        });
+
+
         await page.setViewport({
             width: 1440,
             height: 636

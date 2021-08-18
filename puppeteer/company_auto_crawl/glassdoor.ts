@@ -1,4 +1,5 @@
 import PuppeteerBase from "./puppeteerBase"
+import { proxyRequest } from 'puppeteer-proxy';
 import * as fs from "fs"
 
 export default class Glassdoor extends PuppeteerBase {
@@ -8,6 +9,22 @@ export default class Glassdoor extends PuppeteerBase {
         const { target_url } = org;
 
         const page = (await this.browser.pages())[0];
+
+        // await page.setRequestInterception(true);
+
+        // page.on('request', async (request) => {
+        //     await proxyRequest({
+        //     page,
+        //     proxyUrl: {
+        //         https:'179.1.84.122:999',
+        //         http: '67.207.83.225:80'
+
+        //         // http:'http://127.0.0.1:9999',
+        //         // https: 'https://127.0.0.1:9999'
+        //     },
+        //     request,
+        //     });
+        // });
 
         let outputData = {
             name: '',
@@ -26,8 +43,8 @@ export default class Glassdoor extends PuppeteerBase {
             return {...outputData, ...org}
         }
 
-
         page.setCacheEnabled(false)
+
         try {
             await page.goto(target_url, {
                 waitUntil: 'domcontentloaded',
