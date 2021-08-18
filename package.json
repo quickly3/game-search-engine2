@@ -36,6 +36,7 @@
     "json2md": "^1.11.0",
     "kafkajs": "^1.15.0",
     "moment-timezone": "^0.5.33",
+    "puppeteer-proxy": "^2.1.2",
     "rxjs": "~6.6.0",
     "selenium-webdriver": "^4.0.0-beta.4",
     "tslib": "^2.0.0",
