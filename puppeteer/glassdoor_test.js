@@ -68,9 +68,7 @@ const bootstrap = async()=>{
 
 
     await crawl("https://www.glassdoor.com.hk/Overview/Working-at-Foundation-Medicine-EI_IE779924.11,30.htm?countryRedirect=true")
-    // await browser.close();
-
-
+    await browser.close();
 
 }
 
