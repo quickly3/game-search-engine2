@@ -42,7 +42,7 @@ class GraphController extends Controller
                 "data" => $infoq
             ],
             [
-                "title" => "开源资讯（{$yesterday}）",
+                "title" => "开源中国资讯（{$yesterday}）",
                 "data" => $oschina
             ],
             [
