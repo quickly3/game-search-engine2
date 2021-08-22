@@ -115,6 +115,9 @@ class AliSpider(scrapy.Spider):
                 author = item.xpath(
                     '*/div[@class="entry_footer"]/a/text()').get()
 
+                author_url = item.xpath(
+                    '*/div[@class="entry_footer"]/a/@href').get()
+
                 created_at = item.xpath('*/div[@class="entry_footer"]/span[4]/text()').get()
                 if not created_at:
                     created_at = item.xpath('*/div[@class="entry_footer"]/span[3]/text()').get()
@@ -145,6 +148,7 @@ class AliSpider(scrapy.Spider):
                 doc['source_score'] = 0
 
                 doc['author'] = author.strip()
+                doc['author_url'] = author_url.strip()
 
                 bulk.append(
                     {"index": {"_index": "article"}})

@@ -154,6 +154,8 @@ class AliSpider(scrapy.Spider):
 
                     createdAtZone = item.xpath('.//div/span[2]/text()').get()
                     author = item.xpath('.//div/a[2]/span/text()').get()
+                    author_url = item.xpath('.//div/a[2]/@href').get()
+
                     createdAt = createdAtZone.strip().replace(" ","").replace("发布于","").replace("\n","")
 
 
@@ -193,6 +195,8 @@ class AliSpider(scrapy.Spider):
                     doc = {}
                     doc['title'] = title
                     doc['url'] = "https://segmentfault.com"+url
+                    doc['author_url'] = "https://segmentfault.com"+author_url
+
                     # doc['summary'] = detail
                     doc['tag'] = self._target['k']
                     doc['source'] = self.source

@@ -1,4 +1,4 @@
-PUT article_20200612
+PUT article_20210822
 {
   "aliases": {
     "article": {}
@@ -44,6 +44,9 @@ PUT article_20200612
       "url": {
         "type": "keyword"
       },
+      "author_url": {
+        "type": "keyword"
+      },      
       "summary": {
         "type": "text",
         "analyzer": "ik_max_word"

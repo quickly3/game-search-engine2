@@ -100,13 +100,16 @@ class AliSpider(scrapy.Spider):
             title = title.strip()
             desp = item.xpath('div[1]/div/p/text()').get()
             author = item.xpath('div[1]/div/div/div/div[1]/a/text()').get()
+            author_url = item.xpath('div[1]/div/div/div/div[1]/a/@href').get()
+
             url = item.xpath('@data-url').get()
 
             doc['title'] = title
             doc['url'] = url
+
             doc['summary'] = desp
             doc['author'] = author
-
+            doc['author_url'] = author_url
 
             createdAt = item.xpath('div[1]/div/div/div/div[1]/text()').getall()
             createdAt = createdAt[1]

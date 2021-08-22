@@ -37,6 +37,8 @@ class AliSpider(scrapy.Spider):
 
     domain = 'https://juejin.im'
     postUrl = "https://juejin.cn/post/"
+    userUrl = "https://juejin.cn/user/"
+
 
     tags = [
         {"id":"6809640406058270733","tag":"设计"},
@@ -131,6 +133,8 @@ class AliSpider(scrapy.Spider):
 
         for item in items:
             article_info = item['article_info']
+            author_user_info = item['author_user_info']
+            tags = item['tags']
             doc = {}
             doc['title'] = article_info['title']
             doc['url'] = self.postUrl+article_info['article_id']
@@ -149,10 +153,16 @@ class AliSpider(scrapy.Spider):
                 print("too new")
                 continue;
 
-            doc['tag'] = self._target['tag']
+            tagsArr = list(map(lambda x: x['tag_name'] , tags))
+
+            doc['tag'] = tagsArr
             doc['source'] = 'juejin'
             doc['source_id'] = item['article_id']
             doc['stars'] = 0
+
+            doc['author'] = author_user_info['user_name']
+            doc['author_url'] = self.userUrl + author_user_info['user_id']
+
 
             bulk.append(
                 {"index": {"_index": "article"}})

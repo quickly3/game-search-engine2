@@ -3,28 +3,16 @@
 #
 
 import scrapy
-import sys
-import sqlalchemy
+
 import os
 import json
 import datetime
 import time
 
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import sessionmaker
-from string import Template
-from dateutil import parser
-
 # settings.py
 from dotenv import load_dotenv
 from pathlib import Path
-import random
-import numpy
-import pandas as pd
 from elasticsearch import Elasticsearch
-import logging
 
 
 env_path = Path('..')/'.env'
@@ -108,8 +96,9 @@ class AliSpider(scrapy.Spider):
 
     def parse(self, response, last):
         resp = json.loads(response.text)
-        # logging.info("_id: "+str(last['id']))
-        # logging.info("score: "+str(last['score']))
+
+
+ 
         self.next_id = False
 
         if len(resp['data']) == 0:
@@ -148,6 +137,7 @@ class AliSpider(scrapy.Spider):
 
                 if 'author' in item:
                     doc['author'] = item['author'][0]['nickname']
+                    doc['author_url'] = "https://www.infoq.cn" + item['author'][0]['uri']
 
                 if 'topic' in item:
                     doc['tag'] = list(map(lambda x: x['alias'],item['topic']))

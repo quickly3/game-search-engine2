@@ -12,14 +12,11 @@ import re
 import time,datetime
 
 from elasticsearch import Elasticsearch
-from elasticsearch import logger as es_logger
 
 es_user = os.getenv("ES_USER")
 es_pwd = os.getenv("ES_PWD")
+
 es = Elasticsearch(http_auth=(es_user, es_pwd))
-es_logger.setLevel(50)
-
-
 class AliSpider(scrapy.Spider):
     # 593
     name = "jianshu_daily"
@@ -103,10 +100,12 @@ class AliSpider(scrapy.Spider):
             "size": 1
         }
         resp = es.search(index="article",body=body)
+
         if int(resp['hits']['total']['value']) > 0:
-            created_at = resp['hits']['hits'][0]['_source']['created_at']
-            date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
-            self.last_tag_ts = date_time_obj.timestamp()
+            if 'created_at' in resp['hits']['hits'][0]['_source']:
+                created_at = resp['hits']['hits'][0]['_source']['created_at']
+                date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
+                self.last_tag_ts = date_time_obj.timestamp()
 
     def parse(self, response):
 
@@ -118,9 +117,10 @@ class AliSpider(scrapy.Spider):
 
         if len(objs) > 0:
             for obj in objs:
-                title = obj['title']
-                href = obj['title']
-                desc = obj['content']
+                title = obj['title'].strip()
+                author_url = self.domain+"/u/"+obj['user']['slug']
+                url = self.domain+"/p/"+obj['slug']
+                desc = obj['content'].strip()
                 author = obj['user']['nickname']
                 _datetime_arr = obj['first_shared_at'].split(".")
                 date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
@@ -140,9 +140,10 @@ class AliSpider(scrapy.Spider):
                 created_year = mat2.group(0)
 
                 doc = {
-                    "title": title.strip(),
-                    "url": self.domain+"/p/"+obj['slug'],
-                    "summary": desc.strip(),
+                    "title": title,
+                    "url": url,
+                    "author_url": author_url,
+                    "summary": desc,
                     "tag": self.q,
                     "author": author,
                     "source": "jianshu",
@@ -156,7 +157,7 @@ class AliSpider(scrapy.Spider):
                     {"index": {"_index": "article"}})
                 bulk.append(doc)
 
-            if len(bulk) > 0:
+            if len(bulk) > 0:    
                 es.bulk(index="article",
                         body=bulk)
         else:

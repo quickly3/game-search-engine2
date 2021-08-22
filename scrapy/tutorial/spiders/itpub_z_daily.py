@@ -37,6 +37,7 @@ class AliSpider(scrapy.Spider):
 
     page = 1
     pageSize = 100
+    start_time = 0
 
 
     def getLastRecord(self):
@@ -89,6 +90,8 @@ class AliSpider(scrapy.Spider):
             doc['url'] = self.domain + item.xpath("a/@href").get();
             doc['summary'] = item.xpath("a/div/div[2]/p/text()").get();
             doc['author'] = item.xpath("a/div/div[2]/div/span[1]/text()").get();
+            # doc['author_url'] = self.domain + item.xpath("a/@href").get();
+
             doc['created_at'] = item.xpath("a/div/div[2]/div/span[2]/text()").get();
 
             if not doc['title']:
