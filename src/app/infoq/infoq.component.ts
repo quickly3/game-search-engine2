@@ -3,10 +3,10 @@ import {
     ViewEncapsulation,
     HostListener,
     ViewChild,
-} from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { Observable, of, Subject, fromEvent } from "rxjs";
+import { Observable, of, Subject, fromEvent } from 'rxjs';
 
 import {
     debounceTime,
@@ -15,20 +15,20 @@ import {
     switchMap,
     tap,
     catchError,
-} from "rxjs/operators";
-import { InfoqService } from "../api/infoq.service";
+} from 'rxjs/operators';
+import { InfoqService } from '../api/infoq.service';
 import {
     NgbDate,
     NgbDateStruct,
     NgbTypeahead,
-} from "@ng-bootstrap/ng-bootstrap";
-import * as moment from "moment-timezone";
-import { faCalendarAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
+} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment-timezone';
+import { faCalendarAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: "infoq",
-    templateUrl: "./infoq.component.html",
-    styleUrls: ["./infoq.component.scss"],
+    templateUrl: './infoq.component.html',
+    styleUrls: ['./infoq.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
 export class InfoqComponent {
@@ -43,83 +43,83 @@ export class InfoqComponent {
     took = 0;
     show_more = false;
     searchFailed = false;
-    keywords = "";
+    keywords = '';
     words_cloud: any;
     InfoqService;
-    _tag = "all";
+    _tag = 'all';
     _source;
     startDate: NgbDateStruct | undefined;
     endDate: NgbDateStruct | undefined;
     startDateIsInvalid = false;
-    author = "";
+    author = '';
 
     searchByKeywords: any;
     modelChanged = new Subject<string>();
     authorChangedDebounce = new Subject<string>();
-    @ViewChild("instance", { static: true }) instance: NgbTypeahead | undefined;
+    @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
 
     tags: any[] = [];
 
     tagsI18n = [
-        { text: "All", i18n: "全部" },
-        { text: "Python", i18n: "Python" },
-        { text: "PHP", i18n: "PHP" },
-        { text: "Javascript", i18n: "Javascript" },
-        { text: "Css", i18n: "Css" },
-        { text: "Typescript", i18n: "Typescript" },
-        { text: "Node", i18n: "Node" },
-        { text: "Game", i18n: "游戏" },
-        { text: "Security", i18n: "安全" },
-        { text: "Linux", i18n: "Linux" },
-        { text: "Postgresql", i18n: "Postgres" },
+        { text: 'All', i18n: '全部' },
+        { text: 'Python', i18n: 'Python' },
+        { text: 'PHP', i18n: 'PHP' },
+        { text: 'Javascript', i18n: 'Javascript' },
+        { text: 'Css', i18n: 'Css' },
+        { text: 'Typescript', i18n: 'Typescript' },
+        { text: 'Node', i18n: 'Node' },
+        { text: 'Game', i18n: '游戏' },
+        { text: 'Security', i18n: '安全' },
+        { text: 'Linux', i18n: 'Linux' },
+        { text: 'Postgresql', i18n: 'Postgres' },
         // {text: "blockchain", i18n: "区块链"},
-        { text: "blockchain", i18n: "区块链" },
-        { text: "dp", i18n: "设计模式" },
-        { text: "design", i18n: "设计" },
-        { text: "opensource", i18n: "开源" },
-        { text: "nosql", i18n: "Nosql" },
-        { text: "game", i18n: "游戏" },
-        { text: "web", i18n: "网页开发" },
-        { text: "algorithm", i18n: "算法" },
-        { text: "translate", i18n: "翻译" },
+        { text: 'blockchain', i18n: '区块链' },
+        { text: 'dp', i18n: '设计模式' },
+        { text: 'design', i18n: '设计' },
+        { text: 'opensource', i18n: '开源' },
+        { text: 'nosql', i18n: 'Nosql' },
+        { text: 'game', i18n: '游戏' },
+        { text: 'web', i18n: '网页开发' },
+        { text: 'algorithm', i18n: '算法' },
+        { text: 'translate', i18n: '翻译' },
     ];
 
     sortItems = [
-        { value: "multi", label: "综合" },
-        { value: "date", label: "日期" },
-        { value: "score", label: "搜索相关度" },
+        { value: 'multi', label: '综合' },
+        { value: 'date', label: '日期' },
+        { value: 'score', label: '搜索相关度' },
     ];
 
     sortBy = this.sortItems[0];
 
     displayModelItems = [
-        { value: "summary", label: "简介模式" },
-        { value: "title", label: "标题模式" },
+        { value: 'summary', label: '简介模式' },
+        { value: 'title', label: '标题模式' },
     ];
 
     displayModel = this.displayModelItems[0];
 
     sourceList = [
-        { title: "all", source_class: "icon-all", text: "全部" },
-        { title: "jianshu", source_class: "icon-jianshu", text: "简书" },
-        { title: "infoq", source_class: "icon-infoq", text: "极客帮" },
-        { title: "juejin", source_class: "icon-juejin", text: "掘金" },
-        { title: "cnblogs", source_class: "icon-cnblogs", text: "博客园" },
-        { title: "csdn", source_class: "icon-csdn", text: "CSDN" },
-        { title: "oschina", source_class: "icon-oschina", text: "开源中国" },
-        { title: "sf", source_class: "icon-sf", text: "思否" },
-        { title: "escn", source_class: "icon-escn", text: "Es中文社区" },
-        { title: "elastic", source_class: "icon-elastic", text: "Es官方" },
-        { title: "itpub", source_class: "icon-itpub", text: "itpub" },
+        { title: 'all', source_class: 'icon-all', text: '全部' },
+        { title: 'jianshu', source_class: 'icon-jianshu', text: '简书' },
+        { title: 'infoq', source_class: 'icon-infoq', text: '极客帮' },
+        { title: 'juejin', source_class: 'icon-juejin', text: '掘金' },
+        { title: 'cnblogs', source_class: 'icon-cnblogs', text: '博客园' },
+        { title: 'csdn', source_class: 'icon-csdn', text: 'CSDN' },
+        { title: 'oschina', source_class: 'icon-oschina', text: '开源中国' },
+        { title: 'sf', source_class: 'icon-sf', text: '思否' },
+        { title: 'escn', source_class: 'icon-escn', text: 'Es中文社区' },
+        { title: 'elastic', source_class: 'icon-elastic', text: 'Es官方' },
+        { title: 'itpub', source_class: 'icon-itpub', text: 'itpub' },
         {
-            title: "data_whale",
-            source_class: "icon-datawhale",
-            text: "和鲸数据",
+            title: 'data_whale',
+            source_class: 'icon-datawhale',
+            text: '和鲸数据',
         },
         {
-            title: "ali_dev",
-            source_class: "icon-alidev",
-            text: "阿里开发者社区",
+            title: 'ali_dev',
+            source_class: 'icon-alidev',
+            text: '阿里开发者社区',
         },
     ];
 
@@ -139,17 +139,17 @@ export class InfoqComponent {
         this._source = this.sourceList[0];
     }
 
-    @HostListener("window:keydown", ["$event"])
+    @HostListener('window:keydown', ['$event'])
     // tslint:disable-next-line: typedef
     handleKeyboardEvent(event: KeyboardEvent) {
-        if (event.key === "ArrowLeft") {
+        if (event.key === 'ArrowLeft') {
             if (this.current_page !== 1) {
                 this.current_page--;
                 this.pageChange();
             }
         }
 
-        if (event.key === "ArrowRight") {
+        if (event.key === 'ArrowRight') {
             if (this.current_page < this.total_number) {
                 this.current_page++;
                 this.pageChange();
@@ -189,7 +189,7 @@ export class InfoqComponent {
 
     // tslint:disable-next-line: typedef
     searchOnKeydown(e: { key: string }) {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             if (this.instance) {
                 this.instance.dismissPopup();
                 this.search();
@@ -204,7 +204,7 @@ export class InfoqComponent {
         }).subscribe((wordsCloud: any) => {
             this.words_cloud = wordsCloud;
         });
-    };
+    }
 
     getTags = () => {
         this.InfoqService.getTags({
@@ -228,27 +228,27 @@ export class InfoqComponent {
             );
 
             this.tags = _tags;
-            this.tags.unshift({ text: "all", i18n: "全部", count: total });
+            this.tags.unshift({ text: 'all', i18n: '全部', count: total });
             this._tag = this.tags[0].text;
         });
-    };
+    }
 
     searchKeyDown = ($event: any) => {
         this.search();
-    };
+    }
 
     authorChanged = ($event: any) => {
         // this.authorChangedDebounce.next($event)
-    };
+    }
 
     search_debounce = (ky: any) => {
         this.current_page = 1;
         this.modelChanged.next();
-    };
+    }
 
     search = () => {
         const params = {
-            page: "" + this.current_page,
+            page: '' + this.current_page,
             keywords: this.keywords,
             tag: this._tag,
             source: this._source.title,
@@ -300,17 +300,17 @@ export class InfoqComponent {
                 }
             }
         );
-    };
+    }
 
     pageChange = () => {
         this.search();
-    };
+    }
 
     wordsCloudToKeyWords = (word: { key: any }) => {
         this.current_page = 1;
         this.keywords = word.key;
         this.search();
-    };
+    }
 
     search_typeahead = (text$: Observable<string>) =>
         text$.pipe(
@@ -324,7 +324,7 @@ export class InfoqComponent {
                     })
                 )
             )
-        );
+        )
 
     selectTag = (tag: any) => {
         this._tag = tag;
@@ -332,17 +332,17 @@ export class InfoqComponent {
         this.current_page = 1;
         this.search();
         this.getWordsCloud();
-    };
+    }
 
     selectSource = (source: any) => {
         this._source = source;
-        this._tag = "all";
+        this._tag = 'all';
         // this.keywords = "";
         this.current_page = 1;
         this.search();
         this.getWordsCloud();
         this.getTags();
-    };
+    }
 
     keywordSearch() {
         this.current_page = 1;
@@ -351,9 +351,9 @@ export class InfoqComponent {
 
     searchDatasSimple = (term: any) => {
         const params = {
-            page: "1",
+            page: '1',
             keywords: term,
-            search_type: "simple",
+            search_type: 'simple',
         };
         return this.InfoqService.searchDatasSimple(params).pipe(
             map((response: any) => {
@@ -363,9 +363,9 @@ export class InfoqComponent {
                 return titles;
             })
         );
-    };
+    }
 
-    autoComplete = (text$: Observable<string>) =>
+    autoComplete = (text$) =>
         text$.pipe(
             debounceTime(300),
             switchMap((term: any) =>
@@ -380,7 +380,7 @@ export class InfoqComponent {
                     })
                 )
             )
-        );
+        )
 
     dateSelected = ($event: any) => {
         let startDate = null;
@@ -406,15 +406,15 @@ export class InfoqComponent {
             if (startDate.after(endDate)) {
             }
         }
-    };
+    }
 
     toDate = (date: string) => {
         const today = moment();
-        const tomorrow = moment().add(1, "days");
-        const yesterday = moment().subtract(1, "d");
-        const ago7day = moment().subtract(7, "d");
+        const tomorrow = moment().add(1, 'days');
+        const yesterday = moment().subtract(1, 'd');
+        const ago7day = moment().subtract(7, 'd');
 
-        if (date === "today") {
+        if (date === 'today') {
             this.startDate = {
                 year: today.year(),
                 month: today.month() + 1,
@@ -427,7 +427,7 @@ export class InfoqComponent {
             };
         }
 
-        if (date === "yesterday") {
+        if (date === 'yesterday') {
             this.startDate = {
                 year: yesterday.year(),
                 month: yesterday.month() + 1,
@@ -440,7 +440,7 @@ export class InfoqComponent {
             };
         }
 
-        if (date === "week") {
+        if (date === 'week') {
             this.startDate = {
                 year: ago7day.year(),
                 month: ago7day.month() + 1,
@@ -452,15 +452,15 @@ export class InfoqComponent {
                 day: tomorrow.date(),
             };
         }
-    };
+    }
 
     selectSortBy = (sortBy: { value: string; label: string }) => {
         this.sortBy = sortBy;
         this.search();
-    };
+    }
 
     selectDisplayModel = (displayModel: { value: string; label: string }) => {
         this.displayModel = displayModel;
         this.search();
-    };
+    }
 }

@@ -248,9 +248,9 @@
                                     daily_item.created_at | date: "yyyy-MM-dd"
                                 }}</span
                             >
-                            <span class="author" *ngIf="daily_item.author">{{
+                            <a class="author" *ngIf="daily_item.author" target="_blank" href="{{daily_item.author_url}}">{{
                                 daily_item.author
-                            }}</span>
+                            }}</a>
                             <span
                                 class="badge badge-primary article_tag"
                                 *ngFor="let tag of daily_item.tag"

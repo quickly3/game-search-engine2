@@ -35,7 +35,7 @@ class AliSpider(scrapy.Spider):
     # 593
     name = "juejin_daily"
 
-    domain = 'https://juejin.im'
+    domain = 'https://juejin.cn'
     postUrl = "https://juejin.cn/post/"
     userUrl = "https://juejin.cn/user/"
 
