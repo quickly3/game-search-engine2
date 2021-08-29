@@ -22,6 +22,7 @@ public/*.map
 public/*.js
 public/*.css
 scrapy/log/*
+scrapy/update/*.csv
 
 public/assets/html
 public/assets/scss

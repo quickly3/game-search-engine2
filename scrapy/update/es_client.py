@@ -17,7 +17,7 @@ class EsClient:
         query = {
             "query": {
                 "query_string": {
-                    "query": "source:juejin && -author_url:*"
+                    "query": "source:juejin && url:*juejin* && ((-author:*) || (-author_url:*))"
                 }
             },
             "size": 1000,
@@ -32,6 +32,13 @@ class EsClient:
         resp = self.client.scroll(scroll_id=scroll_id, scroll='2m')
         result = self.formatResp(resp);
         return result
+
+    def updateById(self,id,body):
+        return self.client.update(index="article",id=id,body=body)
+
+    def deleteById(self,id):
+        return self.client.delete(index="article", id=id)
+
 
     def formatResp(self,resp):
         result = {}

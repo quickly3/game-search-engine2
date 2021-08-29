@@ -1,32 +1,64 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
+import csv
 from es_client import EsClient
-
-
 
 class TestSpider(scrapy.Spider):
     name = 'juejin_upd'
     domin = 'https://juejin.cn'
+    handle_httpstatus_list = [404, 500]
+    # list = []
+    count = 0
 
     def start_requests(self):
-        
-        self.es = EsClient()
-        scrollResp = self.es.getDocs()
+        file = 'query.csv'
+        with open(file, "r") as f:
+            reader = csv.DictReader(f)
+            _list = list(reader)
+            self.total = len(_list)
+            for item in _list:
+                url = item['url']
+                # url = url.replace('juejin.im', 'juejin.cn')
 
-        url = scrollResp['hits'][0]['url']
-        scroll_id = scrollResp['scroll_id']
+                if url.find('juejin.im') == -1 and url.find('juejin.cn') == -1:
+                    continue;
+                else:
+                    yield scrapy.FormRequest(url=url, callback=lambda response, item=item : self.parse(response, item))
 
-        yield scrapy.FormRequest(url=url, callback=lambda response, scroll_id=scroll_id : self.parse(response, scroll_id))
+
+
+    def parse(self, response, item):
+        self.count+=1
+        if response.status == 404:
+            resp = EsClient().deleteById(item['id'])
+        else:
+            user_url = response.xpath('//a[@class="username username ellipsis"][1]/@href').get()
+            author = response.xpath('//a[@class="username username ellipsis"][1]/text()').get()
+
+            
+            # if user_url is None:
+            #     user_url = response.xpath('//a[@class="user-item item"][1]/@href').get()
+
+            if user_url is None:
+                user_url = response.xpath('//div[@itemprop="author"]/meta[@itemprop="url"]/@content').get()
+                author = response.xpath('//div[@itemprop="author"]/meta[@itemprop="name"]/@content').get()
 
 
 
-    def parse(self, response, scroll_id):
 
-        author_url = self.domin + response.xpath('//a[@class="avatar-link"][1]/@href').get()
-        
-        print('author_url')
-        print(author_url)
-        
+            if user_url is not None:
+                author_url = self.domin + user_url
+                body = {
+                    "doc":{
+                        "author_url": author_url,
+                        "author": author,
+                        "url": response.url,
+                    }
+                }
+
+                resp = EsClient().updateById(item['id'], body)
+                
+        print(str(self.count)+"/"+str(self.total))
 
 
 if __name__ == "__main__":
