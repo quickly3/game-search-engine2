@@ -32,10 +32,14 @@ class TestSpider(scrapy.Spider):
         if response.status == 404:
             resp = EsClient().deleteById(item['id'])
         else:
-            user_url = response.xpath('//a[@class="username username ellipsis"][1]/@href').get()
-            author = response.xpath('//a[@class="username username ellipsis"][1]/text()').get()
+            if response.url.find("juejin.cn/news") > -1:
+                user_url = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/a[1]/@href').get()
+                author = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/a[1]/text()').get()
 
-            
+            else:
+                user_url = response.xpath('//a[@class="username username ellipsis"][1]/@href').get()
+                author = response.xpath('//a[@class="username username ellipsis"][1]/text()').get()
+
             # if user_url is None:
             #     user_url = response.xpath('//a[@class="user-item item"][1]/@href').get()
 
@@ -43,21 +47,18 @@ class TestSpider(scrapy.Spider):
                 user_url = response.xpath('//div[@itemprop="author"]/meta[@itemprop="url"]/@content').get()
                 author = response.xpath('//div[@itemprop="author"]/meta[@itemprop="name"]/@content').get()
 
-
-
-
             if user_url is not None:
                 author_url = self.domin + user_url
                 body = {
                     "doc":{
-                        "author_url": author_url,
-                        "author": author,
+                        "author_url": author_url.strip(),
+                        "author": author.strip(),
                         "url": response.url,
                     }
                 }
 
                 resp = EsClient().updateById(item['id'], body)
-                
+
         print(str(self.count)+"/"+str(self.total))
 
 
