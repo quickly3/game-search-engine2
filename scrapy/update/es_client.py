@@ -33,7 +33,7 @@ class EsClient:
         fisrt_query = {
             "query": {
                 "query_string": {
-                    "query": "source:infoq"
+                    "query": "source:juejin"
                 }
             },
             "size": 0,
@@ -79,7 +79,7 @@ class EsClient:
             "track_total_hits":True,
             "query": {
                 "query_string": {
-                    "query": "source:infoq"
+                    "query": "source:juejin"
                 }
             },
             "size": 0,
