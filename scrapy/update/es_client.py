@@ -33,7 +33,7 @@ class EsClient:
         fisrt_query = {
             "query": {
                 "query_string": {
-                    "query": "source:juejin"
+                    "query": "source:infoq"
                 }
             },
             "size": 0,
@@ -43,9 +43,9 @@ class EsClient:
                         "size": 1000,
                         "sources": [
                             {
-                                "author": {
+                                "author_url": {
                                     "terms": {
-                                        "field": "author"
+                                        "field": "author_url"
                                     }
                                 }
                             }
@@ -60,16 +60,17 @@ class EsClient:
 
         if result:
             list = result['hits']
-            after_key = result['after_key']
 
-            while result :
-                result = self.getAuthorsByAfterKey(after_key)
-                if result:
-                    list = list + result['hits']
-                    if 'after_key' in result:
-                        after_key = result['after_key']
-                    else:
-                        break;
+            if 'after_key' in result:
+                after_key = result['after_key']
+                while result :
+                    result = self.getAuthorsByAfterKey(after_key)
+                    if result:
+                        list = list + result['hits']
+                        if 'after_key' in result:
+                            after_key = result['after_key']
+                        else:
+                            break;
 
         return list
 
@@ -88,9 +89,9 @@ class EsClient:
                         "size": 1000,
                         "sources": [
                             {
-                                "author": {
+                                "author_url": {
                                     "terms": {
-                                        "field": "author"
+                                        "field": "author_url"
                                     }
                                 }
                             }
@@ -123,7 +124,7 @@ class EsClient:
             if 'after_key' in buckets:
                 result['after_key'] =  buckets['after_key']
 
-            result['hits'] = list(map(lambda x:dict(author=x['key']['author'], doc_count=x['doc_count']) ,buckets['buckets']))
+            result['hits'] = list(map(lambda x:dict(author_url=x['key']['author_url'], doc_count=x['doc_count']) ,buckets['buckets']))
             return result;
         else:
             return False
