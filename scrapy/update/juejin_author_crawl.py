@@ -9,6 +9,7 @@ class TestSpider(scrapy.Spider):
     handle_httpstatus_list = [404, 500]
     # list = []
     count = 0
+    source = 'juejin'
 
     def start_requests(self):
         file = 'authors.csv'
@@ -28,10 +29,15 @@ class TestSpider(scrapy.Spider):
         items = response.xpath('//*[@id="juejin"]/div[1]/main/div[3]/div[1]/div[2]/div/div[2]/div/ul/div/li[1]/div/div/div/div')
 
         for item in items:
-            title = item.xpath('div[2]/div/div[1]/a/span/text()').get()
-            url = item.xpath('div[2]/div/div[1]/a/@href)').get()
+            doc = {}
+            doc['title'] = item.xpath('div[2]/div/div[1]/a/span/text()').get(default='').strip()
+            doc['url'] = self.domin + item.xpath('div[2]/div/div[1]/a/@href').get(default='').strip()
+            doc['summary'] = item.xpath('div[2]/div/div[2]/a/text()').get(default='').strip()
+            doc['author'] = item.xpath('div[1]/div[1]/a/div/text()').get(default='').strip()
+            doc['author_url'] = self.domin + item.xpath('div[1]/div[1]/a/@href').get(default='').strip()
+            doc['tag'] = item.xpath('div[1]/div[5]/div/a/text()').get(default='').strip()
 
-            print(title)
+            print(doc)
 
 
 if __name__ == "__main__":
