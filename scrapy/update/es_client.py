@@ -2,6 +2,9 @@ from elasticsearch import Elasticsearch
 from elasticsearch import logger as es_logger
 from dotenv import load_dotenv
 import os
+import logging
+
+logging.getLogger("urllib3").setLevel(logging.ERROR)
 
 es_logger.setLevel(50)
 
@@ -28,6 +31,19 @@ class EsClient:
         resp = self.client.search(index="article", body=query, scroll='2m')
         result = self.formatResp(resp)
         return result
+
+    def articleExisted(self,url):
+        query = {
+            "query": {
+                "query_string": {
+                    "query": "url:\""+url+"\""
+                }
+            }
+        }
+
+        resp = self.client.count(index="article", body=query)
+        return resp['count'] > 0
+
 
     def getAuthors(self):
         fisrt_query = {
