@@ -34,7 +34,6 @@ import { faCalendarAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 export class InfoqComponent {
     faCalendarAlt = faCalendarAlt;
     faSearch = faSearch;
-
     escn_list: any[] = [];
     total_number = 0;
     total_page = 0;
@@ -241,9 +240,22 @@ export class InfoqComponent {
         // this.authorChangedDebounce.next($event)
     }
 
+    initSearch = () => {
+        this.current_page = 1;
+        this.keywords = ''
+        this._tag = 'all'
+        this._source = this.sourceList[0]
+        this.startDate = null
+        this.endDate = null
+        this.author = ''
+        this.sortBy = this.sortItems[0];
+        this.search();
+    }
+
     search_debounce = (ky: any) => {
         this.current_page = 1;
         this.modelChanged.next();
+
     }
 
     search = () => {
@@ -309,6 +321,11 @@ export class InfoqComponent {
     wordsCloudToKeyWords = (word: { key: any }) => {
         this.current_page = 1;
         this.keywords = word.key;
+        this.search();
+    }
+
+    searchByAuthorName = (author) => {
+        this.author = author
         this.search();
     }
 

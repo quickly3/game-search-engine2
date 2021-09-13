@@ -102,6 +102,9 @@
     <div class="row">
         <div class="col-md-2">
             <div class="option-title">
+                <span class="initSearch" (click)="initSearch()" >清空搜索条件</span>
+            </div>
+            <div class="option-title">
                 <span>数据来源:</span>
             </div>
             <div class="option-zone source-selector">
@@ -251,6 +254,7 @@
                             <a class="author" *ngIf="daily_item.author" target="_blank" href="{{daily_item.author_url}}">{{
                                 daily_item.author
                             }}</a>
+                            <fa-icon class='author authorSeatch' [icon]="faSearch" (click)="searchByAuthorName(daily_item.author)"></fa-icon>
                             <span
                                 class="badge badge-primary article_tag"
                                 *ngFor="let tag of daily_item.tag"
