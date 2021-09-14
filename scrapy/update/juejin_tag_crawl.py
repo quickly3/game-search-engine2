@@ -78,7 +78,7 @@ class TestSpider(scrapy.Spider):
             yield JsonRequest(self.api_url,data=payload, callback=lambda response, item=item : self.parse(response, item))
         else:
 
-            print(item['user_id'] + "Crawler end");
+            print(item['tag_id'] + "Crawler end");
 
 if __name__ == "__main__":
     process = CrawlerProcess()
