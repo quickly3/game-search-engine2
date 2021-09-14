@@ -74,6 +74,8 @@ class AliSpider(scrapy.Spider):
 
         for item in items:
             article_info = item['article_info']
+            author_user_info = item['author_user_info']
+
             doc = {}
             doc['title'] = article_info['title']
             doc['url'] = self.postUrl+article_info['article_id']
@@ -85,6 +87,8 @@ class AliSpider(scrapy.Spider):
             doc['tag'] = self._target['tag']
             doc['source'] = 'juejin'
             doc['source_id'] = item['article_id']
+            doc['author'] = author_user_info['user_name']
+            doc['author_url'] = self.userUrl + author_user_info['user_id']
             doc['stars'] = 0
 
             bulk.append(
