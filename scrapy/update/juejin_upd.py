@@ -48,7 +48,10 @@ class TestSpider(scrapy.Spider):
                 author = response.xpath('//div[@itemprop="author"]/meta[@itemprop="name"]/@content').get()
 
             if user_url is not None:
-                author_url = self.domin + user_url
+                if user_url.find(self.domin) == -1:
+                    author_url = self.domin + user_url
+                else:
+                    author_url = user_url
                 body = {
                     "doc":{
                         "author_url": author_url.strip(),
