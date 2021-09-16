@@ -315,7 +315,7 @@ export class InfoqComponent {
                 }
 
                 if(data.words_cloud){
-                    this.words_cloud = wordsCloud;
+                    this.words_cloud = data.words_cloud;
                 }
             }
         );
