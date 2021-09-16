@@ -157,7 +157,7 @@ export class InfoqComponent {
     }
 
     ngOnInit(): void {
-        this.getWordsCloud();
+        // this.getWordsCloud();
         // this.getTags();
         this.search();
 
@@ -313,6 +313,10 @@ export class InfoqComponent {
                 if(data.tags){
                     this.handleTags(data.tags);
                 }
+
+                if(data.words_cloud){
+                    this.words_cloud = wordsCloud;
+                }
             }
         );
     }
@@ -374,7 +378,7 @@ export class InfoqComponent {
         // this.keywords = "";
         this.current_page = 1;
         this.search();
-        this.getWordsCloud();
+        // this.getWordsCloud();
     }
 
     selectSource = (source: any) => {
@@ -383,7 +387,7 @@ export class InfoqComponent {
         // this.keywords = "";
         this.current_page = 1;
         this.search();
-        this.getWordsCloud();
+        // this.getWordsCloud();
         // this.getTags();
     }
 

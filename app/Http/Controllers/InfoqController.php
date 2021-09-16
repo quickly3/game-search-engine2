@@ -130,7 +130,10 @@ class InfoqController extends Controller
         }
 
         $tags = InfoqService::getTagsByQuery($query_string);
+        $words_cloud = InfoqService::genWordsCloudByQuery($query_string);
         $data['tags'] = $tags;
+        $data['words_cloud'] = $words_cloud;
+
         return response()->json($data);
     }
 

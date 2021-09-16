@@ -86,6 +86,67 @@ class InfoqService
         return $cloud_words;
     }
 
+    public static function genWordsCloudByQuery($query_string)
+    {
+        $cloud_words = [];
+
+        $es = new ElasticModel("article", "article");
+        $data = [
+            "query" => [
+                "query_string" => [
+                    "query" => "$query_string"
+                ]
+            ],
+            "aggs" => [
+                "title_words_cloud" => [
+                    "terms" => [
+                        "field" => "title.text_cn",
+                        "size" => 100
+                    ]
+                ]
+            ],
+            "size" => 0
+        ];
+
+        $params = [
+            "index" => "article",
+            "body" =>  $data
+        ];
+
+        $data = $es->client->search($params);
+        $resp = (object) $data;
+        $cloud_words = $resp->aggregations['title_words_cloud']['buckets'];
+
+        $cloud_words = array_map(function ($item) {
+            return (object) $item;
+        }, $cloud_words);
+
+        $stop_words = [
+            "基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2021","2020","2019","2019", "2018","10",
+            "php", "python", "javascript", "js", "css", "linux", "node","postgresql", "typescript",
+            "java", "vue", "web","react"
+        ];
+
+        $cloud_words = array_filter($cloud_words, function ($item) use ($stop_words) {
+
+            $matched = true;
+
+            if (mb_strlen($item->key) == 1) {
+                $matched = false;
+            }
+
+            if (in_array($item->key, $stop_words)) {
+                $matched = false;
+            }
+
+            return $matched;
+        });
+
+        $cloud_words = array_merge($cloud_words, []);
+        return $cloud_words;
+    }
+
+
     public static function getTagsByQuery($query_string)
     {
         $cloud_words = [];
