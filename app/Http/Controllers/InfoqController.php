@@ -20,6 +20,7 @@ class InfoqController extends Controller
         $endDate = $request->input("endDate", null);
         $sortBy = $request->input("sortBy", null);
         $author = $request->input("author", '');
+        $updateSta = $request->input("updateSta", true);
 
 
         $es = new ElasticModel("article", "article");
@@ -128,12 +129,12 @@ class InfoqController extends Controller
                 return $item;
             }, $data['data']);
         }
-
-        $tags = InfoqService::getTagsByQuery($query_string);
-        $words_cloud = InfoqService::genWordsCloudByQuery($query_string);
-        $data['tags'] = $tags;
-        $data['words_cloud'] = $words_cloud;
-
+        if($updateSta){
+            $tags = InfoqService::getTagsByQuery($query_string);
+            $words_cloud = InfoqService::genWordsCloudByQuery($query_string);
+            $data['tags'] = $tags;
+            $data['words_cloud'] = $words_cloud;
+        }
         return response()->json($data);
     }
 

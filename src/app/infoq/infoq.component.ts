@@ -258,7 +258,7 @@ export class InfoqComponent {
 
     }
 
-    search = () => {
+    search = (option = {updateSta:true}) => {
         const params = {
             page: '' + this.current_page,
             keywords: this.keywords,
@@ -269,6 +269,7 @@ export class InfoqComponent {
             sortBy: this.sortBy,
             author: this.author,
             displayModel: this.displayModel,
+            updateSta: option.updateSta
         };
 
         if (this.startDate && this.startDate.year) {
@@ -310,12 +311,14 @@ export class InfoqComponent {
                 if (this.instance) {
                     this.instance.dismissPopup();
                 }
-                if(data.tags){
-                    this.handleTags(data.tags);
-                }
+                if(option.updateSta){
+                    if(data.tags){
+                        this.handleTags(data.tags);
+                    }
 
-                if(data.words_cloud){
-                    this.words_cloud = data.words_cloud;
+                    if(data.words_cloud){
+                        this.words_cloud = data.words_cloud;
+                    }
                 }
             }
         );
@@ -345,7 +348,7 @@ export class InfoqComponent {
     }
 
     pageChange = () => {
-        this.search();
+        this.search({updateSta:false});
     }
 
     wordsCloudToKeyWords = (word: { key: any }) => {
@@ -355,6 +358,7 @@ export class InfoqComponent {
     }
 
     searchByAuthorName = (author) => {
+        this.current_page = 1;
         this.author = author
         this.search();
     }
