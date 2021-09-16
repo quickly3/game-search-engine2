@@ -128,6 +128,9 @@ class InfoqController extends Controller
                 return $item;
             }, $data['data']);
         }
+
+        $tags = InfoqService::getTags($query_string);
+        $data['tags'] = $tags;
         return response()->json($data);
     }
 

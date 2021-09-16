@@ -86,6 +86,40 @@ class InfoqService
         return $cloud_words;
     }
 
+    public static function getTagsByQuery($query_string)
+    {
+        $cloud_words = [];
+
+        $es = new ElasticModel("article");
+        $data = [
+            "query" => [
+                "query_string" => [
+                    "query" => "$query_string"
+                ]
+            ],
+            "aggs" => [
+                "tags" => [
+                    "terms" => [
+                        "field" => "tag",
+                        "size" => 200
+                    ]
+                ]
+            ],
+            "size" => 0
+        ];
+
+        $params = [
+            "index" => "article",
+            "body" =>  $data
+        ];
+
+        $data = $es->client->search($params);
+        $resp = (object) $data;
+        $tags = $resp->aggregations['tags']['buckets'];
+
+        return $tags;
+    }
+
     public static function getTags($source)
     {
         $cloud_words = [];
