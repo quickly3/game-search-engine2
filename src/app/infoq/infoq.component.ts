@@ -138,6 +138,7 @@ export class InfoqComponent {
 
     }
 
+    // tslint:disable-next-line: typedef
     getInitQueryParams() {
         return {
             page: 1,
@@ -176,11 +177,12 @@ export class InfoqComponent {
             source: this.queryParams.source.title,
         }).subscribe((tags: any) => {
             let total = 0;
+            // tslint:disable-next-line: variable-name
             const _tags: any[] = tags.map(
                 (i: { key: any; doc_count: number }) => {
                     const matchedItem = this.tagsI18n.find(
                         (item: { text: any }) => {
-                            return item.text == i.key;
+                            return item.text === i.key;
                         }
                     );
                     total += i.doc_count;
@@ -226,14 +228,14 @@ export class InfoqComponent {
         return ngbDateStruct;
     }
 
-    getQueryParams = () => {
+    getQueryParams = (option) => {
         return {
             ...this.queryParams,
             source: this.queryParams.source.title,
             sortBy: this.queryParams.sortBy.value,
             startDate: this.ngbDateToStr(this.queryParams.startDate),
             endDate: this.ngbDateToStr(this.queryParams.endDate),
-            updateSta: this.updateSta
+            updateSta: option.updateSta
         };
     }
 
@@ -255,8 +257,8 @@ export class InfoqComponent {
 
     }
 
-    search = () => {
-        const queryStringParams = this.getQueryParams();
+    search = (option = {updateSta: true}) => {
+        const queryStringParams = this.getQueryParams(option);
         this.setQueryParamsToUrl(queryStringParams);
 
         this.InfoqService.getDailyList(queryStringParams).subscribe(
@@ -290,7 +292,7 @@ export class InfoqComponent {
                     this.instance.dismissPopup();
                 }
 
-                if (this.updateSta){
+                if (option.updateSta){
                     if (data.tags){
                         this.handleTags(data.tags);
                     }
@@ -305,6 +307,7 @@ export class InfoqComponent {
 
     handleTags = (tags) => {
         let total = 0;
+        // tslint:disable-next-line: variable-name
         const _tags: any[] = tags.map(
             (i: { key: any; doc_count: number }) => {
                 const matchedItem = this.tagsI18n.find(
@@ -328,8 +331,7 @@ export class InfoqComponent {
     }
 
     pageChange = () => {
-        this.updateSta = false;
-        this.search();
+        this.search({updateSta: false});
     }
 
     wordsCloudToKeyWords = (word: { key: any }) => {
@@ -357,7 +359,7 @@ export class InfoqComponent {
         this.search();
     }
 
-    keywordSearch() {
+    keywordSearch(): void {
         this.queryParams.page = 1;
         this.search();
     }
