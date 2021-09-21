@@ -15,7 +15,7 @@ class EscnDaily extends Command
      * @var string
      * @translator laravelacademy.org
      */
-    protected $signature = 'EscnDaily';
+    protected $signature = 'EscnDaily {test?}';
 
     /**
      * The console command description.
@@ -46,7 +46,14 @@ class EscnDaily extends Command
      */
     public function handle()
     {
-        $test = true;
+        $this->test = $this->argument("test");
+
+        if(!$this->test){
+            $test = false;
+        }else{
+            $test = true;
+        }
+
         $this->sendDailyEscn($test);
         $this->sendDailyInofQ($test);
         $this->sendDailyJueJin($test);
