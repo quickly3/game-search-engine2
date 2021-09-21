@@ -106,14 +106,21 @@ export class InfoqComponent {
         const initQueryParams = this.getInitQueryParams();
         const urlParams = this.route.snapshot.queryParams;
         const urlParamsCopy = {...urlParams};
-        // tslint:disable-next-line: radix
-        urlParamsCopy.page = parseInt( urlParamsCopy.page);
-        // tslint:disable-next-line: radix
-        urlParamsCopy.row = parseInt( urlParamsCopy.row);
+
+        if (urlParamsCopy.page){
+            // tslint:disable-next-line: radix
+            urlParamsCopy.page = parseInt( urlParamsCopy.page);
+        }
+
+        if (urlParamsCopy.row){
+            // tslint:disable-next-line: radix
+            urlParamsCopy.row = parseInt( urlParamsCopy.row);
+        }
 
         if (urlParamsCopy.startDate){
             urlParamsCopy.startDate = this.strToNgbDate(urlParamsCopy.startDate);
         }
+
         if (urlParamsCopy.endDate){
             urlParamsCopy.endDate = this.strToNgbDate(urlParamsCopy.endDate);
         }
