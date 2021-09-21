@@ -110,7 +110,11 @@ export class InfoqComponent {
         urlParamsCopy.page = parseInt( urlParamsCopy.page);
         // tslint:disable-next-line: radix
         urlParamsCopy.row = parseInt( urlParamsCopy.row);
-        this.queryParams = {...urlParamsCopy, ...initQueryParams};
+        urlParamsCopy.startDate = this.strToNgbDate(urlParamsCopy.startDate);
+        urlParamsCopy.endDate = this.strToNgbDate(urlParamsCopy.endDate);
+        console.log('urlParamsCopy', urlParamsCopy);
+        this.queryParams = {...initQueryParams, ...urlParamsCopy};
+        console.log('queryParams', this.queryParams);
         this.search();
 
     }
@@ -197,6 +201,12 @@ export class InfoqComponent {
         return jsDate.toISOString();
     }
 
+    strToNgbDate = (str) => {
+        const date = new Date(str);
+        const ngbDateStruct = { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()};
+        return ngbDateStruct;
+    }
+
     getQueryParams = () => {
         return {
             ...this.queryParams,
@@ -261,7 +271,7 @@ export class InfoqComponent {
                 if (this.instance) {
                     this.instance.dismissPopup();
                 }
-                console.log(this.updateSta);
+
                 if (this.updateSta){
                     if (data.tags){
                         this.handleTags(data.tags);
