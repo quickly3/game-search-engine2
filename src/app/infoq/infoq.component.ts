@@ -157,8 +157,8 @@ export class InfoqComponent {
     }
 
     ngOnInit(): void {
-        this.getWordsCloud();
-        this.getTags();
+        // this.getWordsCloud();
+        // this.getTags();
         this.search();
 
         // const observable = new Observable(subscriber => {
@@ -258,7 +258,7 @@ export class InfoqComponent {
 
     }
 
-    search = () => {
+    search = (option = {updateSta:true}) => {
         const params = {
             page: '' + this.current_page,
             keywords: this.keywords,
@@ -269,6 +269,7 @@ export class InfoqComponent {
             sortBy: this.sortBy,
             author: this.author,
             displayModel: this.displayModel,
+            updateSta: option.updateSta
         };
 
         if (this.startDate && this.startDate.year) {
@@ -310,12 +311,44 @@ export class InfoqComponent {
                 if (this.instance) {
                     this.instance.dismissPopup();
                 }
+                if(option.updateSta){
+                    if(data.tags){
+                        this.handleTags(data.tags);
+                    }
+
+                    if(data.words_cloud){
+                        this.words_cloud = data.words_cloud;
+                    }
+                }
             }
         );
     }
 
+    handleTags = (tags) => {
+        let total = 0;
+        const _tags: any[] = tags.map(
+            (i: { key: any; doc_count: number }) => {
+                const matchedItem = this.tagsI18n.find(
+                    (item: { text: any }) => {
+                        return item.text == i.key;
+                    }
+                );
+                total += i.doc_count;
+                return {
+                    text: i.key,
+                    count: i.doc_count,
+                    i18n: matchedItem ? matchedItem.i18n : i.key,
+                };
+            }
+        );
+
+        this.tags = _tags;
+        this.tags.unshift({ text: 'all', i18n: '全部', count: total });
+        this._tag = this.tags[0].text;
+    }
+
     pageChange = () => {
-        this.search();
+        this.search({updateSta:false});
     }
 
     wordsCloudToKeyWords = (word: { key: any }) => {
@@ -325,6 +358,7 @@ export class InfoqComponent {
     }
 
     searchByAuthorName = (author) => {
+        this.current_page = 1;
         this.author = author
         this.search();
     }
@@ -348,7 +382,7 @@ export class InfoqComponent {
         // this.keywords = "";
         this.current_page = 1;
         this.search();
-        this.getWordsCloud();
+        // this.getWordsCloud();
     }
 
     selectSource = (source: any) => {
@@ -357,8 +391,8 @@ export class InfoqComponent {
         // this.keywords = "";
         this.current_page = 1;
         this.search();
-        this.getWordsCloud();
-        this.getTags();
+        // this.getWordsCloud();
+        // this.getTags();
     }
 
     keywordSearch() {
