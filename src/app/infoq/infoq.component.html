@@ -9,7 +9,7 @@
                         id="typeahead-basic"
                         type="text"
                         class="form-control form-control-sm"
-                        [(ngModel)]="keywords"
+                        [(ngModel)]="queryParams.keywords"
                         [focusFirst]="false"
                         (keydown)="searchOnKeydown($event)"
                         [ngbTypeahead]="autoComplete"
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <span class="text-secondary" style="font-size: 14px">{{
-                    sortBy.label
+                    queryParams.sortBy.label
                 }}</span>
                 <div ngbDropdown class="d-inline-block sort-by">
                     <button
@@ -73,13 +73,13 @@
         </div>
     </div>
     <div style="font-size: 12px">
-        找到 <strong>{{ total_number }}</strong> 条结果 （用时约
+        找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
         <strong>{{ took }}</strong> ms） 当前第
-        <strong>{{ current_page }}</strong> 页,共
-        <strong>{{ total_page }}</strong> 页 数据来源
-        <strong>{{ _source.text }}</strong>
+        <strong>{{ queryParams.page }}</strong> 页,共
+        <strong>{{ totalPage }}</strong> 页 数据来源
+        <strong>{{ queryParams.source.text }}</strong>
     </div>
-    <div class="tags" [ngClass]="{ 'tags-switch': !show_more }">
+    <div class="tags" [ngClass]="{ 'tags-switch': !showMore }">
         <div
             class="custom-control custom-radio"
             *ngFor="let tag of tags"
@@ -89,15 +89,15 @@
                 type="radio"
                 name="customRadio"
                 value="{{ tag.text }}"
-                [(ngModel)]="_tag"
+                [(ngModel)]="queryParams.tag"
             />
             <span>{{ tag.i18n }}</span>
             <span *ngIf="tag.text != 'all'">({{ tag.count }})</span>
         </div>
     </div>
-    <div class="more-tags" (click)="show_more = !show_more">
-        <a *ngIf="!show_more" href="javascript:;">more</a>
-        <a *ngIf="show_more" href="javascript:;">close</a>
+    <div class="more-tags" (click)="showMore = !showMore">
+        <a *ngIf="!showMore" href="javascript:;">more</a>
+        <a *ngIf="showMore" href="javascript:;">close</a>
     </div>
     <div class="row">
         <div class="col-md-2">
@@ -117,7 +117,7 @@
                         type="radio"
                         name="sourceRadio"
                         value="{{ source.title }}"
-                        [(ngModel)]="_source.title"
+                        [(ngModel)]="this.queryParams.source.title"
                     />
                     <div class="icons {{ source.source_class }}"></div>
                 </div>
@@ -149,7 +149,7 @@
                         ngbDatepicker
                         #start_date="ngbDatepicker"
                         placeholder="开始时间"
-                        [(ngModel)]="startDate"
+                        [(ngModel)]="queryParams.startDate"
                         (ngModelChange)="dateSelected($event)"
                     />
                     <button
@@ -166,7 +166,7 @@
                         ngbDatepicker
                         #end_date="ngbDatepicker"
                         placeholder="结束时间"
-                        [(ngModel)]="endDate"
+                        [(ngModel)]="queryParams.endDate"
                         (ngModelChange)="dateSelected($event)"
                     />
                     <button
@@ -185,7 +185,7 @@
                     type="text"
                     class="form-control form-control-sm"
                     placeholder="作者名字"
-                    [(ngModel)]="author"
+                    [(ngModel)]="queryParams.author"
                     (ngModelChange)="authorChanged($event)"
                 />
             </div>
@@ -195,17 +195,17 @@
             <div class="option-zone words_cloud">
                 <span
                     class="text-info"
-                    *ngFor="let word of words_cloud"
+                    *ngFor="let word of wordsCloud"
                     (click)="wordsCloudToKeyWords(word)"
                     >{{ word.key }}</span
                 >
             </div>
         </div>
         <div class="col-md-10">
-            <div class="escn_list">
+            <div class="articleList">
                 <div
                     class="daily_item_title_model row"
-                    *ngFor="let daily_item of escn_list"
+                    *ngFor="let daily_item of articleList"
                     routerLinkActive="active"
                 >
 
@@ -273,9 +273,9 @@
             <div class="pagination">
                 <ngb-pagination
                     class="navigation"
-                    [collectionSize]="total_number"
-                    [(page)]="current_page"
-                    [pageSize]="row"
+                    [collectionSize]="totalNumber"
+                    [(page)]="queryParams.page"
+                    [pageSize]="queryParams.row"
                     [maxSize]="5"
                     [ellipses]="false"
                     size="sm"
