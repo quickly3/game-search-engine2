@@ -45,7 +45,7 @@ class InfoqController extends Controller
         }
 
         if ($keywords != '*') {
-            $query_string = "(title.text_cn:'{$keywords}' OR summary:'{$keywords}' OR title:(\"{$keywords}\")^10) ";
+            $query_string = "(title.text_cn:'{$keywords}' OR title.text_cn:\"{$keywords}\" OR summary.text_cn:'{$keywords}' OR summary.text_cn:\"{$keywords}\") ";
         }else{
             $query_string = "*:*";
         }
@@ -94,9 +94,9 @@ class InfoqController extends Controller
                 break;
             case "multi":
                 $orders = [
-                    "created_at" => "desc",
                     "_score" => "desc",
                     "created_year" => "desc",
+                    "created_at" => "desc",
                     "title" => "asc",
                 ];
 
