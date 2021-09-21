@@ -110,8 +110,22 @@ export class InfoqComponent {
         urlParamsCopy.page = parseInt( urlParamsCopy.page);
         // tslint:disable-next-line: radix
         urlParamsCopy.row = parseInt( urlParamsCopy.row);
-        urlParamsCopy.startDate = this.strToNgbDate(urlParamsCopy.startDate);
-        urlParamsCopy.endDate = this.strToNgbDate(urlParamsCopy.endDate);
+
+        if (urlParamsCopy.startDate){
+            urlParamsCopy.startDate = this.strToNgbDate(urlParamsCopy.startDate);
+        }
+        if (urlParamsCopy.endDate){
+            urlParamsCopy.endDate = this.strToNgbDate(urlParamsCopy.endDate);
+        }
+
+        if (urlParamsCopy.source){
+            urlParamsCopy.source = this.sourceList.find(i => i.title === urlParamsCopy.source);
+        }
+
+        if (urlParamsCopy.sortBy){
+            urlParamsCopy.sortBy = this.sortItems.find(i => i.value === urlParamsCopy.sortBy);
+        }
+
         console.log('urlParamsCopy', urlParamsCopy);
         this.queryParams = {...initQueryParams, ...urlParamsCopy};
         console.log('queryParams', this.queryParams);
