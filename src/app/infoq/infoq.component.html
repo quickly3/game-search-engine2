@@ -251,10 +251,10 @@
                                     daily_item.created_at | date: "yyyy-MM-dd"
                                 }}</span
                             >
-                            <a class="author" *ngIf="daily_item.author" target="_blank" href="{{daily_item.author_url}}">{{
+                            <a class="author" *ngIf="daily_item.author" (click)="searchByAuthorName(daily_item.author)" href='javascript:void(0)' >{{
                                 daily_item.author
                             }}</a>
-                            <fa-icon class='author authorSeatch' [icon]="faSearch" (click)="searchByAuthorName(daily_item.author)"></fa-icon>
+                            <a *ngIf="daily_item.author_url" target="_blank"  href="{{daily_item.author_url}}"><fa-icon class='author authorSeatch' [icon]="faSearch" ></fa-icon></a>
                             <span
                                 class="badge badge-primary article_tag"
                                 *ngFor="let tag of daily_item.tag"

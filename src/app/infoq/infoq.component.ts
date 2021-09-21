@@ -344,7 +344,8 @@ export class InfoqComponent {
 
         this.tags = _tags;
         this.tags.unshift({ text: 'all', i18n: '全部', count: total });
-        this._tag = this.tags[0].text;
+
+        // this._tag = this.tags[0].text;
     }
 
     pageChange = () => {
