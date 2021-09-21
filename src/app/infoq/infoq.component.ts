@@ -89,7 +89,7 @@ export class InfoqComponent {
         }
 
         if (event.key === 'ArrowRight') {
-            if (this.queryParams.page < this.totalNumber) {
+            if (this.queryParams.page < this.totalPage) {
                 this.queryParams.page++;
                 this.pageChange();
             }
@@ -133,9 +133,7 @@ export class InfoqComponent {
             urlParamsCopy.sortBy = this.sortItems.find(i => i.value === urlParamsCopy.sortBy);
         }
 
-        console.log('urlParamsCopy', urlParamsCopy);
         this.queryParams = {...initQueryParams, ...urlParamsCopy};
-        console.log('queryParams', this.queryParams);
         this.search();
 
     }
@@ -253,7 +251,6 @@ export class InfoqComponent {
         this.router.navigate([], {
             relativeTo: this.route,
             queryParams: nativeParams,
-            queryParamsHandling: 'merge',
         });
 
     }
@@ -288,7 +285,7 @@ export class InfoqComponent {
                 );
                 this.totalNumber = data.total;
                 this.took = data.took;
-                this.totalPage = Math.floor(this.totalNumber / this.queryParams.row);
+                this.totalPage = Math.ceil(this.totalNumber / this.queryParams.row);
                 if (this.instance) {
                     this.instance.dismissPopup();
                 }
