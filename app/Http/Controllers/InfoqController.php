@@ -59,7 +59,7 @@ class InfoqController extends Controller
         }
 
         if ($author != "") {
-            $query_string = $query_string . " && author:{$author}";
+            $query_string = $query_string . " && (author:{$author} OR author:*{$author}*)";
         }
 
         if(trim($startDate) !== ''){
