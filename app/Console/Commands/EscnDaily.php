@@ -46,13 +46,14 @@ class EscnDaily extends Command
      */
     public function handle()
     {
-        $this->sendDailyEscn();
-        $this->sendDailyInofQ();
-        $this->sendDailyJueJin();
-        $this->sendDailyOschina();
+        $test = true;
+        $this->sendDailyEscn($test);
+        $this->sendDailyInofQ($test);
+        $this->sendDailyJueJin($test);
+        $this->sendDailyOschina($test);
     }
 
-    public function sendDailyEscn(){
+    public function sendDailyEscn($test){
         $info =new InfoqService();
         $articles = $info::getLastDayArticle();
         $group = [];
@@ -68,13 +69,16 @@ class EscnDaily extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            $fs_robot->sendToGroup2($title, $articles);
-            // $fs_robot->sendToBean($title, $articles);
+            if(!$test){
+                $fs_robot->sendToGroup2($title, $articles);
+            }else{
+                $fs_robot->sendToBean($title, $articles);
+            }
         }
     }
 
 
-    public function sendDailyJueJin(){
+    public function sendDailyJueJin($test){
         $info = new InfoqService();
         $articles = $info::getLastDayArticleByQuery('source:juejin && tag:news');
 
@@ -82,12 +86,14 @@ class EscnDaily extends Command
         $title = "掘金资讯（{$yesterday}）";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        // dump($articles);
-        $fs_robot->sendToGroup2($title, $articles);
-        // $fs_robot->sendToBean($title, $articles);
+        if(!$test){
+            $fs_robot->sendToGroup2($title, $articles);
+        }else{
+            $fs_robot->sendToBean($title, $articles);
+        }
     }
 
-    public function sendDailyInofQ(){
+    public function sendDailyInofQ($test){
         $info = new InfoqService();
         $articles = $info::getLastDayArticleByQuery('source:infoq');
 
@@ -95,11 +101,14 @@ class EscnDaily extends Command
         $title = "InfoQ 热门话题（{$yesterday}）";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        $fs_robot->sendToGroup2($title, $articles);
-        // $fs_robot->sendToBean($title, $articles);
+        if(!$test){
+            $fs_robot->sendToGroup2($title, $articles);
+        }else{
+            $fs_robot->sendToBean($title, $articles);
+        }
     }
 
-    public function sendDailyOschina(){
+    public function sendDailyOschina($test){
         $info = new InfoqService();
         $articles = $info::getLastDayArticleByQuery('source:oschina && tag:news');
 
@@ -107,9 +116,11 @@ class EscnDaily extends Command
         $title = "开源资讯（{$yesterday}）";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        $fs_robot->sendToGroup2($title, $articles);
-
-        // $fs_robot->sendToBean($title, $articles);
+        if(!$test){
+            $fs_robot->sendToGroup2($title, $articles);
+        }else{
+            $fs_robot->sendToBean($title, $articles);
+        }
     }
 
 }
