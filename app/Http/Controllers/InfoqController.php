@@ -16,9 +16,9 @@ class InfoqController extends Controller
         $tag = $request->input("tag", "all");
         $source = strtolower($request->input("source", "all"));
         $search_type = trim($request->input("search_type", ""));
-        $startDate = $request->input("startDate", null);
-        $endDate = $request->input("endDate", null);
-        $sortBy = $request->input("sortBy", null);
+        $startDate = $request->input("startDate", "");
+        $endDate = $request->input("endDate", "");
+        $sortBy = $request->input("sortBy", "");
         $author = $request->input("author", '');
         $updateSta = $request->input("updateSta", true);
 
@@ -45,7 +45,7 @@ class InfoqController extends Controller
         }
 
         if ($keywords != '*') {
-            $query_string = "(title.text_cn:'{$keywords}' OR summary:'{$keywords}' OR title:(\"{$keywords}\")^10) ";
+            $query_string = "(title.text_cn:'{$keywords}' OR title.text_cn:\"{$keywords}\" OR summary.text_cn:'{$keywords}' OR summary.text_cn:\"{$keywords}\") ";
         }else{
             $query_string = "*:*";
         }
@@ -59,22 +59,18 @@ class InfoqController extends Controller
         }
 
         if ($author != "") {
-            $query_string = $query_string . " && author:{$author}";
+            $query_string = $query_string . " && (author:{$author} OR author:*{$author}*)";
         }
 
-        if($startDate){
-            $startStr = Carbon::create($startDate['year'], $startDate['month'], $startDate['day'], 0, 0, 0, 'GMT');
-            $startStr = $startStr->toDateTimeLocalString();
-            $query_string = $query_string . " && created_at:[{$startStr} TO *]";
+        if(trim($startDate) !== ''){
+            $query_string = $query_string . " && created_at:[{$startDate} TO *]";
         }
 
-        if($endDate){
-            $endStr = Carbon::create($endDate['year'], $endDate['month'], $endDate['day'], 0, 0, 0, 'GMT');
-            $endStr = $endStr->toDateTimeLocalString();
-            $query_string = $query_string . " && created_at:[* TO {$endStr}}";
+        if(trim($endDate) !== ''){
+            $query_string = $query_string . " && created_at:[* TO {$endDate}}";
         }
 
-        switch($sortBy['value']){
+        switch($sortBy){
             case "date":
                 $orders = [
                     "created_at" => "desc",
@@ -94,9 +90,9 @@ class InfoqController extends Controller
                 break;
             case "multi":
                 $orders = [
-                    "created_at" => "desc",
                     "_score" => "desc",
                     "created_year" => "desc",
+                    "created_at" => "desc",
                     "title" => "asc",
                 ];
 
@@ -131,9 +127,9 @@ class InfoqController extends Controller
         }
         if($updateSta){
             $tags = InfoqService::getTagsByQuery($query_string);
-            $words_cloud = InfoqService::genWordsCloudByQuery($query_string);
+            $wordsCloud = InfoqService::genWordsCloudByQuery($query_string);
             $data['tags'] = $tags;
-            $data['words_cloud'] = $words_cloud;
+            $data['wordsCloud'] = $wordsCloud;
         }
         return response()->json($data);
     }

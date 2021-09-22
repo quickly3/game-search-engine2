@@ -348,6 +348,73 @@ class FSRobotService
         }
     }
 
+    function sendGroupToFeishu($groups, $test = false){
+        $contents = [];
+        foreach ($groups as $groupTitle => $articles) {
+            if(empty($articles)){
+                continue;
+            }
+
+            $contents[] = [
+                [
+                    "tag"=> "text",
+                    "text"=> "{$groupTitle}."
+                ]
+            ];
+
+            foreach ($articles as $i => $c) {
+                $index = $i+1;
+                $contents[] = [
+                    [
+                        "tag"=> "a",
+                        "href"=>"{$c['url']}",
+                        "text"=> "{$index}. {$c['title']}"
+                    ]
+                ];
+            }
+        }
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+        $title = "互联网资讯（{$yesterday}）";
+        $body = [
+            "msg_type"=>"post",
+            "content"=>[
+                "post"=>[
+                    "zh_cn"=>[
+                        "title"=>$title,
+                        "content"=> $contents
+                    ]
+                ]
+            ]
+        ];
+
+        if(!$test){
+            $this->chat_id = 'oc_59384feeb3ab194bdc0f9f385da7354f';
+            $body['chat_id'] = 'oc_59384feeb3ab194bdc0f9f385da7354f';
+        }else{
+            $this->open_id = 'ou_7ba56fd9ecc84f4115ba863607f3d898';
+            $body['open_id'] = 'ou_7ba56fd9ecc84f4115ba863607f3d898';
+        }
+
+
+        $method = 'POST';
+        $url = 'https://open.feishu.cn/open-apis/message/v4/send/';
+        $options = [
+            'json'=>$body,
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request($method,$url,$options);
+
+        if($response->getStatusCode() === 200){
+            $resp = json_decode($response->getBody());
+            dump($resp);
+        }
+
+    }
 
     function getMessages($chat_id){
         $method = 'GET';

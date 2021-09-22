@@ -7,6 +7,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, of, Subject, fromEvent } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import {
     debounceTime,
@@ -24,6 +25,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment-timezone';
 import { faCalendarAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
+import constList from './constList';
 
 @Component({
     selector: "infoq",
@@ -34,157 +36,122 @@ import { faCalendarAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 export class InfoqComponent {
     faCalendarAlt = faCalendarAlt;
     faSearch = faSearch;
-    escn_list: any[] = [];
-    total_number = 0;
-    total_page = 0;
-    current_page = 1;
-    row = 20;
+    articleList: any[] = [];
+    totalNumber = 0;
+    totalPage = 0;
     took = 0;
-    show_more = false;
+    showMore = false;
     searchFailed = false;
-    keywords = '';
-    words_cloud: any;
+    wordsCloud: any;
     InfoqService;
-    _tag = 'all';
-    _source;
-    startDate: NgbDateStruct | undefined;
-    endDate: NgbDateStruct | undefined;
     startDateIsInvalid = false;
-    author = '';
-
-    searchByKeywords: any;
     modelChanged = new Subject<string>();
     authorChangedDebounce = new Subject<string>();
     @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
-
     tags: any[] = [];
-
-    tagsI18n = [
-        { text: 'All', i18n: '全部' },
-        { text: 'Python', i18n: 'Python' },
-        { text: 'PHP', i18n: 'PHP' },
-        { text: 'Javascript', i18n: 'Javascript' },
-        { text: 'Css', i18n: 'Css' },
-        { text: 'Typescript', i18n: 'Typescript' },
-        { text: 'Node', i18n: 'Node' },
-        { text: 'Game', i18n: '游戏' },
-        { text: 'Security', i18n: '安全' },
-        { text: 'Linux', i18n: 'Linux' },
-        { text: 'Postgresql', i18n: 'Postgres' },
-        // {text: "blockchain", i18n: "区块链"},
-        { text: 'blockchain', i18n: '区块链' },
-        { text: 'dp', i18n: '设计模式' },
-        { text: 'design', i18n: '设计' },
-        { text: 'opensource', i18n: '开源' },
-        { text: 'nosql', i18n: 'Nosql' },
-        { text: 'game', i18n: '游戏' },
-        { text: 'web', i18n: '网页开发' },
-        { text: 'algorithm', i18n: '算法' },
-        { text: 'translate', i18n: '翻译' },
-    ];
-
-    sortItems = [
-        { value: 'multi', label: '综合' },
-        { value: 'date', label: '日期' },
-        { value: 'score', label: '搜索相关度' },
-    ];
-
-    sortBy = this.sortItems[0];
-
-    displayModelItems = [
-        { value: 'summary', label: '简介模式' },
-        { value: 'title', label: '标题模式' },
-    ];
-
-    displayModel = this.displayModelItems[0];
-
-    sourceList = [
-        { title: 'all', source_class: 'icon-all', text: '全部' },
-        { title: 'jianshu', source_class: 'icon-jianshu', text: '简书' },
-        { title: 'infoq', source_class: 'icon-infoq', text: '极客帮' },
-        { title: 'juejin', source_class: 'icon-juejin', text: '掘金' },
-        { title: 'cnblogs', source_class: 'icon-cnblogs', text: '博客园' },
-        { title: 'csdn', source_class: 'icon-csdn', text: 'CSDN' },
-        { title: 'oschina', source_class: 'icon-oschina', text: '开源中国' },
-        { title: 'sf', source_class: 'icon-sf', text: '思否' },
-        { title: 'escn', source_class: 'icon-escn', text: 'Es中文社区' },
-        { title: 'elastic', source_class: 'icon-elastic', text: 'Es官方' },
-        { title: 'itpub', source_class: 'icon-itpub', text: 'itpub' },
-        {
-            title: 'data_whale',
-            source_class: 'icon-datawhale',
-            text: '和鲸数据',
-        },
-        {
-            title: 'ali_dev',
-            source_class: 'icon-alidev',
-            text: '阿里开发者社区',
-        },
-    ];
+    updateSta = true;
+    tagsI18n;
+    sortItems;
+    sourceList;
+    displayModelItems;
+    queryParams;
+    displayModel;
 
     // tslint:disable-next-line: no-shadowed-variable
-    constructor(private http: HttpClient, InfoqService: InfoqService) {
-        this.InfoqService = InfoqService;
+    constructor(
+        private http: HttpClient,
+        InfoqService: InfoqService,
+        private route: ActivatedRoute,
+        private router: Router
 
-        this.modelChanged.pipe(debounceTime(300)).subscribe(() => {
-            // this.autoComplete();
-        });
+        ) {
+        this.InfoqService = InfoqService;
 
         this.authorChangedDebounce.pipe(debounceTime(300)).subscribe(() => {
             this.search();
         });
 
-        // this._tag = this.tags[0].text;
-        this._source = this.sourceList[0];
+        this.tagsI18n = constList.tagsI18n;
+        this.sortItems = constList.sortItems;
+        this.sourceList = constList.sourceList;
+        this.displayModelItems = constList.displayModelItems;
+        this.displayModel = this.displayModelItems[0];
     }
 
     @HostListener('window:keydown', ['$event'])
     // tslint:disable-next-line: typedef
     handleKeyboardEvent(event: KeyboardEvent) {
         if (event.key === 'ArrowLeft') {
-            if (this.current_page !== 1) {
-                this.current_page--;
+            if (this.queryParams.page !== 1) {
+                this.queryParams.page--;
                 this.pageChange();
             }
         }
 
         if (event.key === 'ArrowRight') {
-            if (this.current_page < this.total_number) {
-                this.current_page++;
+            if (this.queryParams.page < this.totalPage) {
+                this.queryParams.page++;
                 this.pageChange();
             }
         }
     }
 
+    // tslint:disable-next-line: use-lifecycle-interface
     ngOnInit(): void {
-        // this.getWordsCloud();
-        // this.getTags();
+        // console.log('ngOnInit');
+        this.updateQueryParamsByUrl();
+    }
+
+    updateQueryParamsByUrl(): void{
+        const initQueryParams = this.getInitQueryParams();
+        const urlParams = this.route.snapshot.queryParams;
+        const urlParamsCopy = {...urlParams};
+
+        if (urlParamsCopy.page){
+            // tslint:disable-next-line: radix
+            urlParamsCopy.page = parseInt( urlParamsCopy.page);
+        }
+
+        if (urlParamsCopy.row){
+            // tslint:disable-next-line: radix
+            urlParamsCopy.row = parseInt( urlParamsCopy.row);
+        }
+
+        if (urlParamsCopy.startDate){
+            urlParamsCopy.startDate = this.strToNgbDate(urlParamsCopy.startDate);
+        }
+
+        if (urlParamsCopy.endDate){
+            urlParamsCopy.endDate = this.strToNgbDate(urlParamsCopy.endDate);
+        }
+
+        if (urlParamsCopy.source){
+            urlParamsCopy.source = this.sourceList.find(i => i.title === urlParamsCopy.source);
+        }
+
+        if (urlParamsCopy.sortBy){
+            urlParamsCopy.sortBy = this.sortItems.find(i => i.value === urlParamsCopy.sortBy);
+        }
+
+        this.queryParams = {...initQueryParams, ...urlParamsCopy};
         this.search();
 
-        // const observable = new Observable(subscriber => {
-        //     subscriber.next(1);
-        //     subscriber.next(2);
-        //     subscriber.next(3);
-        //     setTimeout(() => {
-        //         subscriber.next(4);
-        //         subscriber.complete();
-        //     }, 1000);
-        // });
-
-        // observable.subscribe({
-        //     next(x) {
-        //         console.log("got value " + x);
-        //     },
-        //     error(err) {
-        //         console.error("something wrong occurred: " + err);
-        //     },
-        //     complete() {
-        //         console.log("done");
-        //     }
-        // });
-        // console.log("just after subscribe");
     }
-    showValue(item: any): void {}
+
+    // tslint:disable-next-line: typedef
+    getInitQueryParams() {
+        return {
+            page: 1,
+            row: 20,
+            keywords: '',
+            tag: 'all',
+            source: this.sourceList[0],
+            startDate: '',
+            endDate: '',
+            author: '',
+            sortBy: this.sortItems[0]
+        };
+    }
 
     // tslint:disable-next-line: typedef
     searchOnKeydown(e: { key: string }) {
@@ -198,23 +165,24 @@ export class InfoqComponent {
 
     getWordsCloud = () => {
         this.InfoqService.getWordsCloud({
-            tag: this._tag,
-            source: this._source.title,
+            tag: this.queryParams.tag,
+            source: this.queryParams.source.title,
         }).subscribe((wordsCloud: any) => {
-            this.words_cloud = wordsCloud;
+            this.wordsCloud = wordsCloud;
         });
     }
 
     getTags = () => {
         this.InfoqService.getTags({
-            source: this._source.title,
+            source: this.queryParams.source.title,
         }).subscribe((tags: any) => {
             let total = 0;
+            // tslint:disable-next-line: variable-name
             const _tags: any[] = tags.map(
                 (i: { key: any; doc_count: number }) => {
                     const matchedItem = this.tagsI18n.find(
                         (item: { text: any }) => {
-                            return item.text == i.key;
+                            return item.text === i.key;
                         }
                     );
                     total += i.doc_count;
@@ -228,7 +196,7 @@ export class InfoqComponent {
 
             this.tags = _tags;
             this.tags.unshift({ text: 'all', i18n: '全部', count: total });
-            this._tag = this.tags[0].text;
+            this.queryParams.tag = this.tags[0].text;
         });
     }
 
@@ -236,54 +204,67 @@ export class InfoqComponent {
         this.search();
     }
 
-    authorChanged = ($event: any) => {
-        // this.authorChangedDebounce.next($event)
-    }
-
     initSearch = () => {
-        this.current_page = 1;
-        this.keywords = ''
-        this._tag = 'all'
-        this._source = this.sourceList[0]
-        this.startDate = null
-        this.endDate = null
-        this.author = ''
-        this.sortBy = this.sortItems[0];
+        this.queryParams = this.getInitQueryParams();
         this.search();
     }
 
-    search_debounce = (ky: any) => {
-        this.current_page = 1;
-        this.modelChanged.next();
+    // search_debounce = (ky: any): void => {
+    //     this.queryParams.page = 1;
+    //     this.modelChanged.next();
+    // }
+
+    ngbDateToStr = (ngbDate): string => {
+        if (!ngbDate){
+            return '';
+        }
+        const jsDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+        return jsDate.toISOString();
+    }
+
+    strToNgbDate = (str) => {
+        const date = new Date(str);
+        const ngbDateStruct = { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()};
+        return ngbDateStruct;
+    }
+
+    getQueryParams = (option) => {
+        return {
+            ...this.queryParams,
+            source: this.queryParams.source.title,
+            sortBy: this.queryParams.sortBy.value,
+            startDate: this.ngbDateToStr(this.queryParams.startDate),
+            endDate: this.ngbDateToStr(this.queryParams.endDate),
+            updateSta: option.updateSta
+        };
+    }
+
+    setQueryParamsToUrl(queryStringParams): void{
+        const nativeParams: any  = {};
+        for (const param in queryStringParams){
+            if (typeof queryStringParams[param] !== 'string' || queryStringParams[param].trim() !== ''){
+                if (param === 'updateSta'){
+                    continue;
+                }
+                nativeParams[param] = queryStringParams[param];
+            }
+        }
+
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: nativeParams,
+        });
 
     }
 
-    search = (option = {updateSta:true}) => {
-        const params = {
-            page: '' + this.current_page,
-            keywords: this.keywords,
-            tag: this._tag,
-            source: this._source.title,
-            startDate: this.startDate,
-            endDate: this.endDate,
-            sortBy: this.sortBy,
-            author: this.author,
-            displayModel: this.displayModel,
-            updateSta: option.updateSta
-        };
+    search = (option = {updateSta: true}) => {
+        const queryStringParams = this.getQueryParams(option);
+        this.setQueryParamsToUrl(queryStringParams);
 
-        if (this.startDate && this.startDate.year) {
-            // params.startDate = (new Date(this.startDate.year, this.startDate.month - 1, this.startDate.day)).toISOString();
-        }
-
-        if (this.endDate && this.endDate.year) {
-            // params.endDate = (new Date(this.endDate.year, this.endDate.month - 1, this.endDate.day+1)).toISOString();
-        }
-
-        this.InfoqService.getDailyList(params).subscribe(
+        this.InfoqService.getDailyList(queryStringParams).subscribe(
             (data: { [x: string]: any }) => {
-                this.escn_list = data.data;
-                this.escn_list.map(
+                this.articleList = data.data;
+                this.articleList.map(
                     (item: {
                         stars: number;
                         source: any;
@@ -304,20 +285,20 @@ export class InfoqComponent {
                         }
                     }
                 );
-                // this.escn_list.map(item=>{item.unfold = false});
-                this.total_number = data.total;
+                this.totalNumber = data.total;
                 this.took = data.took;
-                this.total_page = Math.floor(this.total_number / this.row);
+                this.totalPage = Math.ceil(this.totalNumber / this.queryParams.row);
                 if (this.instance) {
                     this.instance.dismissPopup();
                 }
-                if(option.updateSta){
-                    if(data.tags){
+
+                if (option.updateSta){
+                    if (data.tags){
                         this.handleTags(data.tags);
                     }
 
-                    if(data.words_cloud){
-                        this.words_cloud = data.words_cloud;
+                    if (data.wordsCloud){
+                        this.wordsCloud = data.wordsCloud;
                     }
                 }
             }
@@ -326,11 +307,12 @@ export class InfoqComponent {
 
     handleTags = (tags) => {
         let total = 0;
+        // tslint:disable-next-line: variable-name
         const _tags: any[] = tags.map(
             (i: { key: any; doc_count: number }) => {
                 const matchedItem = this.tagsI18n.find(
                     (item: { text: any }) => {
-                        return item.text == i.key;
+                        return item.text === i.key;
                     }
                 );
                 total += i.doc_count;
@@ -344,59 +326,42 @@ export class InfoqComponent {
 
         this.tags = _tags;
         this.tags.unshift({ text: 'all', i18n: '全部', count: total });
-        this._tag = this.tags[0].text;
+
+        // this.queryParams.tag = this.tags[0].text;
     }
 
     pageChange = () => {
-        this.search({updateSta:false});
+        this.search({updateSta: false});
     }
 
     wordsCloudToKeyWords = (word: { key: any }) => {
-        this.current_page = 1;
-        this.keywords = word.key;
+        this.queryParams.page = 1;
+        this.queryParams.keywords = word.key;
         this.search();
     }
 
     searchByAuthorName = (author) => {
-        this.current_page = 1;
-        this.author = author
+        this.queryParams.page = 1;
+        this.queryParams.author = author;
         this.search();
     }
 
-    search_typeahead = (text$: Observable<string>) =>
-        text$.pipe(
-            debounceTime(300),
-            tap(),
-            switchMap((term) =>
-                this.searchDatasSimple(term).pipe(
-                    tap(),
-                    catchError(() => {
-                        return of([]);
-                    })
-                )
-            )
-        )
-
     selectTag = (tag: any) => {
-        this._tag = tag;
-        // this.keywords = "";
-        this.current_page = 1;
+        this.queryParams.tag = tag;
+        this.queryParams.page = 1;
         this.search();
-        // this.getWordsCloud();
     }
 
     selectSource = (source: any) => {
-        this._source = source;
-        this._tag = 'all';
-        // this.keywords = "";
-        this.current_page = 1;
+        this.queryParams.source = source;
+        this.queryParams.author = '';
+        this.queryParams.tag = 'all';
+        this.queryParams.page = 1;
         this.search();
-        // this.getWordsCloud();
-        // this.getTags();
     }
 
-    keywordSearch() {
-        this.current_page = 1;
+    keywordSearch(): void {
+        this.queryParams.page = 1;
         this.search();
     }
 
@@ -437,19 +402,19 @@ export class InfoqComponent {
         let startDate = null;
         let endDate = null;
 
-        if (this.startDate && this.startDate.year) {
+        if (this.queryParams.startDate && this.queryParams.startDate.year) {
             startDate = new NgbDate(
-                this.startDate.year,
-                this.startDate.month,
-                this.startDate.day
+                this.queryParams.startDate.year,
+                this.queryParams.startDate.month,
+                this.queryParams.startDate.day
             );
         }
 
-        if (this.endDate && this.endDate.year) {
+        if (this.queryParams.endDate && this.queryParams.endDate.year) {
             endDate = new NgbDate(
-                this.endDate.year,
-                this.endDate.month,
-                this.endDate.day
+                this.queryParams.endDate.year,
+                this.queryParams.endDate.month,
+                this.queryParams.endDate.day
             );
         }
 
@@ -466,12 +431,12 @@ export class InfoqComponent {
         const ago7day = moment().subtract(7, 'd');
 
         if (date === 'today') {
-            this.startDate = {
+            this.queryParams.startDate = {
                 year: today.year(),
                 month: today.month() + 1,
                 day: today.date(),
             };
-            this.endDate = {
+            this.queryParams.endDate = {
                 year: tomorrow.year(),
                 month: tomorrow.month() + 1,
                 day: tomorrow.date(),
@@ -479,12 +444,12 @@ export class InfoqComponent {
         }
 
         if (date === 'yesterday') {
-            this.startDate = {
+            this.queryParams.startDate = {
                 year: yesterday.year(),
                 month: yesterday.month() + 1,
                 day: yesterday.date(),
             };
-            this.endDate = {
+            this.queryParams.endDate = {
                 year: today.year(),
                 month: today.month() + 1,
                 day: today.date(),
@@ -492,12 +457,12 @@ export class InfoqComponent {
         }
 
         if (date === 'week') {
-            this.startDate = {
+            this.queryParams.startDate = {
                 year: ago7day.year(),
                 month: ago7day.month() + 1,
                 day: ago7day.date(),
             };
-            this.endDate = {
+            this.queryParams.endDate = {
                 year: tomorrow.year(),
                 month: tomorrow.month() + 1,
                 day: tomorrow.date(),
@@ -505,8 +470,12 @@ export class InfoqComponent {
         }
     }
 
+    authorChanged = ($event: any) => {
+        // this.authorChangedDebounce.next($event)
+    }
+
     selectSortBy = (sortBy: { value: string; label: string }) => {
-        this.sortBy = sortBy;
+        this.queryParams.sortBy = sortBy;
         this.search();
     }
 
