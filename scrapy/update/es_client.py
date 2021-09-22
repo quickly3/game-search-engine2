@@ -158,6 +158,7 @@ class EsClient:
             result['hits'] = []
         else:
             result['scroll_id'] = resp['_scroll_id']
+            result['total'] = resp['hits']['total']
             result['hits'] = list(map(lambda x: dict(
                 id=x['_id'], source=x['_source']['source'], url=x['_source']['url']), resp['hits']['hits']))
 
