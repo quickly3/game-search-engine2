@@ -14,7 +14,15 @@ if __name__ == "__main__":
     scrollResp = es.getDocs()
     toCSV = toCSV + scrollResp['hits']
 
+
+    if len(toCSV) == 0:
+        print("Found nothing!")
+        os._exit(0)
+
+
     scroll_id = scrollResp['scroll_id']
+
+
 
     keys = toCSV[0].keys()
 

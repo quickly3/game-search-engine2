@@ -15,13 +15,18 @@ class EsClient:
         load_dotenv("../../.env")
         es_user = os.getenv("ES_USER")
         es_pwd = os.getenv("ES_PWD")
-        self.client = Elasticsearch(http_auth=(es_user, es_pwd))
+        ES_HOST = os.getenv("ES_HOST")
+        ES_PORT = os.getenv("ES_PORT")
+        host = ES_HOST+":"+ES_PORT;
+
+
+        self.client = Elasticsearch(host, http_auth=(es_user, es_pwd))
 
     def getDocs(self):
         query = {
             "query": {
                 "query_string": {
-                    "query": "source:juejin && url:*juejin* && ((-author:*) || (-author_url:*))"
+                    "query": "source:juejin"
                 }
             },
             "size": 1000,
