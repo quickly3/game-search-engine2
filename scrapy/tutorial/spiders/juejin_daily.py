@@ -93,6 +93,8 @@ class AliSpider(scrapy.Spider):
         {"id":"6809640408797167623","tag":"后端"},
         {"id":"6809640407484334093","tag":"前端"},
         {"id":"6809640448827588622","tag":"Python"},
+        {"id":"6809641083107016712","tag":"资讯"},
+
     ]
 
     url = "https://api.juejin.cn/recommend_api/v1/article/recommend_tag_feed"

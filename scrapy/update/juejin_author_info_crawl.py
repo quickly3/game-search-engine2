@@ -61,6 +61,8 @@ class TestSpider(scrapy.Spider):
         #     'wallet_total_bill' : user_data['wallet_total_bill']
         # }
         user_data['user_url'] = item['author_url']
+        user_data['description'] = user_data['description'].strip();
+
         self.toCSV.append(user_data)
 
 
