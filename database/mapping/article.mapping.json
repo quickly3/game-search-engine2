@@ -1,4 +1,4 @@
-PUT article_20210822
+// PUT article_20210822
 {
   "aliases": {
     "article": {}

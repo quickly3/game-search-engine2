@@ -1,0 +1,352 @@
+PUT author_20211004
+{
+  "aliases": {
+      "author": {}
+  }, 
+  "mappings" : {
+    "properties" : {
+      "source":{
+        "type":"keyword"
+      },
+      "administrator" : {
+        "type" : "long"
+      },
+      "allow_notification" : {
+        "type" : "boolean"
+      },
+      "annual_list_type" : {
+        "type" : "long"
+      },
+      "apply_logout" : {
+        "type" : "long"
+      },
+      "avatar_large" : {
+        "type":"keyword"
+      },
+      "blog_address" : {
+        "type" : "keyword"
+      },
+      "blog_move_priority" : {
+        "type" : "boolean"
+      },
+      "book_author" : {
+        "type" : "long"
+      },
+      "booklet_count" : {
+        "type" : "long"
+      },
+      "builder" : {
+        "type" : "long"
+      },
+      "buy_booklet_count" : {
+        "type" : "long"
+      },
+      "can_tag_cnt" : {
+        "type" : "long"
+      },
+      "collect_set_count" : {
+        "type" : "long"
+      },
+      "comment_count" : {
+        "type" : "long"
+      },
+      "comment_shortmsg_count" : {
+        "type" : "long"
+      },
+      "company" : {
+        "type": "keyword",
+        "fields": {
+          "text_cn":{
+            "type":"text",
+            "fielddata": "true",
+            "analyzer": "ik_max_word"
+          },
+          "auto_completion":{
+            "type":"completion",
+            "analyzer": "ik_max_word"
+          }
+        }
+      },
+      "create_collect_set_count" : {
+        "type" : "long"
+      },
+      "description" : {
+        "type": "keyword",
+        "fields": {
+          "text_cn":{
+            "type":"text",
+            "fielddata": "true",
+            "analyzer": "ik_max_word"
+          }
+        }
+      },
+      "digg_article_count" : {
+        "type" : "long"
+      },
+      "digg_news_count" : {
+        "type" : "long"
+      },
+      "digg_shortmsg_count" : {
+        "type" : "long"
+      },
+      "digg_toutiao_count" : {
+        "type" : "long"
+      },
+      "editor_type" : {
+        "type" : "keyword"
+      },
+      "email" : {
+        "type" : "keyword"
+      },
+      "favorable_author" : {
+        "type" : "long"
+      },
+      "follow_collect_set_count" : {
+        "type" : "long"
+      },
+      "follow_column_cnt" : {
+        "type" : "long"
+      },
+      "follow_topic_count" : {
+        "type" : "long"
+      },
+      "followee_count" : {
+        "type" : "long"
+      },
+      "follower_count" : {
+        "type" : "long"
+      },
+      "forbidden_words" : {
+        "type" : "long"
+      },
+      "github_nickname" : {
+        "type" : "keyword"
+      },
+      "github_verified" : {
+        "type" : "long"
+      },
+      "got_digg_count" : {
+        "type" : "long"
+      },
+      "got_view_count" : {
+        "type" : "long"
+      },
+      "graduated_at" : {
+        "type" : "long"
+      },
+      "identity" : {
+        "type" : "long"
+      },
+      "is_black" : {
+        "type" : "boolean"
+      },
+      "is_logout" : {
+        "type" : "long"
+      },
+      "is_new" : {
+        "type" : "boolean"
+      },
+      "is_select_annual" : {
+        "type" : "boolean"
+      },
+      "isfollowed" : {
+        "type" : "boolean"
+      },
+      "job_count" : {
+        "type" : "long"
+      },
+      "job_title" : {
+        "type": "keyword",
+        "fields": {
+          "text_cn":{
+            "type":"text",
+            "fielddata": "true",
+            "analyzer": "ik_max_word"
+          },
+          "auto_completion":{
+            "type":"completion",
+            "analyzer": "ik_max_word"
+          }
+        }
+      },
+      "level" : {
+        "type" : "long"
+      },
+      "ltime" : {
+        "type" : "long"
+      },
+      "major" : {
+        "properties" : {
+          "major_id" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "parent_id" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          }
+        }
+      },
+      "need_lead" : {
+        "type" : "long"
+      },
+      "news_privilege" : {
+        "type" : "long"
+      },
+      "phone" : {
+        "type" : "keyword"
+      },
+      "phone_verified" : {
+        "type" : "long"
+      },
+      "post_article_count" : {
+        "type" : "long"
+      },
+      "post_shortmsg_count" : {
+        "type" : "long"
+      },
+      "power" : {
+        "type" : "long"
+      },
+      "rank_index" : {
+        "type" : "long"
+      },
+      "register_time" : {
+        "type" : "long"
+      },
+      "select_annual_rank" : {
+        "type" : "long"
+      },
+      "select_event_count" : {
+        "type" : "long"
+      },
+      "select_online_course_count" : {
+        "type" : "long"
+      },
+      "student_status" : {
+        "type" : "long"
+      },
+      "study_point" : {
+        "type" : "long"
+      },
+      "subscribe_tag_count" : {
+        "type" : "long"
+      },
+      "tech_team" : {
+        "properties" : {
+          "org_icon" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "org_id" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "org_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "role" : {
+            "type" : "long"
+          }
+        }
+      },
+      "university" : {
+        "properties" : {
+          "logo" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "university_id" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          }
+        }
+      },
+      
+      "update_time" : {
+        "type" : "long"
+      },
+      "user_id" : {
+        "type" : "keyword"
+      },
+      "user_name" : {
+        "type" : "keyword"
+      },
+      "view_article_count" : {
+        "type" : "long"
+      },
+      "wallet_total_bill" : {
+        "type" : "long"
+      },
+      "wechat_nickname" : {
+        "type" : "keyword"
+      },
+      "wechat_verified" : {
+        "type" : "long"
+      },
+      "weibo_id" : {
+        "type" : "keyword"
+      },
+      "weibo_nickname" : {
+        "type" : "keyword"
+      },
+      "weibo_verified" : {
+        "type" : "long"
+      }
+    }
+  }
+}
