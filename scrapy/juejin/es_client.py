@@ -26,7 +26,7 @@ class EsClient:
         query = {
             "query": {
                 "query_string": {
-                    "query": "source:juejin"
+                    "query": "source:juejin && -author_id:*"
                 }
             },
             "size": 1000,
