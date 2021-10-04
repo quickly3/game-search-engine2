@@ -1,8 +1,10 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
 import csv
+import json
 from es_client import EsClient
 from scrapy.http import JsonRequest
+import os
 
 class TestSpider(scrapy.Spider):
     name = 'juejin_upd'
@@ -20,12 +22,15 @@ class TestSpider(scrapy.Spider):
             self.total = len(_list)
             for item in _list:
                 url = item['url']
-                if url.find('juejin.im') == -1 and url.find('juejin.cn') == -1:
-                    continue;
-                else:
-                    article_id = item['url'].rerplace()
+                if url.find('https://juejin.cn/post') > -1:
+                    article_id = item['url'].replace('https://juejin.cn/post/','')
                     payload = self.getPayload(article_id);
                     yield JsonRequest(self.api_url, data=payload, callback=lambda response, item=item : self.parse(response, item))
+
+                if url.find('https://juejin.cn/new') > -1:
+                    yield scrapy.FormRequest(url=url, callback=lambda response, item=item : self.parseNew(response, item))              
+
+
 
     def getPayload(self,article_id):
 
@@ -40,37 +45,65 @@ class TestSpider(scrapy.Spider):
         if response.status == 404:
             resp = EsClient().deleteById(item['id'])
         else:
-            if response.url.find("juejin.cn/news") > -1:
-                user_url = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/a[1]/@href').get()
-                author = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/a[1]/text()').get()
+            rs = json.loads(response.text)
+            
+            if rs['data'] is not None:
+                article_info = rs['data']['article_info']
+                category = ''
 
-            else:
-                user_url = response.xpath('//a[@class="username username ellipsis"][1]/@href').get()
-                author = response.xpath('//a[@class="username username ellipsis"][1]/text()').get()
+                if rs['data']['category'] is not None:
+                    category = rs['data']['category']['category_name']
+                tags = rs['data']['tags']
 
-            # if user_url is None:
-            #     user_url = response.xpath('//a[@class="user-item item"][1]/@href').get()
+                tags_arr = list(map(lambda x: x['tag_name'], tags));
 
-            if user_url is None:
-                user_url = response.xpath('//div[@itemprop="author"]/meta[@itemprop="url"]/@content').get()
-                author = response.xpath('//div[@itemprop="author"]/meta[@itemprop="name"]/@content').get()
-
-            if user_url is not None:
-                if user_url.find(self.domin) == -1:
-                    author_url = self.domin + user_url
-                else:
-                    author_url = user_url
                 body = {
                     "doc":{
-                        "author_url": author_url.strip(),
-                        "author": author.strip(),
-                        "url": response.url,
+                        "collect_count": article_info['collect_count'],
+                        "comment_count": article_info['comment_count'],
+                        "digg_count": article_info['digg_count'],
+                        "view_count": article_info['view_count'],
+                        "hot_index": article_info['hot_index'],
+                        "user_index": article_info['user_index'],
+                        "author_id": article_info['user_id'],
+                        "tag":tags_arr,
+                        "category":category,
                     }
                 }
 
                 resp = EsClient().updateById(item['id'], body)
-
+            else:
+                print(rs)
+                print(item)
         print(str(self.count)+"/"+str(self.total))
+
+
+    def parseNew(self, response, item):
+        self.count+=1
+        if response.status == 404:
+            resp = EsClient().deleteById(item['id'])
+        else:
+
+            user_url = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/a[1]/@href').get()
+            view_count = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/span[2]/text()').get()
+            comment_count = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[3]/div[2]/@badge').get()
+            digg_count = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[3]/div[1]/@badge').get()
+            category = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/a[2]/text()').get()
+
+            
+            author_id = user_url.replace("/user/","");
+
+            body = {
+                "doc":{
+                    "author_id": int(author_id),
+                    "comment_count": int(comment_count),
+                    "digg_count": int(digg_count),
+                    "view_count": int(view_count.replace('阅读',"").strip()),
+                    "category": category.strip()
+                }
+            }
+            resp = EsClient().updateById(item['id'], body)
+
 
 
 if __name__ == "__main__":

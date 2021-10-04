@@ -1,4 +1,4 @@
-// PUT article_20210822
+PUT article_20211004
 {
   "aliases": {
     "article": {}
@@ -26,7 +26,13 @@
       "author": {
         "type": "keyword"
       },
+      "author_id": {
+        "type": "keyword"
+      },
       "tag": {
+        "type": "keyword"
+      },
+      "category": {
         "type": "keyword"
       },
       "source": {
@@ -53,6 +59,24 @@
       },
       "valid":{
         "type": "boolean"
+      },
+      "collect_count": {
+        "type": "long"
+      },
+      "comment_count": {
+        "type": "long"
+      },
+      "digg_count": {
+        "type": "long"
+      },
+      "view_count": {
+        "type": "long"
+      },
+      "hot_index": {
+        "type": "long"
+      },
+      "user_index": {
+        "type": "long"
       },
       "created_at": {
           "type": "date"
