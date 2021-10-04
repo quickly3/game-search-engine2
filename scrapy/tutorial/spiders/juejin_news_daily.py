@@ -80,6 +80,7 @@ class AliSpider(scrapy.Spider):
             doc['title'] = content_info['title']
             doc['url'] = self.postUrl+content_info['content_id']
             doc['summary'] = content_info['brief']
+            doc['author_id'] = content_info['user_id']
 
             doc['created_at'] = datetime.datetime.fromtimestamp(int(content_info['ctime']),None)
             doc['created_year'] = doc['created_at'].strftime("%Y")
@@ -102,7 +103,6 @@ class AliSpider(scrapy.Spider):
             doc['source_id'] = item['content_id']
             doc['stars'] = 0
 
-            print(doc)
             bulk.append(
                 {"index": {"_index": "article"}})
             bulk.append(doc)

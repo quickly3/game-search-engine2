@@ -156,8 +156,22 @@ class AliSpider(scrapy.Spider):
                 continue;
 
             tagsArr = list(map(lambda x: x['tag_name'] , tags))
+            category = item['category']['category_name']
+
 
             doc['tag'] = tagsArr
+            doc['category'] = category
+            doc['author_id'] = article_info['user_id']
+
+            doc['collect_count'] = article_info['collect_count']
+            doc['comment_count'] = article_info['comment_count']
+            doc['digg_count'] = article_info['digg_count']
+            doc['view_count'] = article_info['view_count']
+            doc['hot_index'] = article_info['hot_index']
+            doc['user_index'] = article_info['user_index']
+
+
+
             doc['source'] = 'juejin'
             doc['source_id'] = item['article_id']
             doc['stars'] = 0
