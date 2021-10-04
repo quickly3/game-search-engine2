@@ -43,7 +43,7 @@ class TestSpider(scrapy.Spider):
     def parse(self, response, item):
         self.count+=1
         if response.status == 404:
-            EsClient().updateById(item['id'], {"valid":False})
+            EsClient().updateById(item['id'], {"doc":{"valid":False}})
         else:
             rs = json.loads(response.text)
             
@@ -75,7 +75,7 @@ class TestSpider(scrapy.Spider):
             else:
                 print(rs)
                 print(item)
-                EsClient().updateById(item['id'], {"valid":False})
+                EsClient().updateById(item['id'], {"doc":{"valid":False}})
 
         print(str(self.count)+"/"+str(self.total))
 
@@ -83,7 +83,7 @@ class TestSpider(scrapy.Spider):
     def parseNew(self, response, item):
         self.count+=1
         if response.status == 404:
-            EsClient().updateById(item['id'], {"valid":False})
+            EsClient().updateById(item['id'], {"doc":{"valid":False}})
         else:
 
             user_url = response.xpath('//*[@id="juejin"]/div[1]/main/div/div[1]/div[1]/div[1]/a[1]/@href').get()
