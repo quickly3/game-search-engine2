@@ -59,7 +59,7 @@ class TestSpider(scrapy.Spider):
                     if valid:
                         data[key] = user_data[key];
 
-
+            data['source'] = 'juejin'
             bulk = []
             bulk.append(
                 {"index": {"_index": "author"}})
