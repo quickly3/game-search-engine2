@@ -219,6 +219,42 @@ class InfoqService
         return $tags;
     }
 
+    public static function getCategories($source)
+    {
+        $es = new ElasticModel("article");
+        $data = [
+            "query" => [
+                "query_string" => [
+                    "query" => "*:*"
+                ]
+            ],
+            "aggs" => [
+                "categories" => [
+                    "terms" => [
+                        "field" => "category",
+                        "size" => 200
+                    ]
+                ]
+            ],
+            "size" => 0
+        ];
+
+        if ($source != "all") {
+            $data['query']['query_string']['query'] .= " && source:{$source}";
+        }
+
+        $params = [
+            "index" => "article",
+            "body" =>  $data
+        ];
+
+        $data = $es->client->search($params);
+        $resp = (object) $data;
+        $tags = $resp->aggregations['categories']['buckets'];
+
+        return $tags;
+    }
+
     public static function getLastDayArticle()
     {
 

@@ -22,6 +22,8 @@ class InfoqController extends Controller
         $author = $request->input("author", '');
         $updateSta = $request->input("updateSta", true);
         $selectTags = $request->input("selectTags", []);
+        $selectCategories = $request->input("selectCategories", []);
+
 
 
 
@@ -56,6 +58,12 @@ class InfoqController extends Controller
             $selectTags = array_map(function($tag){ return "\"$tag\""; }, $selectTags);
             $selectTagsStr = join(' || ',$selectTags);
             $query_string = $query_string . " && tag:({$selectTagsStr})";
+        }
+
+        if(count($selectCategories)){
+            $selectCategories = array_map(function($tag){ return "\"$tag\""; }, $selectCategories);
+            $selectCategoriesStr = join(' || ',$selectCategories);
+            $query_string = $query_string . " && category:({$selectCategoriesStr})";
         }
 
         if ($tag != "all") {
@@ -186,5 +194,12 @@ class InfoqController extends Controller
         return response()->json($tags);
     }
 
+    public function getCategories(Request $request)
+    {
+        $source = strtolower($request->input("source", "all"));
+        $tags = InfoqService::getCategories($source);
+        return response()->json($tags);
+    }
+    
 
 }

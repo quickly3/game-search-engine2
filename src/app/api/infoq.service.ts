@@ -22,6 +22,10 @@ export class InfoqService {
         return this.http.get('/infoq/getTags', {params});
     }
 
+    getCategories = (params: { source: string; }) => {
+        return this.http.get('/infoq/getCategories', {params});
+    }
+
     // tslint:disable-next-line: max-line-length
     getDailyList = (params: { page: string; keywords: string; tag: string; source: string; startDate: NgbDateStruct | undefined; endDate: NgbDateStruct | undefined; sortBy: { value: string; label: string; }; }) => {
         return this.http.post('/infoq/getDailyList', params);

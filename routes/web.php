@@ -41,6 +41,8 @@ Route::get('infoq/getWordsCloud', 'InfoqController@getWordsCloud');
 Route::post('infoq/starsChange', 'InfoqController@starsChange');
 Route::get('infoq/autoComplete', 'InfoqController@autoComplete');
 Route::get('infoq/getTags', 'InfoqController@getTags');
+Route::get('infoq/getCategories', 'InfoqController@getCategories');
+
 
 Route::get('article/index', 'ArticleController@index');
 

@@ -166,6 +166,50 @@
             </span>
         </div>
       </div>
+      <div class="option-title mb-1">
+        <span>分类:</span>
+      </div>
+      <div class="option-zone source-selector">
+        <div class="d-flex flex-row bd-highlight mb-3">
+          <div class="left-input"> 
+            <input
+              id="typeahead-basic"
+              type="text"
+              class="form-control form-control-sm"
+              [(ngModel)]="categoryInput"
+              [focusFirst]="false"
+              [ngbTypeahead]="searchCategories"
+              (focus)="categoriesFocus$.next($any($event).target.value)"
+              (click)="categoriesClick$.next($any($event).target.value)"
+              (selectItem)="selectCategory($event)"
+              #categoriesTh="ngbTypeahead"
+              placeholder="搜索分类"
+            />
+          </div>
+          <div>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm left-input-btn"
+              (click)="selectCategoriesModal()"
+            >
+              <fa-icon class="fz-10" [icon]="faTags"></fa-icon>
+            </button>
+          </div>
+          <app-tags-modal 
+            [opened]="categoriesModalOpened" 
+            (closed)="categoriesModalClosed($event)" 
+            [tags]="allCategories" 
+            [inputSelectedTags]="queryParams.selectCategories"
+          ></app-tags-modal>
+        </div>
+        <div>
+            <span *ngFor="let category of queryParams.selectCategories" class="badge badge-success tags-badge" >
+              {{category}}
+              <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectCategory(category)">
+              </fa-icon>
+            </span>
+        </div>
+      </div>
       <div class="option-title">
         <span>发布时间:</span>
         <span class="date-badge badge badge-primary" (click)="toDate('today')"
@@ -300,6 +344,11 @@
                 class="badge badge-primary article_tag"
                 *ngFor="let tag of daily_item.tag"
                 >{{ tag }}</span
+              >
+              <span> | </span>
+              <span
+                class="badge badge-info article_tag"
+                >{{ daily_item.category }}</span
               >
             </div>
             <div class="link">

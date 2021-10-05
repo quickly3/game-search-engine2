@@ -53,8 +53,12 @@ export class InfoqComponent {
     authorChangedDebounce = new Subject<string>();
     @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
     @ViewChild('tagsTh', { static: true }) tagsTh: NgbTypeahead | undefined;
+    @ViewChild('categoriesTh', { static: true }) categoriesTh: NgbTypeahead | undefined;
+
     tagsFocus$ = new Subject<string>();
     tagsClick$ = new Subject<string>();
+    categoriesFocus$ = new Subject<string>();
+    categoriesClick$ = new Subject<string>();
 
     tags: any[] = [];
     updateSta = true;
@@ -65,11 +69,19 @@ export class InfoqComponent {
     queryParams;
     displayModel;
     allTags: any[] = [];
+    allCategories: any[] = [];
+
     selectedTags: any[] = [];
+    selectedCategories: any[] = [];
+
 
     tagInput = '';
+    categoryInput = '';
+
 
     tagsModalOpened = false;
+    categoriesModalOpened = false;
+
 
     // tslint:disable-next-line: no-shadowed-variable
     constructor(
@@ -114,8 +126,10 @@ export class InfoqComponent {
     ngOnInit(): void {
         this.updateQueryParamsByUrl();
         this.getTags();
+        this.getCategories();
     }
 
+    // tags handle
     searchTags = (text$: Observable<string>) => {
         const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
         const clicksWithClosedPopup$ = this.tagsClick$.pipe(filter(() => {
@@ -140,6 +154,7 @@ export class InfoqComponent {
     removeSelectTag = (tag) => {
         if (this.queryParams.selectTags.indexOf(tag) > -1){
             this.queryParams.selectTags = this.queryParams.selectTags.filter(item => (item !== tag) );
+            this.search();
         }
     }
 
@@ -149,12 +164,58 @@ export class InfoqComponent {
 
     tagsModalClosed = ($e) => {
         this.tagsModalOpened = false;
-        console.log($e)
-        if($e){
+        console.log($e);
+        if ($e){
             this.queryParams.selectTags = $e;
             this.search();
         }
     }
+
+
+    // categories handle
+
+    searchCategories = (text$: Observable<string>) => {
+        const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+        const clicksWithClosedPopup$ = this.categoriesClick$.pipe(filter(() => {
+            return !this.categoriesTh.isPopupOpen();
+        }));
+        const inputFocus$ = this.categoriesFocus$;
+
+        return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+            map(term => (term === '' ? this.allCategories
+            : this.allCategories.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+        );
+    }
+
+    selectCategory = ($e) => {
+        $e.preventDefault();
+        if (this.queryParams.selectCategories.indexOf($e.item) < 0){
+            this.queryParams.selectCategories.push($e.item);
+            this.search();
+        }
+    }
+
+    removeSelectCategory = (category) => {
+        if (this.queryParams.selectCategories.indexOf(category) > -1){
+            this.queryParams.selectCategories = this.queryParams.selectCategories.filter(item => (item !== category) );
+            this.search();
+        }
+    }
+
+    selectCategoriesModal = () => {
+        this.categoriesModalOpened = true;
+    }
+
+    categoriesModalClosed = ($e) => {
+        this.categoriesModalOpened = false;
+        console.log($e);
+        if ($e){
+            this.queryParams.selectCategories = $e;
+            this.search();
+        }
+    }
+
+
 
     updateQueryParamsByUrl(): void{
         const initQueryParams = this.getInitQueryParams();
@@ -187,6 +248,10 @@ export class InfoqComponent {
             urlParamsCopy.selectTags = urlParamsCopy.selectTags.split(',');
         }
 
+        if (urlParamsCopy.selectCategories){
+            urlParamsCopy.selectCategories = urlParamsCopy.selectCategories.split(',');
+        }
+
         if (urlParamsCopy.sortBy){
             urlParamsCopy.sortBy = this.sortItems.find(i => i.value === urlParamsCopy.sortBy);
         }
@@ -208,7 +273,8 @@ export class InfoqComponent {
             endDate: '',
             author: '',
             sortBy: this.sortItems[0],
-            selectTags: []
+            selectTags: [],
+            selectCategories: []
         };
     }
 
@@ -253,6 +319,25 @@ export class InfoqComponent {
                 }
             );
             this.allTags = _tags.map(i => i.text);
+        });
+    }
+
+    getCategories = () => {
+        this.InfoqService.getCategories({
+            source: 'all',
+        }).subscribe((cates: any) => {
+            let total = 0;
+            // tslint:disable-next-line: variable-name
+            const _cates: any[] = cates.map(
+                (i: { key: any; doc_count: number }) => {
+                    total += i.doc_count;
+                    return {
+                        text: i.key,
+                        count: i.doc_count,
+                    };
+                }
+            );
+            this.allCategories = _cates.map(i => i.text);
         });
     }
 
@@ -307,6 +392,12 @@ export class InfoqComponent {
                             nativeParams[param] = queryStringParams[param].join(',');
                         }
                         break;
+                    case 'selectCategories':
+                        if (queryStringParams[param].length > 0){
+                            nativeParams[param] = queryStringParams[param].join(',');
+                        }
+                        break;
+
                     default:
                         nativeParams[param] = queryStringParams[param];
                         break;
