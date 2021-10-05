@@ -1,0 +1,26 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Hi there!</h4>
+        <button type="button" class="close" aria-label="Close"  (click)="modal.dismiss(false)" >
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <span *ngFor="let tag of tags" class="text-primary tags" (click)="selectTag(tag)">
+            {{tag}}
+            </span>
+        </div>
+        <div>
+            <span *ngFor="let tag of selectedTags" class="badge badge-success tags-badge" >
+                {{tag}}
+                <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectTag(tag)">
+                </fa-icon>
+            </span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-outline" (click)="sure()" >Sure</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss(false)" >Close</button>
+    </div>
+</ng-template>

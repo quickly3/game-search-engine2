@@ -6,13 +6,14 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, of, Subject, fromEvent } from 'rxjs';
+import { Observable, of, Subject, fromEvent, merge } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import {
     debounceTime,
     distinctUntilChanged,
     map,
+    filter,
     switchMap,
     tap,
     catchError,
@@ -24,7 +25,7 @@ import {
     NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment-timezone';
-import { faCalendarAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faSearch, faLink, faTags, faTimes } from '@fortawesome/free-solid-svg-icons';
 import constList from './constList';
 
 @Component({
@@ -36,6 +37,9 @@ import constList from './constList';
 export class InfoqComponent {
     faCalendarAlt = faCalendarAlt;
     faSearch = faSearch;
+    faLink = faLink;
+    faTimes = faTimes;
+    faTags = faTags;
     articleList: any[] = [];
     totalNumber = 0;
     totalPage = 0;
@@ -48,6 +52,10 @@ export class InfoqComponent {
     modelChanged = new Subject<string>();
     authorChangedDebounce = new Subject<string>();
     @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
+    @ViewChild('tagsTh', { static: true }) tagsTh: NgbTypeahead | undefined;
+    tagsFocus$ = new Subject<string>();
+    tagsClick$ = new Subject<string>();
+
     tags: any[] = [];
     updateSta = true;
     tagsI18n;
@@ -56,6 +64,12 @@ export class InfoqComponent {
     displayModelItems;
     queryParams;
     displayModel;
+    allTags: any[] = [];
+    selectedTags: any[] = [];
+
+    tagInput = '';
+
+    tagsModalOpened = false;
 
     // tslint:disable-next-line: no-shadowed-variable
     constructor(
@@ -98,8 +112,48 @@ export class InfoqComponent {
 
     // tslint:disable-next-line: use-lifecycle-interface
     ngOnInit(): void {
-        // console.log('ngOnInit');
         this.updateQueryParamsByUrl();
+        this.getTags();
+    }
+
+    searchTags = (text$: Observable<string>) => {
+        const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+        const clicksWithClosedPopup$ = this.tagsClick$.pipe(filter(() => {
+            return !this.tagsTh.isPopupOpen();
+        }));
+        const inputFocus$ = this.tagsFocus$;
+
+        return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+            map(term => (term === '' ? this.allTags
+            : this.allTags.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+        );
+    }
+
+    selectTag2 = ($e) => {
+        $e.preventDefault();
+        if (this.queryParams.selectTags.indexOf($e.item) < 0){
+            this.queryParams.selectTags.push($e.item);
+            this.search();
+        }
+    }
+
+    removeSelectTag = (tag) => {
+        if (this.queryParams.selectTags.indexOf(tag) > -1){
+            this.queryParams.selectTags = this.queryParams.selectTags.filter(item => (item !== tag) );
+        }
+    }
+
+    selectTagsModal = () => {
+        this.tagsModalOpened = true;
+    }
+
+    tagsModalClosed = ($e) => {
+        this.tagsModalOpened = false;
+
+        if($e){
+            this.queryParams.selectTags = $e;
+            this.search();
+        }
     }
 
     updateQueryParamsByUrl(): void{
@@ -129,6 +183,10 @@ export class InfoqComponent {
             urlParamsCopy.source = this.sourceList.find(i => i.title === urlParamsCopy.source);
         }
 
+        if (urlParamsCopy.selectTags){
+            urlParamsCopy.selectTags = urlParamsCopy.selectTags.split(',');
+        }
+
         if (urlParamsCopy.sortBy){
             urlParamsCopy.sortBy = this.sortItems.find(i => i.value === urlParamsCopy.sortBy);
         }
@@ -149,7 +207,8 @@ export class InfoqComponent {
             startDate: '',
             endDate: '',
             author: '',
-            sortBy: this.sortItems[0]
+            sortBy: this.sortItems[0],
+            selectTags: []
         };
     }
 
@@ -174,7 +233,7 @@ export class InfoqComponent {
 
     getTags = () => {
         this.InfoqService.getTags({
-            source: this.queryParams.source.title,
+            source: 'all',
         }).subscribe((tags: any) => {
             let total = 0;
             // tslint:disable-next-line: variable-name
@@ -193,10 +252,7 @@ export class InfoqComponent {
                     };
                 }
             );
-
-            this.tags = _tags;
-            this.tags.unshift({ text: 'all', i18n: '全部', count: total });
-            this.queryParams.tag = this.tags[0].text;
+            this.allTags = _tags.map(i => i.text);
         });
     }
 
@@ -243,10 +299,19 @@ export class InfoqComponent {
         const nativeParams: any  = {};
         for (const param in queryStringParams){
             if (typeof queryStringParams[param] !== 'string' || queryStringParams[param].trim() !== ''){
-                if (param === 'updateSta'){
-                    continue;
+                switch (param) {
+                    case 'updateSta':
+                        break;
+                    case 'selectTags':
+                        if (queryStringParams[param].length > 0){
+                            nativeParams[param] = queryStringParams[param].join(',');
+                        }
+                        break;
+                    default:
+                        nativeParams[param] = queryStringParams[param];
+                        break;
                 }
-                nativeParams[param] = queryStringParams[param];
+
             }
         }
 

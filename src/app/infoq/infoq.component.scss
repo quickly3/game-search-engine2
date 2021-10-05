@@ -227,6 +227,29 @@ a:hover{
 
 }
 
+.left-input{
+    width: 100%;
+}
+
+.left-input-btn{
+    position: absolute;
+    right: 16px;
+}
+
+.fz-10{
+    font-size: 10px;
+}
+
+.tags-badge{
+    margin-right: 5px;
+    
+    .closeBadge{
+        font-size: 12px;
+        padding-left: 3px;
+        cursor: pointer;
+    }
+}
+
 @media(max-width:669px){
     .search-header {
         .search-input {

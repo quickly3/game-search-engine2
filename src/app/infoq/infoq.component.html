@@ -1,287 +1,323 @@
 <app-nav></app-nav>
 <div class="container-fluid">
-    <div class="search-header">
-        <div class="search-input row">
-            <div class="col-md"></div>
-            <div class="col-md">
-                <div class="search-zone">
-                    <input
-                        id="typeahead-basic"
-                        type="text"
-                        class="form-control form-control-sm"
-                        [(ngModel)]="queryParams.keywords"
-                        [focusFirst]="false"
-                        (keydown)="searchOnKeydown($event)"
-                        [ngbTypeahead]="autoComplete"
-                        #instance="ngbTypeahead"
-                        placeholder="搜索"
-                    />
-                    <button
-                        type="button"
-                        class="btn btn-primary btn-sm"
-                        (click)="keywordSearch()"
-                    >
-                        搜索
-                        <fa-icon [icon]="faSearch"></fa-icon>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md">
-                <div ngbDropdown class="d-inline-block sort-by">
-                    <button
-                        class="btn btn-outline-secondary btn-sm"
-                        id="dropdownBasic1"
-                        ngbDropdownToggle
-                    >
-                        排序方式
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                        <button
-                            ngbDropdownItem
-                            *ngFor="let item of sortItems"
-                            (click)="selectSortBy(item)"
-                        >
-                            {{ item.label }}
-                        </button>
-                    </div>
-                </div>
-                <span class="text-secondary" style="font-size: 14px">{{
-                    queryParams.sortBy.label
-                }}</span>
-                <div ngbDropdown class="d-inline-block sort-by">
-                    <button
-                        class="btn btn-outline-secondary btn-sm"
-                        id="dropdownBasic2"
-                        ngbDropdownToggle
-                    >
-                        显示模式
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                        <button
-                            ngbDropdownItem
-                            *ngFor="let item of displayModelItems"
-                            (click)="selectDisplayModel(item)"
-                        >
-                            {{ item.label }}
-                        </button>
-                    </div>
-                </div>
-                <span class="text-secondary" style="font-size: 14px">{{
-                    displayModel.label
-                }}</span>
-            </div>
+  <div class="search-header">
+    <div class="search-input row">
+      <div class="col-md"></div>
+      <div class="col-md">
+        <div class="search-zone">
+          <input
+            id="typeahead-basic"
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="queryParams.keywords"
+            [focusFirst]="false"
+            (keydown)="searchOnKeydown($event)"
+            [ngbTypeahead]="autoComplete"
+            #instance="ngbTypeahead"
+            placeholder="搜索"
+          />
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="keywordSearch()"
+          >
+            搜索
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
         </div>
+      </div>
+      <div class="col-md">
+        <div ngbDropdown class="d-inline-block sort-by">
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            id="dropdownBasic1"
+            ngbDropdownToggle
+          >
+            排序方式
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button
+              ngbDropdownItem
+              *ngFor="let item of sortItems"
+              (click)="selectSortBy(item)"
+            >
+              {{ item.label }}
+            </button>
+          </div>
+        </div>
+        <span class="text-secondary" style="font-size: 14px">{{
+          queryParams.sortBy.label
+        }}</span>
+        <div ngbDropdown class="d-inline-block sort-by">
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            id="dropdownBasic2"
+            ngbDropdownToggle
+          >
+            显示模式
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button
+              ngbDropdownItem
+              *ngFor="let item of displayModelItems"
+              (click)="selectDisplayModel(item)"
+            >
+              {{ item.label }}
+            </button>
+          </div>
+        </div>
+        <span class="text-secondary" style="font-size: 14px">{{
+          displayModel.label
+        }}</span>
+      </div>
     </div>
-    <div style="font-size: 12px">
-        找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
-        <strong>{{ took }}</strong> ms） 当前第
-        <strong>{{ queryParams.page }}</strong> 页,共
-        <strong>{{ totalPage }}</strong> 页 数据来源
-        <strong>{{ queryParams.source.text }}</strong>
+  </div>
+  <div style="font-size: 12px">
+    找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
+    <strong>{{ took }}</strong> ms） 当前第
+    <strong>{{ queryParams.page }}</strong> 页,共
+    <strong>{{ totalPage }}</strong> 页 数据来源
+    <strong>{{ queryParams.source.text }}</strong>
+  </div>
+  <div class="tags" [ngClass]="{ 'tags-switch': !showMore }">
+    <div
+      class="custom-control custom-radio"
+      *ngFor="let tag of tags"
+      (click)="selectTag(tag.text)"
+    >
+      <input
+        type="radio"
+        name="customRadio"
+        value="{{ tag.text }}"
+        [(ngModel)]="queryParams.tag"
+      />
+      <span>{{ tag.i18n }}</span>
+      <span *ngIf="tag.text != 'all'">({{ tag.count }})</span>
     </div>
-    <div class="tags" [ngClass]="{ 'tags-switch': !showMore }">
+  </div>
+  <div class="more-tags" (click)="showMore = !showMore">
+    <a *ngIf="!showMore" href="javascript:;">more</a>
+    <a *ngIf="showMore" href="javascript:;">close</a>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="option-title">
+        <span class="initSearch" (click)="initSearch()">清空搜索条件</span>
+      </div>
+      <div class="option-title">
+        <span>数据来源:</span>
+      </div>
+      <div class="option-zone source-selector">
         <div
-            class="custom-control custom-radio"
-            *ngFor="let tag of tags"
-            (click)="selectTag(tag.text)"
+          class="custom-control custom-radio"
+          *ngFor="let source of sourceList"
+          (click)="selectSource(source)"
         >
+          <input
+            type="radio"
+            name="sourceRadio"
+            value="{{ source.title }}"
+            [(ngModel)]="this.queryParams.source.title"
+          />
+          <div class="icons {{ source.source_class }}"></div>
+        </div>
+      </div>
+      <div class="option-title mb-1">
+        <span>标签:</span>
+      </div>
+      <div class="option-zone source-selector">
+        <div class="d-flex flex-row bd-highlight mb-3">
+          <div class="left-input"> 
             <input
-                type="radio"
-                name="customRadio"
-                value="{{ tag.text }}"
-                [(ngModel)]="queryParams.tag"
+              id="typeahead-basic"
+              type="text"
+              class="form-control form-control-sm"
+              [(ngModel)]="tagInput"
+              [focusFirst]="false"
+              [ngbTypeahead]="searchTags"
+              (focus)="tagsFocus$.next($any($event).target.value)"
+              (click)="tagsClick$.next($any($event).target.value)"
+              (selectItem)="selectTag2($event)"
+              #tagsTh="ngbTypeahead"
+              placeholder="搜索标签"
             />
-            <span>{{ tag.i18n }}</span>
-            <span *ngIf="tag.text != 'all'">({{ tag.count }})</span>
+          </div>
+          <div>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm left-input-btn"
+              (click)="selectTagsModal()"
+            >
+              <fa-icon class="fz-10" [icon]="faTags"></fa-icon>
+            </button>
+          </div>
+          <app-tags-modal [opened]="tagsModalOpened" (closed)="tagsModalClosed($event)" [tags]="allTags" ></app-tags-modal>
         </div>
-    </div>
-    <div class="more-tags" (click)="showMore = !showMore">
-        <a *ngIf="!showMore" href="javascript:;">more</a>
-        <a *ngIf="showMore" href="javascript:;">close</a>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-            <div class="option-title">
-                <span class="initSearch" (click)="initSearch()" >清空搜索条件</span>
-            </div>
-            <div class="option-title">
-                <span>数据来源:</span>
-            </div>
-            <div class="option-zone source-selector">
-                <div
-                    class="custom-control custom-radio"
-                    *ngFor="let source of sourceList"
-                    (click)="selectSource(source)"
-                >
-                    <input
-                        type="radio"
-                        name="sourceRadio"
-                        value="{{ source.title }}"
-                        [(ngModel)]="this.queryParams.source.title"
-                    />
-                    <div class="icons {{ source.source_class }}"></div>
-                </div>
-            </div>
-            <div class="option-title">
-                <span>发布时间:</span>
-                <span
-                    class="date-badge badge badge-primary"
-                    (click)="toDate('today')"
-                    >今天</span
-                >
-                <span
-                    class="date-badge badge badge-primary"
-                    (click)="toDate('yesterday')"
-                    >昨天</span
-                >
-                <span
-                    class="date-badge badge badge-primary"
-                    (click)="toDate('week')"
-                    >一周内</span
-                >
-            </div>
-            <div class="option-zone source-selector">
-                <div class="datepicker">
-                    <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        [ngClass]="{ 'is-invalid': startDateIsInvalid }"
-                        ngbDatepicker
-                        #start_date="ngbDatepicker"
-                        placeholder="开始时间"
-                        [(ngModel)]="queryParams.startDate"
-                        (ngModelChange)="dateSelected($event)"
-                    />
-                    <button
-                        class="picker-btn btn btn-primary btn-sm"
-                        (click)="start_date.toggle()"
-                    >
-                        <fa-icon [icon]="faCalendarAlt"></fa-icon>
-                    </button>
-                </div>
-                <div class="datepicker">
-                    <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        ngbDatepicker
-                        #end_date="ngbDatepicker"
-                        placeholder="结束时间"
-                        [(ngModel)]="queryParams.endDate"
-                        (ngModelChange)="dateSelected($event)"
-                    />
-                    <button
-                        class="picker-btn btn btn-primary btn-sm"
-                        (click)="end_date.toggle()"
-                    >
-                        <fa-icon [icon]="faCalendarAlt"></fa-icon>
-                    </button>
-                </div>
-            </div>
-            <div class="option-title">
-                <span>作者:</span>
-            </div>
-            <div class="author-search">
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    placeholder="作者名字"
-                    [(ngModel)]="queryParams.author"
-                    (ngModelChange)="authorChanged($event)"
-                />
-            </div>
-            <div class="option-title">
-                <span>词云:</span>
-            </div>
-            <div class="option-zone words_cloud">
-                <span
-                    class="text-info"
-                    *ngFor="let word of wordsCloud"
-                    (click)="wordsCloudToKeyWords(word)"
-                    >{{ word.key }}</span
-                >
-            </div>
+        <div>
+            <span *ngFor="let tag of queryParams.selectTags" class="badge badge-success tags-badge" >
+              {{tag}}
+              <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectTag(tag)">
+              </fa-icon>
+            </span>
         </div>
-        <div class="col-md-10">
-            <div class="articleList">
-                <div
-                    class="daily_item_title_model row"
-                    *ngFor="let daily_item of articleList"
-                    routerLinkActive="active"
-                >
+      </div>
+      <div class="option-title">
+        <span>发布时间:</span>
+        <span class="date-badge badge badge-primary" (click)="toDate('today')"
+          >今天</span
+        >
+        <span
+          class="date-badge badge badge-primary"
+          (click)="toDate('yesterday')"
+          >昨天</span
+        >
+        <span class="date-badge badge badge-primary" (click)="toDate('week')"
+          >一周内</span
+        >
+      </div>
+      <div class="option-zone source-selector">
+        <div class="datepicker">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [ngClass]="{ 'is-invalid': startDateIsInvalid }"
+            ngbDatepicker
+            #start_date="ngbDatepicker"
+            placeholder="开始时间"
+            [(ngModel)]="queryParams.startDate"
+            (ngModelChange)="dateSelected($event)"
+          />
+          <button
+            class="picker-btn btn btn-primary btn-sm"
+            (click)="start_date.toggle()"
+          >
+            <fa-icon [icon]="faCalendarAlt"></fa-icon>
+          </button>
+        </div>
+        <div class="datepicker">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            ngbDatepicker
+            #end_date="ngbDatepicker"
+            placeholder="结束时间"
+            [(ngModel)]="queryParams.endDate"
+            (ngModelChange)="dateSelected($event)"
+          />
+          <button
+            class="picker-btn btn btn-primary btn-sm"
+            (click)="end_date.toggle()"
+          >
+            <fa-icon [icon]="faCalendarAlt"></fa-icon>
+          </button>
+        </div>
+      </div>
+      <div class="option-title">
+        <span>作者:</span>
+      </div>
+      <div class="author-search">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          placeholder="作者名字"
+          [(ngModel)]="queryParams.author"
+          (ngModelChange)="authorChanged($event)"
+        />
+      </div>
+      <div class="option-title">
+        <span>词云:</span>
+      </div>
+      <div class="option-zone words_cloud">
+        <span
+          class="text-info"
+          *ngFor="let word of wordsCloud"
+          (click)="wordsCloudToKeyWords(word)"
+          >{{ word.key }}</span
+        >
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="articleList">
+        <div
+          class="daily_item_title_model row"
+          *ngFor="let daily_item of articleList"
+          routerLinkActive="active"
+        >
+          <div
+            *ngIf="displayModel.value === 'title'"
+            class="des_zone col-md-10 col-sm-12"
+          >
+            <div>
+              <span class="icons-sm {{ daily_item.badge_class }}"></span>
+              <span class="created" *ngIf="daily_item.created_at">{{
+                daily_item.created_at | date: "yyyy-MM-dd"
+              }}</span>
+              <a
+                class="title_a"
+                [href]="daily_item.url"
+                target="_blank"
+                [innerHtml]="daily_item.title"
+              ></a>
+            </div>
+          </div>
+          <div
+            *ngIf="displayModel.value === 'summary'"
+            class="des_zone col-md-10 col-sm-12"
+          >
+            <div>
+              <a
+                class="title_a"
+                [href]="daily_item.url"
+                target="_blank"
+                [innerHtml]="daily_item.title"
+              ></a>
+            </div>
+            <div class="summary" [innerHtml]="daily_item.summary"></div>
+            <div>
+              <div class="icons-sm {{ daily_item.badge_class }}"></div>
+              <span class="created" *ngIf="daily_item.created_at">{{
+                daily_item.created_at | date: "yyyy-MM-dd"
+              }}</span>
+              <a
+                class="author"
+                *ngIf="daily_item.author"
+                (click)="searchByAuthorName(daily_item.author)"
+                href="javascript:void(0)"
+                >{{ daily_item.author }}</a
+              >
+              <a
+                *ngIf="daily_item.author_url"
+                target="_blank"
+                href="{{ daily_item.author_url }}"
+                ><fa-icon class="author authorSeatch" [icon]="faLink"></fa-icon
+              ></a>
+              <span
+                class="badge badge-primary article_tag"
+                *ngFor="let tag of daily_item.tag"
+                >{{ tag }}</span
+              >
+            </div>
+            <div class="link">
+              <span class="text-secondary">{{
+                daily_item.url | slice: 0:100
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                    <div *ngIf="displayModel.value === 'title'" class="des_zone col-md-10 col-sm-12">
-                        <div>
-                            <span class="icons-sm {{ daily_item.badge_class }}"></span>
-                            <span
-                                class="created"
-                                *ngIf="daily_item.created_at"
-                                >{{
-                                    daily_item.created_at | date: "yyyy-MM-dd"
-                                }}</span
-                            >
-                            <a
-                                class="title_a"
-                                [href]="daily_item.url"
-                                target="_blank"
-                                [innerHtml]="daily_item.title"
-                            ></a>
-                        </div>
-                    </div>
-                    <div *ngIf="displayModel.value === 'summary'" class="des_zone col-md-10 col-sm-12">
-                        <div>
-                            <a
-                                class="title_a"
-                                [href]="daily_item.url"
-                                target="_blank"
-                                [innerHtml]="daily_item.title"
-                            ></a>
-                        </div>
-                        <div
-                            class="summary"
-                            [innerHtml]="daily_item.summary"
-                        ></div>
-                        <div>
-                            <div
-                                class="icons-sm {{ daily_item.badge_class }}"
-                            ></div>
-                            <span
-                                class="created"
-                                *ngIf="daily_item.created_at"
-                                >{{
-                                    daily_item.created_at | date: "yyyy-MM-dd"
-                                }}</span
-                            >
-                            <a class="author" *ngIf="daily_item.author" (click)="searchByAuthorName(daily_item.author)" href='javascript:void(0)' >{{
-                                daily_item.author
-                            }}</a>
-                            <a *ngIf="daily_item.author_url" target="_blank"  href="{{daily_item.author_url}}"><fa-icon class='author authorSeatch' [icon]="faSearch" ></fa-icon></a>
-                            <span
-                                class="badge badge-primary article_tag"
-                                *ngFor="let tag of daily_item.tag"
-                                >{{ tag }}</span
-                            >
-                        </div>
-                        <div class="link">
-                            <span class="text-secondary">{{
-                                daily_item.url | slice: 0:100
-                            }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pagination">
-                <ngb-pagination
-                    class="navigation"
-                    [collectionSize]="totalNumber"
-                    [(page)]="queryParams.page"
-                    [pageSize]="queryParams.row"
-                    [maxSize]="5"
-                    [ellipses]="false"
-                    size="sm"
-                    (pageChange)="pageChange()"
-                ></ngb-pagination>
-            </div>
-        </div>
+      <div class="pagination">
+        <ngb-pagination
+          class="navigation"
+          [collectionSize]="totalNumber"
+          [(page)]="queryParams.page"
+          [pageSize]="queryParams.row"
+          [maxSize]="5"
+          [ellipses]="false"
+          size="sm"
+          (pageChange)="pageChange()"
+        ></ngb-pagination>
+      </div>
     </div>
+  </div>
 </div>

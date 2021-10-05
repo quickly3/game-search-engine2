@@ -21,6 +21,8 @@ class InfoqController extends Controller
         $sortBy = $request->input("sortBy", "");
         $author = $request->input("author", '');
         $updateSta = $request->input("updateSta", true);
+        $selectTags = $request->input("selectTags", []);
+
 
 
         $es = new ElasticModel("article", "article");
@@ -48,6 +50,12 @@ class InfoqController extends Controller
             $query_string = "(title.text_cn:'{$keywords}' OR title.text_cn:\"{$keywords}\" OR summary.text_cn:'{$keywords}' OR summary.text_cn:\"{$keywords}\") ";
         }else{
             $query_string = "*:*";
+        }
+
+        if(count($selectTags)){
+            $selectTags = array_map(function($tag){ return "\"$tag\""; }, $selectTags);
+            $selectTagsStr = join(' || ',$selectTags);
+            $query_string = $query_string . " && tag:({$selectTagsStr})";
         }
 
         if ($tag != "all") {
