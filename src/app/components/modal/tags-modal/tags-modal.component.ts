@@ -17,6 +17,8 @@ export default class TagsModalComponent {
 
     @Input() opened = false;
     @Input() tags: any[] = [];
+    @Input() inputSelectedTags: any[] = [];
+
     @Output() closed = new EventEmitter<any>();
 
     selectedTags = [];
@@ -24,6 +26,7 @@ export default class TagsModalComponent {
 
     ngOnChanges(){
         if (this.opened){
+            this.selectedTags = [...this.inputSelectedTags];
             this.open();
         }
     }

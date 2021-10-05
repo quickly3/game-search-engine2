@@ -151,7 +151,12 @@
               <fa-icon class="fz-10" [icon]="faTags"></fa-icon>
             </button>
           </div>
-          <app-tags-modal [opened]="tagsModalOpened" (closed)="tagsModalClosed($event)" [tags]="allTags" ></app-tags-modal>
+          <app-tags-modal 
+            [opened]="tagsModalOpened" 
+            (closed)="tagsModalClosed($event)" 
+            [tags]="allTags" 
+            [inputSelectedTags]="queryParams.selectTags"
+          ></app-tags-modal>
         </div>
         <div>
             <span *ngFor="let tag of queryParams.selectTags" class="badge badge-success tags-badge" >

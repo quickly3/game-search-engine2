@@ -149,7 +149,7 @@ export class InfoqComponent {
 
     tagsModalClosed = ($e) => {
         this.tagsModalOpened = false;
-
+        console.log($e)
         if($e){
             this.queryParams.selectTags = $e;
             this.search();
