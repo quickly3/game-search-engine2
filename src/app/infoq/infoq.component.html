@@ -1,5 +1,5 @@
 <app-nav></app-nav>
-<div class="container-fluid">
+<div class="container-fluid" >
   <div class="search-header">
     <div class="search-input row">
       <div class="col-md"></div>
@@ -69,7 +69,7 @@
         <span class="text-secondary" style="font-size: 14px">{{
           displayModel.label
         }}</span>
-        <fa-icon *ngIf="isMobile" class="text-primary ml-4" [icon]="faWrench" (click)="toggleSearchZone()"></fa-icon>
+        <fa-icon *ngIf="isMobile" class="ml-4" [ngClass]="{'text-secondary':hideSearchZone,'text-primary':!hideSearchZone}" [icon]="faWrench" (click)="toggleSearchZone()"></fa-icon>
       </div>
     </div>
   </div>

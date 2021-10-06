@@ -25,7 +25,7 @@ import {
     NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment-timezone';
-import { 
+import {
     faCalendarAlt, faSearch,
     faLink, faTags, faTimes,
     faThumbsUp, faEye,
@@ -96,6 +96,11 @@ export class InfoqComponent {
     showOldTags = false;
     hideSearchZone = false;
 
+
+    defaultTouch = { x: 0, y: 0, time: 0 };
+
+
+
     public screenWidth: any;
     public screenHeight: any;
     public isMobile = false;
@@ -125,33 +130,73 @@ export class InfoqComponent {
     // tslint:disable-next-line: typedef
     handleKeyboardEvent(event: KeyboardEvent) {
         if (event.key === 'ArrowLeft') {
-            if (this.queryParams.page !== 1) {
-                this.queryParams.page--;
-                this.pageChange();
-            }
+            this.lastPage();
         }
 
         if (event.key === 'ArrowRight') {
-            if (this.queryParams.page < this.totalPage) {
-                this.queryParams.page++;
-                this.pageChange();
-            }
+            this.nextPage();
         }
     }
 
     // tslint:disable-next-line: use-lifecycle-interface
     ngOnInit(): void {
-        this.checkWindowSize()
+        this.checkWindowSize();
         this.updateQueryParamsByUrl();
         this.getTags();
         this.getCategories();
     }
+    @HostListener('touchstart', ['$event'])
+    // @HostListener('touchmove', ['$event'])
+    @HostListener('touchend', ['$event'])
+    @HostListener('touchcancel', ['$event'])
+    handleTouch(event) {
+        const touch = event.touches[0] || event.changedTouches[0];
+
+        // check the events
+        if (event.type === 'touchstart') {
+            this.defaultTouch.x = touch.pageX;
+            this.defaultTouch.y = touch.pageY;
+            this.defaultTouch.time = event.timeStamp;
+        } else if (event.type === 'touchend') {
+            const deltaX = touch.pageX - this.defaultTouch.x;
+            const deltaY = touch.pageY - this.defaultTouch.y;
+            const deltaTime = event.timeStamp - this.defaultTouch.time;
+
+            // simulte a swipe -> less than 500 ms and more than 60 px
+            if (deltaTime < 500) {
+                // touch movement lasted less than 500 ms
+                if (Math.abs(deltaX) > 60) {
+                    // delta x is at least 60 pixels
+                    if (deltaX > 0) {
+                        this.lastPage();
+                    } else {
+                        this.nextPage();
+                    }
+                }
+            }
+        }
+    }
+
+    lastPage = () => {
+        if (this.queryParams.page !== 1) {
+            this.queryParams.page--;
+            this.pageChange();
+        }
+    }
+
+    nextPage = () => {
+        if (this.queryParams.page < this.totalPage) {
+            this.queryParams.page++;
+            this.pageChange();
+        }
+    }
+
 
     checkWindowSize(): void {
         this.screenWidth = window.innerWidth;
         this.screenHeight = window.innerHeight;
         this.isMobile = this.screenWidth < 669;
-        if(this.isMobile){
+        if (this.isMobile){
             this.hideSearchZone = true;
         }
     }
