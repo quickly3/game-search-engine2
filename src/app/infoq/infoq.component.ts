@@ -25,7 +25,13 @@ import {
     NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment-timezone';
-import { faCalendarAlt, faSearch, faLink, faTags, faTimes, faThumbsUp, faEye, faComment, faStar } from '@fortawesome/free-solid-svg-icons';
+import { 
+    faCalendarAlt, faSearch,
+    faLink, faTags, faTimes,
+    faThumbsUp, faEye,
+    faComment, faStar,
+    faWrench
+} from '@fortawesome/free-solid-svg-icons';
 import constList from './constList';
 
 @Component({
@@ -44,6 +50,7 @@ export class InfoqComponent {
     faEye = faEye;
     faTimes = faTimes;
     faTags = faTags;
+    faWrench = faWrench;
     articleList: any[] = [];
     totalNumber = 0;
     totalPage = 0;
@@ -87,7 +94,11 @@ export class InfoqComponent {
     categoriesModalOpened = false;
 
     showOldTags = false;
+    hideSearchZone = false;
 
+    public screenWidth: any;
+    public screenHeight: any;
+    public isMobile = false;
 
     // tslint:disable-next-line: no-shadowed-variable
     constructor(
@@ -130,9 +141,21 @@ export class InfoqComponent {
 
     // tslint:disable-next-line: use-lifecycle-interface
     ngOnInit(): void {
+        this.checkWindowSize()
         this.updateQueryParamsByUrl();
         this.getTags();
         this.getCategories();
+    }
+
+    checkWindowSize(): void {
+        this.screenWidth = window.innerWidth;
+        this.screenHeight = window.innerHeight;
+        this.isMobile = this.screenWidth < 669;
+        this.hideSearchZone = true;
+    }
+
+    toggleSearchZone(): void {
+        this.hideSearchZone = !this.hideSearchZone;
     }
 
     // tags handle

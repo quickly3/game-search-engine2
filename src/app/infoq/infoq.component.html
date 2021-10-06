@@ -69,6 +69,7 @@
         <span class="text-secondary" style="font-size: 14px">{{
           displayModel.label
         }}</span>
+        <fa-icon *ngIf="isMobile" class="text-primary ml-4" [icon]="faWrench" (click)="toggleSearchZone()"></fa-icon>
       </div>
     </div>
   </div>
@@ -100,7 +101,7 @@
     <a *ngIf="showMore" href="javascript:;">close</a>
   </div>
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-2" #collapse="ngbCollapse" [(ngbCollapse)]="hideSearchZone">
       <div class="option-title">
         <span class="initSearch" (click)="initSearch()">清空搜索条件</span>
       </div>
