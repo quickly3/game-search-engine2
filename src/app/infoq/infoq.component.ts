@@ -151,7 +151,9 @@ export class InfoqComponent {
         this.screenWidth = window.innerWidth;
         this.screenHeight = window.innerHeight;
         this.isMobile = this.screenWidth < 669;
-        this.hideSearchZone = true;
+        if(this.isMobile){
+            this.hideSearchZone = true;
+        }
     }
 
     toggleSearchZone(): void {
