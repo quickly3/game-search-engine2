@@ -79,7 +79,7 @@
     <strong>{{ totalPage }}</strong> 页 数据来源
     <strong>{{ queryParams.source.text }}</strong>
   </div>
-  <div class="tags" [ngClass]="{ 'tags-switch': !showMore }">
+  <div *ngIf="showOldTags" class="tags" [ngClass]="{ 'tags-switch': !showMore }">
     <div
       class="custom-control custom-radio"
       *ngFor="let tag of tags"
@@ -95,7 +95,7 @@
       <span *ngIf="tag.text != 'all'">({{ tag.count }})</span>
     </div>
   </div>
-  <div class="more-tags" (click)="showMore = !showMore">
+  <div class="more-tags" *ngIf="showOldTags" (click)="showMore = !showMore">
     <a *ngIf="!showMore" href="javascript:;">more</a>
     <a *ngIf="showMore" href="javascript:;">close</a>
   </div>
@@ -211,6 +211,18 @@
         </div>
       </div>
       <div class="option-title">
+        <span>作者:</span>
+      </div>
+      <div class="author-search">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          placeholder="作者名字"
+          [(ngModel)]="queryParams.author"
+          (ngModelChange)="authorChanged($event)"
+        />
+      </div>
+      <div class="option-title">
         <span>发布时间:</span>
         <span class="date-badge badge badge-primary" (click)="toDate('today')"
           >今天</span
@@ -262,16 +274,45 @@
         </div>
       </div>
       <div class="option-title">
-        <span>作者:</span>
+        <span>热度:</span>
       </div>
-      <div class="author-search">
-        <input
-          type="text"
-          class="form-control form-control-sm"
-          placeholder="作者名字"
-          [(ngModel)]="queryParams.author"
-          (ngModelChange)="authorChanged($event)"
-        />
+      <div class="option-zone source-selector">
+        <div class="d-flex justify-content-between mb-1">
+          <input 
+            type="number" 
+            class="form-control form-control-sm width-50" 
+            min="0" 
+            placeholder="阅读数"
+            [(ngModel)]="queryParams.view_count"
+            (ngModelChange)="countModified($event,'view_count')"
+          />
+          <input 
+            type="number" 
+            class="form-control form-control-sm width-50" 
+            min="0" 
+            placeholder="点赞数"
+            [(ngModel)]="queryParams.digg_count"
+            (ngModelChange)="countModified($event,'digg_count')"
+          />
+        </div>
+        <div class="d-flex justify-content-between">
+          <input 
+            type="number" 
+            class="form-control form-control-sm width-50" 
+            min="0" 
+            placeholder="评论数"
+            [(ngModel)]="queryParams.comment_count"
+            (ngModelChange)="countModified($event,'comment_count')"
+          />
+          <input
+            type="number" 
+            class="form-control form-control-sm width-50" 
+            min="0" 
+            placeholder="收藏数"
+            [(ngModel)]="queryParams.collect_count"
+            (ngModelChange)="countModified($event,'collect_count')"
+          />
+        </div>
       </div>
       <div class="option-title">
         <span>词云:</span>
@@ -343,15 +384,24 @@
               <span
                 class="badge badge-primary article_tag"
                 *ngFor="let tag of daily_item.tag"
-                >{{ tag }}</span
-              >
-              <span> | </span>
+                >{{ tag }}
+              </span>
+              <span class='delimiter' *ngIf="daily_item.category" > | </span>
               <span
                 class="badge badge-info article_tag"
                 >{{ daily_item.category }}</span
               >
+              
             </div>
             <div class="link">
+              <fa-icon class="user_icon" [icon]="faEye"></fa-icon>
+              <span class="user_count">{{ daily_item.view_count || 0 }}</span>
+              <fa-icon class="user_icon" [icon]="faThumbsUp"></fa-icon>
+              <span class="user_count">{{ daily_item.digg_count || 0 }}</span>
+              <fa-icon class="user_icon" [icon]="faComment"></fa-icon>
+              <span class="user_count">{{ daily_item.comment_count || 0 }}</span>
+              <fa-icon class="user_icon" [icon]="faStar"></fa-icon>
+              <span class="user_count">{{ daily_item.collect_count || 0 }}</span>              
               <span class="text-secondary">{{
                 daily_item.url | slice: 0:100
               }}</span>

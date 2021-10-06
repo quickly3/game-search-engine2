@@ -25,7 +25,7 @@ import {
     NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment-timezone';
-import { faCalendarAlt, faSearch, faLink, faTags, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faSearch, faLink, faTags, faTimes, faThumbsUp, faEye, faComment, faStar } from '@fortawesome/free-solid-svg-icons';
 import constList from './constList';
 
 @Component({
@@ -38,6 +38,10 @@ export class InfoqComponent {
     faCalendarAlt = faCalendarAlt;
     faSearch = faSearch;
     faLink = faLink;
+    faThumbsUp = faThumbsUp;
+    faComment = faComment;
+    faStar = faStar;
+    faEye = faEye;
     faTimes = faTimes;
     faTags = faTags;
     articleList: any[] = [];
@@ -50,7 +54,7 @@ export class InfoqComponent {
     InfoqService;
     startDateIsInvalid = false;
     modelChanged = new Subject<string>();
-    authorChangedDebounce = new Subject<string>();
+    searchDebounce = new Subject<string>();
     @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
     @ViewChild('tagsTh', { static: true }) tagsTh: NgbTypeahead | undefined;
     @ViewChild('categoriesTh', { static: true }) categoriesTh: NgbTypeahead | undefined;
@@ -82,6 +86,8 @@ export class InfoqComponent {
     tagsModalOpened = false;
     categoriesModalOpened = false;
 
+    showOldTags = false;
+
 
     // tslint:disable-next-line: no-shadowed-variable
     constructor(
@@ -93,7 +99,7 @@ export class InfoqComponent {
         ) {
         this.InfoqService = InfoqService;
 
-        this.authorChangedDebounce.pipe(debounceTime(300)).subscribe(() => {
+        this.searchDebounce.pipe(debounceTime(300)).subscribe(() => {
             this.search();
         });
 
@@ -459,6 +465,8 @@ export class InfoqComponent {
                 }
             }
         );
+
+        this.getWordsCloud();
     }
 
     handleTags = (tags) => {
@@ -554,6 +562,13 @@ export class InfoqComponent {
             )
         )
 
+    countModified = ($event, field) => {
+        if ((field in this.queryParams) && this.queryParams[field] < 0){
+            this.queryParams[field] = null;
+        }
+        this.searchDebounce.next($event);
+    }
+
     dateSelected = ($event: any) => {
         let startDate = null;
         let endDate = null;
@@ -627,7 +642,7 @@ export class InfoqComponent {
     }
 
     authorChanged = ($event: any) => {
-        // this.authorChangedDebounce.next($event)
+        // this.searchDebounce.next($event)
     }
 
     selectSortBy = (sortBy: { value: string; label: string }) => {

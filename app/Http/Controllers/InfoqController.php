@@ -24,7 +24,10 @@ class InfoqController extends Controller
         $selectTags = $request->input("selectTags", []);
         $selectCategories = $request->input("selectCategories", []);
 
-
+        $collect_count = $request->input("collect_count", null);
+        $comment_count = $request->input("comment_count", null);
+        $digg_count = $request->input("digg_count", null);
+        $view_count = $request->input("view_count", null);
 
 
         $es = new ElasticModel("article", "article");
@@ -86,6 +89,22 @@ class InfoqController extends Controller
             $query_string = $query_string . " && created_at:[* TO {$endDate}}";
         }
 
+        if(!is_null($collect_count)){
+            $query_string = $query_string . " && collect_count:[{$collect_count} TO *}";
+        }
+
+        if(!is_null($comment_count)){
+            $query_string = $query_string . " && comment_count:[{$comment_count} TO *}";
+        }
+
+        if(!is_null($digg_count)){
+            $query_string = $query_string . " && digg_count:[{$digg_count} TO *}";
+        }
+
+        if(!is_null($view_count)){
+            $query_string = $query_string . " && view_count:[{$view_count} TO *}";
+        }
+
         switch($sortBy){
             case "date":
                 $orders = [
@@ -111,7 +130,38 @@ class InfoqController extends Controller
                     "created_at" => "desc",
                     "title" => "asc",
                 ];
-
+                break;
+            case "viewed":
+                $orders = [
+                    "view_count" => "desc",
+                    "created_year" => "desc",
+                    "created_at" => "desc",
+                    "title" => "asc",
+                ];
+                break;
+            case "like":
+                $orders = [
+                    "digg_count" => "desc",
+                    "created_year" => "desc",
+                    "created_at" => "desc",
+                    "title" => "asc",
+                ];
+                break;
+            case "comments":
+                $orders = [
+                    "comment_count" => "desc",
+                    "created_year" => "desc",
+                    "created_at" => "desc",
+                    "title" => "asc",
+                ];
+                break;
+            case "collected":
+                $orders = [
+                    "collect_count" => "desc",
+                    "created_year" => "desc",
+                    "created_at" => "desc",
+                    "title" => "asc",
+                ];
                 break;
             default:
                 $orders = [
@@ -124,7 +174,12 @@ class InfoqController extends Controller
 
         $data->orderBy($orders);
 
-        $data = $data->query_string($query_string, "*")->paginate(20);
+        try {
+            $data = $data->query_string($query_string, "*")->paginate(20);
+        } catch (\Throwable $th) {
+            $data = ["data"=>[]];
+        }
+        
 
         $data['query_string'] = $query_string;
 
@@ -141,12 +196,12 @@ class InfoqController extends Controller
                 return $item;
             }, $data['data']);
         }
-        if($updateSta){
-            $tags = InfoqService::getTagsByQuery($query_string);
-            $wordsCloud = InfoqService::genWordsCloudByQuery($query_string);
-            $data['tags'] = $tags;
-            $data['wordsCloud'] = $wordsCloud;
-        }
+        // if($updateSta){
+        //     $tags = InfoqService::getTagsByQuery($query_string);
+        //     $wordsCloud = InfoqService::genWordsCloudByQuery($query_string);
+        //     $data['tags'] = $tags;
+        //     $data['wordsCloud'] = $wordsCloud;
+        // }
         return response()->json($data);
     }
 

@@ -43,6 +43,7 @@ a:hover{
         font-size: 12px;
         padding-right: 5px;
         cursor: pointer;
+        display: inline-block;
     }
 }
 
@@ -77,7 +78,21 @@ a:hover{
         font-style: inherit;
     }
 }
+
+.user_icon{
+    font-size: 10px;
+    color: #888;
+    margin-right: 3px;
+}
+
+.user_count{
+    font-size: 10px;
+    color: #888;
+    margin-right: 5px;
+}
+
 .link{
+    margin-left: 5px;
     font-size: 10px;
 }
 
@@ -181,7 +196,19 @@ a:hover{
 .author{
     font-size: 12px;
     color: #888;
-    margin-right: 10px;
+    margin-right: 5px;
+}
+
+.width-50{
+    width: 48%;
+    display: inline-block;
+}
+
+.delimiter{
+    color: #888;
+    font-size: 10px;
+    position: relative;
+    top: -2px;
 }
 
 .option-title{

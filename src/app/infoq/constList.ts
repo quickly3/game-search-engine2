@@ -26,6 +26,10 @@ const sortItems = [
     { value: 'multi', label: '综合' },
     { value: 'date', label: '日期' },
     { value: 'score', label: '搜索相关度' },
+    { value: 'viewed', label: '阅读' },
+    { value: 'like', label: '点赞' },
+    { value: 'comments', label: '评论' },
+    { value: 'collected', label: '收藏' },
 ];
 
 const sourceList = [
