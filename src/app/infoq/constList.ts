@@ -32,6 +32,13 @@ const sortItems = [
     { value: 'collected', label: '收藏' },
 ];
 
+const authorSortItems = [
+    { value: 'post_article_count', label: '文章数' },
+    { value: 'power', label: '掘力值' },
+    { value: 'level', label: 'Level' }
+
+]
+
 const sourceList = [
     { title: 'all', source_class: 'icon-all', text: '全部' },
     { title: 'jianshu', source_class: 'icon-jianshu', text: '简书' },
@@ -66,7 +73,8 @@ const constList = {
     tagsI18n,
     sortItems,
     sourceList,
-    displayModelItems
+    displayModelItems,
+    authorSortItems
 };
 
 export default constList;

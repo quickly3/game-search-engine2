@@ -1,0 +1,109 @@
+<app-nav></app-nav>
+<div class="container-fluid" >
+  <div class="search-header">
+    <div class="search-input row">
+      <div class="col-md"></div>
+      <div class="col-md">
+        <div class="search-zone">
+          <input
+            id="typeahead-basic"
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="queryParams.keywords"
+            placeholder="搜索"
+          />
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="authorSearch()"
+          >
+            搜索
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
+        </div>
+        
+      </div>
+      <div class="col-md">
+        <div ngbDropdown class="d-inline-block sort-by">
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            id="dropdownBasic1"
+            ngbDropdownToggle
+          >
+            排序方式
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button
+              ngbDropdownItem
+              *ngFor="let item of sortItems"
+              (click)="selectSortBy(item)"
+            >
+              {{ item.label }}
+            </button>
+          </div>
+        </div>
+        <span class="text-secondary" style="font-size: 14px">{{
+          queryParams.sortBy.label
+        }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <div style="font-size: 12px" class="mb-3">
+            找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
+            <strong>{{ took }}</strong> ms） 当前第
+            <strong>{{ queryParams.page }}</strong> 页,共
+            <strong>{{ totalPage }}</strong> 页 数据来源
+            <strong>{{ queryParams.source.text }}</strong>
+        </div>
+        <div class="articleList row">
+            <div class="media col-md-3 mb-3" *ngFor="let author of authorList">
+                <a href="{{author.inner_url}}">
+                    <img src="{{author.avatar_large}}" class="avatar_large rounded-circle mr-1 border border-info" alt="{{author.user_name}}">
+                </a>
+                <div class="media-body">
+                  <a href="{{author.inner_url}}" target="_blank" ><h6 class="mt-0">{{author.user_name}}</h6></a>
+                    <div class='info_field'>
+                        <span class="mr-3">文章数：{{author.post_article_count}}</span>
+                        <span class="mr-3">掘力值：{{author.power}}</span>
+                    </div>
+                    <div class='info_field'>
+                        <span class="mr-3">注册时间：{{author.register_time*1000 | date:'yyyy-MM-dd'}}</span>
+                        <span class="mr-3">Level：{{author.level}}</span>
+                    </div>
+                    <div *ngIf="author.job_title" class='info_field'>
+                        <fa-icon class="fa_icon mr-1" [icon]="faUser"></fa-icon>
+                        <span>{{author.job_title}}</span>
+                    </div>
+                    <div *ngIf="author.company" class='info_field'>
+                        <fa-icon class="fa_icon mr-1" [icon]="faBuilding"></fa-icon>
+                        <span>{{author.company}}</span>
+                    </div>
+                    <div *ngIf="author.blog_address" class='info_field'>
+                        <fa-icon class="fa_icon mr-1" [icon]="faRssSquare"></fa-icon>
+                        <a href="{{author.blog_address}}" target="_blank" >{{author.blog_address}}</a>
+                    </div>
+                    <div *ngIf="author.user_url" class='info_field'>
+                        <span class="icons-sm icon-juejin icon-juejin-curr mr-1"></span>
+                        <a href="{{author.user_url}}" target="_blank" >{{author.user_url}}</a>
+                    </div>
+                    <div class='info_field'>{{author.description || '这个人很懒，什么都没有写'}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="pagination">
+            <ngb-pagination
+            class="navigation"
+            [collectionSize]="totalNumber"
+            [(page)]="queryParams.page"
+            [pageSize]="queryParams.row"
+            [maxSize]="5"
+            [ellipses]="false"
+            size="sm"
+            (pageChange)="pageChange()"
+            ></ngb-pagination>
+        </div>
+    </div>
+  </div>
+</div>

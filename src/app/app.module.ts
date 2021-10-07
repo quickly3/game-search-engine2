@@ -1,4 +1,6 @@
 import { InfoqComponent } from './infoq/infoq.component';
+import { AuthorComponent } from './author/author.component';
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,6 +21,7 @@ import { NuMarkdownModule } from '@ng-util/markdown';
   declarations: [
     AppComponent,
     InfoqComponent,
+    AuthorComponent,
     GraphComponent,
     NewsComponent,
   ],

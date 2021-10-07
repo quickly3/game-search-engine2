@@ -1,12 +1,14 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { InfoqComponent } from './infoq/infoq.component';
+import { AuthorComponent } from './author/author.component';
 import { GraphComponent } from './graph/graph.component';
 import { NewsComponent } from './news/news.component';
 
 
 const appRoutes: Routes = [
   { path: 'infoq', component: InfoqComponent },
+  { path: 'author', component: AuthorComponent },
   { path: 'graph', component: GraphComponent },
   { path: 'news', component: NewsComponent },
   { path: '', redirectTo: 'infoq', pathMatch: 'full' },

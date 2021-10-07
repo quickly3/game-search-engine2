@@ -62,6 +62,9 @@ Route::get('graph/getLastDayData', 'GraphController@getLastDayData');
 
 Route::get('graph/dailyMd', 'GraphController@dailyMd');
 
+Route::post('author/getAuthors', 'AuthorController@getAuthors');
+
+
 // Route::get('game/test', 'GameController@test');
 
 Auth::routes();

@@ -84,18 +84,14 @@ export class InfoqComponent {
 
     selectedTags: any[] = [];
     selectedCategories: any[] = [];
-
-
     tagInput = '';
     categoryInput = '';
-
 
     tagsModalOpened = false;
     categoriesModalOpened = false;
 
     showOldTags = false;
     hideSearchZone = false;
-
 
     defaultTouch = { x: 0, y: 0, time: 0 };
 
