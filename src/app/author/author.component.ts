@@ -131,6 +131,12 @@ export class AuthorComponent {
             (data: { [x: string]: any }) => {
                 this.authorList = data.data.map((user) => {
                     if (user.source === 'juejin'){
+                        if (user.blog_address && user.blog_address.trim() !== ''){
+                            if (user.blog_address.indexOf('http') < 0){
+                                user.blog_address = 'http://' + user.blog_address;
+                            }
+                        }
+
                         user.user_url = `https://juejin.cn/user/${user.user_id}`;
                         user.inner_url = `/#/infoq?page=1&row=20&tag=all&source=all&author=${user.user_name}&sortBy=multi`;
                     }
