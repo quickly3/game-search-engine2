@@ -46,4 +46,9 @@ a:hover{
     .icon-juejin-curr{
         margin: 0;
     }
+    a{
+        overflow: hidden;
+        max-width: 300px;
+        display: inline-block;
+    }
 }
