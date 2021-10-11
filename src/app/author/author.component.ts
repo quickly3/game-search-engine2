@@ -145,7 +145,7 @@ export class AuthorComponent {
                         user.inner_url = `/#/infoq?page=1&row=20&tag=all&source=all&author=${user.user_name}&sortBy=multi`;
 
                         if(user.github_verified){
-                            user.github_url = `https://github.com//${user.github_nickname}`;
+                            user.github_url = `https://github.com/${user.github_nickname}`;
                         }
                         
                     }
