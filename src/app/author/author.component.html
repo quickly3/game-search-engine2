@@ -84,6 +84,10 @@
                         <fa-icon class="fa_icon mr-1" [icon]="faRssSquare"></fa-icon>
                         <a href="{{author.blog_address}}" target="_blank" >{{author.blog_address}}</a>
                     </div>
+                    <div *ngIf="author.github_verified" class='info_field'>
+                        <fa-icon class="fa_icon mr-1" [icon]="faGithub"></fa-icon>
+                        <a href="{{author.github_url}}" target="_blank" >{{author.github_url}}</a>
+                    </div>
                     <div *ngIf="author.user_url" class='info_field'>
                         <span class="icons-sm icon-juejin icon-juejin-curr mr-1"></span>
                         <a href="{{author.user_url}}" target="_blank" >{{author.user_url}}</a>

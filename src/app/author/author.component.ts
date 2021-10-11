@@ -7,7 +7,10 @@ import {
 import { AuthorService } from '../api/author.service';
 import constList from '../infoq/constList';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { faSearch, faRssSquare, faBuilding, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faRssSquare, faBuilding, faUser,  } from '@fortawesome/free-solid-svg-icons';
+import { faGithub  } from '@fortawesome/free-brands-svg-icons';
+
+
 import { of } from 'rxjs';
 
 @Component({
@@ -25,6 +28,7 @@ export class AuthorComponent {
     faRssSquare = faRssSquare;
     faBuilding = faBuilding;
     faUser = faUser;
+    faGithub = faGithub;
 
     totalNumber: number;
     took: number;
@@ -139,6 +143,11 @@ export class AuthorComponent {
 
                         user.user_url = `https://juejin.cn/user/${user.user_id}`;
                         user.inner_url = `/#/infoq?page=1&row=20&tag=all&source=all&author=${user.user_name}&sortBy=multi`;
+
+                        if(user.github_verified){
+                            user.github_url = `https://github.com//${user.github_nickname}`;
+                        }
+                        
                     }
                     return user;
                 });
