@@ -61,8 +61,11 @@ Route::get('graph/getLastDayData', 'GraphController@getLastDayData');
 
 
 Route::get('graph/dailyMd', 'GraphController@dailyMd');
+Route::post('graph/getTagsAgg', 'GraphController@getTagsAgg');
+
 
 Route::post('author/getAuthors', 'AuthorController@getAuthors');
+
 
 
 // Route::get('game/test', 'GameController@test');

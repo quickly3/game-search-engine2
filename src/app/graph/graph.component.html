@@ -1,41 +1,47 @@
 <app-nav></app-nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
-            <h2>全部数据分布</h2>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
+        <div class="col-3">
+            <h4>全部数据分布</h4>
             <div class="graph-zone">
                 <app-pie dataId='totalData' [data]=totalData></app-pie>
             </div>
-        </div>
-        <div class="col">
             <ul>
                 <li *ngFor="let item of totalData">
                     <span>{{item.name}}: {{item.value}}</span>
                 </li>
             </ul>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h2>昨日数据分布</h2>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
+        <div class="col-3">
+            <h4>昨日数据分布</h4>
             <div class="graph-zone">
                 <app-pie dataId='lastDayData' [data]=lastDayData></app-pie>
             </div>
-        </div>
-        <div class="col">
             <ul>
                 <li *ngFor="let item of lastDayData">
                     <span>{{item.name}}: {{item.value}}</span>
                 </li>
             </ul>
+        </div>
+        <div class="col-3">
+            <h4>全部数据源分布</h4>
+            <div >
+                <app-bubble dataId='allResource' textSize='4rem' [data]=totalData [radiusFix]=radiusFix></app-bubble>
+            </div>
+
+        </div>
+        <div class="col-3">
+            <h4>昨日数据源分布</h4>
+            <div >
+                <app-bubble dataId='lastDayResource' textSize='4rem' [data]=lastDayData [radiusFix]=radiusFix></app-bubble>
+            </div>
+
+        </div>
+        <div class="col-12">
+            <h4>文章分类分布</h4>
+            <div >
+                <app-bubble dataId='allTags' [data]=tagsData></app-bubble>
+            </div>
         </div>
     </div>
 </div>

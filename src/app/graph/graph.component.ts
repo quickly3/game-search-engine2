@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphService } from '../api/graph.service';
 import { Datum } from '../interface/Datum';
-import * as json2md from 'json2md';
 
 @Component({
     selector: 'app-graph',
@@ -12,8 +11,13 @@ export class GraphComponent implements OnInit {
     private graphService: GraphService;
     totalData: Datum[] = [];
     lastDayData: Datum[] = [];
+    totalDataFixed: Datum[] = [];
+    lastDayDataFixed: Datum[] = [];
     horizontalData: Datum[] = [];
+    tagsData: Datum[] = [];
     MdData: any;
+
+    radiusFix = (i) => Math.sqrt(i);
 
     constructor(graphService: GraphService) {
         this.graphService = graphService;
@@ -22,6 +26,7 @@ export class GraphComponent implements OnInit {
     ngOnInit() {
         this.getTotalData();
         this.getlastDayData();
+        this.getTagsAgg();
     }
 
     getTotalData() {
@@ -34,6 +39,7 @@ export class GraphComponent implements OnInit {
                 });
             }
             this.totalData = totalData;
+
         });
     }
 
@@ -47,6 +53,12 @@ export class GraphComponent implements OnInit {
                 });
             }
             this.lastDayData = lastDayData;
+        });
+    }
+
+    getTagsAgg() {
+        this.graphService.getTagsAgg({size: 100}).subscribe((data: any) => {
+            this.tagsData = data;
         });
     }
 }

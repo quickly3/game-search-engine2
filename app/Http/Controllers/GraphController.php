@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\GraphService;
 use App\Services\InfoqService;
-
+use App\Services\AuthorService;
+use Illuminate\Http\Request;
 class GraphController extends Controller
 {
 
@@ -59,4 +60,15 @@ class GraphController extends Controller
             "data" => $resp
         ];
     }
+    
+    public function getTagsAgg(Request $request){
+        $author = $request->input("author", "");
+        $source = $request->input("source", "");
+        $size = $request->input("size", 10);
+
+
+        $resp = AuthorService::getAuthorTags($author, $size);
+        return response()->json($resp);
+    }
+
 }

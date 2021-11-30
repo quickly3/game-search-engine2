@@ -51,7 +51,7 @@ export default class PieComponent implements OnInit, OnChanges {
         const pie = d3.pie<Datum>().value((d: any) => d.value);
 
         const arcs = pie(this.data);
-        const _eleSelector = `figure#${this.dataId}`
+        const _eleSelector = `figure#${this.dataId}`;
         this.svg = d3
           .select(_eleSelector)
           .html('');

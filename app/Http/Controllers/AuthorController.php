@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Model\Elastic\ElasticModel;
-use App\Services\AuthorService;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class AuthorController extends Controller
 {

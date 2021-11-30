@@ -21,4 +21,8 @@ export class GraphService {
         return this.http.get('/graph/dailyMd');
     }
 
+    getTagsAgg = (params) => {
+        return this.http.post('/graph/getTagsAgg', params);
+    }
+
 }
