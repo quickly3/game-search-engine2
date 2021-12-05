@@ -14,14 +14,26 @@ D3 是一组精心设计相互协调的工具 [模块集合](https://github.com
     - [1-6 Array Histograms 数组生成直方图相关数据操作方法/1-7 Array Interning D3 内部方法](https://juejin.cn/post/7033030575565111303)
     
 -   [Axes](https://github.com/d3/d3/blob/main/API.md#axes-d3-axis) 轴
+    -  [2.Axes数轴相关](https://juejin.cn/post/7035135155945619492 "2.Axes数轴相关 ")
 -   [Brushes](https://github.com/d3/d3/blob/main/API.md#brushes-d3-brush) 画笔
+    -  [3.笔刷区域相关](https://juejin.cn/post/7035135759581446157 "3.笔刷区域相关")
 -   [Chords](https://github.com/d3/d3/blob/main/API.md#chords-d3-chord) 弦
+    -  [4.弦图操作相关](https://juejin.cn/post/7035135809678704670 "4.弦图操作相关")
 -   [Colors](https://github.com/d3/d3/blob/main/API.md#colors-d3-color) 颜色
+    -  [5.颜色对象相关](https://juejin.cn/post/7035136057377030151 "5.颜色对象相关")
 -   [Color Schemes](https://github.com/d3/d3/blob/main/API.md#color-schemes-d3-scale-chromatic) 配色方案
+    -  [6-1.几类颜色组](https://juejin.cn/post/7035136011394875405 "6-1.几类颜色组")
+    -  [6-2.发散颜色](https://juejin.cn/post/7035135815311163428 "6-2.发散颜色")
+    -  [6-3.有序颜色（单色调）](https://juejin.cn/post/7035135847057850405 "6-3.有序颜色（单色调）")
+    -  [6-4.有序颜色（多色调，环形色调）](https://juejin.cn/post/7035136633221414920 "6-4.有序颜色（多色调，环形色调）")
 -   [Contours](https://github.com/d3/d3/blob/main/API.md#contours-d3-contour) 轮廓
+    -  [7.Contours 轮廊](https://juejin.cn/post/7036615674906542087 "7.Contours 轮廊")
 -   [Voronoi Diagrams](https://github.com/d3/d3/blob/main/API.md#voronoi-diagrams-d3-delaunay) 沃罗诺图
+    -  [8.Voronoi Diagrams 沃罗诺伊图](https://juejin.cn/post/7036615667096764424 "8.Voronoi Diagrams 沃罗诺伊图")
 -   [Dispatches](https://github.com/d3/d3/blob/main/API.md#dispatches-d3-dispatch) 派遣
+    -   [9.dispatch 事件指派](https://juejin.cn/post/7036615681927807012 "9.dispatch 事件指派")
 -   [Dragging](https://github.com/d3/d3/blob/main/API.md#dragging-d3-drag) 拖动
+    -   [10.Dragging 拖拽](https://juejin.cn/post/7036616241984847879 "10.Dragging 拖拽")
 -   [Delimiter-Separated Values](https://github.com/d3/d3/blob/main/API.md#delimiter-separated-values-d3-dsv) 分隔符分隔值
 -   [Easings](https://github.com/d3/d3/blob/main/API.md#easings-d3-ease) 宽松
 -   [Fetches](https://github.com/d3/d3/blob/main/API.md#fetches-d3-fetch) 获取
