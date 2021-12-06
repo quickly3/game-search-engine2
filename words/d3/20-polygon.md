@@ -2,7 +2,7 @@
 
 ## [](https://github.com/d3/d3/blob/main/API.md#polygons-d3-polygon)[Polygons (d3-polygon)](https://github.com/d3/d3-polygon/tree/v3.0.1)
 
-Geometric operations for two-dimensional polygons.
+Geometric operations for two-dimensional polygons.对二维 多边形进行几何 运算。
 
 -   [d3.polygonArea](https://github.com/d3/d3-polygon/blob/v3.0.1/README.md#polygonArea) - compute the area of the given polygon.
 -   [d3.polygonCentroid](https://github.com/d3/d3-polygon/blob/v3.0.1/README.md#polygonCentroid) - compute the centroid of the given polygon.
