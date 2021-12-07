@@ -56,7 +56,7 @@ class GraphController extends Controller
             ],
         ];
         return [
-            "title" => "IT资讯精选（{$yesterday}）",
+            "title" => "每日摸鱼新闻（{$yesterday}）",
             "data" => $resp
         ];
     }
