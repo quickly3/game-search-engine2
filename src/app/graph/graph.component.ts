@@ -16,6 +16,17 @@ export class GraphComponent implements OnInit {
     horizontalData: Datum[] = [];
     tagsData: Datum[] = [];
     MdData: any;
+    graphList = [{
+        id: '1',
+        title: '全部数据分布'
+    }, {
+        id: '2',
+        title: '昨日数据分布'
+    }, {
+        id: '3',
+        title: '文章分类分布'
+    }];
+    activeGraph = this.graphList[0].id;
 
     radiusFix = (i) => Math.sqrt(i);
 
@@ -60,5 +71,9 @@ export class GraphComponent implements OnInit {
         this.graphService.getTagsAgg({size: 100}).subscribe((data: any) => {
             this.tagsData = data;
         });
+    }
+
+    navChange(){
+        console.log(this.activeGraph);
     }
 }

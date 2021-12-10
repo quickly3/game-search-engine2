@@ -1,91 +1,74 @@
 <app-nav></app-nav>
 <div class="container-fluid p-0">
+  <div class="d-flex">
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      class="navbar graph-nav"
+      orientation="vertical"
+      destroyOnHide
+      [(activeId)]="activeGraph"
+    >
+      <li ngbNavItem="1">
+        <a ngbNavLink>全部数据分布</a>
+        <ng-template ngbNavContent>
+            <h4>全部数据分布</h4>
+            <div class="row">
+              <div class="graph-zone col-3">
+                <app-pie dataId="totalData" [data]="totalData"></app-pie>
+              </div>
+              <div class="col-3">
+                <app-bubble
+                  dataId="allResource"
+                  textSize="4rem"
+                  [data]="totalData"
+                  [radiusFix]="radiusFix"
+                ></app-bubble>
+              </div>
+              <ul class="col-3">
+                <li *ngFor="let item of totalData">
+                  <span>{{ item.name }}: {{ item.value }}</span>
+                </li>
+              </ul>
+            </div>
+        </ng-template>
+      </li>
+      <li ngbNavItem="2">
+        <a ngbNavLink>昨日数据分布</a>
+        <ng-template ngbNavContent>  
+          <h4>昨日数据分布</h4>
+          <div class="row">
+            <div class="graph-zone col-3">
+              <app-pie dataId="lastDayData" [data]="lastDayData"></app-pie>
+            </div>
 
-    <div class="d-flex">
-        <ul
-          ngbNav
-          #nav="ngbNav"
-          class="navbar navbar-light"
-          orientation="vertical"
-        >
-          <li ngbNavItem="top">
-            <a ngbNavLink>Top</a>
-            <ng-template ngbNavContent>
-                top
-            </ng-template>
-          </li>
-          <li ngbNavItem="middle">
-            <a ngbNavLink>Middle</a>
-            <ng-template ngbNavContent>
-                middle
-            </ng-template>
-          </li>
-          <li ngbNavItem="bottom">
-            <a ngbNavLink>Bottom</a>
-            <ng-template ngbNavContent>
-                bottom
-            </ng-template>
-          </li>
-        </ul>
-        <div [ngbNavOutlet]="nav" class="ml-4"></div>
-      </div>
-
-  <div class="row">
-    <div class="col-2">
-
-    </div>
-    <div class="col-10"></div>
-  </div>
-  <div class="row">
-    <div class="col-3">
-      <h4>全部数据分布</h4>
-      <div class="graph-zone">
-        <app-pie dataId="totalData" [data]="totalData"></app-pie>
-      </div>
-      <ul>
-        <li *ngFor="let item of totalData">
-          <span>{{ item.name }}: {{ item.value }}</span>
-        </li>
-      </ul>
-    </div>
-    <div class="col-3">
-      <h4>昨日数据分布</h4>
-      <div class="graph-zone">
-        <app-pie dataId="lastDayData" [data]="lastDayData"></app-pie>
-      </div>
-      <ul>
-        <li *ngFor="let item of lastDayData">
-          <span>{{ item.name }}: {{ item.value }}</span>
-        </li>
-      </ul>
-    </div>
-    <div class="col-3">
-      <h4>全部数据源分布</h4>
-      <div>
-        <app-bubble
-          dataId="allResource"
-          textSize="4rem"
-          [data]="totalData"
-          [radiusFix]="radiusFix"
-        ></app-bubble>
-      </div>
-    </div>
-    <div class="col-3">
-      <h4>昨日数据源分布</h4>
-      <div>
-        <app-bubble
-          dataId="lastDayResource"
-          textSize="4rem"
-          [data]="lastDayData"
-          [radiusFix]="radiusFix"
-        ></app-bubble>
-      </div>
-    </div>
-    <div class="col-12">
-      <h4>文章分类分布</h4>
-      <div>
-        <app-bubble dataId="allTags" [data]="tagsData"></app-bubble>
-      </div>
-    </div>
+            <div class="col-3">
+              <app-bubble
+                dataId="lastDayResource"
+                textSize="4rem"
+                [data]="lastDayData"
+                [radiusFix]="radiusFix"
+              ></app-bubble>
+            </div>
+            <ul class="col-3">
+              <li *ngFor="let item of lastDayData">
+                <span>{{ item.name }}: {{ item.value }}</span>
+              </li>
+            </ul>
+          </div>          
+        </ng-template>
+      </li>
+      <li ngbNavItem="3">
+        <a ngbNavLink>文章分类分布</a>
+        <ng-template ngbNavContent>  
+          <div class='row'>
+            <div class="col-9">
+              <app-bubble dataId="allTags" [data]="tagsData"></app-bubble>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="ml-4"></div>
   </div>
 </div>
