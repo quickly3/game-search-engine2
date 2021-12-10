@@ -1,14 +1,39 @@
 .search-header {
     .search-input {
+        .icon-zone{
+            padding-top: 10px;
+            .icon{
+                height: 100%;
+                padding-top: 5px;
+                padding-bottom: 15px;            
+            }
+            .web-title{
+                font-size: 20px;
+                color: #777;
+                padding-left: 10px;                
+            }
+        }
+
         input {
-            width: 200px;
+            width: 100%;
             display: inline-block;
             vertical-align: top;
-            margin-right: 15px;
+            border-radius: 1.3rem;
         }
         .search-zone{
-            width: 300px;
+            // width: 300px;
             margin: 10px auto;
+        }
+        .searchIcon{
+            position: absolute;
+            bottom: 20px;
+            color: #007bff;
+            right: 32px;
+            cursor: pointer;
+            font-size: 18px;            
+        }
+        .search-mode{
+            padding-top: 10px;
         }
         .sort-by{
             display: inline-block;
@@ -46,6 +71,10 @@ a:hover{
         display: inline-block;
     }
 }
+.search-resp{
+    font-size: 12px;
+    color: #777;
+}
 
 .daily_item {
     margin-bottom: 15px;
@@ -53,7 +82,7 @@ a:hover{
 }
 
 .daily_item_title_model {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     word-break: break-all;
 }
 
@@ -64,8 +93,9 @@ a:hover{
 }
 
 .summary {
-    font-size: 14px;
+    font-size: 12px;
     word-break: break-all;
+    color: #666;
     em {
         color: crimson;
         font-style: inherit;
@@ -73,6 +103,7 @@ a:hover{
 }
 
 .title_a{
+    font-size: 20px;
     em {
         color: crimson;
         font-style: inherit;

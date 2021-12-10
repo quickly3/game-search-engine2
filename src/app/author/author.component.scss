@@ -1,14 +1,39 @@
 .search-header {
     .search-input {
+        .icon-zone{
+            padding-top: 10px;
+            .icon{
+                height: 100%;
+                padding-top: 5px;
+                padding-bottom: 15px;            
+            }
+            .web-title{
+                font-size: 20px;
+                color: #777;
+                padding-left: 10px;                
+            }
+        }
+
         input {
-            width: 200px;
+            width: 100%;
             display: inline-block;
             vertical-align: top;
-            margin-right: 15px;
+            border-radius: 1.3rem;
         }
         .search-zone{
-            width: 300px;
+            // width: 300px;
             margin: 10px auto;
+        }
+        .searchIcon{
+            position: absolute;
+            bottom: 20px;
+            color: #007bff;
+            right: 32px;
+            cursor: pointer;
+            font-size: 18px;            
+        }
+        .search-mode{
+            padding-top: 10px;
         }
         .sort-by{
             display: inline-block;

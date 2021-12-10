@@ -2,28 +2,23 @@
 <div class="container-fluid" >
   <div class="search-header">
     <div class="search-input row">
-      <div class="col-md"></div>
-      <div class="col-md">
+      <div class="col-md-2 icon-zone">
+        <img src="/favicon.ico" class="icon" alt="">
+        <span class="web-title">Search Gank</span>
+      </div>
+      <div class="col-md-6">
         <div class="search-zone">
           <input
             id="typeahead-basic"
             type="text"
-            class="form-control form-control-sm"
+            class="form-control form-control-lg"
             [(ngModel)]="queryParams.keywords"
             placeholder="搜索"
           />
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            (click)="authorSearch()"
-          >
-            搜索
-            <fa-icon [icon]="faSearch"></fa-icon>
-          </button>
+          <fa-icon class="searchIcon" [icon]="faSearch" (click)="authorSearch()"></fa-icon>
         </div>
-        
       </div>
-      <div class="col-md">
+      <div class="col-md-4 search-mode">
         <div ngbDropdown class="d-inline-block sort-by">
           <button
             class="btn btn-outline-secondary btn-sm"

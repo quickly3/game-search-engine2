@@ -2,13 +2,16 @@
 <div class="container-fluid" >
   <div class="search-header">
     <div class="search-input row">
-      <div class="col-md"></div>
-      <div class="col-md">
+      <div class="col-md-2 icon-zone"  #collapse="ngbCollapse" [(ngbCollapse)]="hideSearchZone">
+        <img src="/favicon.ico" class="icon" alt="">
+        <span class="web-title">Search Gank</span>
+      </div>
+      <div class="col-md-6">
         <div class="search-zone">
           <input
             id="typeahead-basic"
             type="text"
-            class="form-control form-control-sm"
+            class="form-control form-control-lg"
             [(ngModel)]="queryParams.keywords"
             [focusFirst]="false"
             (keydown)="searchOnKeydown($event)"
@@ -16,17 +19,10 @@
             #instance="ngbTypeahead"
             placeholder="搜索"
           />
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            (click)="keywordSearch()"
-          >
-            搜索
-            <fa-icon [icon]="faSearch"></fa-icon>
-          </button>
+            <fa-icon class="searchIcon" [icon]="faSearch" (click)="keywordSearch()"></fa-icon>
         </div>
       </div>
-      <div class="col-md">
+      <div class="col-md-4 search-mode" >
         <div ngbDropdown class="d-inline-block sort-by">
           <button
             class="btn btn-outline-secondary btn-sm"
@@ -73,13 +69,7 @@
       </div>
     </div>
   </div>
-  <div style="font-size: 12px">
-    找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
-    <strong>{{ took }}</strong> ms） 当前第
-    <strong>{{ queryParams.page }}</strong> 页,共
-    <strong>{{ totalPage }}</strong> 页 数据来源
-    <strong>{{ queryParams.source.text }}</strong>
-  </div>
+
   <div *ngIf="showOldTags" class="tags" [ngClass]="{ 'tags-switch': !showMore }">
     <div
       class="custom-control custom-radio"
@@ -328,6 +318,13 @@
       </div>
     </div>
     <div class="col-md-10">
+      <div class="search-resp">
+        找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
+        <strong>{{ took }}</strong> ms） 当前第
+        <strong>{{ queryParams.page }}</strong> 页,共
+        <strong>{{ totalPage }}</strong> 页 数据来源
+        <strong>{{ queryParams.source.text }}</strong>
+      </div>
       <div class="articleList">
         <div
           class="daily_item_title_model row"
