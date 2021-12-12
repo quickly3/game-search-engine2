@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="graph-zone col-3">
+    <app-pie dataId="totalData" [data]="totalData"></app-pie>
+  </div>
+  <div class="col-3">
+    <app-bubble
+      dataId="allResource"
+      textSize="4rem"
+      [data]="totalData"
+      [radiusFix]="radiusFix"
+    ></app-bubble>
+  </div>
+  <ul class="col-3">
+    <li *ngFor="let item of totalData">
+      <span>{{ item.name }}: {{ item.value }}</span>
+    </li>
+  </ul>
+</div>

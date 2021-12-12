@@ -1,74 +1,18 @@
 <app-nav></app-nav>
-<div class="container-fluid p-0">
-  <div class="d-flex">
-    <ul
-      ngbNav
-      #nav="ngbNav"
-      class="navbar graph-nav"
-      orientation="vertical"
-      destroyOnHide
-      [(activeId)]="activeGraph"
-    >
-      <li ngbNavItem="1">
-        <a ngbNavLink>全部数据分布</a>
-        <ng-template ngbNavContent>
-            <h4>全部数据分布</h4>
-            <div class="row">
-              <div class="graph-zone col-3">
-                <app-pie dataId="totalData" [data]="totalData"></app-pie>
-              </div>
-              <div class="col-3">
-                <app-bubble
-                  dataId="allResource"
-                  textSize="4rem"
-                  [data]="totalData"
-                  [radiusFix]="radiusFix"
-                ></app-bubble>
-              </div>
-              <ul class="col-3">
-                <li *ngFor="let item of totalData">
-                  <span>{{ item.name }}: {{ item.value }}</span>
-                </li>
-              </ul>
-            </div>
-        </ng-template>
-      </li>
-      <li ngbNavItem="2">
-        <a ngbNavLink>昨日数据分布</a>
-        <ng-template ngbNavContent>  
-          <h4>昨日数据分布</h4>
-          <div class="row">
-            <div class="graph-zone col-3">
-              <app-pie dataId="lastDayData" [data]="lastDayData"></app-pie>
-            </div>
-
-            <div class="col-3">
-              <app-bubble
-                dataId="lastDayResource"
-                textSize="4rem"
-                [data]="lastDayData"
-                [radiusFix]="radiusFix"
-              ></app-bubble>
-            </div>
-            <ul class="col-3">
-              <li *ngFor="let item of lastDayData">
-                <span>{{ item.name }}: {{ item.value }}</span>
-              </li>
-            </ul>
-          </div>          
-        </ng-template>
-      </li>
-      <li ngbNavItem="3">
-        <a ngbNavLink>文章分类分布</a>
-        <ng-template ngbNavContent>  
-          <div class='row'>
-            <div class="col-9">
-              <app-bubble dataId="allTags" [data]="tagsData"></app-bubble>
-            </div>
-          </div>
-        </ng-template>
+<div class="container-fluid graph-container p-0 row">
+  <div class="col-2">
+    <ul class="list-group graph-nav">
+      <li 
+        *ngFor="let subGraph of graphList" 
+        class='list-group-item' 
+        [ngClass]="{ active: dynamicComponent.name === subGraph.name }"
+        (click)="subGraphChange(subGraph)">
+        {{subGraph.title}}
       </li>
     </ul>
-    <div [ngbNavOutlet]="nav" class="ml-4"></div>
+  </div>
+  <div class="col-10">
+    <dynamic-sub-graph [dynamicComponent]="dynamicComponent"></dynamic-sub-graph>
   </div>
 </div>
+

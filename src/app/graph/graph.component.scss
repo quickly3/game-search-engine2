@@ -1,17 +1,27 @@
-.graph-zone{
-    width: 400px;
-    height: 400px;
+.graph-container{
+    background: #f3f4fa;
+    min-height: 960px;
 }
-
 .graph-nav{
     align-items: inherit;
     justify-content: start;
     padding: 0;
     width: 250px;
-    .nav-link{
-        color: #666;
+    height: 100%;
+    background-color: #fff;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    .list-group-item{
+        border-top: none;
+        border-bottom: none;
+        font-size: 16px;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
-    .nav-link.active{
-        color: #222;
+    .active{
+        background-color:#43ac6a;
+        border-color:#43ac6a;
     }
 }
+

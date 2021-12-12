@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
-import { NgbModule,NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainPipe } from './pipe/main-pipe.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { GraphComponent } from './graph/graph.component';
 import { NewsComponent } from './news/news.component';
 import { NuMarkdownModule } from '@ng-util/markdown';
 
+import SubGraphComponents from './graph/sub-graph';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +25,9 @@ import { NuMarkdownModule } from '@ng-util/markdown';
     AuthorComponent,
     GraphComponent,
     NewsComponent,
+    ...SubGraphComponents.allComponents
   ],
+  entryComponents: SubGraphComponents.subComponents,
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

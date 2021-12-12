@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="graph-zone col-3">
+    <app-pie dataId="lastDayData" [data]="lastDayData"></app-pie>
+  </div>
+
+  <div class="col-3">
+    <app-bubble
+      dataId="lastDayResource"
+      textSize="4rem"
+      [data]="lastDayData"
+      [radiusFix]="radiusFix"
+    ></app-bubble>
+  </div>
+  <ul class="col-3">
+    <li *ngFor="let item of lastDayData">
+      <span>{{ item.name }}: {{ item.value }}</span>
+    </li>
+  </ul>
+</div>      
