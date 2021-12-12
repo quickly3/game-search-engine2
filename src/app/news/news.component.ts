@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphService } from '../api/graph.service';
-import { Datum } from '../interface/Datum';
 import * as json2md from 'json2md';
 
 @Component({

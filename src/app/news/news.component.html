@@ -4,13 +4,13 @@
         <div class="form-group form-check">
             <div>
                 <input type="checkbox" [checked]="!showRawMd" (click)="switchRaw()" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">切换MarkDown源码</label>
+                <label class="form-check-label" for="exampleCheck1">显示MarkDown源码</label>
                 <button class="btn btn-success btn-sm ml-1" (click)="copyMessage(MdData)" value="click to copy" >复制MarkDown</button>
             </div>
         </div>
         <div *ngIf="showRawMd">
-            <div>
-                <nu-markdown-preview value="{{MdData}}"></nu-markdown-preview>
+            <div *ngIf="MdData">
+                <nu-markdown-preview [value]="MdData"></nu-markdown-preview>
             </div>
         </div>
         <div *ngIf="!showRawMd">
