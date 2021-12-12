@@ -51,6 +51,11 @@
         }
     }
 }
+
+.articleList{
+    margin-top: 18px;
+}
+
 a:hover{
     text-decoration:none
 }
@@ -93,6 +98,9 @@ a:hover{
     display: inline-block;
     margin-right: 0.5rem;
     padding-left: 0;
+    input{
+        cursor: pointer;
+    }
 }
 
 .summary {
@@ -106,7 +114,7 @@ a:hover{
 }
 
 .title_a{
-    font-size: 20px;
+    font-size: 18px;
     em {
         color: crimson;
         font-style: inherit;
