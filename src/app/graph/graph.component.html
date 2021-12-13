@@ -1,18 +1,20 @@
 <app-nav></app-nav>
-<div class="container-fluid graph-container p-0 row">
-  <div class="col-2">
-    <ul class="list-group graph-nav">
-      <li 
-        *ngFor="let subGraph of graphList" 
-        class='list-group-item' 
-        [ngClass]="{ active: dynamicComponent.name === subGraph.name }"
-        (click)="subGraphChange(subGraph)">
-        {{subGraph.title}}
-      </li>
-    </ul>
-  </div>
-  <div class="col-10">
-    <dynamic-sub-graph [dynamicComponent]="dynamicComponent"></dynamic-sub-graph>
+<div class="container-fluid graph-container p-0">
+  <div class="graph-main row">
+    <div class="col-2">
+      <ul class="list-group graph-nav">
+        <li 
+          *ngFor="let subGraph of graphList" 
+          class='list-group-item' 
+          [ngClass]="{ active: dynamicComponent.name === subGraph.name }"
+          (click)="subGraphChange(subGraph)">
+          {{subGraph.title}}
+        </li>
+      </ul>
+    </div>
+    <div class="col-10">
+      <dynamic-sub-graph [dynamicComponent]="dynamicComponent"></dynamic-sub-graph>
+    </div>
   </div>
 </div>
 
