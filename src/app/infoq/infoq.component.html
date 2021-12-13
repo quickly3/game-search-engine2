@@ -328,6 +328,7 @@
       <div class="articleList">
         <div
           class="daily_item_title_model row"
+          [ngClass]="{'mb-1':!showTitleOnly}"
           *ngFor="let daily_item of articleList"
           routerLinkActive="active"
         >

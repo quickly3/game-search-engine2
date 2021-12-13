@@ -60,6 +60,7 @@ export class InfoqComponent {
     wordsCloud: any;
     InfoqService;
     startDateIsInvalid = false;
+    showTitleOnly = false;
     modelChanged = new Subject<string>();
     searchDebounce = new Subject<string>();
     @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
@@ -718,6 +719,7 @@ export class InfoqComponent {
 
     selectDisplayModel = (displayModel: { value: string; label: string }) => {
         this.displayModel = displayModel;
+        this.showTitleOnly = (displayModel.value === 'title');
         this.search();
     }
 }
