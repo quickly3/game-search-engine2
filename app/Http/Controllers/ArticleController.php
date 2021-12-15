@@ -13,4 +13,13 @@ class ArticleController extends Controller
         $article  = new ArticleService();
         return $article->getMonthHistogramBySource("infoq");
     }
+
+    function getHistogram(Request $request){
+        $query = $request->input("query", "*:*");
+        $calendar_interval = $request->input("calendar_interval", "month");
+
+        $article  = new ArticleService();
+        return $article->getHistogram($query, $calendar_interval);
+    }
+
 }

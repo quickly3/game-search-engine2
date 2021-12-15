@@ -66,7 +66,6 @@ class ArticleService
 
         $resp = $es->client->search($params);
         $buckets = $resp['aggregations']['date_histogram']['buckets'];
-        dump($buckets);
         $items = [];
 
         foreach ($buckets as $key => $item) {
@@ -76,5 +75,41 @@ class ArticleService
         return $items;
     }
 
+    public static function getHistogram($query_string = "*:*",$calendar_interval = "month")
+    {
+        $es = new ElasticModel("article", "article");
+        $params = [
+            "index" => "article",
+            "body" =>  [
+                "query" => [
+                    "query_string" => [
+                        "query" => "{$query_string}"
+                    ]
+                ],
+                "aggs" => [
+                    "source_date_histogram" => [
+                        "date_histogram" => [
+                            "field" => "created_at",
+                            "calendar_interval" => $calendar_interval,
+                            "format"=> "yyyy-MM-dd"
+                        ]
+                    ]
+                ],
+                "size" => 0
+            ]
+        ];
 
+        $resp = $es->client->search($params);
+
+        $buckets = $resp['aggregations']['source_date_histogram']['buckets'];
+        $items = [];
+
+        foreach ($buckets as $key => $item) {
+            $items[] = [
+                "date" => $item["key_as_string"],
+                "count" => $item["doc_count"]
+            ];
+        }
+        return $items;
+    }
 }

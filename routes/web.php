@@ -43,9 +43,8 @@ Route::get('infoq/autoComplete', 'InfoqController@autoComplete');
 Route::get('infoq/getTags', 'InfoqController@getTags');
 Route::get('infoq/getCategories', 'InfoqController@getCategories');
 
-
 Route::get('article/index', 'ArticleController@index');
-
+Route::post('article/getHistogram', 'ArticleController@getHistogram');
 
 
 Route::get('fanju/list', 'FanjuController@getList');
