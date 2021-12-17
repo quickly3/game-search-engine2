@@ -4,6 +4,7 @@ import { NavComponent } from './nav/nav.component';
 import HorizontalBarComponent from './graph/horizontal-bar/horizontal-bar.component';
 import PieComponent from './graph/pie/pie.component';
 import BubbleComponent from './graph/bubble/bubble.component';
+import DensityCalendarComponent from './graph/density-calendar/density-calendar.component'
 
 import TagsModalComponent from './modal/tags-modal/tags-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,7 +19,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         HorizontalBarComponent,
         PieComponent,
         TagsModalComponent,
-        BubbleComponent
+        BubbleComponent,
+        DensityCalendarComponent
     ],
     exports: [
         CommonModule,
@@ -26,7 +28,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         HorizontalBarComponent,
         PieComponent,
         TagsModalComponent,
-        BubbleComponent
+        BubbleComponent,
+        DensityCalendarComponent
     ]
 })
 export class ComponentsModule {}
