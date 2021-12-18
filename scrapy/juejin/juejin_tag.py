@@ -7,7 +7,7 @@ import csv
 
 # 导出掘金所有tags
 class TestSpider(scrapy.Spider):
-    name = 'juejin_author_crawl'
+    name = 'juejin_tag_crawl'
     domin = 'https://juejin.cn'
     handle_httpstatus_list = [404, 500]
     file = 'tags.csv'

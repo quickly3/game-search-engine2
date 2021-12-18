@@ -27,6 +27,7 @@ class TestSpider(scrapy.Spider):
             _list = list(reader)
             self.total = len(_list)
             for item in _list:
+                self.current = self.current+1;
                 url = item['author_url']
                 if url.find('juejin.im') == -1 and url.find('juejin.cn') == -1:
                     continue;
@@ -38,7 +39,7 @@ class TestSpider(scrapy.Spider):
 
                     payload = self.getPayload(item)
 
-
+                    print(self.current,'/',self.total)
                     yield JsonRequest(self.api_url, data=payload, callback=lambda response, item=item : self.parse(response, item))
 
     def getPayload(self,item):
@@ -87,6 +88,7 @@ class TestSpider(scrapy.Spider):
         if has_more == True:
             payload = self.getPayload(item)
             yield JsonRequest(self.api_url,data=payload, callback=lambda response, item=item : self.parse(response, item))
+            
         else:
 
             print(item['user_id'] + "Crawler end");
