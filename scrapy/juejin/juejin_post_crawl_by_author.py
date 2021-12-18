@@ -10,7 +10,7 @@ import os
 
 # 根据juejin作者爬取全部文章
 class TestSpider(scrapy.Spider):
-    name = 'juejin_author_crawl'
+    name = 'juejin_post_crawl_by_author'
     domin = 'https://juejin.cn'
     handle_httpstatus_list = [404, 500]
     # list = []
