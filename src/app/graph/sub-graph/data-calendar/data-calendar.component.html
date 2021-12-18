@@ -1,0 +1,19 @@
+<div class="option-zone source-selector">
+    <div
+        class="custom-control custom-radio"
+        *ngFor="let source of sourceList"
+        (click)="selectSource(source)"
+    >
+        <input
+        type="radio"
+        name="sourceRadio"
+        value="{{ source.title }}"
+        [(ngModel)]="this.queryParams.source.title"
+        />
+        <div class="icons {{ source.source_class }}"></div>
+        <span>{{ source.text }}</span>
+    </div>
+</div>
+<div>
+    <app-density-calendar dataId="histogramData" [data]='histogramData'></app-density-calendar>
+</div>

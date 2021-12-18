@@ -6,8 +6,10 @@ import { SubGraph } from './subGraph.directive';
   selector: 'dynamic-sub-graph',
   template: `
               <div class="dynamic-sub-graph">
-                <h3>{{title}}</h3>
-                <ng-template subGraph></ng-template>
+                <div class="container">
+                  <h2>{{title}}</h2>
+                  <ng-template subGraph></ng-template>
+                </div>
               </div>
             `,
   styleUrls: ['./dynamic-sub-graph.component.scss'],

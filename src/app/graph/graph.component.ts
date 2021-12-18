@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GraphService } from '../api/graph.service';
-import { Datum } from '../interface/Datum';
-
 import DynamicComponentList from './sub-graph/dynamic.component.list';
 @Component({
     selector: 'app-graph',
@@ -10,21 +7,8 @@ import DynamicComponentList from './sub-graph/dynamic.component.list';
 })
 export class GraphComponent implements OnInit {
     dynamicComponents: any[];
+    graphList = DynamicComponentList.components;
 
-    graphList = [{
-        id: '1',
-        title: '全部数据分布',
-        name: 'SourceStatistics'
-    }, {
-        id: '2',
-        title: '昨日数据分布',
-        name: 'SourceStatisticsLastDay'
-    }, {
-        id: '3',
-        title: '文章分类分布',
-        name: 'CateStatistics'
-    }];
-    activeGraph = this.graphList[0].id;
     dynamicComponent;
 
     ngOnInit() {

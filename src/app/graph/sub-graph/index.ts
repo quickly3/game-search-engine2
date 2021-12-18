@@ -3,12 +3,15 @@ import { SubGraph } from './subGraph.directive';
 import { SourceStatistics } from './source-statistics/source-statistics.component';
 import { SourceStatisticsLastDay } from './source-statistics-lastday/source-statistics-lastday.component';
 import { CateStatistics } from './cate-statistics/cate-statistics.component';
+import { DataCalendar } from './data-calendar/data-calendar.component';
+
 
 
 const subComponents = [
   SourceStatistics,
   SourceStatisticsLastDay,
-  CateStatistics
+  CateStatistics,
+  DataCalendar
 ];
 
 const allComponents = [

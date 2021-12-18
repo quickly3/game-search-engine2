@@ -12,6 +12,7 @@ import pprint
 
 
 
+# 爬取juejin作者信息
 class TestSpider(scrapy.Spider):
     name = 'juejin_authors_crawl'
     domin = 'https://juejin.cn'

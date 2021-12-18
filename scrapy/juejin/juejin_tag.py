@@ -5,6 +5,7 @@ import json
 import os
 import csv
 
+# 导出掘金所有tags
 class TestSpider(scrapy.Spider):
     name = 'juejin_author_crawl'
     domin = 'https://juejin.cn'

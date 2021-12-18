@@ -8,7 +8,7 @@ import juejin_util
 import os
 
 
-
+# 根据juejin作者爬取全部文章
 class TestSpider(scrapy.Spider):
     name = 'juejin_author_crawl'
     domin = 'https://juejin.cn'
