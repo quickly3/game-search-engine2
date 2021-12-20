@@ -7,7 +7,7 @@ import {
 import { AuthorService } from '../api/author.service';
 import constList from '../infoq/constList';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { faSearch, faRssSquare, faBuilding, faUser,  } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faRssSquare, faBuilding, faUser, faChartBar  } from '@fortawesome/free-solid-svg-icons';
 import { faGithub  } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -29,6 +29,7 @@ export class AuthorComponent {
     faBuilding = faBuilding;
     faUser = faUser;
     faGithub = faGithub;
+    faChartBar = faChartBar
 
     totalNumber: number;
     took: number;
@@ -143,6 +144,7 @@ export class AuthorComponent {
 
                         user.user_url = `https://juejin.cn/user/${user.user_id}`;
                         user.inner_url = `/#/infoq?page=1&row=20&tag=all&source=all&author=${user.user_name}&sortBy=multi`;
+                        user.chart_url = user.inner_url+'&subNavModel=charts';
 
                         if(user.github_verified){
                             user.github_url = `https://github.com/${user.github_nickname}`;
@@ -165,10 +167,7 @@ export class AuthorComponent {
 
     searchOnKeydown(e: { key: string }) {
         if (e.key === 'Enter') {
-            if (this.authorTypehead) {
-                this.authorTypehead.dismissPopup();
-                this.getAuhtors();
-            }
+            this.getAuhtors();
         }
     }
 

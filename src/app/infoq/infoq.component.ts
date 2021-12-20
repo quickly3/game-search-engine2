@@ -114,6 +114,7 @@ export class InfoqComponent {
     ]
 
     curSubNav = this.subNavItems[0];
+    subNavModel = this.curSubNav.name;
     histogramData:any = [];
 
     public screenWidth: any;
@@ -159,7 +160,6 @@ export class InfoqComponent {
         this.updateQueryParamsByUrl();
         this.getTags();
         this.getCategories();
-        this.subNavInit();
     }
     @HostListener('touchstart', ['$event'])
     // @HostListener('touchmove', ['$event'])
@@ -344,6 +344,11 @@ export class InfoqComponent {
             urlParamsCopy.sortBy = this.sortItems.find(i => i.value === urlParamsCopy.sortBy);
         }
 
+        if (urlParamsCopy.subNavModel){
+            this.subNavModel = urlParamsCopy.subNavModel;
+            this.curSubNav = this.subNavItems.find(i => i.name === urlParamsCopy.subNavModel);
+        }
+
         this.queryParams = {...initQueryParams, ...urlParamsCopy};
         this.search();
 
@@ -464,7 +469,8 @@ export class InfoqComponent {
             sortBy: this.queryParams.sortBy.value,
             startDate: this.ngbDateToStr(this.queryParams.startDate),
             endDate: this.ngbDateToStr(this.queryParams.endDate),
-            updateSta: option.updateSta
+            updateSta: option.updateSta,
+            subNavModel: this.subNavModel
         };
     }
 
@@ -761,13 +767,10 @@ export class InfoqComponent {
         this.search();
     }
 
-    subNavInit = () => {
-
-    }
-
     subNavChange = (subNav) => {
         if(this.curSubNav.name !== subNav.name){
             this.curSubNav = subNav;
+            this.subNavModel = this.curSubNav.name;
             this.search();
         }
     }

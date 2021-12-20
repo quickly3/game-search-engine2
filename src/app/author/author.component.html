@@ -13,6 +13,7 @@
             type="text"
             class="form-control form-control-lg"
             [(ngModel)]="queryParams.keywords"
+            (keydown)="searchOnKeydown($event)"
             placeholder="搜索"
           />
           <fa-icon class="searchIcon" [icon]="faSearch" (click)="authorSearch()"></fa-icon>
@@ -59,6 +60,7 @@
                 </a>
                 <div class="media-body">
                   <a href="{{author.inner_url}}" target="_blank" ><h6 class="mt-0">{{author.user_name}}</h6></a>
+                
                     <div class='info_field'>
                         <span class="mr-3">文章数：{{author.post_article_count}}</span>
                         <span class="mr-3">掘力值：{{author.power}}</span>
@@ -66,6 +68,9 @@
                     <div class='info_field'>
                         <span class="mr-3">注册时间：{{author.register_time*1000 | date:'yyyy-MM-dd'}}</span>
                         <span class="mr-3">Level：{{author.level}}</span>
+                    </div>
+                    <div>
+                      <a href="{{author.chart_url}}" target="_blank" ><fa-icon class="text-success" alt='用户投稿日历' [icon]="faChartBar"></fa-icon></a>
                     </div>
                     <div *ngIf="author.job_title" class='info_field'>
                         <fa-icon class="fa_icon mr-1" [icon]="faUser"></fa-icon>

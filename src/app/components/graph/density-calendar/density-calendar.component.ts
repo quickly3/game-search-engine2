@@ -23,6 +23,12 @@ export default class DensityCalendarComponent {
     ngOnChanges(): void {
         this.mainSelector = `figure#${this.dataId}`;
         if (this.data && this.data.length > 0){
+            this.data = this.data.map(d=>{
+              return {
+                ...d,
+                count:d.count === 0?undefined:d.count
+              }
+            })
             this.data = this.data.map(d => {
                 return {
                     ...d,
@@ -34,12 +40,15 @@ export default class DensityCalendarComponent {
     }
 
     drawPlot(): void {
+        if(!d3.select(this.mainSelector).node()){
+          return null;
+        }
         d3.select(this.mainSelector).html('');
         const svgNode = this.legend({
             color: d3.scaleSequentialLog(
               // d3.extent(this.data, d => d.count),
               [50, d3.max(this.data, d => d.count)],
-              d3.interpolateGnBu
+              d3.interpolateYlGnBu
             ),
             tickFormat: '.0s',
             title: this.plotText.legendTitle
@@ -55,7 +64,7 @@ export default class DensityCalendarComponent {
               // console.log(Plot.formatWeekday()(t))
               return weekMap[t];
             } },
-            color: { scheme: 'gnbu', type: 'log' },
+            color: { scheme: 'ylgnbu', type: 'log' },
             marks: [
               Plot.cell(this.data, {
                 x: d => d3.utcWeek.count(d3.utcYear(d.date), d.date),
