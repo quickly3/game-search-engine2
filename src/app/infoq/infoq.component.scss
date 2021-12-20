@@ -330,3 +330,32 @@ a:hover{
     }
 }
 
+.sub-nav{
+    border-bottom: 1px solid rgb(235 235 235);
+    margin-bottom: 10px;
+}
+
+.content-type-nav{
+    .nav-item{
+        padding: 0.2rem 1rem 0 0;
+    }
+    .nav-link{
+        font-size: 12px;
+        color: #5f6368;
+        padding: 0;
+    }
+    .nav-link.active{
+        color: #1a73e8;
+        .sub-nav-icon{
+            color: #34a853;
+        }
+    }
+    .sub-nav-bottom{
+        background: #1a73e8;
+        height: 3px;
+        margin-top: 5px;
+    }
+    .sub-nav-icon{
+        padding-right: 5px;
+    }
+}

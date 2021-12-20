@@ -69,7 +69,20 @@
       </div>
     </div>
   </div>
-
+  <div class="sub-nav">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-6 content-type-nav">
+        <ul class="nav">
+          <li class="nav-item" *ngFor="let subNavItem of subNavItems">
+            <a class="nav-link" [ngClass]="{ active:curSubNav.name === subNavItem.name}" data-bs-toggle="tab" (click)="subNavChange(subNavItem)" href="javascript:void(0)"><fa-icon class='sub-nav-icon' [icon]="subNavItem.icon"></fa-icon>{{subNavItem.text}}</a>
+            <div *ngIf="curSubNav.name === subNavItem.name" class="sub-nav-bottom"></div>
+          </li>
+        </ul>      
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
   <div *ngIf="showOldTags" class="tags" [ngClass]="{ 'tags-switch': !showMore }">
     <div
       class="custom-control custom-radio"
@@ -318,108 +331,113 @@
       </div>
     </div>
     <div class="col-md-10">
-      <div class="search-resp">
-        找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
-        <strong>{{ took }}</strong> ms） 当前第
-        <strong>{{ queryParams.page }}</strong> 页,共
-        <strong>{{ totalPage }}</strong> 页 数据来源
-        <strong>{{ queryParams.source.text }}</strong>
-      </div>
-      <div class="articleList">
-        <div
-          class="daily_item_title_model row"
-          [ngClass]="{'mb-1':!showTitleOnly}"
-          *ngFor="let daily_item of articleList"
-          routerLinkActive="active"
-        >
+      <div *ngIf="curSubNav.name === 'articles'" class='articles'>
+        <div class="search-resp">
+          找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
+          <strong>{{ took }}</strong> ms） 当前第
+          <strong>{{ queryParams.page }}</strong> 页,共
+          <strong>{{ totalPage }}</strong> 页 数据来源
+          <strong>{{ queryParams.source.text }}</strong>
+        </div>
+        <div class="articleList">
           <div
-            *ngIf="displayModel.value === 'title'"
-            class="des_zone col-md-10 col-sm-12"
+            class="daily_item_title_model row"
+            [ngClass]="{'mb-1':!showTitleOnly}"
+            *ngFor="let daily_item of articleList"
+            routerLinkActive="active"
           >
-            <div>
-              <span class="icons-sm {{ daily_item.badge_class }}"></span>
-              <span class="created" *ngIf="daily_item.created_at">{{
-                daily_item.created_at | date: "yyyy-MM-dd"
-              }}</span>
-              <a
-                class="title_a"
-                [href]="daily_item.url"
-                target="_blank"
-                [innerHtml]="daily_item.title"
-              ></a>
+            <div
+              *ngIf="displayModel.value === 'title'"
+              class="des_zone col-md-10 col-sm-12"
+            >
+              <div>
+                <span class="icons-sm {{ daily_item.badge_class }}"></span>
+                <span class="created" *ngIf="daily_item.created_at">{{
+                  daily_item.created_at | date: "yyyy-MM-dd"
+                }}</span>
+                <a
+                  class="title_a"
+                  [href]="daily_item.url"
+                  target="_blank"
+                  [innerHtml]="daily_item.title"
+                ></a>
+              </div>
             </div>
-          </div>
-          <div
-            *ngIf="displayModel.value === 'summary'"
-            class="des_zone col-md-10 col-sm-12"
-          >
-            <div>
-              <a
-                class="title_a"
-                [href]="daily_item.url"
-                target="_blank"
-                [innerHtml]="daily_item.title"
-              ></a>
-            </div>
-            <div class="summary" [innerHtml]="daily_item.summary"></div>
-            <div>
-              <div class="icons-sm {{ daily_item.badge_class }}"></div>
-              <span class="created" *ngIf="daily_item.created_at">{{
-                daily_item.created_at | date: "yyyy-MM-dd"
-              }}</span>
-              <a
-                class="author"
-                *ngIf="daily_item.author"
-                (click)="searchByAuthorName(daily_item.author)"
-                href="javascript:void(0)"
-                >{{ daily_item.author }}</a
-              >
-              <a
-                *ngIf="daily_item.author_url"
-                target="_blank"
-                href="{{ daily_item.author_url }}"
-                ><fa-icon class="author authorSeatch" [icon]="faLink"></fa-icon
-              ></a>
-              <span
-                class="badge badge-primary article_tag"
-                *ngFor="let tag of daily_item.tag"
-                >{{ tag }}
-              </span>
-              <span class='delimiter' *ngIf="daily_item.category" > | </span>
-              <span
-                class="badge badge-info article_tag"
-                >{{ daily_item.category }}</span
-              >
-              
-            </div>
-            <div class="link">
-              <fa-icon class="user_icon" [icon]="faEye"></fa-icon>
-              <span class="user_count">{{ daily_item.view_count || 0 }}</span>
-              <fa-icon class="user_icon" [icon]="faThumbsUp"></fa-icon>
-              <span class="user_count">{{ daily_item.digg_count || 0 }}</span>
-              <fa-icon class="user_icon" [icon]="faComment"></fa-icon>
-              <span class="user_count">{{ daily_item.comment_count || 0 }}</span>
-              <fa-icon class="user_icon" [icon]="faStar"></fa-icon>
-              <span class="user_count">{{ daily_item.collect_count || 0 }}</span>              
-              <span class="text-secondary">{{
-                daily_item.url | slice: 0:100
-              }}</span>
+            <div
+              *ngIf="displayModel.value === 'summary'"
+              class="des_zone col-md-10 col-sm-12"
+            >
+              <div>
+                <a
+                  class="title_a"
+                  [href]="daily_item.url"
+                  target="_blank"
+                  [innerHtml]="daily_item.title"
+                ></a>
+              </div>
+              <div class="summary" [innerHtml]="daily_item.summary"></div>
+              <div>
+                <div class="icons-sm {{ daily_item.badge_class }}"></div>
+                <span class="created" *ngIf="daily_item.created_at">{{
+                  daily_item.created_at | date: "yyyy-MM-dd"
+                }}</span>
+                <a
+                  class="author"
+                  *ngIf="daily_item.author"
+                  (click)="searchByAuthorName(daily_item.author)"
+                  href="javascript:void(0)"
+                  >{{ daily_item.author }}</a
+                >
+                <a
+                  *ngIf="daily_item.author_url"
+                  target="_blank"
+                  href="{{ daily_item.author_url }}"
+                  ><fa-icon class="author authorSeatch" [icon]="faLink"></fa-icon
+                ></a>
+                <span
+                  class="badge badge-primary article_tag"
+                  *ngFor="let tag of daily_item.tag"
+                  >{{ tag }}
+                </span>
+                <span class='delimiter' *ngIf="daily_item.category" > | </span>
+                <span
+                  class="badge badge-success article_tag"
+                  >{{ daily_item.category }}</span
+                >
+                
+              </div>
+              <div class="link">
+                <fa-icon class="user_icon" [icon]="faEye"></fa-icon>
+                <span class="user_count">{{ daily_item.view_count || 0 }}</span>
+                <fa-icon class="user_icon" [icon]="faThumbsUp"></fa-icon>
+                <span class="user_count">{{ daily_item.digg_count || 0 }}</span>
+                <fa-icon class="user_icon" [icon]="faComment"></fa-icon>
+                <span class="user_count">{{ daily_item.comment_count || 0 }}</span>
+                <fa-icon class="user_icon" [icon]="faStar"></fa-icon>
+                <span class="user_count">{{ daily_item.collect_count || 0 }}</span>              
+                <span class="text-secondary">{{
+                  daily_item.url | slice: 0:100
+                }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="pagination">
-        <ngb-pagination
-          class="navigation"
-          [collectionSize]="totalNumber"
-          [(page)]="queryParams.page"
-          [pageSize]="queryParams.row"
-          [maxSize]="5"
-          [ellipses]="false"
-          size="sm"
-          (pageChange)="pageChange()"
-        ></ngb-pagination>
+        <div class="pagination">
+          <ngb-pagination
+            class="navigation"
+            [collectionSize]="totalNumber"
+            [(page)]="queryParams.page"
+            [pageSize]="queryParams.row"
+            [maxSize]="5"
+            [ellipses]="false"
+            size="sm"
+            (pageChange)="pageChange()"
+          ></ngb-pagination>
+        </div>
+      </div>
+      <div *ngIf="curSubNav.name === 'charts'" class='graph'>
+        <app-density-calendar dataId="histogramData" [data]='histogramData'></app-density-calendar>
       </div>
     </div>
   </div>

@@ -30,8 +30,10 @@ import {
     faLink, faTags, faTimes,
     faThumbsUp, faEye,
     faComment, faStar,
-    faWrench
+    faWrench, faFileAlt,
+    faChartBar
 } from '@fortawesome/free-solid-svg-icons';
+
 import constList from './constList';
 
 @Component({
@@ -43,6 +45,8 @@ import constList from './constList';
 export class InfoqComponent {
     faCalendarAlt = faCalendarAlt;
     faSearch = faSearch;
+    faFileAlt = faFileAlt;
+    faChartBar = faChartBar;
     faLink = faLink;
     faThumbsUp = faThumbsUp;
     faComment = faComment;
@@ -96,7 +100,21 @@ export class InfoqComponent {
 
     defaultTouch = { x: 0, y: 0, time: 0 };
 
+    subNavItems = [
+        {
+            name:"articles",
+            text:"文章",
+            icon:faFileAlt,
+        },
+        {
+            name:"charts",
+            text:"数据可视化",
+            icon:faChartBar,
+        }
+    ]
 
+    curSubNav = this.subNavItems[0];
+    histogramData:any = [];
 
     public screenWidth: any;
     public screenHeight: any;
@@ -141,6 +159,7 @@ export class InfoqComponent {
         this.updateQueryParamsByUrl();
         this.getTags();
         this.getCategories();
+        this.subNavInit();
     }
     @HostListener('touchstart', ['$event'])
     // @HostListener('touchmove', ['$event'])
@@ -237,7 +256,6 @@ export class InfoqComponent {
 
     tagsModalClosed = ($e) => {
         this.tagsModalOpened = false;
-        console.log($e);
         if ($e){
             this.queryParams.selectTags = $e;
             this.search();
@@ -281,14 +299,11 @@ export class InfoqComponent {
 
     categoriesModalClosed = ($e) => {
         this.categoriesModalOpened = false;
-        console.log($e);
         if ($e){
             this.queryParams.selectCategories = $e;
             this.search();
         }
     }
-
-
 
     updateQueryParamsByUrl(): void{
         const initQueryParams = this.getInitQueryParams();
@@ -487,9 +502,33 @@ export class InfoqComponent {
     }
 
     search = (option = {updateSta: true}) => {
+
+        if(this.curSubNav.name === 'articles' ){
+            this.searchArticles(option);
+        }
+
+        if(this.curSubNav.name === 'charts' ){
+            this.searchCharts(option);
+        }
+
+        this.getWordsCloud();
+    }
+
+    searchCharts = (option = {updateSta: true}) =>{
+
         const queryStringParams = this.getQueryParams(option);
         this.setQueryParamsToUrl(queryStringParams);
+        this.InfoqService.getArticleHistogram(queryStringParams).subscribe(
+            (resp: { [x: string]: any }) => {
+                this.histogramData = resp.data;
+            }
+        );
+    }
 
+     searchArticles = (option = {updateSta: true}) =>{
+
+        const queryStringParams = this.getQueryParams(option);
+        this.setQueryParamsToUrl(queryStringParams);
         this.InfoqService.getDailyList(queryStringParams).subscribe(
             (data: { [x: string]: any }) => {
                 this.articleList = data.data;
@@ -532,9 +571,8 @@ export class InfoqComponent {
                 }
             }
         );
-
-        this.getWordsCloud();
     }
+
 
     handleTags = (tags) => {
         let total = 0;
@@ -721,5 +759,16 @@ export class InfoqComponent {
         this.displayModel = displayModel;
         this.showTitleOnly = (displayModel.value === 'title');
         this.search();
+    }
+
+    subNavInit = () => {
+
+    }
+
+    subNavChange = (subNav) => {
+        if(this.curSubNav.name !== subNav.name){
+            this.curSubNav = subNav;
+            this.search();
+        }
     }
 }

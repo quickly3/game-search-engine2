@@ -31,6 +31,10 @@ export class InfoqService {
         return this.http.post('/infoq/getDailyList', params);
     }
 
+    getArticleHistogram = (params: { page: string; keywords: string; tag: string; source: string; startDate: NgbDateStruct | undefined; endDate: NgbDateStruct | undefined; sortBy: { value: string; label: string; }; }) => {
+        return this.http.post('/infoq/getArticleHistogram', params);
+    }
+
     starsChange = (params: any) => {
         return this.http.post('/infoq/starsChange', { params });
     }
