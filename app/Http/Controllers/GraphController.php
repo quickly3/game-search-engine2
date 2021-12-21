@@ -66,7 +66,6 @@ class GraphController extends Controller
         $source = $request->input("source", "");
         $size = $request->input("size", 10);
 
-
         $resp = AuthorService::getAuthorTags($author, $size);
         return response()->json($resp);
     }

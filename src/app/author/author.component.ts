@@ -7,7 +7,10 @@ import {
 import { AuthorService } from '../api/author.service';
 import constList from '../infoq/constList';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { faSearch, faRssSquare, faBuilding, faUser, faChartBar  } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faRssSquare, 
+        faBuilding, faUser, 
+        faChartBar ,faAngleDoubleDown, faAngleDoubleUp 
+    } from '@fortawesome/free-solid-svg-icons';
 import { faGithub  } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -30,6 +33,8 @@ export class AuthorComponent {
     faUser = faUser;
     faGithub = faGithub;
     faChartBar = faChartBar
+    faAngleDoubleDown = faAngleDoubleDown
+    faAngleDoubleUp = faAngleDoubleUp
 
     totalNumber: number;
     took: number;
@@ -143,7 +148,7 @@ export class AuthorComponent {
                         }
 
                         user.user_url = `https://juejin.cn/user/${user.user_id}`;
-                        user.inner_url = `/#/infoq?page=1&row=20&tag=all&source=all&author=${user.user_name}&sortBy=multi`;
+                        user.inner_url = `/#/infoq?page=1&row=20&tag=all&source=juejin&author=${user.user_name}&sortBy=multi`;
                         user.chart_url = user.inner_url+'&subNavModel=charts';
 
                         if(user.github_verified){
@@ -175,4 +180,19 @@ export class AuthorComponent {
         this.getAuhtors();
     }
 
+    switchTags = (author) => {
+        author.tagsOpened = !author.tagsOpened;
+    }
+
+    clickTag = (user, tag) => {
+        const url = user.inner_url + `&selectTags=${tag.key}`;
+        window.open(url, "_blank");
+    }
+
+    clickCate = (user, cate) => {
+        const url = user.inner_url + `&selectCategories=${cate.key}`;
+        window.open(url, "_blank");
+    }
+
+    
 }

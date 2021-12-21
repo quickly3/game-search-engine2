@@ -79,4 +79,26 @@ a:hover{
         max-width: 300px;
         display: inline-block;
     }
+    .badge{
+        color: #FFF;
+        margin: 0 4px 1px 0;
+        cursor: pointer;
+        border: 1px solid #fff;
+    }
+    .badge:hover{
+        border: 1px solid #888;
+    }
+}
+.tags_zone_close{
+    max-height: 40px;
+    overflow: hidden;
+    transition:height 1s;
+}
+
+.tags_zone {
+    .fa_icon{
+        position: absolute;
+        left: 56px;
+        cursor: pointer;
+    }
 }

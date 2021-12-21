@@ -629,8 +629,6 @@ export class InfoqComponent {
 
     selectSource = (source: any) => {
         this.queryParams.source = source;
-        this.queryParams.author = '';
-        this.queryParams.tag = 'all';
         this.queryParams.page = 1;
         this.search();
     }

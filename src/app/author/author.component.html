@@ -69,6 +69,14 @@
                         <span class="mr-3">注册时间：{{author.register_time*1000 | date:'yyyy-MM-dd'}}</span>
                         <span class="mr-3">Level：{{author.level}}</span>
                     </div>
+                    <div class='info_field tags_zone' [ngClass]="{tags_zone_close:!author.tagsOpened}">
+                      <fa-icon *ngIf="author.tagsOpened" class="fa_icon mr-1 text-primary" [icon]=faAngleDoubleUp (click)="switchTags(author)" ></fa-icon>
+                      <fa-icon *ngIf="!author.tagsOpened" class="fa_icon mr-1 text-primary" [icon]=faAngleDoubleDown (click)="switchTags(author)" ></fa-icon>
+                      <span *ngFor="let tag of author.article_tags" class="badge rounded-pill bg-success" (click)="clickTag(author,tag)">{{tag.key}}:{{tag.doc_count}}</span>
+                    </div>
+                    <div class='info_field'>
+                      <span *ngFor="let cate of author.article_cates" class="badge rounded-pill bg-warning" (click)="clickCate(author,cate)">{{cate.key}}:{{cate.doc_count}}</span>
+                    </div>
                     <div>
                       <a href="{{author.chart_url}}" target="_blank" ><fa-icon class="text-success" alt='用户投稿日历' [icon]="faChartBar"></fa-icon></a>
                     </div>
@@ -94,8 +102,8 @@
                     </div>
                     <div class='info_field'>{{author.description || '这个人很懒，什么都没有写'}}</div>
                 </div>
+              </div>
             </div>
-        </div>
         <div class="pagination">
             <ngb-pagination
             class="navigation"
