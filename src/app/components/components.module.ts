@@ -5,6 +5,7 @@ import HorizontalBarComponent from './graph/horizontal-bar/horizontal-bar.compon
 import PieComponent from './graph/pie/pie.component';
 import BubbleComponent from './graph/bubble/bubble.component';
 import DensityCalendarComponent from './graph/density-calendar/density-calendar.component'
+import WordCloudComponent from './graph/word-cloud/word-cloud.component'
 
 import TagsModalComponent from './modal/tags-modal/tags-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -20,7 +21,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         PieComponent,
         TagsModalComponent,
         BubbleComponent,
-        DensityCalendarComponent
+        DensityCalendarComponent,
+        WordCloudComponent
     ],
     exports: [
         CommonModule,
@@ -29,7 +31,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         PieComponent,
         TagsModalComponent,
         BubbleComponent,
-        DensityCalendarComponent
+        DensityCalendarComponent,
+        WordCloudComponent
     ]
 })
 export class ComponentsModule {}

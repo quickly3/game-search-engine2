@@ -19,7 +19,7 @@ class InfoqService
         return $index->updateById($id, $body);
     }
 
-    public static function genWordsCloud($tag, $source)
+    public static function genWordsCloud($tag, $source ,$size = 100)
     {
         $cloud_words = [];
 
@@ -34,7 +34,7 @@ class InfoqService
                 "title_words_cloud" => [
                     "terms" => [
                         "field" => "title.text_cn",
-                        "size" => 100
+                        "size" => $size
                     ]
                 ]
             ],
@@ -62,11 +62,17 @@ class InfoqService
             return (object) $item;
         }, $cloud_words);
 
-        $stop_words = [
-            "基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018","10",
-            "php", "python", "javascript", "js", "css", "linux", "node","postgresql", "typescript",
-            "java", "vue", "web","react"
-        ];
+
+        $stop_words = file(app_path().'/Services/stopwords.txt');
+        $stop_words = array_map(function($word){
+            return trim($word);
+        },$stop_words);
+
+        // $stop_words = [
+        //     "基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018","10",
+        //     "php", "python", "javascript", "js", "css", "linux", "node","postgresql", "typescript",
+        //     "java", "vue", "web","react"
+        // ];
 
         $cloud_words = array_filter($cloud_words, function ($item) use ($stop_words) {
 

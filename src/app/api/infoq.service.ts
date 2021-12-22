@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 export class InfoqService {
     constructor(private http: HttpClient) {}
 
-    getWordsCloud = (params: { tag: string; source: string; }) => {
+    getWordsCloud = (params) => {
         return this.http.get('/infoq/getWordsCloud', { params });
     }
 

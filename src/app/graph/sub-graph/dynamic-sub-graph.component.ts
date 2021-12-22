@@ -19,10 +19,12 @@ export class DynamicSubGraph implements OnInit, OnChanges {
   @ViewChild(SubGraph, {static: true}) subGraph: SubGraph;
   title;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+  ) { }
 
   ngOnInit() {
-    // this.loadComponent();
+    
   }
 
   ngOnChanges(): void {

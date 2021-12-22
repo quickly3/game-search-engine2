@@ -22,7 +22,6 @@ export class DataCalendar {
   radiusFix = (i) => Math.sqrt(i);
   ngOnInit() {
     this.getHistogram();
-    console.log(this.sourceList);
   }
 
   selectSource(source: any){
@@ -31,8 +30,6 @@ export class DataCalendar {
   }
 
   getHistogram(){
-    console.log(this.queryParams.source.title);
-
     let sourceStr = 'source:*';
     if (this.queryParams.source.title !== 'all'){
       sourceStr = `source:${this.queryParams.source.title}`;

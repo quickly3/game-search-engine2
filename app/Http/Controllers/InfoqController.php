@@ -27,9 +27,11 @@ class InfoqController extends Controller
 
         $tag = strtolower($request->input("tag", "all"));
         $source = strtolower($request->input("source", "all"));
+        $size = $request->input("size", "100");
+
 
         $tag = $tag == "Postgresql" ? "PostgreSQL" : $tag;
-        $words_cloud = InfoqService::genWordsCloud($tag, $source);
+        $words_cloud = InfoqService::genWordsCloud($tag, $source ,$size);
 
         return response()->json($words_cloud);
     }
