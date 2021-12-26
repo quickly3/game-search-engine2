@@ -83,6 +83,8 @@ export default class DensityCalendarComponent {
             marginBottom: 35,
             style: { background: '#fff' }
           });
+
+        console.log(plot);
         d3.select(this.mainSelector).node().append(plot);
     }
 

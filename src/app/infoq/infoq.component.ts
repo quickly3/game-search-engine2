@@ -114,7 +114,7 @@ export class InfoqComponent {
         },
         {
             name:"cloud",
-            text:"词云",
+            text:"标题词云",
             icon:faCloud,
         }
     ]
@@ -804,6 +804,7 @@ export class InfoqComponent {
 
         if(this.queryParams.keywords){
             this.queryParams.keywords += ` ${cloudText}`;
+            // this.queryParams.keywords = this.queryParams.keywords.replace(/ {2,}/g,' ')
         }else{
             this.queryParams.keywords = cloudText;
         }
@@ -812,7 +813,7 @@ export class InfoqComponent {
     }
 
     removeSelectCloudWord = (txt) => {
-        this.queryParams.keywords = this.queryParams.keywords.replace(txt, '');
+        this.queryParams.keywords = this.queryParams.keywords.replace(txt, '').trim();
         this.search();            
     }
 }
