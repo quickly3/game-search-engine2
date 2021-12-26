@@ -440,7 +440,12 @@
         <app-density-calendar dataId="histogramData" [data]='histogramData'></app-density-calendar>
       </div>
       <div *ngIf="curSubNav.name === 'cloud'" class='graph'>
-        <app-word-cloud dataId="cloudData" [words]='cloudData'></app-word-cloud>
+        <div>
+          <span class="badge rounded-pill bg-success cloud-word-badge" *ngFor="let word of selectCloudWords">{{word}} 
+            <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectCloudWord(word)"></fa-icon>
+          </span>
+        </div>
+        <app-word-cloud dataId="cloudData" [clickTextFunc]='clickCloudText' [words]='cloudData'></app-word-cloud>
       </div>
     </div>
   </div>

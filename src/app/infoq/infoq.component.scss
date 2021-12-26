@@ -238,9 +238,10 @@ a:hover{
     font-size: 10px;
 }
 
-.tags-badge{
+.tags-badge,.cloud-word-badge{
     margin-right: 5px;
-    
+    color: #fff;
+    cursor: pointer;
     .closeBadge{
         font-size: 12px;
         padding-left: 3px;
@@ -286,4 +287,8 @@ a:hover{
     .sub-nav-icon{
         padding-right: 5px;
     }
+}
+
+.cloud-cell{
+    cursor: pointer;
 }

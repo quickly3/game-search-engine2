@@ -109,7 +109,7 @@ export class InfoqComponent {
         },
         {
             name:"charts",
-            text:"数据可视化",
+            text:"文章日历",
             icon:faChartBar,
         },
         {
@@ -123,6 +123,7 @@ export class InfoqComponent {
     subNavModel = this.curSubNav.name;
     histogramData:any = [];
     cloudData = []
+    selectCloudWords = []
 
     public screenWidth: any;
     public screenHeight: any;
@@ -393,7 +394,7 @@ export class InfoqComponent {
             tag: this.queryParams.tag,
             source: this.queryParams.source.title,
         }).subscribe((wordsCloud: any) => {
-            this.wordsCloud = wordsCloud;
+            this.wordsCloud = wordsCloud; 
         });
     }
 
@@ -511,7 +512,6 @@ export class InfoqComponent {
             relativeTo: this.route,
             queryParams: nativeParams,
         });
-
     }
 
     search = (option = {updateSta: true}) => {
@@ -526,6 +526,9 @@ export class InfoqComponent {
 
         if(this.curSubNav.name === 'cloud' ){
             this.searchCloudWords(option);
+            if(this.queryParams.keywords && this.queryParams.keywords.trim() !== ''){
+                this.selectCloudWords = this.queryParams.keywords.replace(/ {2,}/g,' ').trim().split(" ");
+            }
         }
 
         this.getWordsCloud();
@@ -792,5 +795,30 @@ export class InfoqComponent {
             this.subNavModel = this.curSubNav.name;
             this.search();
         }
+    }
+
+    clickCloudText = (cloudText) =>{
+        // const urlTree = this.router.parseUrl(this.router.url);
+
+        // if(urlTree.queryParams.keywords){
+        //     urlTree.queryParams.keywords += ` ${cloudText}`;
+        // }else{
+        //     urlTree.queryParams.keywords = cloudText;
+        // }
+
+        // window.open('/#'+ urlTree.toString(), "_blank"); 
+
+        if(this.queryParams.keywords){
+            this.queryParams.keywords += ` ${cloudText}`;
+        }else{
+            this.queryParams.keywords = cloudText;
+        }
+
+        this.search();
+    }
+
+    removeSelectCloudWord = (txt) => {
+        this.queryParams.keywords = this.queryParams.keywords.replace(txt, '');
+        this.search();
     }
 }

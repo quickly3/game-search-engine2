@@ -13,6 +13,8 @@ export default class WordCloudComponent implements OnInit {
   @Input() words: any[] = [];
   private svg: any;
   @Input() dataId = 'defaultId';
+  @Input() clickTextFunc = null;
+
   mainSelector
   maxCount
   maxSize = 40;
@@ -38,7 +40,7 @@ export default class WordCloudComponent implements OnInit {
 
     const svg = this.WordCloud(this.words, {
         width: 1280,
-        height: 800,
+        height: 600,
       });
 
     d3.select(this.mainSelector).html('');
@@ -106,8 +108,15 @@ export default class WordCloudComponent implements OnInit {
         g.append("text")
           .attr("font-size", size)
           .attr("fill",curColor)
+          .attr("class","cloud-cell")
           .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
-          .text(text);
+          .text(text)
+          .on('click',(e)=>{
+            if(this.clickTextFunc){
+              // console.log(e.target.textContent)
+              this.clickTextFunc(e.target.textContent);
+            }
+          })
       });
 
     cloud.start();

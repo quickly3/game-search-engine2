@@ -467,6 +467,12 @@ class InfoqService
         return $data;
     }
 
+
+    public static function escapeElasticReservedChars($string) {
+        $regex = "/[\\+\\-\\=\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\<\\>\\?\\:\\\\\\/]/";
+        return preg_replace($regex, addslashes('\\$0'), $string);
+    }
+
     public static function articlesQueryBuilder(Request $request){
 
         $keywords = $request->input("keywords", "*");
@@ -482,10 +488,12 @@ class InfoqService
         $digg_count = $request->input("digg_count", null);
         $view_count = $request->input("view_count", null);
 
+        $keywords = SELF::escapeElasticReservedChars($keywords);
+
         if ($keywords == '*' || !$keywords) {
             $query_string = "*:*";
         }else{
-            $query_string = "(title.text_cn:'{$keywords}' OR title.text_cn:\"{$keywords}\" OR summary.text_cn:'{$keywords}' OR summary.text_cn:\"{$keywords}\") ";
+            $query_string = "(title:'{$keywords}' OR title.text_cn:'{$keywords}' OR title.text_cn:\"{$keywords}\" OR summary:'{$keywords}' OR summary:\"{$keywords}\") ";
         }
 
         if(count($selectTags)){
