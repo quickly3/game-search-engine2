@@ -104,7 +104,8 @@ export default class WordCloudComponent implements OnInit {
       .fontSize((d) => Math.sqrt(d.size) * fontScale)
       .on("word", (d:any) => {
         const { size, x, y, rotate, text, sizeRate} = d;
-        const curColor = d3.interpolateViridis(1-sizeRate);
+        // const curColor = d3.interpolateViridis(1-sizeRate);
+        const curColor = d3.schemeCategory10[Math.ceil(Math.random()*10)]
         g.append("text")
           .attr("font-size", size)
           .attr("fill",curColor)

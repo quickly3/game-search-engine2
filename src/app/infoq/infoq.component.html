@@ -163,9 +163,9 @@
           ></app-tags-modal>
         </div>
         <div>
-            <span *ngFor="let tag of queryParams.selectTags" class="badge badge-success tags-badge" >
+            <span *ngFor="let tag of queryParams.selectTags" class="badge badge-success tags-badge" (click)="removeSelectTag(tag)">
               {{tag}}
-              <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectTag(tag)">
+              <fa-icon class="closeBadge" [icon]="faTimes">
               </fa-icon>
             </span>
         </div>
@@ -207,9 +207,9 @@
           ></app-tags-modal>
         </div>
         <div>
-            <span *ngFor="let category of queryParams.selectCategories" class="badge badge-success tags-badge" >
+            <span *ngFor="let category of queryParams.selectCategories" class="badge badge-success tags-badge" (click)="removeSelectCategory(category)" >
               {{category}}
-              <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectCategory(category)">
+              <fa-icon class="closeBadge" [icon]="faTimes">
               </fa-icon>
             </span>
         </div>
@@ -441,8 +441,8 @@
       </div>
       <div *ngIf="curSubNav.name === 'cloud'" class='graph'>
         <div>
-          <span class="badge rounded-pill bg-success cloud-word-badge" *ngFor="let word of selectCloudWords">{{word}} 
-            <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectCloudWord(word)"></fa-icon>
+          <span class="badge rounded-pill bg-success cloud-word-badge" *ngFor="let word of selectCloudWords" (click)="removeSelectCloudWord(word)">{{word}} 
+            <fa-icon class="closeBadge" [icon]="faTimes"></fa-icon>
           </span>
         </div>
         <app-word-cloud dataId="cloudData" [clickTextFunc]='clickCloudText' [words]='cloudData'></app-word-cloud>

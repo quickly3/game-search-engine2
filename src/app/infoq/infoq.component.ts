@@ -797,16 +797,10 @@ export class InfoqComponent {
         }
     }
 
-    clickCloudText = (cloudText) =>{
-        // const urlTree = this.router.parseUrl(this.router.url);
-
-        // if(urlTree.queryParams.keywords){
-        //     urlTree.queryParams.keywords += ` ${cloudText}`;
-        // }else{
-        //     urlTree.queryParams.keywords = cloudText;
-        // }
-
-        // window.open('/#'+ urlTree.toString(), "_blank"); 
+    clickCloudText = (cloudText):any =>{
+        if(this.selectCloudWords.includes(cloudText)){
+            return false;
+        }
 
         if(this.queryParams.keywords){
             this.queryParams.keywords += ` ${cloudText}`;
@@ -819,6 +813,6 @@ export class InfoqComponent {
 
     removeSelectCloudWord = (txt) => {
         this.queryParams.keywords = this.queryParams.keywords.replace(txt, '');
-        this.search();
+        this.search();            
     }
 }

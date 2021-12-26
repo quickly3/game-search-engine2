@@ -12,9 +12,9 @@
             </span>
         </div>
         <div>
-            <span *ngFor="let tag of selectedTags" class="badge badge-success tags-badge" >
+            <span *ngFor="let tag of selectedTags" class="badge badge-success tags-badge" (click)="removeSelectTag(tag)" >
                 {{tag}}
-                <fa-icon class="closeBadge" [icon]="faTimes" (click)="removeSelectTag(tag)">
+                <fa-icon class="closeBadge" [icon]="faTimes">
                 </fa-icon>
             </span>
         </div>
