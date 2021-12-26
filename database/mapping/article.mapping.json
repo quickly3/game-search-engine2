@@ -1,4 +1,4 @@
-PUT article_20211004
+PUT article_20211226
 {
   "aliases": {
     "article": {}
@@ -97,5 +97,15 @@ PUT article_20211004
           "type": "keyword"
       }
     }
+  }
+}
+
+POST _reindex
+{
+  "source": {
+    "index": "article_20211004"
+  },
+  "dest": {
+    "index": "article_20211226"
   }
 }

@@ -128,7 +128,7 @@ class ArticleService
                 "aggs" => [
                     "title_words_cloud" => [
                         "terms" => [
-                            "field" => "title.text_cn",
+                            "field" => "title.text_smart",
                             "size" => $size
                         ]
                     ]
