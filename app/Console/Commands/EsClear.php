@@ -76,6 +76,11 @@ class EsClear extends Command
             foreach ($response['hits']['hits'] as $key => $value) {
                 $url = $value['_source']['url'];
                 $tags = isset($value['_source']['tag'])?$value['_source']['tag']:[];
+
+                if(is_string($tags)){
+                    $tags = [$tags];
+                }
+                
                 if (!isset($this->del_ids[$url])) {
                     $this->del_ids[$url] = [$value['_id']];
                 } else {
