@@ -58,7 +58,7 @@ export default class WordCloudComponent implements OnInit {
       marginLeft = 0, // left margin, in pixels
       width = 640, // outer width, in pixels
       height = 400, // outer height, in pixels
-      maxWords = 250, // maximum number of words to extract from the text
+      maxWords = 200, // maximum number of words to extract from the text
       fontFamily = "sans-serif", // font family
       fontScale = 15, // base font size
       padding = 0, // amount of padding between the words (in pixels)

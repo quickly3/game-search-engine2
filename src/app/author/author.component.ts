@@ -9,7 +9,8 @@ import constList from '../infoq/constList';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { faSearch, faRssSquare, 
         faBuilding, faUser, 
-        faChartBar ,faAngleDoubleDown, faAngleDoubleUp 
+        faChartBar, faAngleDoubleDown, 
+        faAngleDoubleUp, faCloud 
     } from '@fortawesome/free-solid-svg-icons';
 import { faGithub  } from '@fortawesome/free-brands-svg-icons';
 
@@ -35,6 +36,7 @@ export class AuthorComponent {
     faChartBar = faChartBar
     faAngleDoubleDown = faAngleDoubleDown
     faAngleDoubleUp = faAngleDoubleUp
+    faCloud = faCloud
 
     totalNumber: number;
     took: number;
@@ -194,5 +196,9 @@ export class AuthorComponent {
         window.open(url, "_blank");
     }
 
+    clickCloud = (user) => {
+        const url = user.inner_url + `&subNavModel=cloud`;
+        window.open(url, "_blank");
+    }
     
 }

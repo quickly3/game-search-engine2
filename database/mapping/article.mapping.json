@@ -17,6 +17,11 @@ PUT article_20211004
             "fielddata": "true",
             "analyzer": "ik_max_word"
           },
+          "text_smart":{
+            "type":"text",
+            "fielddata": "true",
+            "analyzer": "ik_smart"
+          },
           "auto_completion":{
             "type":"completion",
             "analyzer": "ik_max_word"
@@ -55,7 +60,14 @@ PUT article_20211004
       },      
       "summary": {
         "type": "text",
-        "analyzer": "ik_max_word"
+        "analyzer": "ik_max_word",
+        "fields": {
+          "text_smart":{
+            "type":"text",
+            "fielddata": "true",
+            "analyzer": "ik_smart"
+          }
+        }
       },
       "valid":{
         "type": "boolean"

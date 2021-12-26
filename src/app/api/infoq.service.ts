@@ -35,6 +35,10 @@ export class InfoqService {
         return this.http.post('/infoq/getArticleHistogram', params);
     }
 
+    getWordsCloudByQueryBuilder = (params) =>{
+        return this.http.post('/infoq/getWordsCloudByQueryBuilder', params);
+    }
+
     starsChange = (params: any) => {
         return this.http.post('/infoq/starsChange', { params });
     }

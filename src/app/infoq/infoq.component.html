@@ -439,6 +439,9 @@
       <div *ngIf="curSubNav.name === 'charts'" class='graph'>
         <app-density-calendar dataId="histogramData" [data]='histogramData'></app-density-calendar>
       </div>
+      <div *ngIf="curSubNav.name === 'cloud'" class='graph'>
+        <app-word-cloud dataId="cloudData" [words]='cloudData'></app-word-cloud>
+      </div>
     </div>
   </div>
 </div>

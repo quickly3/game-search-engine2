@@ -38,6 +38,7 @@ Route::post('jj/starsChange', 'JuejinController@starsChange');
 
 Route::any('infoq/getDailyList', 'InfoqController@getDailyList');
 Route::any('infoq/getArticleHistogram', 'InfoqController@getArticleHistogram');
+Route::any('infoq/getWordsCloudByQueryBuilder', 'InfoqController@getWordsCloudByQueryBuilder');
 
 Route::get('infoq/getWordsCloud', 'InfoqController@getWordsCloud');
 Route::post('infoq/starsChange', 'InfoqController@starsChange');

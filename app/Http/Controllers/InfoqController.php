@@ -22,6 +22,12 @@ class InfoqController extends Controller
         return response()->json($resp);
     }
 
+    public function getWordsCloudByQueryBuilder(Request $request)
+    {
+        $resp = InfoqService::getWordsCloudByQueryBuilder($request);
+        return response()->json($resp);
+    }
+
     public function getWordsCloud(Request $request)
     {
 

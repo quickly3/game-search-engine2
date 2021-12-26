@@ -68,12 +68,6 @@ class InfoqService
             return trim($word);
         },$stop_words);
 
-        // $stop_words = [
-        //     "基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2019", "2018","10",
-        //     "php", "python", "javascript", "js", "css", "linux", "node","postgresql", "typescript",
-        //     "java", "vue", "web","react"
-        // ];
-
         $cloud_words = array_filter($cloud_words, function ($item) use ($stop_words) {
 
             $matched = true;
@@ -451,6 +445,19 @@ class InfoqService
 
         $query_string = SELF::articlesQueryBuilder($request);
         $resp = ArticleService::getHistogram($query_string,'day');
+
+        $data = [
+            'query_string' => $query_string,
+            'data' => $resp,
+        ];
+
+        return $data;
+    }
+
+    public static function getWordsCloudByQueryBuilder(Request $request, $size=1000){
+
+        $query_string = SELF::articlesQueryBuilder($request);
+        $resp = ArticleService::getWordsCloud($query_string, $size=1000);
 
         $data = [
             'query_string' => $query_string,

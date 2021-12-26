@@ -31,7 +31,7 @@ import {
     faThumbsUp, faEye,
     faComment, faStar,
     faWrench, faFileAlt,
-    faChartBar
+    faChartBar, faCloud
 } from '@fortawesome/free-solid-svg-icons';
 
 import constList from './constList';
@@ -55,6 +55,7 @@ export class InfoqComponent {
     faTimes = faTimes;
     faTags = faTags;
     faWrench = faWrench;
+    faCloud = faCloud;
     articleList: any[] = [];
     totalNumber = 0;
     totalPage = 0;
@@ -110,12 +111,18 @@ export class InfoqComponent {
             name:"charts",
             text:"数据可视化",
             icon:faChartBar,
+        },
+        {
+            name:"cloud",
+            text:"词云",
+            icon:faCloud,
         }
     ]
 
     curSubNav = this.subNavItems[0];
     subNavModel = this.curSubNav.name;
     histogramData:any = [];
+    cloudData = []
 
     public screenWidth: any;
     public screenHeight: any;
@@ -517,11 +524,14 @@ export class InfoqComponent {
             this.searchCharts(option);
         }
 
+        if(this.curSubNav.name === 'cloud' ){
+            this.searchCloudWords(option);
+        }
+
         this.getWordsCloud();
     }
 
     searchCharts = (option = {updateSta: true}) =>{
-
         const queryStringParams = this.getQueryParams(option);
         this.setQueryParamsToUrl(queryStringParams);
         this.InfoqService.getArticleHistogram(queryStringParams).subscribe(
@@ -530,6 +540,17 @@ export class InfoqComponent {
             }
         );
     }
+
+    searchCloudWords = (option = {updateSta: true}) =>{
+        const queryStringParams = this.getQueryParams(option);
+        this.setQueryParamsToUrl(queryStringParams);
+        this.InfoqService.getWordsCloudByQueryBuilder(queryStringParams).subscribe(
+            (resp: { [x: string]: any }) => {
+                this.cloudData = resp.data;
+            }
+        );
+    }
+
 
      searchArticles = (option = {updateSta: true}) =>{
 

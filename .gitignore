@@ -50,3 +50,6 @@ scrapy/juejin/*.csv
 
 *.mp3
 
+
+python/nlp/*.txt
+python/nlp/*.dic
