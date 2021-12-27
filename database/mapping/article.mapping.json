@@ -1,4 +1,4 @@
-PUT article_20211226
+PUT article_20211227_b
 {
   "aliases": {
     "article": {}
@@ -10,18 +10,10 @@ PUT article_20211226
   "mappings": {
     "properties": {
       "title": {
-        "type": "keyword",
+        "type": "text",
+        "analyzer": "ik_smart",
+        "fielddata": true,
         "fields": {
-          "text_cn":{
-            "type":"text",
-            "fielddata": "true",
-            "analyzer": "ik_max_word"
-          },
-          "text_smart":{
-            "type":"text",
-            "fielddata": "true",
-            "analyzer": "ik_smart"
-          },
           "auto_completion":{
             "type":"completion",
             "analyzer": "ik_max_word"
@@ -60,14 +52,7 @@ PUT article_20211226
       },      
       "summary": {
         "type": "text",
-        "analyzer": "ik_max_word",
-        "fields": {
-          "text_smart":{
-            "type":"text",
-            "fielddata": "true",
-            "analyzer": "ik_smart"
-          }
-        }
+        "analyzer": "ik_smart"
       },
       "valid":{
         "type": "boolean"
@@ -103,9 +88,23 @@ PUT article_20211226
 POST _reindex
 {
   "source": {
-    "index": "article_20211004"
+    "index": "article_20211227"
   },
   "dest": {
-    "index": "article_20211226"
+    "index": "article_20211227_b"
   }
+}
+
+DELETE article_20211227/_aliases/article
+
+POST _aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "article_20211227_b",
+        "alias": "article"
+      }
+    }
+  ]
 }

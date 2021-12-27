@@ -36,7 +36,7 @@ class MovieController extends Controller
             $data->highlight($highlight);
         }
         
-        $query_string = "title.text_cn:{$keywords}";
+        $query_string = "title:{$keywords}";
 
         if($type!=""){
             $query_string = "type:{$type} && ".$query_string;

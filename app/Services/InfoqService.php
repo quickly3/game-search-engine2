@@ -33,7 +33,7 @@ class InfoqService
             "aggs" => [
                 "title_words_cloud" => [
                     "terms" => [
-                        "field" => "title.text_cn",
+                        "field" => "title",
                         "size" => $size
                     ]
                 ]
@@ -101,7 +101,7 @@ class InfoqService
             "aggs" => [
                 "title_words_cloud" => [
                     "terms" => [
-                        "field" => "title.text_cn",
+                        "field" => "title",
                         "size" => 100
                     ]
                 ]
@@ -340,7 +340,7 @@ class InfoqService
             $highlight = [
                 "fields" => [
                     "summary" => (object) [],
-                    "title.text_cn" => (object) [],
+                    "title" => (object) [],
                 ],
             ];
             $data->highlight($highlight);
@@ -430,8 +430,8 @@ class InfoqService
                     $item['summary'] = $item['highlight']['summary'][0];
                 }
 
-                if (isset($item['highlight']) && isset($item['highlight']['title.text_cn']) && isset($item['highlight']['title.text_cn'][0])) {
-                    $item['title'] = $item['highlight']['title.text_cn'][0];
+                if (isset($item['highlight']) && isset($item['highlight']['title']) && isset($item['highlight']['title'][0])) {
+                    $item['title'] = $item['highlight']['title'][0];
                 }
 
                 return $item;
@@ -493,7 +493,7 @@ class InfoqService
         if ($keywords == '*' || !$keywords) {
             $query_string = "*:*";
         }else{
-            $query_string = "(title:'{$keywords}' OR title.text_cn:'{$keywords}' OR title.text_cn:\"{$keywords}\" OR summary:'{$keywords}' OR summary:\"{$keywords}\") ";
+            $query_string = "(title:'{$keywords}' OR title:'{$keywords}' OR title:\"{$keywords}\" OR summary:'{$keywords}' OR summary:\"{$keywords}\") ";
         }
 
         if(count($selectTags)){
