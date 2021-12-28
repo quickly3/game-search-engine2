@@ -127,6 +127,15 @@
         </div>
       </div>
       <div class="option-title mb-1">
+        <span>关键词关系:</span>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="flexCheckDefault" (change)="search()" [(ngModel)]="this.queryParams.and_operator">
+        <label class="form-check-label" for="flexCheckDefault">
+          ”且“关系
+        </label>
+      </div>
+      <div class="option-title mb-1">
         <span>标签:</span>
       </div>
       <div class="option-zone source-selector">

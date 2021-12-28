@@ -415,10 +415,11 @@ class InfoqService
 
         $data->orderBy($orders);
 
-        $query_string = SELF::articlesQueryBuilder($request);
+        $query = SELF::articlesQueryBuilder($request);
+        $query_string = $query['query_string'];
 
         try {
-            $data = $data->query_string($query_string, "*")->paginate(20);
+            $data = $data->query($query, "*")->paginate(20);
         } catch (\Throwable $th) {
             $data = ["data"=>[]];
         }
@@ -443,8 +444,10 @@ class InfoqService
 
     public static function getArticleHistogram(Request $request){
 
-        $query_string = SELF::articlesQueryBuilder($request);
-        $resp = ArticleService::getHistogram($query_string,'day');
+        $query = SELF::articlesQueryBuilder($request);
+        $query_string = $query['query_string'];
+
+        $resp = ArticleService::getHistogram($query,'day');
 
         $data = [
             'query_string' => $query_string,
@@ -456,8 +459,10 @@ class InfoqService
 
     public static function getWordsCloudByQueryBuilder(Request $request, $size=1000){
 
-        $query_string = SELF::articlesQueryBuilder($request);
-        $resp = ArticleService::getWordsCloud($query_string, $size=1000);
+        $query = SELF::articlesQueryBuilder($request);
+        $query_string = $query['query_string'];
+
+        $resp = ArticleService::getWordsCloud($query, $size=1000);
 
         $data = [
             'query_string' => $query_string,
@@ -487,13 +492,14 @@ class InfoqService
         $comment_count = $request->input("comment_count", null);
         $digg_count = $request->input("digg_count", null);
         $view_count = $request->input("view_count", null);
+        $and_operator = $request->input("and_operator", false);
 
         $keywords = SELF::escapeElasticReservedChars($keywords);
 
         if ($keywords == '*' || !$keywords) {
             $query_string = "*:*";
         }else{
-            $query_string = "(title:'{$keywords}' OR title:'{$keywords}' OR title:\"{$keywords}\" OR summary:'{$keywords}' OR summary:\"{$keywords}\") ";
+            $query_string = "(title:({$keywords}) OR title:\"{$keywords}\" OR summary:({$keywords}) OR summary:\"{$keywords}\") ";
         }
 
         if(count($selectTags)){
@@ -544,6 +550,16 @@ class InfoqService
             $query_string = $query_string . " && view_count:[{$view_count} TO *}";
         }
 
-        return $query_string;
+        $query = [
+            "query_string" => [
+                "query" => "{$query_string}"
+            ]
+        ];
+
+        if($and_operator){
+            $query['query_string']['default_operator'] = "AND";
+        }
+
+        return $query;
     }
 }

@@ -115,6 +115,25 @@ class ElasticModel
         return $this;
     }
 
+    public function query($query, $fields = [])
+    {
+        $params = [
+            "index" => $this->index,
+            "body" => [
+                "query" => $query,
+                "sort" => $this->orders,
+            ],
+        ];
+        if (isset($this->highlight)) {
+            $params["body"]["highlight"] = $this->highlight;
+        }
+        $this->request_body = $params;
+        $this->setSource();
+
+        return $this;
+    }
+
+
     public function getById($id, $fields)
     {
         $params = [
@@ -155,23 +174,6 @@ class ElasticModel
     public function highlight($highlight)
     {
         $this->highlight = $highlight;
-        return $this;
-    }
-
-    public function query($query)
-    {
-
-        $params = [
-            "index" => $this->index,
-            "type" => $this->index_type,
-            "body" => [
-                "query" => $query,
-            ],
-        ];
-        $this->request_body = $params;
-        $this->setSource();
-        $this->setReqRes();
-
         return $this;
     }
 

@@ -336,6 +336,10 @@ export class InfoqComponent {
             urlParamsCopy.endDate = this.strToNgbDate(urlParamsCopy.endDate);
         }
 
+        if (urlParamsCopy.and_operator){
+            urlParamsCopy.and_operator = (urlParamsCopy.and_operator === 'true');
+        }
+
         if (urlParamsCopy.source){
             urlParamsCopy.source = this.sourceList.find(i => i.title === urlParamsCopy.source);
         }
@@ -375,7 +379,8 @@ export class InfoqComponent {
             author: '',
             sortBy: this.sortItems[0],
             selectTags: [],
-            selectCategories: []
+            selectCategories: [],
+            and_operator:false
         };
     }
 
@@ -488,6 +493,11 @@ export class InfoqComponent {
             if (typeof queryStringParams[param] !== 'string' || queryStringParams[param].trim() !== ''){
                 switch (param) {
                     case 'updateSta':
+                        break;
+                    case 'and_operator':
+                        if(queryStringParams[param]){
+                            nativeParams[param] = 'true';
+                        }
                         break;
                     case 'selectTags':
                         if (queryStringParams[param].length > 0){
