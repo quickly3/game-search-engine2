@@ -15,8 +15,15 @@ class ArticleController extends Controller
     }
 
     function getHistogram(Request $request){
-        $query = $request->input("query", "*:*");
+        $query_string = $request->input("query", "*:*");
         $calendar_interval = $request->input("calendar_interval", "month");
+
+
+        $query = [
+            "query_string" => [
+                "query" => $query_string
+            ]
+        ];
 
         $article  = new ArticleService();
         return $article->getHistogram($query, $calendar_interval);

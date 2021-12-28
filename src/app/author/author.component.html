@@ -79,7 +79,7 @@
                     </div>
                     <div class="data-visualization">
                       <a href="{{author.chart_url}}" target="_blank" ><fa-icon class="text-success" alt='用户投稿日历' [icon]="faChartBar"></fa-icon></a>
-                      <a href="javascript:;" (click)="clickCloud(author)" target="_blank" ><fa-icon class="text-primary" alt='用户投稿日历' [icon]="faCloud"></fa-icon></a>
+                      <a (click)="clickCloud(author)" target="_blank" ><fa-icon class="text-primary" alt='用户投稿日历' [icon]="faCloud"></fa-icon></a>
                     </div>
                     <div *ngIf="author.job_title" class='info_field'>
                         <fa-icon class="fa_icon mr-1" [icon]="faUser"></fa-icon>

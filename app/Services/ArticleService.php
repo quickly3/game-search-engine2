@@ -75,7 +75,7 @@ class ArticleService
         return $items;
     }
 
-    public static function getHistogram($query = ['query_string'=>"*:*"],$calendar_interval = "month")
+    public static function getHistogram($query = ['query_string'=>['query'=>"*:*"]],$calendar_interval = "month")
     {
         $es = new ElasticModel("article", "article");
         $params = [
