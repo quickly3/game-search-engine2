@@ -197,7 +197,7 @@ export class AuthorComponent {
     }
 
     clickCloud = (user) => {
-        const url = user.inner_url + `&subNavModel=cloud`;
+        const url = user.inner_url + `&subNavModel=cloud&and_operator=true`;
         window.open(url, "_blank");
     }
     

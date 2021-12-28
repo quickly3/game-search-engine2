@@ -803,6 +803,11 @@ export class InfoqComponent {
         if(this.curSubNav.name !== subNav.name){
             this.curSubNav = subNav;
             this.subNavModel = this.curSubNav.name;
+
+            if(subNav.name === 'cloud'){
+                this.queryParams.and_operator = true;
+            }
+
             this.search();
         }
     }

@@ -109,18 +109,14 @@ class ArticleService
         return $items;
     }
 
-    public static function getWordsCloud($query_string = "*:*", $size = 1000)
+    public static function getWordsCloud($query = "*:*", $size = 1000)
     {
         $es = new ElasticModel("article", "article");
 
         $params = [
             "index" => "article",
             "body" =>  [
-                "query" => [
-                    "query_string" => [
-                        "query" => $query_string
-                    ]
-                ],
+                "query" => $query,
                 "aggs" => [
                     "title_words_cloud" => [
                         "terms" => [
