@@ -39,6 +39,7 @@ Route::post('jj/starsChange', 'JuejinController@starsChange');
 Route::any('infoq/getDailyList', 'InfoqController@getDailyList');
 Route::any('infoq/getArticleHistogram', 'InfoqController@getArticleHistogram');
 Route::any('infoq/getWordsCloudByQueryBuilder', 'InfoqController@getWordsCloudByQueryBuilder');
+Route::any('infoq/getAuthorTermsAgg', 'InfoqController@getAuthorTermsAgg');
 
 Route::get('infoq/getWordsCloud', 'InfoqController@getWordsCloud');
 Route::post('infoq/starsChange', 'InfoqController@starsChange');
@@ -48,7 +49,6 @@ Route::get('infoq/getCategories', 'InfoqController@getCategories');
 
 Route::get('article/index', 'ArticleController@index');
 Route::post('article/getHistogram', 'ArticleController@getHistogram');
-
 
 Route::get('fanju/list', 'FanjuController@getList');
 Route::post('movie/getList', 'MovieController@getList');

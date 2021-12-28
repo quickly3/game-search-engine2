@@ -10,7 +10,8 @@ import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { faSearch, faRssSquare, 
         faBuilding, faUser, 
         faChartBar, faAngleDoubleDown, 
-        faAngleDoubleUp, faCloud 
+        faAngleDoubleUp, faCloud,
+        faCalendarAlt
     } from '@fortawesome/free-solid-svg-icons';
 import { faGithub  } from '@fortawesome/free-brands-svg-icons';
 
@@ -37,6 +38,7 @@ export class AuthorComponent {
     faAngleDoubleDown = faAngleDoubleDown
     faAngleDoubleUp = faAngleDoubleUp
     faCloud = faCloud
+    faCalendarAlt = faCalendarAlt
 
     totalNumber: number;
     took: number;

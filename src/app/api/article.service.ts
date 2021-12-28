@@ -11,4 +11,9 @@ export class ArticleService {
         return this.http.post('/article/getHistogram',params);
     }
 
+
+    getAuthorTermsAgg = (params) => {
+        return this.http.post('/article/getAuthorTermsAgg',params);
+    }
+
 }

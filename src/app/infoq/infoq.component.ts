@@ -19,6 +19,8 @@ import {
     catchError,
 } from 'rxjs/operators';
 import { InfoqService } from '../api/infoq.service';
+import { ArticleService } from '../api/article.service';
+
 import {
     NgbDate,
     NgbDateStruct,
@@ -104,18 +106,23 @@ export class InfoqComponent {
     subNavItems = [
         {
             name:"articles",
-            text:"文章",
+            text:"博客",
             icon:faFileAlt,
         },
         {
             name:"charts",
-            text:"文章日历",
-            icon:faChartBar,
+            text:"博客日历",
+            icon:faCalendarAlt,
         },
         {
             name:"cloud",
-            text:"标题词云",
+            text:"词云",
             icon:faCloud,
+        },
+        {
+            name:"bar",
+            text:"作者统计",
+            icon:faChartBar,
         }
     ]
 
@@ -124,6 +131,7 @@ export class InfoqComponent {
     histogramData:any = [];
     cloudData = []
     selectCloudWords = []
+    authorAggs = []
 
     public screenWidth: any;
     public screenHeight: any;
@@ -133,6 +141,7 @@ export class InfoqComponent {
     constructor(
         private http: HttpClient,
         InfoqService: InfoqService,
+        private articleService: ArticleService,
         private route: ActivatedRoute,
         private router: Router
 
@@ -534,14 +543,16 @@ export class InfoqComponent {
             this.searchCharts(option);
         }
 
+        if(this.curSubNav.name === 'bar' ){
+            this.searchAuthorAggs(option);
+        }
+
         if(this.curSubNav.name === 'cloud' ){
             this.searchCloudWords(option);
             if(this.queryParams.keywords && this.queryParams.keywords.trim() !== ''){
                 this.selectCloudWords = this.queryParams.keywords.replace(/ {2,}/g,' ').trim().split(" ");
             }
         }
-
-        this.getWordsCloud();
     }
 
     searchCharts = (option = {updateSta: true}) =>{
@@ -564,6 +575,15 @@ export class InfoqComponent {
         );
     }
 
+    searchAuthorAggs = (option = {updateSta: true}) =>{
+        const queryStringParams = this.getQueryParams(option);
+        this.setQueryParamsToUrl(queryStringParams);
+        this.InfoqService.getAuthorTermsAgg(queryStringParams).subscribe(
+            (resp:any) => {
+                this.authorAggs = resp.data.map(d=>({name:d.key,value:d.doc_count}));
+            }
+        );
+    }
 
      searchArticles = (option = {updateSta: true}) =>{
 
@@ -825,6 +845,14 @@ export class InfoqComponent {
         }
 
         this.search();
+    }
+
+    clickHorizontalBar = (i):any =>{
+        if(this.authorAggs[i]){
+            this.queryParams.author = this.authorAggs[i].name;
+            this.subNavChange(this.subNavItems[0]);
+            this.search(); 
+        }
     }
 
     removeSelectCloudWord = (txt) => {

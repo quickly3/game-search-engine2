@@ -472,6 +472,19 @@ class InfoqService
         return $data;
     }
 
+    public static function getAuthorTermsAggByQueryBuilder(Request $request, $size=1000){
+
+        $query = SELF::articlesQueryBuilder($request);
+        $query_string = $query['query_string'];
+        
+        $article  = new ArticleService();
+        return [
+            'data' => $article->getAuthorTermsAgg($query),
+            'query_string' => $query_string
+        ];
+    }
+    
+
 
     public static function escapeElasticReservedChars($string) {
         $regex = "/[\\+\\-\\=\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\<\\>\\?\\:\\\\\\/]/";

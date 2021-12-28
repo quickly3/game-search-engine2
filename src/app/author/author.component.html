@@ -78,7 +78,7 @@
                       <span *ngFor="let cate of author.article_cates" class="badge rounded-pill bg-warning" (click)="clickCate(author,cate)">{{cate.key}}:{{cate.doc_count}}</span>
                     </div>
                     <div class="data-visualization">
-                      <a href="{{author.chart_url}}" target="_blank" ><fa-icon class="text-success" alt='用户投稿日历' [icon]="faChartBar"></fa-icon></a>
+                      <a href="{{author.chart_url}}" target="_blank" ><fa-icon class="text-success" alt='用户投稿日历' [icon]="faCalendarAlt"></fa-icon></a>
                       <a (click)="clickCloud(author)" target="_blank" ><fa-icon class="text-primary" alt='用户投稿日历' [icon]="faCloud"></fa-icon></a>
                     </div>
                     <div *ngIf="author.job_title" class='info_field'>

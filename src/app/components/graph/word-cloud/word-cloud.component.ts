@@ -114,7 +114,6 @@ export default class WordCloudComponent implements OnInit {
           .text(text)
           .on('click',(e)=>{
             if(this.clickTextFunc){
-              // console.log(e.target.textContent)
               this.clickTextFunc(e.target.textContent);
             }
           })

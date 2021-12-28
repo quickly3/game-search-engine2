@@ -327,7 +327,7 @@
           />
         </div>
       </div>
-      <div class="option-title">
+      <!-- <div class="option-title">
         <span>词云:</span>
       </div>
       <div class="option-zone words_cloud">
@@ -337,7 +337,7 @@
           (click)="wordsCloudToKeyWords(word)"
           >{{ word.key }}</span
         >
-      </div>
+      </div> -->
     </div>
     <div class="col-md-10">
       <div *ngIf="curSubNav.name === 'articles'" class='articles'>
@@ -455,6 +455,9 @@
           </span>
         </div>
         <app-word-cloud dataId="cloudData" [clickTextFunc]='clickCloudText' [words]='cloudData'></app-word-cloud>
+      </div>
+      <div *ngIf="curSubNav.name === 'bar'" class='graph'>
+        <app-horizontal-bar dataId="dataHoz" [clickBarFunc]='clickHorizontalBar' [data]='authorAggs'></app-horizontal-bar>
       </div>
     </div>
   </div>

@@ -109,7 +109,33 @@ class ArticleService
         return $items;
     }
 
-    public static function getWordsCloud($query = "*:*", $size = 1000)
+    public static function getAuthorTermsAgg($query = ['query_string'=>['query'=>"*:*"]])
+    {
+        $es = new ElasticModel("article", "article");
+        $params = [
+            "index" => "article",
+            "body" =>  [
+                "query" => $query,
+                "aggs" => [
+                    "author_terms" => [
+                        "terms" => [
+                            "field" => "author",
+                            "size" => 100
+                        ]
+                    ]
+                ],
+                "size" => 0
+            ]
+        ];
+
+        $resp = $es->client->search($params);
+
+        $buckets = $resp['aggregations']['author_terms']['buckets'];
+        return $buckets;
+    }
+
+
+    public static function getWordsCloud($query = ['query_string'=>['query'=>"*:*"]], $size = 1000)
     {
         $es = new ElasticModel("article", "article");
 

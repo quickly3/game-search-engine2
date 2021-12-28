@@ -39,6 +39,10 @@ export class InfoqService {
         return this.http.post('/infoq/getWordsCloudByQueryBuilder', params);
     }
 
+    getAuthorTermsAgg = (params) =>{
+        return this.http.post('/infoq/getAuthorTermsAgg', params);
+    }
+
     starsChange = (params: any) => {
         return this.http.post('/infoq/starsChange', { params });
     }

@@ -28,6 +28,12 @@ class InfoqController extends Controller
         return response()->json($resp);
     }
 
+    public function getAuthorTermsAgg(Request $request){
+
+        $resp = InfoqService::getAuthorTermsAggByQueryBuilder($request);
+        return response()->json($resp);
+    }
+
     public function getWordsCloud(Request $request)
     {
 
