@@ -23,12 +23,12 @@ export default class DensityCalendarComponent {
     ngOnChanges(): void {
         this.mainSelector = `figure#${this.dataId}`;
         if (this.data && this.data.length > 0){
-            this.data = this.data.map(d=>{
+            this.data = this.data.map(d => {
               return {
                 ...d,
-                count:d.count === 0?undefined:d.count
-              }
-            })
+                count: d.count === 0 ? undefined : d.count
+              };
+            });
             this.data = this.data.map(d => {
                 return {
                     ...d,
@@ -40,7 +40,7 @@ export default class DensityCalendarComponent {
     }
 
     drawPlot(): void {
-        if(!d3.select(this.mainSelector).node()){
+        if (!d3.select(this.mainSelector).node()){
           return null;
         }
         d3.select(this.mainSelector).html('');
@@ -54,13 +54,13 @@ export default class DensityCalendarComponent {
             title: this.plotText.legendTitle
         });
 
-        const weekMap =['日','一','二','三','四','五','六'];
+        const weekMap = ['日', '一', '二', '三', '四', '五', '六'];
 
         const plot = Plot.plot({
             facet: { data: this.data, y: d => d.date.getUTCFullYear() },
             fy: { tickPadding: 0, reverse: true },
             x: { label: this.plotText.bottomText, tickFormat: t => t + 1 },
-            y: { tickFormat: t=>{
+            y: { tickFormat: t => {
               // console.log(Plot.formatWeekday()(t))
               return weekMap[t];
             } },
