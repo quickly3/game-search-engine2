@@ -326,7 +326,7 @@ class AliSpider(scrapy.Spider):
                 self.page = 0
                 self.tag = self.tag_arr.pop()
                 self.cateId = self.tagId[self.tag]['cid']
-                if self.tagId[self.tag]['extra_tag']:
+                if hasattr(self.tagId[self.tag],'extra_tag'):
                     self.extra_tag = self.tagId[self.tag]['extra_tag']
 
 
