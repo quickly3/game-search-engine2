@@ -87,11 +87,10 @@ class AliSpider(scrapy.Spider):
             "cid": "108765"
         },
         "其他语言": {
-            "cid": "108754"
+            "cid": "108754",
+            "extra_tag": "后端开发"
         },
-        "软件设计": {
-            "cid": "108701"
-        },
+
         "架构设计": {
             "cid": "106892"
         },
@@ -102,10 +101,8 @@ class AliSpider(scrapy.Spider):
             "cid": "106884"
         },
         "领域驱动设计": {
-            "cid": "108750"
-        },
-        "前端开发": {
-            "cid": "108703"
+            "cid": "108750",
+            "extra_tag": "软件设计"
         },
         "Html/Css": {
             "cid": "106883"
@@ -126,11 +123,10 @@ class AliSpider(scrapy.Spider):
             "cid": "108771"
         },
         "Vue": {
-            "cid": "108772"
+            "cid": "108772",
+            "extra_tag": "前端开发"
         },
-        "企业信息化": {
-            "cid": "108704"
-        },
+
         "BPM": {
             "cid": "108761"
         },
@@ -150,11 +146,10 @@ class AliSpider(scrapy.Spider):
             "cid": "108734"
         },
         "信息安全": {
-            "cid": "108749"
+            "cid": "108749",
+            "extra_tag": "企业信息化"
         },
-        "移动端开发": {
-            "cid": "108705"
-        },
+
         "Android开发": {
             "cid": "108706"
         },
@@ -168,10 +163,8 @@ class AliSpider(scrapy.Spider):
             "cid": "108769"
         },
         "其他手机开发": {
-            "cid": "106886"
-        },
-        "软件工程": {
-            "cid": "108709"
+            "cid": "106886",
+            "extra_tag": "移动端开发"
         },
         "敏捷开发": {
             "cid": "108710"
@@ -180,10 +173,8 @@ class AliSpider(scrapy.Spider):
             "cid": "106891"
         },
         "软件工程其他": {
-            "cid": "106889"
-        },
-        "数据库": {
-            "cid": "108712"
+            "cid": "106889",
+            "extra_tag": "软件工程"
         },
         "SQL Server": {
             "cid": "108713"
@@ -204,10 +195,8 @@ class AliSpider(scrapy.Spider):
             "cid": "108756"
         },
         "其他数据库": {
-            "cid": "106881"
-        },
-        "操作系统": {
-            "cid": "108724"
+            "cid": "106881",
+            "extra_tag": "数据库"
         },
         "Windows": {
             "cid": "108721"
@@ -222,10 +211,8 @@ class AliSpider(scrapy.Spider):
             "cid": "108755"
         },
         "嵌入式": {
-            "cid": "108757"
-        },
-        "其他分类": {
-            "cid": "4"
+            "cid": "108757",
+            "extra_tag": "操作系统"
         },
         "非技术区": {
             "cid": "807"
@@ -276,7 +263,8 @@ class AliSpider(scrapy.Spider):
             "cid": "108766"
         },
         "其他技术区": {
-            "cid": "7734"
+            "cid": "7734",
+            "extra_tag": "其他分类"
         }
     }
 
@@ -313,6 +301,7 @@ class AliSpider(scrapy.Spider):
 
         self.tag = self.tag_arr.pop()
         self.cateId = self.tagId[self.tag]['cid']
+        self.extra_tag = self.tagId[self.tag]['extra_tag']
 
         formdata = self.get_formdata()
 
@@ -337,6 +326,9 @@ class AliSpider(scrapy.Spider):
                 self.page = 0
                 self.tag = self.tag_arr.pop()
                 self.cateId = self.tagId[self.tag]['cid']
+                if self.tagId[self.tag]['extra_tag']:
+                    self.extra_tag = self.tagId[self.tag]['extra_tag']
+
 
         self.page = self.page + 1
         formdata = self.get_formdata()
@@ -403,7 +395,7 @@ class AliSpider(scrapy.Spider):
                 doc['title'] = title
                 doc['url'] = url
 
-                doc['tag'] = self.tag
+                doc['tag'] = [self.tag,self.extra_tag]
                 doc['summary'] = desp
                 doc['source'] = self.source
                 doc['source_score'] = 0
