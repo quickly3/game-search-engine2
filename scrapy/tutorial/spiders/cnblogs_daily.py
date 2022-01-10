@@ -392,7 +392,6 @@ class AliSpider(scrapy.Spider):
 
                 if ts < self.start_time :
                     next_tag = True;
-                    print(created_at);
                     print("too old")
                     continue;
 
