@@ -327,7 +327,7 @@ class AliSpider(scrapy.Spider):
                 self.tag = self.tag_arr.pop()
                 self.cateId = self.tagId[self.tag]['cid']
 
-                if self.tagId[self.tag].has_key('extra_tag'):
+                if 'extra_tag' in self.tagId[self.tag]:
                     self.extra_tag = self.tagId[self.tag]['extra_tag']
 
 
