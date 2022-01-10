@@ -364,6 +364,9 @@ class AliSpider(scrapy.Spider):
                 author = item.xpath(
                     '*/a[@class="post-item-author"]/span/text()').get()
 
+                author_url = item.xpath(
+                    '*/a[@class="post-item-author"]/@href').get()
+
                 created_at = item.xpath(
                     '*/span[@class="post-meta-item"]/span/text()').getall()
 
@@ -395,13 +398,12 @@ class AliSpider(scrapy.Spider):
 
                 doc['title'] = title
                 doc['url'] = url
-
                 doc['tag'] = [self.tag,self.extra_tag]
                 doc['summary'] = desp
                 doc['source'] = self.source
                 doc['source_score'] = 0
-
                 doc['author'] = author
+                doc['author_url'] = author_url
 
                 bulk.append(
                     {"index": {"_index": "article"}})
