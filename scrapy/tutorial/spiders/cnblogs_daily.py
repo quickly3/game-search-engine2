@@ -326,6 +326,7 @@ class AliSpider(scrapy.Spider):
                 self.page = 0
                 self.tag = self.tag_arr.pop()
                 self.cateId = self.tagId[self.tag]['cid']
+                print(self.tagId[self.tag])
                 if hasattr(self.tagId[self.tag],'extra_tag'):
                     self.extra_tag = self.tagId[self.tag]['extra_tag']
 
@@ -384,11 +385,11 @@ class AliSpider(scrapy.Spider):
 
                 if ts < self.start_time :
                     next_tag = True;
-                    print("too old")
+                    # print("too old")
                     continue;
 
                 if ts > self.end_time :
-                    print("too new")
+                    # print("too new")
                     continue;
 
 
