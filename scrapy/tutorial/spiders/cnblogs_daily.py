@@ -374,10 +374,19 @@ class AliSpider(scrapy.Spider):
                 created_at = item.xpath(
                     '*/span[@class="post-meta-item"]/span/text()').getall()
 
-                date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
+                if len(created_at) > 0:
+                    created_at = created_at[0]
+                    date_time_obj = datetime.datetime.strptime(
+                        created_at, '%Y-%m-%d %H:%M')
 
-                doc['created_at'] = date_time_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
-                doc['created_year'] = date_time_obj.strftime("%Y")
+                    doc['created_at'] = date_time_obj.strftime(
+                        "%Y-%m-%dT%H:%M:%SZ")
+                    doc['created_year'] = date_time_obj.strftime("%Y")
+
+                    date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
+
+                    doc['created_at'] = date_time_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    doc['created_year'] = date_time_obj.strftime("%Y")
 
                 ts = date_time_obj.timestamp();
 
