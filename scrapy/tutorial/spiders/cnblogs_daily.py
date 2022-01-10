@@ -371,9 +371,8 @@ class AliSpider(scrapy.Spider):
                 author = item.xpath(
                     '*/a[@class="post-item-author"]/span/text()').get()
 
-                created_at = item.xpath('*/div[@class="entry_footer"]/span[4]/text()').get()
-                if not created_at:
-                    created_at = item.xpath('*/div[@class="entry_footer"]/span[3]/text()').get()
+                created_at = item.xpath(
+                    '*/span[@class="post-meta-item"]/span/text()').getall()
 
                 date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
 
