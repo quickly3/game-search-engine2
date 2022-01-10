@@ -49,6 +49,7 @@
     "puppeteer-proxy": "^2.1.2",
     "rxjs": "~6.6.0",
     "selenium-webdriver": "^4.0.0-beta.4",
+    "test-script": "file:puppeteer",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },

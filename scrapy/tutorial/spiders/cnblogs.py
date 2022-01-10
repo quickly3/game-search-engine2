@@ -48,50 +48,251 @@ class AliSpider(scrapy.Spider):
     name = "cnblogs"
 
     tagId = {
-        "python": {
-            "cid": 108696,
+        "后端开发": {
+            "cid": "2"
         },
-        "design": {
-            "cid": 106892,
+        ".NET技术": {
+            "cid": "108698"
         },
-        "php": {
-            "cid": 106882,
+        "Java": {
+            "cid": "106876"
         },
-        "dp": {
-            "cid": 106884,
+        "Python": {
+            "cid": "108696"
         },
-        "web": {
-            "cid": 106883,
+        "Go": {
+            "cid": "108748"
         },
-        "javascript": {
-            "cid": 106893,
+        "PHP": {
+            "cid": "106882"
         },
-        "nosql": {
-            "cid": 108743,
+        "C++": {
+            "cid": "106880"
         },
-        "mysql": {
-            "cid": 108712,
+        "Ruby": {
+            "cid": "106894"
         },
-        "postgresql": {
-            "cid": 108767,
+        "Swift": {
+            "cid": "108751"
         },
-        "algorithm": {
-            "cid": 108741,
+        "C语言": {
+            "cid": "108735"
         },
-        "opensource": {
-            "cid": 108722,
+        "Erlang": {
+            "cid": "108746"
         },
-        "blockchain": {
-            "cid": 108764,
+        "Delphi": {
+            "cid": "106877"
         },
-        "translate": {
-            "cid": 106875,
+        "Scala": {
+            "cid": "108752"
+        },
+        "R语言": {
+            "cid": "108753"
+        },
+        "Verilog": {
+            "cid": "108742"
+        },
+        "Dart": {
+            "cid": "108765"
+        },
+        "其他语言": {
+            "cid": "108754"
+        },
+        "软件设计": {
+            "cid": "108701"
+        },
+        "架构设计": {
+            "cid": "106892"
+        },
+        "所有随笔": {
+            "cid": "0"
+        },
+        "设计模式": {
+            "cid": "106884"
+        },
+        "领域驱动设计": {
+            "cid": "108750"
+        },
+        "前端开发": {
+            "cid": "108703"
+        },
+        "Html/Css": {
+            "cid": "106883"
+        },
+        "JavaScript": {
+            "cid": "106893"
+        },
+        "jQuery": {
+            "cid": "108731"
+        },
+        "HTML5": {
+            "cid": "108737"
+        },
+        "Angular": {
+            "cid": "108770"
+        },
+        "React": {
+            "cid": "108771"
+        },
+        "Vue": {
+            "cid": "108772"
+        },
+        "企业信息化": {
+            "cid": "108704"
+        },
+        "BPM": {
+            "cid": "108761"
+        },
+        "SharePoint": {
+            "cid": "78111"
+        },
+        "GIS技术": {
+            "cid": "50349"
+        },
+        "SAP": {
+            "cid": "106878"
+        },
+        "Oracle ERP": {
+            "cid": "108732"
+        },
+        "Dynamics": {
+            "cid": "108734"
+        },
+        "信息安全": {
+            "cid": "108749"
+        },
+        "移动端开发": {
+            "cid": "108705"
+        },
+        "Android开发": {
+            "cid": "108706"
+        },
+        "iOS开发": {
+            "cid": "108707"
+        },
+        "Flutter": {
+            "cid": "108768"
+        },
+        "鸿蒙": {
+            "cid": "108769"
+        },
+        "其他手机开发": {
+            "cid": "106886"
+        },
+        "软件工程": {
+            "cid": "108709"
+        },
+        "敏捷开发": {
+            "cid": "108710"
+        },
+        "项目与团队管理": {
+            "cid": "106891"
+        },
+        "软件工程其他": {
+            "cid": "106889"
+        },
+        "数据库": {
+            "cid": "108712"
+        },
+        "SQL Server": {
+            "cid": "108713"
+        },
+        "Oracle": {
+            "cid": "108714"
+        },
+        "MySQL": {
+            "cid": "108715"
+        },
+        "PostgreSQL": {
+            "cid": "108767"
+        },
+        "NoSQL": {
+            "cid": "108743"
+        },
+        "大数据": {
+            "cid": "108756"
+        },
+        "其他数据库": {
+            "cid": "106881"
+        },
+        "操作系统": {
+            "cid": "108724"
+        },
+        "Windows": {
+            "cid": "108721"
+        },
+        "Windows Server": {
+            "cid": "108725"
+        },
+        "Linux": {
+            "cid": "108726"
+        },
+        "macOS": {
+            "cid": "108755"
+        },
+        "嵌入式": {
+            "cid": "108757"
+        },
+        "其他分类": {
+            "cid": "4"
+        },
+        "非技术区": {
+            "cid": "807"
+        },
+        "软件测试": {
+            "cid": "106879"
+        },
+        "代码与软件发布": {
+            "cid": "33909"
+        },
+        "计算机图形学": {
+            "cid": "106885"
+        },
+        "游戏开发": {
+            "cid": "108759"
+        },
+        "程序人生": {
+            "cid": "106888"
+        },
+        "求职面试": {
+            "cid": "106890"
+        },
+        "读书区": {
+            "cid": "5079"
+        },
+        "转载区": {
+            "cid": "4347"
+        },
+        "翻译区": {
+            "cid": "106875"
+        },
+        "开源研究": {
+            "cid": "108722"
+        },
+        "云计算": {
+            "cid": "108740"
+        },
+        "算法与数据结构": {
+            "cid": "108741"
+        },
+        "人工智能": {
+            "cid": "108762"
+        },
+        "区块链": {
+            "cid": "108764"
+        },
+        "网络安全": {
+            "cid": "108766"
+        },
+        "其他技术区": {
+            "cid": "7734"
         }
     }
+
     tag = "python"
     source = "cnblogs"
     tag_index = 0
-
 
     pager_url = "https://www.cnblogs.com/AggSite/AggSitePostList"
 
@@ -161,7 +362,8 @@ class AliSpider(scrapy.Spider):
             for item in items:
                 doc = {}
 
-                title = item.xpath('*/a[@class="post-item-title"]/text()').get()
+                title = item.xpath(
+                    '*/a[@class="post-item-title"]/text()').get()
                 url = item.xpath('*/a[@class="post-item-title"]/@href').get()
 
                 desps = item.xpath(
@@ -171,13 +373,16 @@ class AliSpider(scrapy.Spider):
 
                 author = item.xpath(
                     '*/a[@class="post-item-author"]/span/text()').get()
-                created_at = item.xpath('*/span[@class="post-meta-item"]/span/text()').getall()
+                created_at = item.xpath(
+                    '*/span[@class="post-meta-item"]/span/text()').getall()
 
                 if len(created_at) > 0:
                     created_at = created_at[0]
-                    date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
+                    date_time_obj = datetime.datetime.strptime(
+                        created_at, '%Y-%m-%d %H:%M')
 
-                    doc['created_at'] = date_time_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    doc['created_at'] = date_time_obj.strftime(
+                        "%Y-%m-%dT%H:%M:%SZ")
                     doc['created_year'] = date_time_obj.strftime("%Y")
 
                 doc['title'] = title
