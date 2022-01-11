@@ -317,6 +317,9 @@ class AliSpider(scrapy.Spider):
 
     def next_request(self, next_tag=False):
 
+        if self.page == 200:
+            next_tag = True
+
         if next_tag == True:
             if len(self.tag_arr) == 0:
                 print('本次总共爬取：',self.total_article)
