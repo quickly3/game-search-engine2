@@ -92,7 +92,7 @@ class AliSpider(scrapy.Spider):
         "架构设计": {
             "cid": "106892"
         },
-        "所有随笔": {
+        "随笔": {
             "cid": "0"
         },
         "设计模式": {
