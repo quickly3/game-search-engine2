@@ -417,7 +417,6 @@ class AliSpider(scrapy.Spider):
             bulked = int(len(bulk)/2)
             self.total_article += bulked
             print('Tag:',self.tag,": ",bulked)
-
-            # es.bulk(index="article", body=bulk)
+            es.bulk(index="article", body=bulk)
 
         yield self.next_request(next_tag)
