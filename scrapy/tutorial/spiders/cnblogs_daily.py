@@ -36,11 +36,9 @@ def clearHighLight(string):
 class AliSpider(scrapy.Spider):
     # 593
     name = "cnblogs_daily"
+    total_article = 0
 
     tagId = {
-        "后端开发": {
-            "cid": "2"
-        },
         ".NET技术": {
             "cid": "108698"
         },
@@ -321,10 +319,12 @@ class AliSpider(scrapy.Spider):
 
         if next_tag == True:
             if len(self.tag_arr) == 0:
+                print('本次总共爬取：',self.total_article)
                 self.crawler.engine.close_spider(self, '关闭爬虫')
             else:
                 self.page = 0
                 self.tag = self.tag_arr.pop()
+                print("Next tag",self.tag)
                 self.cateId = self.tagId[self.tag]['cid']
 
                 if 'extra_tag' in self.tagId[self.tag]:
@@ -414,7 +414,10 @@ class AliSpider(scrapy.Spider):
             next_tag = True
 
         if len(bulk) > 0:
-            es.bulk(index="article", body=bulk)
+            bulked = int(len(bulk)/2)
+            self.total_article += bulked
+            print('Tag:',self.tag,": ",bulked)
 
-        if next_tag:
-            yield self.next_request(next_tag)
+            # es.bulk(index="article", body=bulk)
+
+        yield self.next_request(next_tag)
