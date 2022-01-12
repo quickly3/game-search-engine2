@@ -382,7 +382,8 @@ class AliSpider(scrapy.Spider):
                         "%Y-%m-%dT%H:%M:%SZ")
                     doc['created_year'] = date_time_obj.strftime("%Y")
 
-                    date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
+                    date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')+datetime.timedelta(hours=-8)
+
 
                     doc['created_at'] = date_time_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
                     doc['created_year'] = date_time_obj.strftime("%Y")
@@ -394,7 +395,7 @@ class AliSpider(scrapy.Spider):
                     # print("too old")
                     continue;
 
-                if ts > self.end_time :
+                if ts >= self.end_time :
                     # print("too new")
                     continue;
 
