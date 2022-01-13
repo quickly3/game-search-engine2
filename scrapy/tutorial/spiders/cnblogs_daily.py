@@ -382,11 +382,12 @@ class AliSpider(scrapy.Spider):
                         "%Y-%m-%dT%H:%M:%SZ")
                     doc['created_year'] = date_time_obj.strftime("%Y")
 
-                    date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')+datetime.timedelta(hours=-8)
 
+                    date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')
+                    date_time_obj_tz = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M')+datetime.timedelta(hours=-8)
 
-                    doc['created_at'] = date_time_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
-                    doc['created_year'] = date_time_obj.strftime("%Y")
+                    doc['created_at'] = date_time_obj_tz.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    doc['created_year'] = date_time_obj_tz.strftime("%Y")
 
                 ts = date_time_obj.timestamp();
 
