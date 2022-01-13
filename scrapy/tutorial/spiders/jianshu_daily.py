@@ -126,9 +126,6 @@ class AliSpider(scrapy.Spider):
 
                 date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
 
-
-
-
                 ts = date_time_obj.timestamp()
 
                 if ts < self.last_tag_ts:
@@ -136,10 +133,7 @@ class AliSpider(scrapy.Spider):
                     print("Too old")
                     continue
 
-                print(_datetime_arr[0])
-                print((date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ"))
-
-                created_at = _datetime_arr[0]
+                created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
                 title = pattern.sub('', title)
                 desc = pattern.sub('', desc)
@@ -166,8 +160,7 @@ class AliSpider(scrapy.Spider):
                 bulk.append(doc)
 
             if len(bulk) > 0:    
-                pass
-                # es.bulk(index="article",body=bulk)
+                es.bulk(index="article",body=bulk)
 
         else:
             self.index+=1
