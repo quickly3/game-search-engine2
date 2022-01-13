@@ -125,7 +125,8 @@ class AliSpider(scrapy.Spider):
                 _datetime_arr = obj['first_shared_at'].split(".")
 
                 date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
-                print(obj['first_shared_at'])
+
+
 
 
                 ts = date_time_obj.timestamp()
@@ -134,6 +135,9 @@ class AliSpider(scrapy.Spider):
                     self.toNextTag = True
                     print("Too old")
                     continue
+
+                print(_datetime_arr[0])
+                print((date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ"))
 
                 created_at = _datetime_arr[0]
 
