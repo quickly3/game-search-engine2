@@ -123,7 +123,11 @@ class AliSpider(scrapy.Spider):
                 desc = obj['content'].strip()
                 author = obj['user']['nickname']
                 _datetime_arr = obj['first_shared_at'].split(".")
+
                 date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                print(obj['first_shared_at'])
+
+
                 ts = date_time_obj.timestamp()
 
                 if ts < self.last_tag_ts:
@@ -158,8 +162,9 @@ class AliSpider(scrapy.Spider):
                 bulk.append(doc)
 
             if len(bulk) > 0:    
-                es.bulk(index="article",
-                        body=bulk)
+                pass
+                # es.bulk(index="article",body=bulk)
+
         else:
             self.index+=1
             self.page=0
