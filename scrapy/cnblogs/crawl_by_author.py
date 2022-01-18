@@ -99,7 +99,7 @@ class TestSpider(scrapy.Spider):
 
             if len(bulk) > 0:
                 es_resp = self.es.client.bulk(index="article", body=bulk)
-                if not es_resp['errors']:
+                if es_resp['errors']:
                     for es_resp in es_resp['items']:
                         print('Es status',es_resp['index']['status'])
 
