@@ -100,7 +100,8 @@ class TestSpider(scrapy.Spider):
             if len(bulk) > 0:
                 es_resp = self.es.client.bulk(index="article", body=bulk)
                 if not es_resp['errors']:
-                    print('Es status',es_resp['items'][0]['index']['status'])
+                    for es_resp in es_resp['items']:
+                        print('Es status',es_resp['index']['status'])
 
 
             if 'next_page_url' in resp:
