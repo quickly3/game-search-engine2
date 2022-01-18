@@ -54,13 +54,21 @@ class FeishuRobot extends Command
 
         // $fs_robot->show_chart_list();
 
-        // $fs_robot->getMessages('oc_59384feeb3ab194bdc0f9f385da7354f');
+        $messages = $fs_robot->getMessages('oc_59384feeb3ab194bdc0f9f385da7354f');
+
+        array_map(function($msg) use ($fs_robot){
+            dump(date("Y-m-d H:i:s",(int)$msg->create_time/1000));
+            $users = $fs_robot->getMessagesReadUsers($msg->message_id);
+            dump($users);
+        },$messages);
+        
+
         // $this->sendDailyMessageToMe();
 
         // $fs_robot->show_group_info("oc_59384feeb3ab194bdc0f9f385da7354f");
         // $fs_robot->sendUserHtml("ou_7ba56fd9ecc84f4115ba863607f3d898");
 
-        $this->uploadFile();
+        // $this->uploadFile();
     }
 
     public function uploadFile(){

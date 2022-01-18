@@ -2,16 +2,7 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 import csv
 from es_client import EsClient
-from scrapy.http import JsonRequest
 import json
-import juejin_util
-import os
-from scrapy import signals
-import pprint
-
-
-
-
 
 class TestSpider(scrapy.Spider):
     name = 'juejin_authors_crawl'

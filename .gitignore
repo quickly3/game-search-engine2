@@ -47,6 +47,10 @@ invalid_ind.csv
 invalid_ind_str.csv
 puppeteer/*.csv
 scrapy/juejin/*.csv
+scrapy/cnblogs/*.txt
+scrapy/cnblogs/*.csv
+
+
 
 *.mp3
 

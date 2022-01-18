@@ -64,7 +64,7 @@ class EsClient:
             "aggs": {
                 "author_buckets": {
                     "composite": {
-                        "size": 1000,
+                        "size": 10000,
                         "sources": [
                             {
                                 "author_url": {
@@ -166,3 +166,6 @@ class EsClient:
                 id=x['_id'], source=x['_source']['source'], url=x['_source']['url']), resp['hits']['hits']))
 
         return result
+
+def createClient():
+    return EsClient()

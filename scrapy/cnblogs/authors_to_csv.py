@@ -1,8 +1,10 @@
 # 导出全部juejin文章作者
-from sys import path
-path.append(r"../es_services");
+import sys
+sys.path.append("../esservices");
+import esClient
 
-from es_client import EsClient
+# from ..esservices import esClient
+
 import csv
 import os
 
@@ -12,7 +14,7 @@ if __name__ == "__main__":
     if os.path.exists(file):
         os.remove(file)
 
-    es = EsClient()
+    es = esClient.createClient()
     es.setQuerySource('cnblogs');
     toCSV = es.getAuthors()
     toCSV = sorted(toCSV, key=lambda k: k['doc_count'], reverse=True)

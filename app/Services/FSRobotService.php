@@ -95,10 +95,11 @@ class FSRobotService
         }
     }
 
-    // ou_7ba56fd9ecc84f4115ba863607f3d898
-    function get_user_info($open_ids){
+
+    function get_users_info($open_ids){
         $ids_string =  join("&", array_map(function($item){ return "open_ids={$item}";},$open_ids));
 
+        $users = [];
         $method = 'GET';
         $url = "https://open.feishu.cn/open-apis/contact/v1/user/batch_get?{$ids_string}";
         $options = [
@@ -111,9 +112,32 @@ class FSRobotService
         $response = $client->request($method,$url,$options);
         if($response->getStatusCode() === 200){
             $resp = json_decode($response->getBody());
-            dump($resp);
+            return $resp->data->user_infos;
         }
+
+        return $users;
     }
+
+    function get_user_info($user_id){
+
+        $method = 'GET';
+        $url = "https://open.feishu.cn/open-apis/contact/v3/users/{$user_id}";
+        $options = [
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request($method,$url,$options);
+        if($response->getStatusCode() === 200){
+            $resp = json_decode($response->getBody());
+            return $resp->data->user_infos;
+        }
+
+        return false;
+    }
+
 
     function sendUserHtml($open_id){
 
@@ -418,7 +442,7 @@ class FSRobotService
 
     function getMessages($chat_id){
         $method = 'GET';
-        $url = "https://open.feishu.cn/open-apis/im/v1/messages?container_id_type=chat&container_id={$chat_id}";
+        $url = "https://open.feishu.cn/open-apis/im/v1/messages?container_id_type=chat&container_id={$chat_id}&start_time=1642386468";
         $options = [
             "headers"=>[
                 "Authorization"=>"Bearer {$this->app_access_token}"
@@ -430,7 +454,7 @@ class FSRobotService
 
         if($response->getStatusCode() === 200){
             $resp = json_decode($response->getBody());
-            dump($resp);
+            return $resp->data->items;
         }
     }
 
@@ -466,4 +490,31 @@ class FSRobotService
         // }
     }
 
+    function getMessagesReadUsers($message_id = 'om_fb381b29d89ce6d27970319756cea36a'){
+        $method = 'GET';
+        $url = "https://open.feishu.cn/open-apis/im/v1/messages/{$message_id}/read_users?user_id_type=open_id";
+        $options = [
+            "headers"=>[
+                "Authorization"=>"Bearer {$this->app_access_token}"
+            ]
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request($method,$url,$options);
+
+        if($response->getStatusCode() === 200){
+            $resp = json_decode($response->getBody());
+            
+            $ids = array_map(function($item){
+                return $item->user_id;
+            }, $resp->data->items);
+
+            $users = $this->get_users_info($ids);
+            return array_map(function($user){
+                return $user->name;
+            },$users);
+        }
+
+        return [];
+    }
 }

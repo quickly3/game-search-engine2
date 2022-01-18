@@ -1,0 +1,1 @@
+nohup python3 crawl_by_author.py  >> crawl_by_author.txt 2>&1 &
