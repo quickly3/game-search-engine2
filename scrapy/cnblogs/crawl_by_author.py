@@ -98,14 +98,16 @@ class TestSpider(scrapy.Spider):
                 bulk.append(doc)
 
             if len(bulk) > 0:
-                self.es.client.bulk(index="article", body=bulk)
+                es_resp = self.es.client.bulk(index="article", body=bulk)
+                if not es_resp['errors']:
+                    print('Es status',es_resp['items'][0]['index']['status'])
 
 
             if 'next_page_url' in resp:
                 next_page_url = resp['next_page_url']
                 print('next_page_url ', next_page_url)
                 if next_page_url:
-                    yield scrapy.Request(next_page_url, callback=lambda response, url=next_page_url : self.parse(response, next_page_url))
+                    yield scrapy.Request(next_page_url, callback=lambda response, url=url : self.parse(response, url))
 
         else:
             print("None return")
