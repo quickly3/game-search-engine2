@@ -58,7 +58,7 @@ class TestSpider(scrapy.Spider):
 
                 # url = 'https://www.cnblogs.com/dragonfei'
 
-                # url = 'https://www.cnblogs.com/autismbug/'
+                # url = 'https://www.cnblogs.com/jzz-111jy/'
 
                 yield scrapy.Request(url, callback=lambda response, url=url : self.parse(response, url))
 
@@ -69,8 +69,7 @@ class TestSpider(scrapy.Spider):
             '//*[@class="post"]',
             '//*[@class="post post-list-item"]',
             '//*[@class="postlist"]',
-            '//*[@class="postTitle"]'
-            '//*[@id="mainContent"]/div/div[@class="day"]',
+            '//*[@class="day"]',
             '//*[@id="mainContent"]/div[2]/div[1]/div[@class="custom-card"]',
         ]
 
@@ -87,26 +86,29 @@ class TestSpider(scrapy.Spider):
         bulk = []
         resp = self.getDocByMode(match_mode, response, url)
 
-        for doc in resp['docs']:
-
-            bulk.append(
-                {"index": {"_index": "article"}})
-                
-            doc['source'] = 'cnblogs';
-            doc['valid'] = True
+        if resp and len(resp['docs']) > 0:
             
-            bulk.append(doc)
+            for doc in resp['docs']:
+                bulk.append(
+                    {"index": {"_index": "article"}})
+                    
+                doc['source'] = 'cnblogs';
+                doc['valid'] = True
+                
+                bulk.append(doc)
 
-        if len(bulk) > 0:
-            resp = self.es.client.bulk(index="article", body=bulk)
+            if len(bulk) > 0:
+                self.es.client.bulk(index="article", body=bulk)
 
-        # if resp and 'next_page_url' in resp:
-        #     next_page_url = resp['next_page_url']
 
-        #     print(next_page_url)
-        #     if next_page_url:
-        #         yield scrapy.Request(next_page_url, callback=lambda response, url=next_page_url : self.parse(response, next_page_url))
+            if 'next_page_url' in resp:
+                next_page_url = resp['next_page_url']
+                print('next_page_url ', next_page_url)
+                if next_page_url:
+                    yield scrapy.Request(next_page_url, callback=lambda response, url=next_page_url : self.parse(response, next_page_url))
 
+        else:
+            print("None return")
 
     def getDocByMode(self, match_mode, response, author_url):
 
@@ -297,8 +299,8 @@ class TestSpider(scrapy.Spider):
             post_locked = False
             docs = []
 
-            items = response.xpath('//*[@id="mainContent"]/div/div[@class="day"]')
-            
+            items = response.xpath('//*[@class="day"]')
+
             for item in items:
                 doc = {}
                 titles = item.xpath('div[@class="postTitle"]/a[@class="postTitle2 vertical-middle"]/span/text()').getall()
@@ -307,6 +309,9 @@ class TestSpider(scrapy.Spider):
                 links = item.xpath('div[@class="postTitle"]/a[@class="postTitle2 vertical-middle"]/@href').getall()
 
                 sumarys = item.xpath('div[@class="postCon"]/div[@class="c_b_p_desc"]/text()').getall()
+
+                if not sumarys:
+                    sumarys = item.xpath('div[@class="c_b_p_desc"]/text()').getall()
 
                 if not sumarys:
                     continue
@@ -322,6 +327,7 @@ class TestSpider(scrapy.Spider):
                 counters = item.xpath('div[@class="postDesc"]/span/text()').getall()
 
                 _docs = list(map(lambda x:{'title':x}, titles))
+
 
                 for i,doc in enumerate(_docs):
                     doc['url'] = links[i]
@@ -351,7 +357,7 @@ class TestSpider(scrapy.Spider):
                     doc['comment_count'] = comment_count_match[0] if len(comment_count_match) > 0 else 0
                     doc['digg_count'] = digg_count_match[0] if len(digg_count_match) > 0 else 0
 
-                docs = docs+_docs
+                    docs.append(doc)
 
             next_page_url = response.xpath('//div[@id="nav_next_page"]/a/@href').get()
             if not next_page_url:
