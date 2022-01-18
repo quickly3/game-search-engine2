@@ -99,7 +99,6 @@ class TestSpider(scrapy.Spider):
 
         if len(bulk) > 0:
             resp = self.es.client.bulk(index="article", body=bulk)
-            print(resp)
 
         # if resp and 'next_page_url' in resp:
         #     next_page_url = resp['next_page_url']
