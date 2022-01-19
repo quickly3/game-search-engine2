@@ -1,4 +1,4 @@
-PUT article_20211227_b
+PUT article_20220118
 {
   "aliases": {
     "article": {}
@@ -17,6 +17,9 @@ PUT article_20211227_b
           "auto_completion":{
             "type":"completion",
             "analyzer": "ik_max_word"
+          },
+          "keyword": {
+            "type": "keyword"
           }
         }
       },
