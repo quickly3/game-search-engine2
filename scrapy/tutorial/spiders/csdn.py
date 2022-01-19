@@ -91,24 +91,34 @@ class AliSpider(scrapy.Spider):
                 doc = {}
                 doc['title'] = clearHighLight(item['title'])
                 doc['url'] = re.sub(r'\?.*','',item['url'])
-                doc['summary'] = clearHighLight(item['description'])
+                doc['summary'] = clearHighLight(item['digest'])
                 doc['author'] = clearHighLight(item['nickname'])
+                doc['author_url'] = 'https://blog.csdn.net/'+item['author']
 
                 doc['created_at'] = item['create_time_str']+"T00:00:00Z"
                 doc['created_year'] = dateparse(item['create_time_str']).year
 
-                doc['tag'] = self._target['k']
+                if ('search_tag' in item) and len(item['search_tag']) > 0:
+                    doc['tag'] = list(map(lambda x: clearHighLight(x), item['search_tag']))
+                    
+                else:
+                    doc['tag'] = self._target['k']
+
                 doc['source'] = self.source
 
                 doc['stars'] = 0
+
+                doc['view_count'] = item['view']
+                doc['comment_count'] = item['comment']
+                doc['digg_count'] = item['digg']
 
                 bulk.append(
                     {"index": {"_index": "article"}})
                 bulk.append(doc)
 
             if len(bulk) > 0:
-                es.bulk(index="article",
-                        body=bulk)
+                es.bulk(index="article",body=bulk)
+                pass
 
             self.page = self.page+1
             url = self.get_url()
