@@ -3,17 +3,10 @@
 
 
 import scrapy
-import sys
-import sqlalchemy
 import os
 import json
 import time
-
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import sessionmaker
-import time, datetime
+import time
 
 # settings.py
 from dotenv import load_dotenv
