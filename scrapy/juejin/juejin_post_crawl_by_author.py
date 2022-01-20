@@ -5,7 +5,6 @@ from es_client import EsClient
 from scrapy.http import JsonRequest
 import json
 import juejin_util
-import os
 
 
 # 根据juejin作者爬取全部文章
@@ -17,6 +16,7 @@ class TestSpider(scrapy.Spider):
 
     source = 'juejin'
     api_url = 'https://api.juejin.cn/content_api/v1/article/query_list?aid=2608';
+    current = 0
 
     def start_requests(self):
         file = 'authors.csv'
