@@ -124,7 +124,7 @@ class AliSpider(scrapy.Spider):
                 author = obj['user']['nickname']
                 _datetime_arr = obj['first_shared_at'].split(".")
 
-                date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S')
+                date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
 
                 ts = date_time_obj.timestamp()
 
@@ -133,7 +133,7 @@ class AliSpider(scrapy.Spider):
                     print("Too old")
                     continue
 
-                created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ")
+                created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%S")
 
                 title = pattern.sub('', title)
                 desc = pattern.sub('', desc)
