@@ -12,10 +12,8 @@ from dotenv import load_dotenv
 from elasticsearch import Elasticsearch
 from elasticsearch import logger as es_logger
 
-load_dotenv("../../.env")
 es_user = os.getenv("ES_USER")
 es_pwd = os.getenv("ES_PWD")
-
 
 
 es = Elasticsearch(http_auth=(es_user, es_pwd))
