@@ -104,7 +104,7 @@ class AliSpider(scrapy.Spider):
         if int(resp['hits']['total']['value']) > 0:
             if 'created_at' in resp['hits']['hits'][0]['_source']:
                 created_at = resp['hits']['hits'][0]['_source']['created_at']
-                date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
+                date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S')
                 self.last_tag_ts = date_time_obj.timestamp()
 
     def parse(self, response):
