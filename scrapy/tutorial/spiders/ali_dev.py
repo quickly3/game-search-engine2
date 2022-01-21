@@ -9,6 +9,7 @@ import os
 
 # settings.py
 from dotenv import load_dotenv
+from pathlib import Path
 from elasticsearch import Elasticsearch
 from elasticsearch import logger as es_logger
 
