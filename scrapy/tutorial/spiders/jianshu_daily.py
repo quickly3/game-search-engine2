@@ -124,7 +124,7 @@ class AliSpider(scrapy.Spider):
                 author = obj['user']['nickname']
                 _datetime_arr = obj['first_shared_at'].split(".")
 
-                date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S')
 
                 ts = date_time_obj.timestamp()
 
