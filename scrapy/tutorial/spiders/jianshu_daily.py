@@ -78,7 +78,6 @@ class AliSpider(scrapy.Spider):
 
     def start_requests(self):
         data = self.getSlugUrl()
-        self.getLastRecord()
 
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
