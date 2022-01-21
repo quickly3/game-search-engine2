@@ -80,32 +80,12 @@ class AliSpider(scrapy.Spider):
         data = self.getSlugUrl()
         self.getLastRecord()
 
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))*1000
+        self.end_time = self.start_time + 86400000
+
         yield scrapy.Request(data['url'], headers=data['headers'], method='POST')
-
-    def getLastRecord(self):
-        query_tpl = Template("source:jianshu && tag:${tag}")
-        body = {
-            "query":{
-                "query_string": {
-                    "query": query_tpl.substitute(tag=self.q)
-                }
-            },
-            "sort": [
-                {
-                    "created_at": {
-                        "order": "desc"
-                    }
-                }
-            ],
-            "size": 1
-        }
-        resp = es.search(index="article",body=body)
-
-        if int(resp['hits']['total']['value']) > 0:
-            if 'created_at' in resp['hits']['hits'][0]['_source']:
-                created_at = resp['hits']['hits'][0]['_source']['created_at']
-                date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S')
-                self.last_tag_ts = date_time_obj.timestamp()
 
     def parse(self, response):
 
@@ -128,10 +108,16 @@ class AliSpider(scrapy.Spider):
 
                 ts = date_time_obj.timestamp()
 
-                if ts < self.last_tag_ts:
+                if ts < self.start_time:
                     self.toNextTag = True
                     print("Too old")
                     continue
+
+                if ts > self.end_time:
+                    self.toNextTag = True
+                    print("Too new")
+                    continue
+
 
                 created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%S")
 
@@ -170,7 +156,6 @@ class AliSpider(scrapy.Spider):
             self.toNextTag = False
             self.index+=1
             self.q = self.c[self.index]
-            self.getLastRecord()
             self.page=0           
 
         if self.index < len(self.c):

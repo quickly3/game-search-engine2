@@ -86,7 +86,6 @@ class AliSpider(scrapy.Spider):
             "id":self.ids.pop(0),
             "score":0
         }
-        print(last['id'])
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
         self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))*1000
