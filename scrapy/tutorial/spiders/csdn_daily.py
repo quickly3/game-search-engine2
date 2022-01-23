@@ -92,7 +92,8 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
-        next = False
+        next_page = False
+        next_tag = False
         
         if response.text.strip() != '':
             resp = json.loads(response.text)
@@ -118,36 +119,30 @@ class AliSpider(scrapy.Spider):
                     date_time_obj = datetime.datetime.fromtimestamp(ts)
                     created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ")
                     doc['created_at'] = created_at
-                    print(doc['created_at'])
-                    print(item['create_time_str'])
-
                     
                     if ts < self.start_time:
-                        next = True
+                        next_tag = True
                         print("Too old")
                         continue
 
                     if ts > self.end_time:
-                        next = True
                         print("Too new")
                         continue
-
-
-
+                    
+                    next_page = True
                     bulk.append(
                         {"index": {"_index": "article"}})
                     bulk.append(doc)
 
                 if len(bulk) > 0:
-                    es.bulk(index="article",
-                            body=bulk)
+                    es.bulk(index="article", body=bulk)
             else:
-                next = True
+                next_tag = True
         else:
             print("Empty body")
-            next = True
+            next_tag = True
                 
-        if next:
+        if next_tag:
             if len(self.tar_arr) > 0:
                 self._target = self.tar_arr.pop()
                 self.page = 1
@@ -156,6 +151,7 @@ class AliSpider(scrapy.Spider):
             else:
                 print("Spider closeed")
         else:
-            self.page = self.page+1
-            url = self.get_url()
-            yield scrapy.Request(url)
+            if next_page:
+                self.page = self.page+1
+                url = self.get_url()
+                yield scrapy.Request(url)
