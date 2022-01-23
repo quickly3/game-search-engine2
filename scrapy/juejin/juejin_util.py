@@ -12,7 +12,6 @@ def getJuejinDocByJsonItem(item):
     doc['title'] = article_info['title']
     doc['url'] = postUrl+article_info['article_id']
     doc['summary'] = article_info['brief_content']
-
     doc['created_at'] = datetime.datetime.fromtimestamp(int(article_info['ctime']),None)
     doc['created_year'] = doc['created_at'].strftime("%Y")
 
@@ -25,5 +24,19 @@ def getJuejinDocByJsonItem(item):
 
     doc['author'] = author_user_info['user_name']
     doc['author_url'] = userUrl + author_user_info['user_id']
+    
+    doc['collect_count'] = article_info['collect_count']
+    doc['comment_count'] = article_info['comment_count']
+    doc['digg_count']    = article_info['digg_count']
+    doc['view_count']    = article_info['view_count']
+    doc['hot_index']     = article_info['hot_index']
+    doc['user_index']    = article_info['user_index']
+    
+    doc['user_id']       = article_info['user_id']
+    doc['user_index']    = article_info['user_index']
+    doc['user_index']    = article_info['user_index']
+    
+    category = item['category']['category_name']
+    doc['category'] = category
 
     return doc;
