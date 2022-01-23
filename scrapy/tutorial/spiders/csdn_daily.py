@@ -57,8 +57,13 @@ class AliSpider(scrapy.Spider):
 
     tag = "python"
 
+    # urlTmpl = Template(
+    #     'https://so.csdn.net/api/v2/search?q=${tagId}&t=blog&p=${page}&s=0&tm=1&lv=-1&ft=0&l=&u=')
+
     urlTmpl = Template(
-        'https://so.csdn.net/api/v2/search?q=${tagId}&t=blog&p=${page}&s=0&tm=1&lv=-1&ft=0&l=&u=')
+        'https://so.csdn.net/api/v3/search?q=${tagId}&t=blog&p=${page}&s=new&tm=0&lv=-1&ft=0&l=&u=&ct=-1&pnt=-1&ry=-1&ss=-1&dct=-1&vco=-1&cc=-1&sc=-1&akt=-1&art=-1&ca=-1&prs=&pre=&ecc=-1&ebc=-1&urw=&ia=1&platform=pc')
+    
+   
 
     page = 1
     pageSize = 100
