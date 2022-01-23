@@ -69,7 +69,7 @@ class AliSpider(scrapy.Spider):
     urlTmpl = Template(
         'https://www.oschina.net/search?scope=blog&q=${tagId}&onlyme=0&onlytitle=0&sort_by_time=1&p=${page}')
 
-    page = 64
+    page = 1
     pageSize = 100
 
     def start_requests(self):
