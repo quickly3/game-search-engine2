@@ -60,7 +60,7 @@ class AliSpider(scrapy.Spider):
     urlTmpl = Template(
         'https://so.csdn.net/api/v2/search?q=${tagId}&t=blog&p=${page}&s=0&tm=1&lv=-1&ft=0&l=&u=')
 
-    page = 2
+    page = 1
     pageSize = 100
 
     def start_requests(self):
