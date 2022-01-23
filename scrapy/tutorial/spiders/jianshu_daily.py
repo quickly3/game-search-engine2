@@ -81,7 +81,7 @@ class AliSpider(scrapy.Spider):
 
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
-        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))*1000
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
         self.end_time = self.start_time + 86400000
 
         yield scrapy.Request(data['url'], headers=data['headers'], method='POST')
@@ -102,11 +102,12 @@ class AliSpider(scrapy.Spider):
                 desc = obj['content'].strip()
                 author = obj['user']['nickname']
                 _datetime_arr = obj['first_shared_at'].split(".")
+                
 
                 date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
 
-                ts = date_time_obj.timestamp()
-
+                ts = int(date_time_obj.timestamp())
+                
                 if ts < self.start_time:
                     self.toNextTag = True
                     print("Too old")
