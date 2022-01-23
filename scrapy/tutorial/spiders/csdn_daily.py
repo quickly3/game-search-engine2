@@ -111,13 +111,10 @@ class AliSpider(scrapy.Spider):
                 if len(bulk) > 0:
                     es.bulk(index="article",
                             body=bulk)
-
-                self.page = self.page+1
-                url = self.get_url()
-                yield scrapy.Request(url)
             else:
                 next = True
         else:
+            print("Empty body")
             next = True
                 
         if next:
@@ -128,3 +125,7 @@ class AliSpider(scrapy.Spider):
                 yield scrapy.Request(url)
             else:
                 print("Spider closeed")
+        else:
+            self.page = self.page+1
+            url = self.get_url()
+            yield scrapy.Request(url)
