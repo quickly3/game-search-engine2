@@ -115,7 +115,7 @@ class AliSpider(scrapy.Spider):
 
                     ts = int(item['create_time'])
                     
-                    date_time_obj = time.localtime(ts)
+                    date_time_obj = datetime.datetime.fromtimestamp(ts)
                     created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ")
                     doc['created_at'] = created_at
                     print(doc['created_at'])
