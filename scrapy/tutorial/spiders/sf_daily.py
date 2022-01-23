@@ -96,6 +96,7 @@ class AliSpider(scrapy.Spider):
     page = 1
     last_tag_ts = 0
     toNextTag = False
+    domain = 'https://segmentfault.com/blogs/newest'
 
     def start_requests(self):
 
@@ -123,7 +124,8 @@ class AliSpider(scrapy.Spider):
 
         if response.status == 200:
             items = response.xpath(
-                '//*[@class="item-wrap py-3 list-group-item"]/div[@class="content"]')
+                '//div[@class="content"]')
+            
             if len(items) > 0:
                 bulk = []
                 for item in items:
@@ -143,7 +145,7 @@ class AliSpider(scrapy.Spider):
 
                     isToday = re.match(r'今天', createdAt)
                     isMinAgo = re.match(r'.*分钟前.*', createdAt)
-                    isCurYear = re.match(r'.*.月.日.*', createdAt)
+                    isCurYear = re.match(r'.*月.*日.*', createdAt)
                     isDatetime = re.match(r'\d{4}-\d{1,2}-\d{1,2}', createdAt)
 
                     if isToday != None:
@@ -166,8 +168,9 @@ class AliSpider(scrapy.Spider):
                         './/p[contains(@class,"excerpt")]/text()').get()
 
                     createdYear = createdAt.split('-')[0]
-
-                    ts = int(createdAt.timestamp())
+                    createdAtObj = datetime.datetime.strptime(createdAt, '%Y-%m-%dT%H:%M:%SZ')
+                    
+                    ts = int(createdAtObj.timestamp())
                     
                     if ts < self.start_time:
                         self.toNextTag = True
