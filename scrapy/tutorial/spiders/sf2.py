@@ -140,7 +140,7 @@ class AliSpider(scrapy.Spider):
 
                     isToday = re.match(r'今天', createdAt)
                     isMinAgo = re.match(r'.*分钟前.*', createdAt)
-                    isCurYear = re.match(r'.*.月.日.*', createdAt)
+                    isCurYear = re.match(r'.*月.*日.*', createdAt)
                     isDatetime = re.match(r'\d{4}-\d{1,2}-\d{1,2}', createdAt)
 
                     if isToday != None:
