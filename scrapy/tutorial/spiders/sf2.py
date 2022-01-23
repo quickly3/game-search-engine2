@@ -36,6 +36,7 @@ class AliSpider(scrapy.Spider):
     # 593
     source = "sf"
     handle_httpstatus_list = [404,503]
+    domain = 'https://segmentfault.com'
 
     today = time.strftime("%Y-%m-%d")
     yesterday = (datetime.date.today() +
@@ -89,8 +90,6 @@ class AliSpider(scrapy.Spider):
         "upgrade-insecure-requests": "1",
     }
 
-    # urlTmpl = Template(
-    #     'https://www.oschina.net/search?scope=blog&q=${tagId}&onlyme=0&onlytitle=0&sort_by_time=1&p=${page}')
     urlTmpl = Template(
         'https://segmentfault.com/t/${tagId}/blogs?page=${page}'
         )
@@ -120,21 +119,24 @@ class AliSpider(scrapy.Spider):
         
         if response.status == 200:
             items = response.xpath(
-                '//*[@class="summary"]')
+                '//*[@class="content"]')
 
             if len(items) > 0:
                 bulk = []
                 for item in items:
 
-                    title_a = item.xpath('.//h2/a')
+                    title_a = item.xpath('.//h5/a')
                     titles = title_a.xpath('.//text()').getall()
                     title = "".join(titles)
                     title = title.strip()
 
                     url = title_a.xpath('.//@href').get()
-                    createdAtZone = item.xpath('.//ul/li/span/text()').getall()
-                    author = item.xpath('.//ul/li/span/a/text()').get()
-                    createdAt = createdAtZone[1].strip().replace(" ","").replace("发布于","").replace("\n","")
+                    
+                    createdAtZone = item.xpath('.//div/span/text()').getall()
+                    author = item.xpath('.//div/a/span/text()').get()
+                    author_url = self.domain + item.xpath('.//div/a/@href').get()
+                    
+                    createdAt = createdAtZone[0].strip().replace(" ","").replace("发布于","").replace("\n","")
 
                     isToday = re.match(r'今天', createdAt)
                     isMinAgo = re.match(r'.*分钟前.*', createdAt)
@@ -160,14 +162,19 @@ class AliSpider(scrapy.Spider):
                     detail = item.xpath(
                         './/p[contains(@class,"excerpt")]/text()').get()
 
+                    createdYear = createdAt.split('-')[0]
+                    
                     doc = {}
                     doc['title'] = title
-                    doc['url'] = "https://segmentfault.com/"+url
+                    doc['url'] = self.domain+url
                     doc['summary'] = detail
                     doc['tag'] = self._target['k']
                     doc['source'] = self.source
                     doc['author'] = author
+                    doc['author_url'] = author_url
                     doc['created_at'] = createdAt
+                    doc['created_year'] = createdYear
+                    
                     doc['stars'] = 0
 
                     bulk.append(
