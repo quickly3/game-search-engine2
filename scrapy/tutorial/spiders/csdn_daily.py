@@ -78,6 +78,11 @@ class AliSpider(scrapy.Spider):
         self._target = self.tar_arr.pop()
 
         url = self.get_url()
+        
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+        self.end_time = self.start_time + 86400000
 
         yield scrapy.Request(url)
 
@@ -92,7 +97,7 @@ class AliSpider(scrapy.Spider):
         if response.text.strip() != '':
             resp = json.loads(response.text)
             items = resp['result_vos']
-            if len(items) > 0:
+            if items and len(items) > 0:
                 bulk = []
                 for item in items:
                     doc = {}
@@ -101,13 +106,32 @@ class AliSpider(scrapy.Spider):
                     doc['summary'] = clearHighLight(item['digest'])
                     doc['author'] = clearHighLight(item['nickname'])
 
-                    doc['created_at'] = item['create_time_str']+"T00:00:00Z"
                     doc['created_year'] = dateparse(item['create_time_str']).year
 
                     doc['tag'] = self._target['k']
                     doc['source'] = self.source
 
                     doc['stars'] = 0
+
+                    date_time_obj = time.localtime(item['create_time'])
+                    created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ")
+                    doc['created_at'] = created_at
+                    print(doc['created_at'])
+                    print(item['create_time_str'])
+
+                    ts = item['create_time']
+                    
+                    if ts < self.start_time:
+                        next = True
+                        print("Too old")
+                        continue
+
+                    if ts > self.end_time:
+                        next = True
+                        print("Too new")
+                        continue
+
+
 
                     bulk.append(
                         {"index": {"_index": "article"}})
