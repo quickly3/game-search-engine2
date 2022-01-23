@@ -101,7 +101,6 @@ class AliSpider(scrapy.Spider):
                 url = self.domain+"/p/"+obj['slug']
                 desc = obj['content'].strip()
                 author = obj['user']['nickname']
-                _datetime_arr = obj['first_shared_at'].split(".")
                 
                 date_time_obj = datetime.datetime.strptime(obj['first_shared_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
 
@@ -113,7 +112,6 @@ class AliSpider(scrapy.Spider):
                     continue
 
                 if ts > self.end_time:
-                    self.toNextTag = True
                     print("Too new")
                     continue
 

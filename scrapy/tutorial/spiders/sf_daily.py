@@ -104,33 +104,15 @@ class AliSpider(scrapy.Spider):
             self.tar_arr.append({'k': item, 'v': self.tagId[item]})
 
         self._target = self.tar_arr.pop()
-        self.getLastRecord()
+        
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        self.start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+        self.end_time = self.start_time + 86400000
+        
         url = self.get_url()
         yield scrapy.Request(url, headers=self.headers)
 
-
-    def getLastRecord(self):
-        query_tpl = Template("source:sf && tag:${tag}")
-        body = {
-            "query":{
-                "query_string": {
-                    "query": query_tpl.substitute(tag=self._target['k'])
-                }
-            },
-            "sort": [
-                {
-                    "created_at": {
-                        "order": "desc"
-                    }
-                }
-            ],
-            "size": 1
-        }
-        resp = es.search(index="article",body=body)
-        if int(resp['hits']['total']['value']) > 0:
-            created_at = resp['hits']['hits'][0]['_source']['created_at']
-            date_time_obj = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
-            self.last_tag_ts = date_time_obj.timestamp()
 
     def get_url(self):
 
@@ -150,18 +132,18 @@ class AliSpider(scrapy.Spider):
                     titles = title_a.xpath('.//text()').getall()
                     title = "".join(titles)
                     title = title.strip()
+
                     url = title_a.xpath('.//@href').get()
-
-                    createdAtZone = item.xpath('.//div/span[2]/text()').get()
-                    author = item.xpath('.//div/a[2]/span/text()').get()
-                    author_url = item.xpath('.//div/a[2]/@href').get()
-
-                    createdAt = createdAtZone.strip().replace(" ","").replace("发布于","").replace("\n","")
-
+                    
+                    createdAtZone = item.xpath('.//div/span/text()').getall()
+                    author = item.xpath('.//div/a/span/text()').get()
+                    author_url = self.domain + item.xpath('.//div/a/@href').get()
+                    
+                    createdAt = createdAtZone[0].strip().replace(" ","").replace("发布于","").replace("\n","")
 
                     isToday = re.match(r'今天', createdAt)
                     isMinAgo = re.match(r'.*分钟前.*', createdAt)
-                    isCurYear = re.match(r'\d{1,2}月\d{1,2}日', createdAt)
+                    isCurYear = re.match(r'.*.月.日.*', createdAt)
                     isDatetime = re.match(r'\d{4}-\d{1,2}-\d{1,2}', createdAt)
 
                     if isToday != None:
@@ -171,7 +153,6 @@ class AliSpider(scrapy.Spider):
                         min = createdAt.replace("分钟前","").strip()
                         c = time.time() - int(min) * 60
                         createdAt = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime(c))
-                        print(createdAt)
 
                     if isCurYear != None:
                         createdAt = "2021-"+createdAt
@@ -181,28 +162,38 @@ class AliSpider(scrapy.Spider):
                     if isDatetime != None:
                         createdAt = createdAt+"T00:00:00Z"
 
-                    date_time_obj = datetime.datetime.strptime(createdAt, '%Y-%m-%dT%H:%M:%SZ')
-                    ts = date_time_obj.timestamp()
+                    detail = item.xpath(
+                        './/p[contains(@class,"excerpt")]/text()').get()
 
-                    if ts < self.last_tag_ts:
+                    createdYear = createdAt.split('-')[0]
+
+                    ts = int(createdAt.timestamp())
+                    
+                    if ts < self.start_time:
                         self.toNextTag = True
                         print("Too old")
                         continue
 
-                    # detail = item.xpath(
-                    #     './/p[contains(@class,"excerpt")]/text()').get()
-
+                    if ts > self.end_time:
+                        print("Too new")
+                        continue
+                    
                     doc = {}
                     doc['title'] = title
-                    doc['url'] = "https://segmentfault.com"+url
-                    doc['author_url'] = "https://segmentfault.com"+author_url
-
-                    # doc['summary'] = detail
+                    doc['url'] = self.domain+url
+                    doc['summary'] = detail
                     doc['tag'] = self._target['k']
                     doc['source'] = self.source
                     doc['author'] = author
+                    doc['author_url'] = author_url
                     doc['created_at'] = createdAt
+                    doc['created_year'] = createdYear
+                    
                     doc['stars'] = 0
+
+                    bulk.append(
+                        {"index": {"_index": "article"}})
+                    bulk.append(doc)
 
                     bulk.append(
                         {"index": {"_index": "article"}})
@@ -215,7 +206,6 @@ class AliSpider(scrapy.Spider):
                 self.toNextTag = False
                 if len(self.tar_arr) > 0:
                     self._target = self.tar_arr.pop()
-                    self.getLastRecord()
 
                     self.page = 1
                     url = self.get_url()

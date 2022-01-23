@@ -56,12 +56,15 @@ class AliSpider(scrapy.Spider):
         if len(res['hits']['hits']) > 0:
             last_create = res['hits']['hits'][0]['_source']['created_at']
             last_create = datetime.datetime.strptime(last_create, '%Y-%m-%d')
-
+        print('last_create',last_create)
         for item in response.css('.aw-common-list .aw-item'):
 
             title_h4 = item.css('.aw-question-content h4')
             title = title_h4.css('a::text').extract_first()
             title = title.replace("\n", "").strip(" ")
+            
+            print('title',title)
+            
 
             mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2})", title)
             _date = None
