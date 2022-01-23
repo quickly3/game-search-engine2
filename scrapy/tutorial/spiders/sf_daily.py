@@ -191,14 +191,16 @@ class AliSpider(scrapy.Spider):
                     
                     doc['stars'] = 0
 
-                    bulk.append(
-                        {"index": {"_index": "article"}})
-                    bulk.append(doc)
+
 
                     bulk.append(
                         {"index": {"_index": "article"}})
                     bulk.append(doc)
 
+                    bulk.append(
+                        {"index": {"_index": "article"}})
+                    bulk.append(doc)
+                print('len(bulk)', len(bulk))
                 if len(bulk) > 0:
                     es.bulk(index="article", body=bulk)
 
