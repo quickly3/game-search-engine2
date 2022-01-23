@@ -82,44 +82,49 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
-        print('response.text', response.text)
-        resp = json.loads(response.text)
-        items = resp['result_vos']
+        next = False
+        
+        if response.text.strip() != '':
+            resp = json.loads(response.text)
+            items = resp['result_vos']
+            if len(items) > 0:
+                bulk = []
+                for item in items:
+                    doc = {}
+                    doc['title'] = clearHighLight(item['title'])
+                    doc['url'] = re.sub(r'\?.*','',item['url'])
+                    doc['summary'] = clearHighLight(item['digest'])
+                    doc['author'] = clearHighLight(item['nickname'])
 
-        if len(items) > 0:
-            bulk = []
-            for item in items:
-                doc = {}
-                doc['title'] = clearHighLight(item['title'])
-                doc['url'] = re.sub(r'\?.*','',item['url'])
-                doc['summary'] = clearHighLight(item['digest'])
-                doc['author'] = clearHighLight(item['nickname'])
+                    doc['created_at'] = item['create_time_str']+"T00:00:00Z"
+                    doc['created_year'] = dateparse(item['create_time_str']).year
 
-                doc['created_at'] = item['create_time_str']+"T00:00:00Z"
-                doc['created_year'] = dateparse(item['create_time_str']).year
+                    doc['tag'] = self._target['k']
+                    doc['source'] = self.source
 
-                doc['tag'] = self._target['k']
-                doc['source'] = self.source
+                    doc['stars'] = 0
 
-                doc['stars'] = 0
+                    bulk.append(
+                        {"index": {"_index": "article"}})
+                    bulk.append(doc)
 
-                bulk.append(
-                    {"index": {"_index": "article"}})
-                bulk.append(doc)
+                if len(bulk) > 0:
+                    es.bulk(index="article",
+                            body=bulk)
 
-            if len(bulk) > 0:
-                es.bulk(index="article",
-                        body=bulk)
-
-            self.page = self.page+1
-            url = self.get_url()
-            yield scrapy.Request(url)
+                self.page = self.page+1
+                url = self.get_url()
+                yield scrapy.Request(url)
+            else:
+                next = True
         else:
+            next = True
+                
+        if next:
             if len(self.tar_arr) > 0:
                 self._target = self.tar_arr.pop()
                 self.page = 1
                 url = self.get_url()
                 yield scrapy.Request(url)
-
             else:
                 print("Spider closeed")
