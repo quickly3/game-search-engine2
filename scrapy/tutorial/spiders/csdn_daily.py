@@ -82,7 +82,7 @@ class AliSpider(scrapy.Spider):
             page=self.page, tagId=self._target['v'])
 
     def parse(self, response):
-        print(response.text)
+        print('response.text', response.text)
         resp = json.loads(response.text)
         items = resp['result_vos']
 
