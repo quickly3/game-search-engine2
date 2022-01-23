@@ -113,13 +113,14 @@ class AliSpider(scrapy.Spider):
 
                     doc['stars'] = 0
 
-                    date_time_obj = time.localtime(item['create_time'])
+                    ts = int(item['create_time'])
+                    
+                    date_time_obj = time.localtime(ts)
                     created_at = (date_time_obj+datetime.timedelta(hours=-8)).strftime("%Y-%m-%dT%H:%M:%SZ")
                     doc['created_at'] = created_at
                     print(doc['created_at'])
                     print(item['create_time_str'])
 
-                    ts = item['create_time']
                     
                     if ts < self.start_time:
                         next = True
