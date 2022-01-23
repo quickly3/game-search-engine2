@@ -168,6 +168,9 @@ class AliSpider(scrapy.Spider):
                 _date = dateparse(createAt)
 
                 ts = _date.timestamp()
+                
+                print(ts)
+                print(self.start_time)
 
                 if ts < self.start_time :
                     next_tag=True

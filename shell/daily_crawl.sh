@@ -22,7 +22,7 @@ nohup python3 -m scrapy crawl csdn_daily >> /home/ubuntu/www/ng-blog/storage/log
 
 
 
-# nohup python3 -m scrapy crawl oschina_daily >> /home/ubuntu/www/ng-blog/storage/logs/oschina_daily.log 2>&1
+nohup python3 -m scrapy crawl oschina_daily >> /home/ubuntu/www/ng-blog/storage/logs/oschina_daily.log 2>&1
 nohup python3 -m scrapy crawl oschina_news_daily >> /home/ubuntu/www/ng-blog/storage/logs/oschina_news_daily.log 2>&1
 nohup python3 -m scrapy crawl oschina_project_daily >> /home/ubuntu/www/ng-blog/storage/logs/oschina_project_daily.log 2>&1
 
