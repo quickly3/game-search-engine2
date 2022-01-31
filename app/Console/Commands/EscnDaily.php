@@ -60,7 +60,7 @@ class EscnDaily extends Command
         $this->sendDailyInofQ($test);
         $this->sendDailyJueJin($test);
         $this->sendDailyOschina($test);
-
+        $this->sendDailyCnblogs($test);
 
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
@@ -84,12 +84,6 @@ class EscnDaily extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            // if(!$test){
-            //     $fs_robot->sendToGroup2($title, $articles);
-            // }else{
-            //     $fs_robot->sendToBean($title, $articles);
-            // }
-
             $this->project[$title] = $articles;
         }
     }
@@ -100,14 +94,10 @@ class EscnDaily extends Command
         $articles = $info::getLastDayArticleByQuery('source:juejin && tag:news');
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
-        $title = "掘金资讯（{$yesterday}）";
+        $title = "掘金资讯";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        // if(!$test){
-        //     $fs_robot->sendToGroup2($title, $articles);
-        // }else{
-        //     $fs_robot->sendToBean($title, $articles);
-        // }
+
         $this->project[$title] = $articles;
     }
 
@@ -116,14 +106,10 @@ class EscnDaily extends Command
         $articles = $info::getLastDayArticleByQuery('source:infoq');
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
-        $title = "InfoQ 热门话题（{$yesterday}）";
+        $title = "InfoQ 热门话题";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        // if(!$test){
-        //     $fs_robot->sendToGroup2($title, $articles);
-        // }else{
-        //     $fs_robot->sendToBean($title, $articles);
-        // }
+
         $this->project[$title] = $articles;
     }
 
@@ -132,15 +118,23 @@ class EscnDaily extends Command
         $articles = $info::getLastDayArticleByQuery('source:oschina && tag:news');
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
-        $title = "开源资讯（{$yesterday}）";
+        $title = "开源资讯";
         $fs_robot = new FSRobotService();
         $fs_robot->set_app_access_token();
-        // if(!$test){
-        //     $fs_robot->sendToGroup2($title, $articles);
-        // }else{
-        //     $fs_robot->sendToBean($title, $articles);
-        // }
+
         $this->project[$title] = $articles;
+    }
+
+    public function sendDailyCnblogs(){
+        $info = new InfoqService();
+        $articles = $info::getLastDayArticleByQuery('source:cnblogs && tag:news');
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+        $title = "博客园新闻";
+        $fs_robot = new FSRobotService();
+        $fs_robot->set_app_access_token();
+
+        $this->project[$title] = $articles;        
     }
 
 }
