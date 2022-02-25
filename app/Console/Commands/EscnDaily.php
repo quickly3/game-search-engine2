@@ -72,6 +72,8 @@ class EscnDaily extends Command
         $info =new InfoqService();
         $articles = $info::getLastDayArticle();
         $group = [];
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
         foreach ($articles as $a) {
             if(!isset($group[$a['summary']])){
                 $group[$a['summary']] = [$a];
@@ -84,7 +86,8 @@ class EscnDaily extends Command
         $fs_robot->set_app_access_token();
 
         foreach ($group as $title => $articles) {
-            $this->project[$title] = $articles;
+            $_title = str_replace("({$yesterday}）", '', $title);
+            $this->project[$_title] = $articles;
         }
     }
 
