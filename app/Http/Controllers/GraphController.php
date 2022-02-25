@@ -47,7 +47,7 @@ class GraphController extends Controller
                 "data" => $oschina
             ],
             [
-                "title" => str_replace(isset($escn[0])?$escn[0]['summary']:'',yesterday, ''),
+                "title" => str_replace(isset($escn[0])?$escn[0]['summary']:'',$yesterday, ''),
                 "data" => $escn
             ],
             [
