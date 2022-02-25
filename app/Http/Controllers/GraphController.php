@@ -35,28 +35,28 @@ class GraphController extends Controller
 
         $resp = [
             [
-                "title" => "掘金资讯（{$yesterday}）",
+                "title" => "掘金资讯",
                 "data" => $juejin
             ],
             [
-                "title" => "InfoQ 热门话题（{$yesterday}）",
+                "title" => "InfoQ 热门话题",
                 "data" => $infoq
             ],
             [
-                "title" => "开源中国资讯（{$yesterday}）",
+                "title" => "开源中国资讯",
                 "data" => $oschina
             ],
             [
-                "title" => isset($escn[0])?$escn[0]['summary']:'',
+                "title" => replace(isset($escn[0])?$escn[0]['summary']:'',yesterday, ''),
                 "data" => $escn
             ],
             [
-                "title" => "博客园新闻（{$yesterday}）",
+                "title" => "博客园新闻",
                 "data" => $cnblogs
             ],
         ];
         return [
-            "title" => "每日摸鱼新闻（{$yesterday}）",
+            "title" => "每日摸鱼新闻",
             "data" => $resp
         ];
     }
