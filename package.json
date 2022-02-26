@@ -45,6 +45,7 @@
     "kafkajs": "^1.15.0",
     "lodash": "^4.17.21",
     "moment-timezone": "^0.5.33",
+    "neo4j-driver": "^4.4.2",
     "nodejieba": "^2.5.2",
     "puppeteer-proxy": "^2.1.2",
     "rxjs": "~6.6.0",
