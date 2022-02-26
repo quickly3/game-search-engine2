@@ -81,6 +81,7 @@ class EsClient:
 
         if result:
             list = result['hits']
+            print(len(list))
 
             if 'after_key' in result:
                 after_key = result['after_key']
