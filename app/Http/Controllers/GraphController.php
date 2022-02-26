@@ -33,25 +33,28 @@ class GraphController extends Controller
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
 
+        $escn_title = isset($escn[0])?$escn[0]['summary']:'';
+        $escn_title = str_replace("({$yesterday}）", '', $escn_title);
+
         $resp = [
             [
-                "title" => "掘金资讯（{$yesterday}）",
+                "title" => "掘金资讯",
                 "data" => $juejin
             ],
             [
-                "title" => "InfoQ 热门话题（{$yesterday}）",
+                "title" => "InfoQ 热门话题",
                 "data" => $infoq
             ],
             [
-                "title" => "开源中国资讯（{$yesterday}）",
+                "title" => "开源中国资讯",
                 "data" => $oschina
             ],
             [
-                "title" => isset($escn[0])?$escn[0]['summary']:'',
+                "title" => $escn_title,
                 "data" => $escn
             ],
             [
-                "title" => "博客园新闻（{$yesterday}）",
+                "title" => "博客园新闻",
                 "data" => $cnblogs
             ],
         ];

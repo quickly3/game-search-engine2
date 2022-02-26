@@ -442,7 +442,8 @@ class FSRobotService
 
     function getMessages($chat_id){
         $method = 'GET';
-        $url = "https://open.feishu.cn/open-apis/im/v1/messages?container_id_type=chat&container_id={$chat_id}&start_time=1642386468";
+        $beginWeek = mktime(0,0,0,date("m"),date("d")-date("w")+1,date("Y"));
+        $url = "https://open.feishu.cn/open-apis/im/v1/messages?container_id_type=chat&container_id={$chat_id}&start_time=${beginWeek}";
         $options = [
             "headers"=>[
                 "Authorization"=>"Bearer {$this->app_access_token}"
