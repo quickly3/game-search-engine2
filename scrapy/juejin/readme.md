@@ -1,14 +1,20 @@
 scrapy crawl juejin_tag
 
-nohup python3 -m juejin_tag_crawl >> juejin_tags_nohup.log 2>&1 &
 
-python juejin_author_output
-nohup python3 -m juejin_post_crawl_by_author >> juejin_post_crawl_by_author.log 2>&1 &
+python juejin_author_output.py
 
 scrapy juejin_authors_crawl
 
+nohup python3 -m juejin_tag_crawl >> juejin_tag_crawl.log 2>&1 &
+nohup python3 -m juejin_post_crawl_by_author >> juejin_post_crawl_by_author.log 2>&1 &
+nohup python3 -m juejin_authors_crawl >> juejin_authors_crawl.log 2>&1 &
+
+tail -f juejin_tag_crawl.log
+tail -f juejin_authors_crawl.log
+tail -f juejin_post_crawl_by_author.log
 
 
-nohup python juejin_authors_crawl.py >> juejin_authors_crawl.log 2>&1 &
+nohup python3 -m follow_tag_list >> follow_tag_list.log 2>&1 &
+
 
 

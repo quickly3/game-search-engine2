@@ -1,0 +1,63 @@
+PUT follow_tags_20220227
+{
+  "aliases": {
+      "follow_tags": {}
+  }, 
+  "mappings" : {
+    "properties" : {
+      "source": {
+        "type" : "keyword"
+      },
+      "user_id" : {
+        "type" : "keyword"
+      },
+      "tag_id" : {
+        "type" : "keyword"
+      },
+      "tag_name" : {
+        "type" : "keyword"
+      }
+    }
+  }
+}
+
+
+PUT followees_20220227
+{
+  "aliases": {
+      "followees": {}
+  }, 
+  "mappings" : {
+    "properties" : {
+      "source": {
+        "type" : "keyword"
+      },
+      "user_id" : {
+        "type" : "keyword"
+      },
+      "followee_id" : {
+        "type" : "keyword"
+      }
+    }
+  }
+}
+
+PUT followers_20220227
+{
+  "aliases": {
+      "followers": {}
+  }, 
+  "mappings" : {
+    "properties" : {
+      "source": {
+        "type" : "keyword"
+      },
+      "user_id" : {
+        "type" : "keyword"
+      },
+      "follower_id" : {
+        "type" : "keyword"
+      }
+    }
+  }
+}
