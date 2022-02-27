@@ -17,8 +17,9 @@ tail -f juejin_post_crawl_by_author.log
 nohup python3 -m follow_tag_list >> follow_tag_list.log 2>&1 &
 tail -f follow_tag_list.log
 
-nohup python3 -m followee >> followees.log 2>&1 &
+nohup python3 -m followees >> followees.log 2>&1 &
 tail -f followees.log
 
 
-
+nohup python3 -m followers >> followers.log 2>&1 &
+tail -f followers.log

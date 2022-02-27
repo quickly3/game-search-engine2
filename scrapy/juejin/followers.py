@@ -7,13 +7,13 @@ import urllib.parse as urlparse
 
 
 class TestSpider(scrapy.Spider):
-    name = 'followees'
+    name = 'followers'
     domin = 'https://juejin.cn'
     handle_httpstatus_list = [404, 500]
     toCSV = []
 
     source = 'juejin'
-    api_url = 'https://api.juejin.cn/user_api/v1/follow/followees?aid=2608&uuid=6999185118360520227';
+    api_url = 'https://api.juejin.cn/user_api/v1/follow/followers?aid=2608&uuid=6999185118360520227';
 
     user_page = 'https://juejin.cn/user/'
     current = 0
@@ -50,6 +50,7 @@ class TestSpider(scrapy.Spider):
     def parse(self, response, payload):
         rs = json.loads(response.text)
         _data = rs['data']
+        has_more = False
         
         if _data is not None:
             data = rs['data']['data']
@@ -67,7 +68,7 @@ class TestSpider(scrapy.Spider):
             
             for tag in tag_list:
                 bulk.append(
-                    {"index": {"_index": "followees"}})
+                    {"index": {"_index": "followers"}})
                 bulk.append(tag)
             self.es.client.bulk( body=bulk)
 
