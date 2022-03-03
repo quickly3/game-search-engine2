@@ -36,6 +36,23 @@ class EsClient:
         resp = self.client.search(index="article", body=query, scroll='2m')
         result = self.formatResp(resp)
         return result
+    
+    def getTeamIds(self):
+        query = {
+            "query": {
+                "query_string": {
+                    "query": "tech_team:*"
+                }
+            },
+            "_source": [
+                "tech_team.org_id"
+            ],
+            "size": 300
+        }
+
+        resp = self.client.search(index="author", body=query)
+        ids = list(map(lambda x:x['_source']['tech_team']['org_id'], resp['hits']['hits']))
+        return ids
 
     def articleExisted(self,url):
         query = {

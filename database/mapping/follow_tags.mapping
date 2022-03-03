@@ -61,3 +61,34 @@ PUT followers_20220227
     }
   }
 }
+
+
+PUT tags_20220227
+{
+  "aliases": {
+      "tags": {}
+  }, 
+  "mappings" : {
+    "properties" : {
+      "source": {
+        "type" : "keyword"
+      },
+      "tag_id" : {
+        "type" : "keyword"
+      },
+      "tag" : {
+        "type" : "keyword"
+      },
+      "post_article_count" : {
+        "type" : "long"
+      },
+      "concern_user_count" : {
+        "type" : "long"
+      },
+      "icon" : {
+        "type" : "keyword",
+        "index" : false
+      }
+    }
+  }
+}

@@ -50,12 +50,13 @@ class TestSpider(scrapy.Spider):
     def parse(self, response, payload):
         rs = json.loads(response.text)
         _data = rs['data']
+        has_more = False
+        user_id = payload["user_id"]
         
         if _data is not None:
             data = rs['data']['data']
             has_more = rs['data']['hasMore']
             cursor = str(rs['data']['cursor'])
-            user_id = payload["user_id"]
             
             tag_list = list(map(lambda x:{
                 "source":"juejin", 

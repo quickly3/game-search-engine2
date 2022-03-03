@@ -23,3 +23,7 @@ tail -f followees.log
 
 nohup python3 -m followers >> followers.log 2>&1 &
 tail -f followers.log
+
+
+nohup python3 -m tags >> tags.log 2>&1 &
+tail -f tags.log
