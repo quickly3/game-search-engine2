@@ -1,5 +1,9 @@
 # Search Gank
 
+关注微信公众号，上班摸鱼，获取更多每日互联网新闻~
+
+![即刻资讯](https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=Mzg2NzUzODY1Nw==&mid=2247483673&idx=1&sn=2c7edf333dada253bfb152646d891b92&send_time= "微信公众号")
+
 # 中文技术互联网态势感知系统
 
 ```

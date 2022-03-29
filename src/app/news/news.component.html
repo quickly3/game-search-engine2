@@ -6,6 +6,8 @@
                 <input type="checkbox" [checked]="!showRawMd" (click)="switchRaw()" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">显示MarkDown源码</label>
                 <button class="btn btn-success btn-sm ml-1" (click)="copyMessage(MdData)" value="click to copy" >复制MarkDown</button>
+                <div *ngIf="!showRawMd">获取各新闻详情链接，请猛戳 “阅读原文”<br/>
+                    ↓↓↓↓↓</div>
             </div>
         </div>
         <div *ngIf="showRawMd">
