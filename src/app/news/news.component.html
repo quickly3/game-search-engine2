@@ -2,22 +2,64 @@
 <div class="container-fluid">
     <div class="center">
         <div class="form-group form-check">
-            <div>
-                <input type="checkbox" [checked]="!showRawMd" (click)="switchRaw()" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">显示MarkDown源码</label>
-                <button class="btn btn-success btn-sm ml-1" (click)="copyMessage(MdData)" value="click to copy" >复制MarkDown</button>
-                <div *ngIf="!showRawMd">获取各新闻详情链接，请猛戳 “阅读原文”<br/>
-                    ↓↓↓↓↓</div>
+            <div class="d-flex flex-row">
+                <div class="mr-1">
+                    <input
+                        type="checkbox"
+                        [checked]="showRawMd === 'html'"
+                        (click)="switchRaw('html')"
+                        class="mr-1"
+                        id="exampleCheck1"
+                        />
+                    <label class="form-check-label" for="exampleCheck1">Html</label>
+                </div>
+                <div class="mr-1">
+                    <input
+                        type="checkbox"
+                        [checked]="showRawMd === 'markdown'"
+                        (click)="switchRaw('markdown')"
+                        class="mr-1"
+                        id="exampleCheck2"
+                        />
+                    <label class="form-check-label" for="exampleCheck2">MarkDown</label>
+                </div>
+                <div class="mr-1">
+                    <input
+                        type="checkbox"
+                        [checked]="showRawMd === 'text'"
+                        (click)="switchRaw('text')"
+                        class="mr-1"
+                        id="exampleCheck3"
+                        />
+                    <label class="form-check-label" for="exampleCheck3">Text</label>
+                </div>
+                <div>
+                    <button
+                        class="btn btn-success btn-sm ml-1"
+                        (click)="copyMessage(MdData)"
+                        value="click to copy">
+                        复制MarkDown
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="showRawMd === 'markdown'">
+                获取各新闻详情链接，请猛戳 “阅读原文”<br />
+                ↓↓↓↓↓
             </div>
         </div>
-        <div *ngIf="showRawMd">
+        <div *ngIf="showRawMd == 'html'">
             <div *ngIf="MdData">
                 <nu-markdown-preview [value]="MdData"></nu-markdown-preview>
             </div>
         </div>
-        <div *ngIf="!showRawMd">
+        <div *ngIf="showRawMd === 'markdown'">
             <div class="alert alert-secondary">
-            <pre>{{MdData}}</pre>
+                <pre>{{ MdData }}</pre>
+            </div>
+        </div>
+        <div *ngIf="showRawMd === 'text'">
+            <div *ngIf="MdText">
+                <nu-markdown-preview [value]="MdText"></nu-markdown-preview>
             </div>
         </div>
     </div>
