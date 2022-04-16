@@ -288,6 +288,8 @@ class InfoqService
     {
 
         $lastDay = date('Y-m-d',strtotime("-1 day"));
+        $lastDay = date('Y-m-d');
+
         // $today = "2020-12-09";
         $es = new ElasticModel("article");
         $data = [
@@ -305,7 +307,6 @@ class InfoqService
                 ]
             ]
         ];
-
         $params = [
             "index" => "article",
             "body" =>  $data

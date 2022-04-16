@@ -58,7 +58,7 @@ class EsClearLast extends Command
             "body" => [
                 "query" => [
                     "query_string" => [
-                        "query" => "source:* && created_at:[{$lastDay} TO *]"
+                        "query" => "source:* && -source:github && created_at:[{$lastDay} TO *]"
                     ]
                 ]
             ],

@@ -63,6 +63,27 @@ class GraphController extends Controller
             "data" => $resp
         ];
     }
+
+    function dailyGitHub()
+    {
+        $info = new InfoqService();
+        $github = $info::getLastDayArticleByQuery('source:github');
+
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+
+        $resp = [
+            [
+                "title" => "GitHub Trending",
+                "data" => $github
+            ]
+        ];
+        return [
+            "title" => "GitHub Trending{$yesterday}）",
+            "data" => $resp
+        ];
+    }
+
     
     public function getTagsAgg(Request $request){
         $author = $request->input("author", "");
