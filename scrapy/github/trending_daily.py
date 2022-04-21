@@ -23,9 +23,12 @@ class TestSpider(scrapy.Spider):
         self.es = EsClient()
 
         urls = [
-            'https://github.com/trending',
+            'https://github.com/trending?since=daily',
             'https://github.com/trending?since=weekly',
             'https://github.com/trending?since=monthly'
+            'https://github.com/trending?since=daily&spoken_language_code=zh',
+            'https://github.com/trending?since=weekly&spoken_language_code=zh',
+            'https://github.com/trending?since=monthly&spoken_language_code=zh'
         ]
         url = "https://github.com/trending/{lang}?since={since}&spoken_language_code={spoken_language_code}"
         for language in self.languages:
