@@ -20,8 +20,9 @@ class TestSpider(scrapy.Spider):
     total = 0
     
     custom_settings = {
-        "CONCURRENT_REQUESTS_PER_DOMAIN": 2,
-        "DOWNLOAD_DELAY" : 0.25
+        "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
+        "DOWNLOAD_DELAY" : 0.25,
+        "RETRY_TIMES": 0
     }
 
     def start_requests(self):
