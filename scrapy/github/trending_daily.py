@@ -56,7 +56,6 @@ class TestSpider(scrapy.Spider):
 
         if 'since' in captured_value:
             _since = captured_value['since'][0]
-            print('_since', _since)
         else:
             _since = 'daily'
 
