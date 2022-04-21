@@ -34,7 +34,7 @@ nohup python3 -m scrapy crawl ali_dev_daily >> /home/ubuntu/www/ng-blog/storage/
 
 
 cd /home/ubuntu/www/ng-blog/scrapy/github
-nohup python3 -m scrapy crawl trending_daily >> /home/ubuntu/www/ng-blog/storage/logs/trending_daily.log 2>&1
+nohup python3 -m trending_daily >> /home/ubuntu/www/ng-blog/storage/logs/trending_daily.log 2>&1
 
 
 cd /home/ubuntu/www/ng-blog

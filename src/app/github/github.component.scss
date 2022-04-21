@@ -1,0 +1,16 @@
+.center{
+    margin: 20px auto;
+}
+
+.vditor-reset p {
+    margin-bottom: 0px !important;
+}
+
+@media (min-width: 992px) { 
+    .center{
+        width: 60%;
+        margin: 20px auto;
+        padding: 10px;
+        border: 1px solid #dee2e6;
+    }
+}

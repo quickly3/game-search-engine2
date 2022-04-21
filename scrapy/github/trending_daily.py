@@ -105,11 +105,12 @@ class TestSpider(scrapy.Spider):
             doc['source'] = 'github'
 
             if 'language' in option:
-                doc['tag'] = [option['language'],option['spoken_language_code'],option['since']]
+                doc['tag'] = [option['language'],option['since']]
             else:
                 doc['tag'] = [_since]
-                if _language != '':
-                    doc['tag'].append(_language)
+                
+            if _language != '':
+                doc['tag'].append(_language)
 
             doc['author'] = author
             doc['author_url'] = author_url

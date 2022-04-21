@@ -1,0 +1,137 @@
+<app-nav></app-nav>
+<div class="container-fluid">
+  <div class="center">
+    <div class="form-group form-check">
+      <div class="d-flex flex-row">
+        <div class="mr-1">
+          <input
+            type="radio"
+            [checked]="showRawMd === 'html'"
+            (click)="switchRaw('html')"
+            class="mr-1"
+            id="exampleCheck1"
+          />
+          <label class="form-check-label" for="exampleCheck1">Html</label>
+        </div>
+        <div class="mr-1">
+          <input
+            type="radio"
+            [checked]="showRawMd === 'markdown'"
+            (click)="switchRaw('markdown')"
+            class="mr-1"
+            id="exampleCheck2"
+          />
+          <label class="form-check-label" for="exampleCheck2">MarkDown</label>
+        </div>
+        <div class="mr-1">
+          <input
+            type="radio"
+            [checked]="showRawMd === 'text'"
+            (click)="switchRaw('text')"
+            class="mr-1"
+            id="exampleCheck3"
+          />
+          <label class="form-check-label" for="exampleCheck3">Text</label>
+        </div>
+        <div>
+          <button
+            class="btn btn-success btn-sm ml-1"
+            (click)="copyMessage(MdData)"
+            value="click to copy"
+          >
+            复制MarkDown
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group form-check">
+      <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+        <button
+          type="button"
+          class="btn btn-outline-primary me-2"
+          id="dropdownManual"
+          ngbDropdownAnchor
+          (focus)="myDrop.open()"
+        >
+          {{ selectedSpl.text }}
+        </button>
+        <div
+          ngbDropdownMenu
+          aria-labelledby="dropdownManual"
+          dropdownClass="github-drop"
+        >
+          <button
+            ngbDropdownItem
+            *ngFor="let spl of splList"
+            (click)="switchSpl(spl)"
+          >
+            {{ spl.text }}
+          </button>
+        </div>
+      </div>
+      <div class="d-inline-block" ngbDropdown #myDrop2="ngbDropdown">
+        <button
+          type="button"
+          class="btn btn-outline-primary me-2"
+          id="dropdownManual2"
+          ngbDropdownAnchor
+          (focus)="myDrop2.open()"
+        >
+          {{ selectedLan.text }}
+        </button>
+        <div
+          ngbDropdownMenu
+          aria-labelledby="dropdownManual2"
+          dropdownClass="github-drop"
+        >
+          <button
+            ngbDropdownItem
+            *ngFor="let lan of lanList"
+            (click)="switchLan(lan)"
+          >
+            {{ lan.text }}
+          </button>
+        </div>
+      </div>
+      <div class="d-inline-block" ngbDropdown #myDrop3="ngbDropdown">
+        <button
+          type="button"
+          class="btn btn-outline-primary me-2"
+          id="dropdownManual3"
+          ngbDropdownAnchor
+          (focus)="myDrop3.open()"
+        >
+          {{ selectedSince.text }}
+        </button>
+        <div
+          ngbDropdownMenu
+          aria-labelledby="dropdownManual3"
+          dropdownClass="github-drop"
+        >
+          <button
+            ngbDropdownItem
+            *ngFor="let since of sinceList"
+            (click)="switchSince(since)"
+          >
+            {{ since.text }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showRawMd == 'html'">
+      <div *ngIf="MdData">
+        <nu-markdown-preview [value]="MdData"></nu-markdown-preview>
+      </div>
+    </div>
+    <div *ngIf="showRawMd === 'markdown'">
+      <div class="alert alert-secondary">
+        <pre>{{ MdData }}</pre>
+      </div>
+    </div>
+    <div *ngIf="showRawMd === 'text'">
+      <div *ngIf="MdText">
+        <nu-markdown-preview [value]="MdText"></nu-markdown-preview>
+      </div>
+    </div>
+  </div>
+</div>

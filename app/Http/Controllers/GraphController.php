@@ -64,11 +64,35 @@ class GraphController extends Controller
         ];
     }
 
-    function dailyGitHub()
+    function dailyGitHub(Request $request)
     {
         $info = new InfoqService();
-        $github = $info::getLastDayArticleByQuery('source:github');
+        $tags = [];
 
+        $since = $request->input("since", null);
+        $lan = $request->input("lan", null);
+        $spl = $request->input("spl", null);
+
+        if($since){
+            $tags[] = $since;
+        }
+
+        if($lan){
+            $tags[] = $lan;
+        }
+
+        if($spl){
+            $tags[] = $spl;
+        }
+
+        $query_str = 'source:github';
+
+        if(count($tags) > 0){
+            $tags_str = join(' && ', $tags);
+            $query_str.=" && tag:({$tags_str})";
+        }
+
+        $github = $info::getLastDayArticleByQuery($query_str, 25);
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
 

@@ -18,6 +18,7 @@ import { NewsComponent } from './news/news.component';
 import { NuMarkdownModule } from '@ng-util/markdown';
 
 import SubGraphComponents from './graph/sub-graph';
+import { GithubComponent } from './github/github.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import SubGraphComponents from './graph/sub-graph';
     AuthorComponent,
     GraphComponent,
     NewsComponent,
+    GithubComponent,
     ...SubGraphComponents.allComponents
   ],
   entryComponents: SubGraphComponents.subComponents,

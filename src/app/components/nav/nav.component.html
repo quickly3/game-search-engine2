@@ -50,6 +50,14 @@
           >每日新闻 <span class="sr-only">(current)</span></a
         >
       </li>
+      <li
+        class="nav-item"
+        [ngClass]="{ active: router.url.indexOf('/github') > -1 }"
+      >
+        <a class="nav-link" href="#/github"
+          >GitHub<span class="sr-only">(current)</span></a
+        >
+      </li>
       <li class="nav-item">
         <a
           class="nav-link"

@@ -4,6 +4,7 @@ import { InfoqComponent } from './infoq/infoq.component';
 import { AuthorComponent } from './author/author.component';
 import { GraphComponent } from './graph/graph.component';
 import { NewsComponent } from './news/news.component';
+import { GithubComponent } from './github/github.component';
 
 
 const appRoutes: Routes = [
@@ -11,6 +12,7 @@ const appRoutes: Routes = [
   { path: 'author', component: AuthorComponent },
   { path: 'graph', component: GraphComponent },
   { path: 'news', component: NewsComponent },
+  { path: 'github', component: GithubComponent },
   { path: '', redirectTo: 'infoq', pathMatch: 'full' },
   { path: '**', redirectTo: 'infoq' }
 ];

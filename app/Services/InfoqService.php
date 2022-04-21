@@ -19,7 +19,7 @@ class InfoqService
         return $index->updateById($id, $body);
     }
 
-    public static function genWordsCloud($tag, $source ,$size = 100)
+    public static function genWordsCloud($tag, $source, $size = 100)
     {
         $cloud_words = [];
 
@@ -63,10 +63,10 @@ class InfoqService
         }, $cloud_words);
 
 
-        $stop_words = file(app_path().'/Services/stopwords.txt');
-        $stop_words = array_map(function($word){
+        $stop_words = file(app_path() . '/Services/stopwords.txt');
+        $stop_words = array_map(function ($word) {
             return trim($word);
-        },$stop_words);
+        }, $stop_words);
 
         $cloud_words = array_filter($cloud_words, function ($item) use ($stop_words) {
 
@@ -123,9 +123,9 @@ class InfoqService
         }, $cloud_words);
 
         $stop_words = [
-            "基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2021","2020","2019","2019", "2018","10",
-            "php", "python", "javascript", "js", "css", "linux", "node","postgresql", "typescript",
-            "java", "vue", "web","react"
+            "基于", "文章", "处理", "什么", "一个", "如何", "问题", "利用", "2021", "2020", "2019", "2019", "2018", "10",
+            "php", "python", "javascript", "js", "css", "linux", "node", "postgresql", "typescript",
+            "java", "vue", "web", "react"
         ];
 
         $cloud_words = array_filter($cloud_words, function ($item) use ($stop_words) {
@@ -259,7 +259,7 @@ class InfoqService
     public static function getLastDayArticle()
     {
 
-        $today = date('Y-m-d',strtotime("-1 day"));
+        $today = date('Y-m-d', strtotime("-1 day"));
         // $today = "2020-12-09";
         $es = new ElasticModel("article");
         $data = [
@@ -278,16 +278,16 @@ class InfoqService
         $data = $es->client->search($params);
         $resp = (object) $data;
 
-        $data = array_map(function($item){
+        $data = array_map(function ($item) {
             return $item['_source'];
-        },$resp->hits['hits']);
+        }, $resp->hits['hits']);
         return $data;
     }
 
-    public static function getLastDayArticleByQuery($query)
+    public static function getLastDayArticleByQuery($query, $size = 20)
     {
 
-        $lastDay = date('Y-m-d',strtotime("-1 day"));
+        $lastDay = date('Y-m-d', strtotime("-1 day"));
         // $lastDay = date('Y-m-d');
 
         // $today = "2020-12-09";
@@ -298,11 +298,11 @@ class InfoqService
                     "query" => "{$query} && created_at:{$lastDay}"
                 ]
             ],
-            "size"=>20,
+            "size" => $size,
             "sort" => [
                 [
-                    "created_at"=> [
-                        "order"=> "desc"
+                    "created_at" => [
+                        "order" => "desc"
                     ]
                 ]
             ]
@@ -315,13 +315,14 @@ class InfoqService
         $data = $es->client->search($params);
         $resp = (object) $data;
 
-        $data = array_map(function($item){
+        $data = array_map(function ($item) {
             return $item['_source'];
-        },$resp->hits['hits']);
+        }, $resp->hits['hits']);
         return $data;
     }
 
-    public static function getArticles(Request $request){
+    public static function getArticles(Request $request)
+    {
 
         $search_type = trim($request->input("search_type", ""));
         $sortBy = $request->input("sortBy", "");
@@ -347,7 +348,7 @@ class InfoqService
             $data->highlight($highlight);
         }
 
-        switch($sortBy){
+        switch ($sortBy) {
             case "date":
                 $orders = [
                     "created_at" => "desc",
@@ -422,7 +423,7 @@ class InfoqService
         try {
             $data = $data->query($query, "*")->paginate(20);
         } catch (\Throwable $th) {
-            $data = ["data"=>[]];
+            $data = ["data" => []];
         }
         $data['query_string'] = $query_string;
 
@@ -443,12 +444,13 @@ class InfoqService
         return $data;
     }
 
-    public static function getArticleHistogram(Request $request){
+    public static function getArticleHistogram(Request $request)
+    {
 
         $query = SELF::articlesQueryBuilder($request);
         $query_string = $query['query_string'];
 
-        $resp = ArticleService::getHistogram($query,'day');
+        $resp = ArticleService::getHistogram($query, 'day');
 
         $data = [
             'query_string' => $query_string,
@@ -458,12 +460,13 @@ class InfoqService
         return $data;
     }
 
-    public static function getWordsCloudByQueryBuilder(Request $request, $size=1000){
+    public static function getWordsCloudByQueryBuilder(Request $request, $size = 1000)
+    {
 
         $query = SELF::articlesQueryBuilder($request);
         $query_string = $query['query_string'];
 
-        $resp = ArticleService::getWordsCloud($query, $size=1000);
+        $resp = ArticleService::getWordsCloud($query, $size = 1000);
 
         $data = [
             'query_string' => $query_string,
@@ -473,26 +476,29 @@ class InfoqService
         return $data;
     }
 
-    public static function getAuthorTermsAggByQueryBuilder(Request $request, $size=1000){
+    public static function getAuthorTermsAggByQueryBuilder(Request $request, $size = 1000)
+    {
 
         $query = SELF::articlesQueryBuilder($request);
         $query_string = $query['query_string'];
-        
+
         $article  = new ArticleService();
         return [
             'data' => $article->getAuthorTermsAgg($query),
             'query_string' => $query_string
         ];
     }
-    
 
 
-    public static function escapeElasticReservedChars($string) {
+
+    public static function escapeElasticReservedChars($string)
+    {
         $regex = "/[\\+\\-\\=\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\<\\>\\?\\:\\\\\\/]/";
         return preg_replace($regex, addslashes('\\$0'), $string);
     }
 
-    public static function articlesQueryBuilder(Request $request){
+    public static function articlesQueryBuilder(Request $request)
+    {
 
         $keywords = $request->input("keywords", "*");
         $tag = $request->input("tag", "all");
@@ -512,19 +518,23 @@ class InfoqService
 
         if ($keywords == '*' || !$keywords) {
             $query_string = "*:*";
-        }else{
+        } else {
             $query_string = "(title:({$keywords}) OR title:\"{$keywords}\" OR summary:({$keywords}) OR summary:\"{$keywords}\") ";
         }
 
-        if(count($selectTags)){
-            $selectTags = array_map(function($tag){ return "\"$tag\""; }, $selectTags);
-            $selectTagsStr = join(' || ',$selectTags);
+        if (count($selectTags)) {
+            $selectTags = array_map(function ($tag) {
+                return "\"$tag\"";
+            }, $selectTags);
+            $selectTagsStr = join(' || ', $selectTags);
             $query_string = $query_string . " && tag:({$selectTagsStr})";
         }
 
-        if(count($selectCategories)){
-            $selectCategories = array_map(function($tag){ return "\"$tag\""; }, $selectCategories);
-            $selectCategoriesStr = join(' || ',$selectCategories);
+        if (count($selectCategories)) {
+            $selectCategories = array_map(function ($tag) {
+                return "\"$tag\"";
+            }, $selectCategories);
+            $selectCategoriesStr = join(' || ', $selectCategories);
             $query_string = $query_string . " && category:({$selectCategoriesStr})";
         }
 
@@ -540,27 +550,27 @@ class InfoqService
             $query_string = $query_string . " && (author:{$author} OR author:*{$author}*)";
         }
 
-        if(trim($startDate) !== ''){
+        if (trim($startDate) !== '') {
             $query_string = $query_string . " && created_at:[{$startDate} TO *]";
         }
 
-        if(trim($endDate) !== ''){
+        if (trim($endDate) !== '') {
             $query_string = $query_string . " && created_at:[* TO {$endDate}}";
         }
 
-        if(!is_null($collect_count)){
+        if (!is_null($collect_count)) {
             $query_string = $query_string . " && collect_count:[{$collect_count} TO *}";
         }
 
-        if(!is_null($comment_count)){
+        if (!is_null($comment_count)) {
             $query_string = $query_string . " && comment_count:[{$comment_count} TO *}";
         }
 
-        if(!is_null($digg_count)){
+        if (!is_null($digg_count)) {
             $query_string = $query_string . " && digg_count:[{$digg_count} TO *}";
         }
 
-        if(!is_null($view_count)){
+        if (!is_null($view_count)) {
             $query_string = $query_string . " && view_count:[{$view_count} TO *}";
         }
 
@@ -570,7 +580,7 @@ class InfoqService
             ]
         ];
 
-        if($and_operator){
+        if ($and_operator) {
             $query['query_string']['default_operator'] = "AND";
         }
 
