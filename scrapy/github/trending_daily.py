@@ -106,11 +106,10 @@ class TestSpider(scrapy.Spider):
 
             if 'language' in option:
                 doc['tag'] = [option['language'],option['since']]
+                if _language != '':
+                    doc['tag'].append(_language)
             else:
                 doc['tag'] = [_since]
-                
-            if _language != '':
-                doc['tag'].append(_language)
 
             doc['author'] = author
             doc['author_url'] = author_url
