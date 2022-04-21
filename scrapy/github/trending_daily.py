@@ -20,7 +20,7 @@ class TestSpider(scrapy.Spider):
     total = 0
     
     custom_settings = {
-        "CONCURRENT_REQUESTS_PER_DOMAIN": 4
+        "CONCURRENT_REQUESTS_PER_DOMAIN": 2
     }
 
     def start_requests(self):
