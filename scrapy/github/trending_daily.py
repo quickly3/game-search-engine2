@@ -19,6 +19,10 @@ class TestSpider(scrapy.Spider):
     sinces = ['daily','weekly','monthly']
     total = 0
     
+    custom_settings = {
+        "CONCURRENT_REQUESTS_PER_DOMAIN": 4
+    }
+
     def start_requests(self):
         self.es = EsClient()
 
