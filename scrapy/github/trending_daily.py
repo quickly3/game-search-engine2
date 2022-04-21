@@ -106,10 +106,14 @@ class TestSpider(scrapy.Spider):
 
             if 'language' in option:
                 doc['tag'] = [option['spoken_language_code'],option['since']]
-                if _language != '':
-                    doc['tag'].append(_language)
+                doc['category'] = 'single_lan'
             else:
                 doc['tag'] = [_since]
+                doc['category'] = 'total_lan'
+
+            if _language != '':
+                doc['tag'].append(_language)
+
 
             doc['author'] = author
             doc['author_url'] = author_url

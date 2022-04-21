@@ -15,17 +15,13 @@ export class GithubComponent implements OnInit {
   showRawMd = "html";
 
   lans = [
-    "javascript",
-    "html",
-    "typescript",
-    "python",
-    "php",
-    "css",
-    "Go",
-    "C++",
-    "Shell",
-    "C#",
-    "jupyter-notebook",
+    "TypeScript",
+    "HTML",
+    "Jupyter Notebook",
+    "Python",
+    "JavaScript",
+    "PHP",
+    "CSS"
   ];
   spls = [
     'zh', 'en',
