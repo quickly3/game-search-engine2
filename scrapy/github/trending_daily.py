@@ -21,7 +21,7 @@ class TestSpider(scrapy.Spider):
     
     custom_settings = {
         "CONCURRENT_REQUESTS": 1,
-        "DOWNLOAD_DELAY" : 1,
+        "DOWNLOAD_DELAY" : 2,
         "RANDOMIZE_DOWNLOAD_DELAY": True,
         "RETRY_TIMES": 0
     }
