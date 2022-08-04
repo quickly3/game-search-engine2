@@ -51,6 +51,7 @@
     "selenium-webdriver": "^4.0.0-beta.4",
     "test-script": "file:puppeteer",
     "tslib": "^2.0.0",
+    "webp-converter": "^2.3.3",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
