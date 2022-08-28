@@ -1,13 +1,19 @@
+import urllib
+import csv
+import os
+import json
 import scrapy
 import pydash as _
 from scrapy.crawler import CrawlerProcess
 from scrapy.http import JsonRequest
 from scrapy.http import Request
+import pprint
+import time
+from dateutil import parser
+import datetime
 
-import json
-import os
-import csv
-import urllib
+pp = pprint.PrettyPrinter(indent=4)
+
 
 # 导出掘金所有tags
 
@@ -24,6 +30,13 @@ class TestSpider(scrapy.Spider):
     uid = 253941
     isSelf = 0
     tag = '风闻'
+
+    today = time.strftime("%Y-%m-%d")
+
+    yesterday = (datetime.date.today() +
+                 datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+    last2day = (datetime.date.today() +
+                datetime.timedelta(days=-2)).strftime("%Y-%m-%d")
 
     def getUrl(self):
         params = {
@@ -45,7 +58,23 @@ class TestSpider(scrapy.Spider):
         items = _.get(resp, 'data.items')
 
         for item in items:
-            print(item)
+
+            created_at = item['created_at']
+
+            if "分钟前" in created_at:
+                created_at = self.today
+
+            if "小时前" in created_at:
+                created_at = self.today
+
+            if "昨天" in created_at:
+                created_at = self.yesterday
+
+            created_at = parser.parse(created_at)
+
+            created_at_str = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+            created_year_str = created_at.year
+
 
             doc = {
                 "title": _.get(item, 'title'),
@@ -56,11 +85,13 @@ class TestSpider(scrapy.Spider):
                 "author": _.get(item, 'user_nick'),
                 "source": self.source,
                 "stars": 0,
-                "created_at": created_at+"Z",
-                "created_year": created_year,
+                "created_at": created_at_str,
+                "created_year": created_year_str,
                 "view_count": _.get(item, 'view_count'),
                 "valid": True
             }
+            
+            pp.pprint(doc)
 
 
 if __name__ == "__main__":
