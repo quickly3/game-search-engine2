@@ -1,0 +1,13 @@
+{
+    "root": {
+        "data": {
+            "id": "cmj63aafe6w0",
+            "created": 1661842755115,
+            "text": "Elasitcsearh"
+        },
+        "children": []
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

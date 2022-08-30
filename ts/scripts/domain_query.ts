@@ -31,7 +31,7 @@ class DomainQuery {
 
     for(const hit of hits){
       const url = hit._source.url;
-      const title = hit._source.title;
+      const title = hit._source.title.trim();
       const created_at = hit._source.created_at;
 
       this.urls.push({
