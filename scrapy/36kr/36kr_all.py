@@ -61,8 +61,10 @@ class TestSpider(scrapy.Spider):
             doc['author_url'] = self.domin + '/user/' + str(userId)
 
             doc['source'] = self.source
-
-            doc['tag'] = t['themeName']
+            
+            if t['themeName']:
+                doc['tag'] = t['themeName']
+                
             doc['summary'] = t['summary']
 
             date_time_obj = datetime.datetime.fromtimestamp(
