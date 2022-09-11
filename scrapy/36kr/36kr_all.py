@@ -56,9 +56,12 @@ class TestSpider(scrapy.Spider):
             doc['title'] = t['widgetTitle']
             doc['url'] = self.domin + '/p/' + str(t['itemId'])
 
-            doc['author'] = t['authorName']
-            userId = t['authorRoute'].replace('detail_author?userId=', '')
-            doc['author_url'] = self.domin + '/user/' + str(userId)
+            if 'authorName' in t:
+                doc['author'] = t['authorName']
+
+            if 'authorRoute' in t:                
+                userId = t['authorRoute'].replace('detail_author?userId=', '')
+                doc['author_url'] = self.domin + '/user/' + str(userId)
 
             doc['source'] = self.source
             
