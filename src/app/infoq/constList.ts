@@ -62,6 +62,13 @@ const sourceList = [
         source_class: 'icon-alidev',
         text: '阿里开发者社区',
     },
+    {
+        title: '36kr',
+        source_class: 'icon-36kr',
+        text: '36氪',
+    },
+
+
 ];
 
 
