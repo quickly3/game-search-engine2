@@ -65,7 +65,8 @@ class TestSpider(scrapy.Spider):
             if 'themeName' in t:
                 doc['tag'] = t['themeName']
                 
-            doc['summary'] = t['summary']
+            if 'summary' in t:
+                doc['summary'] = t['summary']
 
             date_time_obj = datetime.datetime.fromtimestamp(
                 t['publishTime']/1000)
