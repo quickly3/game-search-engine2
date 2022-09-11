@@ -62,7 +62,7 @@ class TestSpider(scrapy.Spider):
 
             doc['source'] = self.source
             
-            if t['themeName']:
+            if 'themeName' in t:
                 doc['tag'] = t['themeName']
                 
             doc['summary'] = t['summary']
