@@ -89,7 +89,7 @@ class TestSpider(scrapy.Spider):
             "param": {
                 "subnavType": 1,
                 "subnavNick": "web_news",
-                "pageSize": 100,
+                "pageSize": 1000,
                 "pageEvent": 1,
                 "pageCallback": pageCallback,
                 "siteId": 1,
