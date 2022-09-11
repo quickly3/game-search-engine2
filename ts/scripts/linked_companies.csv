@@ -34,7 +34,6 @@ juicefs.com,1
 anecdotes.dev,1
 alongparty.cn,1
 ximalaya.com,1
-netapp.com,1
 ozenero.com,1
 couchbase.com,1
 dreamphp.cn,1
@@ -207,6 +206,7 @@ v2ex.com,2
 coralogix.com,2
 xeraa.net,2
 learnku.com,2
+netapp.com,2
 t37.net,2
 toutiao.io,2
 codenong.com,2
@@ -247,13 +247,13 @@ dev.to,4
 techexpert.tips,4
 baidu.com,4
 codeburst.io,5
-bilibili.com,5
 alexmarquardt.com,5
 6aiq.com,5
 youtube.com,6
 amazon.com,6
 sematext.com,6
 huaweicloud.com,6
+bilibili.com,6
 sina.lt,6
 modb.pro,7
 dzone.com,7
@@ -274,12 +274,12 @@ jianshu.com,34
 cnblogs.com,37
 tencent.com,46
 elasticsearch.cn,51
-zhihu.com,55
+zhihu.com,57
 0x7.me,61
 github.com,68
-qq.com,85
+qq.com,86
 elastic.co,101
-medium.com,121
-csdn.net,139
+medium.com,125
+csdn.net,142
 tinyurl.com,159
 t.cn,2271

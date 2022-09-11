@@ -87,9 +87,9 @@ class DomainQuery {
     }
 
     this.domains = _.sortBy(this.domains, ["cnt"]);
-    this.urls = _.sortBy(this.urls, ["domain"]);
+    this.urls = _.reverse(_.sortBy(this.urls, ["created_at"]));
 
-    console.log(this.domains);
+    // console.log(this.domains);
 
     const outputstr = Papa.unparse(this.domains, { header: true });
     fs.writeFileSync("linked_companies.csv", outputstr, "utf8");
