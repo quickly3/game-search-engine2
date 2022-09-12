@@ -6,144 +6,141 @@ from urllib.parse import parse_qs
 import os
 import re
 import sys
+import json
+import pydash as _
+import pprint
+from pytz import timezone
+import time
+
+pp = pprint.PrettyPrinter(indent=4)
+
 sys.path.append('..')
 from es.es_client import EsClient
 
 class TestSpider(scrapy.Spider):
-    name = '36kr_daily'
-    domin = 'https://github.com'
-    handle_httpstatus_list = [404, 500]
-    toCSV = []
-    source = 'github'
+    name = '36kr_all'
+    domin = 'https://www.36kr.com'
+    source = '36kr'
     current = 0
-    languages = ['css','html','javascript','jupyter-notebook','python','typescript','php']
-    spoken_language_codes = ['en','zh']
-    sinces = ['daily','weekly','monthly']
     total = 0
-    
-    custom_settings = {
-        "CONCURRENT_REQUESTS": 1,
-        "DOWNLOAD_DELAY" : 2,
-        "RANDOMIZE_DOWNLOAD_DELAY": True,
-        "RETRY_TIMES": 0
-    }
 
     def start_requests(self):
         self.es = EsClient()
+        start_url = 'https://www.36kr.com/information/web_news/'
+        yield scrapy.Request(start_url)
 
-        urls = [
-            'https://github.com/trending?since=daily',
-            'https://github.com/trending?since=weekly',
-            'https://github.com/trending?since=monthly',
-            'https://github.com/trending?since=daily&spoken_language_code=zh',
-            'https://github.com/trending?since=weekly&spoken_language_code=zh',
-            'https://github.com/trending?since=monthly&spoken_language_code=zh'
-        ]
-        url = "https://github.com/trending/{lang}?since={since}&spoken_language_code={spoken_language_code}"
-        for language in self.languages:
-            for spoken_language_code in self.spoken_language_codes:
-                for since in self.sinces:
-                    _url = url.replace('{lang}',language)
-                    _url = _url.replace('{since}',since)
-                    _url = _url.replace('{spoken_language_code}',spoken_language_code)
-                    option = {
-                        'language':language,
-                        'spoken_language_code':spoken_language_code,
-                        'since':since
-                    }
-                    yield scrapy.Request(url = _url, callback=lambda response, option=option : self.parse(response, option))
+    def parse(self, response):
 
-        for url2 in urls:
-            option = {}
-            yield scrapy.Request(url = url2, callback=lambda response, option=option : self.parse(response, option))
-                   
-    def parse(self, response, option):
-        articles = response.xpath('//*[@id="js-pjax-container"]/div[3]/div/div[2]/article')
+        pageCallback = re.findall(
+            r'(?<="pageCallback":")(.*?)(?=")', str(response.text))
+        if len(pageCallback) == 0:
+            os._exit(0)
 
-        parsed_url = urlparse(response.request.url)
-        captured_value = parse_qs(parsed_url.query)
+        pageCallback = pageCallback[0]
 
-        if 'since' in captured_value:
-            _since = captured_value['since'][0]
-        else:
-            _since = 'daily'
+        firstListJosn = re.findall(
+            r'(?<=<script>window.initialState=)(.*?)(?=</script>)', str(response.text))
+        firstList = json.loads(firstListJosn[0])
+        items = _.get(firstList, 'information.informationList.itemList')
+
+        self.itemsImport(items)
+            
+        yield self.getNextQuery(pageCallback)
+        
+    def itemsImport(self, items):
+        
+        yesterday = (datetime.date.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        
+        start_time = int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+        end_time = int(time.mktime(time.strptime(str(today), '%Y-%m-%d')))
+        
 
         bulk = []
-        for art in articles:
-            project_name = art.xpath('string(./h1/a)').get();
-            url = art.xpath('./h1/a/@href').get();
-            url = self.domin + url;
-
-            regRex = re.compile('(\/[^/]+)?$')
-            author_url = regRex.sub('',url)
-
-            if not project_name:
-                continue;
+        to_next = True
+        for item in items:
+            t = item['templateMaterial']
 
             doc = {}
+
+            doc['title'] = t['widgetTitle']
+            doc['url'] = self.domin + '/p/' + str(t['itemId'])
+
+            if 'authorName' in t:
+                doc['author'] = t['authorName']
+
+            if 'authorRoute' in t:                
+                userId = t['authorRoute'].replace('detail_author?userId=', '')
+                doc['author_url'] = self.domin + '/user/' + str(userId)
+
+            doc['source'] = self.source
             
-            project_name = project_name.replace('\n','').strip()
-            project_name = ' '.join(project_name.split())
-            doc['project_name'] = project_name;
+            if 'themeName' in t:
+                doc['tag'] = t['themeName']
+                
+            if 'summary' in t:
+                doc['summary'] = t['summary']
 
-            names = project_name.split('/')
-            author = names[0].strip()
+            created_at = int(t['publishTime']/1000)
             
-            star = art.xpath('string(./div[2]/a[1])').get();
-            star = star.replace('\n','').strip()
+            if created_at > end_time:
+                print("too new")
+                continue;
             
-            if star == '':
-                star = 0
-            else:
-                star = int(star.replace(',', ''))
-
-            fork = art.xpath('string(./div[2]/a[2])').get();
-            fork = fork.replace('\n','').strip()
-
-            _language = art.xpath('string(./div[2]/span[1]/span[2])').get();
-            _language = _language.replace('\n','').strip()
-
-            if fork == '':
-                fork = 0
-            else:
-                fork = int(fork.replace(',', ''))
+            if created_at < start_time :
+                to_next = False
+                print("too old")
+                continue;
             
-            desp = art.xpath('string(./p)').get();
-            desp = desp.replace('\n','').strip()
+            
+            date_time_obj = datetime.datetime.fromtimestamp(
+                t['publishTime']/1000)
 
-            doc['title'] = project_name
-            doc['summary'] = desp
-            doc['url'] = url
-            doc['source'] = 'github'
+            doc['created_at'] = date_time_obj.astimezone(timezone("UTC")).strftime("%Y-%m-%dT%H:%M:%SZ")
+            doc['created_year'] = date_time_obj.strftime("%Y")
 
-            if 'language' in option:
-                doc['tag'] = [option['spoken_language_code'],option['since']]
-                doc['category'] = 'single_lan'
-            else:
-                doc['tag'] = [_since]
-                doc['category'] = 'total_lan'
-
-            if _language != '':
-                doc['tag'].append(_language)
-
-
-            doc['author'] = author
-            doc['author_url'] = author_url
-
-            current_time = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-            doc['created_at'] = current_time
-
-            doc['view_count'] =  0
-            doc['comment_count'] = fork
-            doc['digg_count'] = star
             bulk.append(
                 {"index": {"_index": "article"}})
             bulk.append(doc)
 
-
-        self.total += len(bulk)
         if len(bulk) > 0:
-            self.es.client.bulk( body=bulk)
+            resp = self.es.client.bulk(body=bulk)
+            
+        if not to_next:
+            os._exit(0)
+            
+    def getNextQuery(self, pageCallback):
+        flow_url = 'https://gateway.36kr.com/api/mis/nav/ifm/subNav/flow'
+        
+        payload = {
+            "partner_id": "web",
+            "timestamp": 1662859338075,
+            "param": {
+                "subnavType": 1,
+                "subnavNick": "web_news",
+                "pageSize": 100,
+                "pageEvent": 1,
+                "pageCallback": pageCallback,
+                "siteId": 1,
+                "platformId": 2
+            }
+        }
+        return scrapy.http.JsonRequest(flow_url, data=payload, callback=lambda response, payload=payload : self.nextPageParse(response, payload))
+            
+    def nextPageParse(self, reponse, payload):
+        resp = json.loads(reponse.text)
+        
+        pageCallback = _.get(resp,'data.pageCallback')
+        items = _.get(resp,'data.itemList')
+        hasNextPage = _.get(resp,'data.hasNextPage')
+        
+        self.itemsImport(items)
+            
+        
+        if hasNextPage == 1:
+            yield self.getNextQuery(pageCallback)
+        # pp.pprint(resp)
+
 
 if __name__ == "__main__":
     process = CrawlerProcess()

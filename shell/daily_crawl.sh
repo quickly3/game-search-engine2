@@ -36,6 +36,8 @@ nohup python3 -m scrapy crawl ali_dev_daily >> /home/ubuntu/www/ng-blog/storage/
 cd /home/ubuntu/www/ng-blog/scrapy/github
 nohup python3 -m trending_daily >> /home/ubuntu/www/ng-blog/storage/logs/trending_daily.log 2>&1
 
+cd /home/ubuntu/www/ng-blog/scrapy/36kr
+nohup python3 -m 36kr_daily >> /home/ubuntu/www/ng-blog/storage/logs/36kr_daily.log 2>&1
 
 cd /home/ubuntu/www/ng-blog
 nohup sudo php artisan EsClearLast >> /home/ubuntu/www/ng-blog/storage/logs/EsClearLast.log 2>&1
