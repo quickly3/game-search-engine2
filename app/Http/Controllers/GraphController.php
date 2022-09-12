@@ -29,6 +29,8 @@ class GraphController extends Controller
         $infoq = $info::getLastDayArticleByQuery('source:infoq');
         $oschina = $info::getLastDayArticleByQuery('source:oschina && tag:news');
         $cnblogs = $info::getLastDayArticleByQuery('source:cnblogs && tag:news');
+        $krs = $info::getLastDayArticleByQuery('source:36kr', 50);
+
 
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
@@ -57,6 +59,11 @@ class GraphController extends Controller
                 "title" => "博客园新闻",
                 "data" => $cnblogs
             ],
+            [
+                "title" => "36氪新闻",
+                "data" => $krs
+            ],
+
         ];
         return [
             "title" => "IT资讯精选（{$yesterday}）",
