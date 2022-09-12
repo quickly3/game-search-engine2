@@ -64,6 +64,25 @@ class GraphController extends Controller
         ];
     }
 
+    function dailyKr()
+    {
+        $info = new InfoqService();
+        $kr = $info::getLastDayArticleByQuery('source:36kr', 50);
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+
+        $resp = [
+            [
+                "title" => "36Kr 新闻",
+                "data" => $kr
+            ],
+        ];
+        return [
+            "title" => "36Kr新闻 ({$yesterday}）",
+            "data" => $resp
+        ];
+    }
+
     function dailyGitHub(Request $request)
     {
         $info = new InfoqService();

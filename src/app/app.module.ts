@@ -19,6 +19,7 @@ import { NuMarkdownModule } from '@ng-util/markdown';
 
 import SubGraphComponents from './graph/sub-graph';
 import { GithubComponent } from './github/github.component';
+import { KrNewsComponent } from './kr-news/kr-news.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +27,7 @@ import { GithubComponent } from './github/github.component';
     AuthorComponent,
     GraphComponent,
     NewsComponent,
+    KrNewsComponent,
     GithubComponent,
     ...SubGraphComponents.allComponents
   ],
