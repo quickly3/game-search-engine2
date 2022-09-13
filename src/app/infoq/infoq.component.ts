@@ -260,6 +260,13 @@ export class InfoqComponent {
         }
     }
 
+    selectTagTag = (value) => {
+        if (this.queryParams.selectTags.indexOf(value) < 0){
+            this.queryParams.selectTags.push(value);
+            this.search();
+        }
+    }
+
     removeSelectTag = (tag) => {
         if (this.queryParams.selectTags.indexOf(tag) > -1){
             this.queryParams.selectTags = this.queryParams.selectTags.filter(item => (item !== tag) );
@@ -299,6 +306,13 @@ export class InfoqComponent {
         $e.preventDefault();
         if (this.queryParams.selectCategories.indexOf($e.item) < 0){
             this.queryParams.selectCategories.push($e.item);
+            this.search();
+        }
+    }
+
+    selectCategoryTag = (value) => {
+        if (this.queryParams.selectCategories.indexOf(value) < 0){
+            this.queryParams.selectCategories.push(value);
             this.search();
         }
     }
