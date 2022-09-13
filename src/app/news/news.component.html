@@ -33,6 +33,16 @@
                         />
                     <label class="form-check-label" for="exampleCheck3">Text</label>
                 </div>
+                <div class="mr-1">
+                    <input
+                        type="checkbox"
+                        [checked]="showRawMd === 'titles'"
+                        (click)="switchRaw('titles')"
+                        class="mr-1"
+                        id="exampleCheck4"
+                        />
+                    <label class="form-check-label" for="exampleCheck4">Titles</label>
+                </div>
                 <div>
                     <button
                         class="btn btn-success btn-sm ml-1"
@@ -61,6 +71,9 @@
             <div *ngIf="MdText">
                 <nu-markdown-preview [value]="MdText"></nu-markdown-preview>
             </div>
+        </div>
+        <div *ngIf="showRawMd === 'titles'">
+            <div *ngFor="let title of titles">{{title}}</div>
         </div>
     </div>
 </div>

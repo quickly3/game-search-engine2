@@ -11,6 +11,7 @@ export class NewsComponent implements OnInit {
   private graphService: GraphService;
   MdData: any;
   MdText: any;
+  titles = [];
   showRawMd = "html";
 
   constructor(graphService: GraphService) {
@@ -30,8 +31,9 @@ export class NewsComponent implements OnInit {
         if (item.data.length > 0) {
           dd.push({ h5: item.title });
           dtext.push({ h5: item.title });
-
+          this.titles.push(item.title)
           item.data.forEach((item2: any, i: any) => {
+
             dd.push({
               p: {
                 link: {
@@ -47,18 +49,18 @@ export class NewsComponent implements OnInit {
         }
       }
 
-      const p_arr = [
-        "",
-        "关注微信公众号，上班摸鱼，获取更多每日互联网新闻~",
-        "",
-        '![即刻资讯](https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=Mzg2NzUzODY1Nw==&mid=2247483673&idx=1&sn=2c7edf333dada253bfb152646d891b92&send_time= "微信公众号")',
-        "",
-      ];
+      // const p_arr = [
+      //   "",
+      //   "关注微信公众号，上班摸鱼，获取更多每日互联网新闻~",
+      //   "",
+      //   '![即刻资讯](https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=Mzg2NzUzODY1Nw==&mid=2247483673&idx=1&sn=2c7edf333dada253bfb152646d891b92&send_time= "微信公众号")',
+      //   "",
+      // ];
 
-      for (const p of p_arr) {
-        dd.push(p);
-        dtext.push(p);
-      }
+      // for (const p of p_arr) {
+      //   dd.push(p);
+      //   dtext.push(p);
+      // }
       this.MdData = json2md(dd).replace(/\n\n/g, "  \n");
       this.MdText = json2md(dtext).replace(/\n\n/g, "  \n");
     });
