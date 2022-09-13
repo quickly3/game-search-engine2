@@ -403,6 +403,35 @@ export class InfoqComponent {
         }
     }
 
+    tagOnKeyDown(e: any) {
+        if (e.key === 'Enter') {
+            if (this.instance) {
+                this.instance.dismissPopup();
+                const value = e.target.value
+                if (value && value.trim() !== '' && this.queryParams.selectTags.indexOf(value) < 0){
+                    this.queryParams.selectTags.push(value);
+                    this.tagInput = ''
+                    this.search();
+                }
+            }
+        }
+    }
+
+    cateOnKeyDown(e: any) {
+        if (e.key === 'Enter') {
+            if (this.instance) {
+                this.instance.dismissPopup();
+                const value = e.target.value
+                if (value && value.trim() !== '' && this.queryParams.selectCategories.indexOf(value) < 0){
+                    this.queryParams.selectCategories.push(value);
+                    this.categoryInput = ''
+                    this.search();
+                }
+            }
+        }
+    }
+    
+
     getWordsCloud = () => {
         this.InfoqService.getWordsCloud({
             tag: this.queryParams.tag,
