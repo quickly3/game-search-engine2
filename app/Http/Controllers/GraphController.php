@@ -33,7 +33,10 @@ class GraphController extends Controller
 
 
 
-        $yesterday = date('Y-m-d',strtotime("-1 day"));
+        // $yesterday = date('Y-m-d',strtotime("-1 day"));
+
+        $yesterday = date('Y-m-d',strtotime("now"));
+
 
         $escn_title = isset($escn[0])?$escn[0]['summary']:'';
         $escn_title = str_replace("({$yesterday}）", '', $escn_title);
