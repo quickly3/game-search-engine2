@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { GraphService } from "../api/graph.service";
 import * as json2md from "json2md";
-import copy from 'copy-html-to-clipboard';
 import { CopyToClipboard } from "../util/util";
 
 @Component({
