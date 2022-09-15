@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { GraphService } from "../api/graph.service";
 import * as json2md from "json2md";
+import copy from 'copy-html-to-clipboard';
+import { CopyToClipboard } from "../util/util";
 
 @Component({
   selector: "app-news",
@@ -45,6 +47,9 @@ export class NewsComponent implements OnInit {
             dtext.push({
               p: `${i + 1}.${item2.title}`,
             });
+            dtext.push({
+              p: `&nbsp;&nbsp;${item2.url}`,
+            });
           });
         }
       }
@@ -82,5 +87,9 @@ export class NewsComponent implements OnInit {
     selBox.select();
     document.execCommand("copy");
     document.body.removeChild(selBox);
+  }
+
+  copyText(id){
+    CopyToClipboard(id)
   }
 }
