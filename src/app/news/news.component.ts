@@ -12,6 +12,7 @@ export class NewsComponent implements OnInit {
   private graphService: GraphService;
   MdData: any;
   MdText: any;
+  dHtml: any = {};
   titles = [];
   showRawMd = "html";
 
@@ -27,46 +28,42 @@ export class NewsComponent implements OnInit {
     this.graphService.dailyMd().subscribe((resp: any) => {
       const dd: any[] = [{ h2: resp.title }];
       const dtext: any[] = [{ h2: resp.title }];
+      this.dHtml.title = resp.title;
+      this.dHtml.sources = [];
 
       for (const item of resp.data) {
         if (item.data.length > 0) {
+          const sourceData: any = {};
           dd.push({ h5: item.title });
           dtext.push({ h5: item.title });
-          this.titles.push(item.title)
-          item.data.forEach((item2: any, i: any) => {
+          dtext.push('')
 
-            dd.push({
-              p: {
-                link: {
-                  title: `${i + 1}.${item2.title}`,
-                  source: item2.url,
-                },
-              },
+          sourceData.title = item.title;
+          sourceData.items = [];
+
+          this.titles.push(item.title);
+
+          const dd_ol = [];
+          item.data.forEach((item2: any, i: any) => {
+            const itemLink = {
+              title: `${item2.title.trim()}`,
+              source: item2.url.trim(),
+            };
+            sourceData.items.push(itemLink);
+            dd_ol.push({
+              link: itemLink,
             });
-            dtext.push({
-              p: `${i + 1}.${item2.title}`,
-            });
-            dtext.push({
-              p: `&nbsp;&nbsp;${item2.url}`,
-            });
+            dtext.push([`${i + 1}.${item2.title}`,`${item2.url}`,``]);
           });
+          dd.push({
+            ol: dd_ol,
+          });
+
+          this.dHtml.sources.push(sourceData);
         }
       }
-
-      // const p_arr = [
-      //   "",
-      //   "关注微信公众号，上班摸鱼，获取更多每日互联网新闻~",
-      //   "",
-      //   '![即刻资讯](https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=Mzg2NzUzODY1Nw==&mid=2247483673&idx=1&sn=2c7edf333dada253bfb152646d891b92&send_time= "微信公众号")',
-      //   "",
-      // ];
-
-      // for (const p of p_arr) {
-      //   dd.push(p);
-      //   dtext.push(p);
-      // }
-      this.MdData = json2md(dd).replace(/\n\n/g, "  \n");
-      this.MdText = json2md(dtext).replace(/\n\n/g, "  \n");
+      this.MdData = json2md(dd);
+      this.MdText = json2md(dtext);
     });
   }
 
@@ -88,7 +85,7 @@ export class NewsComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
-  copyText(id){
-    CopyToClipboard(id)
+  copyText(id) {
+    CopyToClipboard(id);
   }
 }
