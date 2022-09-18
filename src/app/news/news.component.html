@@ -52,13 +52,21 @@
             复制MarkDown
           </button>
           <button
-          *ngIf="showRawMd === 'text'"
-          class="btn btn-success btn-sm ml-1"
-          (click)="copyText('MdText')"
-          value="click to copy"
-        >
-          Text
-        </button>
+            *ngIf="showRawMd === 'text'"
+            class="btn btn-success btn-sm ml-1"
+            (click)="copyText('MdText')"
+            value="click to copy"
+          >
+            Copy Text
+          </button>
+
+          <button
+            class="btn btn-success btn-sm ml-1"
+            (click)="copyText('titles')"
+            value="click to copy"
+          >
+            Copy Titles
+          </button>
         </div>
       </div>
       <div *ngIf="showRawMd === 'markdown'">
@@ -81,7 +89,7 @@
         <nu-markdown-preview [value]="MdText"></nu-markdown-preview>
       </div>
     </div>
-    <div *ngIf="showRawMd === 'titles'">
+    <div id="titles">
       <div *ngFor="let title of titles">{{ title }}</div>
     </div>
   </div>
