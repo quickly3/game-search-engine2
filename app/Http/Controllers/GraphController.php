@@ -43,20 +43,8 @@ class GraphController extends Controller
 
         $resp = [
             [
-                "title" => "掘金资讯",
-                "data" => $juejin
-            ],
-            [
                 "title" => "InfoQ 热门话题",
                 "data" => $infoq
-            ],
-            [
-                "title" => "开源中国资讯",
-                "data" => $oschina
-            ],
-            [
-                "title" => $escn_title,
-                "data" => $escn
             ],
             [
                 "title" => "博客园新闻",
@@ -66,7 +54,18 @@ class GraphController extends Controller
                 "title" => "36氪新闻",
                 "data" => $krs
             ],
-
+            [
+                "title" => "开源中国资讯",
+                "data" => $oschina
+            ],
+            [
+                "title" => "掘金资讯",
+                "data" => $juejin
+            ],
+            [
+                "title" => $escn_title,
+                "data" => $escn
+            ],
         ];
         return [
             "title" => "互联网摸鱼日报（{$yesterday}）",
