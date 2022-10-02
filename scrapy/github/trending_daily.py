@@ -6,6 +6,9 @@ from urllib.parse import parse_qs
 import os
 import re
 from es_client import EsClient
+import pprint
+
+pp = pprint.PrettyPrinter(indent=4)
 
 class TestSpider(scrapy.Spider):
     name = 'trending_daily'
@@ -56,7 +59,7 @@ class TestSpider(scrapy.Spider):
             yield scrapy.Request(url = url2, callback=lambda response, option=option : self.parse(response, option))
                    
     def parse(self, response, option):
-        articles = response.xpath('//*[@id="js-pjax-container"]/div[3]/div/div[2]/article')
+        articles = response.xpath('//html/body/div[4]/main/div[3]/div/div[2]/article')
 
         parsed_url = urlparse(response.request.url)
         captured_value = parse_qs(parsed_url.query)
@@ -137,7 +140,6 @@ class TestSpider(scrapy.Spider):
             bulk.append(
                 {"index": {"_index": "article"}})
             bulk.append(doc)
-
 
         self.total += len(bulk)
         if len(bulk) > 0:
