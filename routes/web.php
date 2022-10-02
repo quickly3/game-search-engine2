@@ -41,6 +41,9 @@ Route::any('infoq/getArticleHistogram', 'InfoqController@getArticleHistogram');
 Route::any('infoq/getWordsCloudByQueryBuilder', 'InfoqController@getWordsCloudByQueryBuilder');
 Route::any('infoq/getAuthorTermsAgg', 'InfoqController@getAuthorTermsAgg');
 
+Route::any('infoq/getCatesTermsAgg', 'InfoqController@getCatesTermsAgg');
+Route::any('infoq/getTagsTermsAgg', 'InfoqController@getTagsTermsAgg');
+
 Route::get('infoq/getWordsCloud', 'InfoqController@getWordsCloud');
 Route::post('infoq/starsChange', 'InfoqController@starsChange');
 Route::get('infoq/autoComplete', 'InfoqController@autoComplete');

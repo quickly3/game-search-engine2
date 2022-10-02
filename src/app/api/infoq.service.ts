@@ -43,6 +43,15 @@ export class InfoqService {
         return this.http.post('/infoq/getAuthorTermsAgg', params);
     }
 
+    getTagsTermsAgg = (params) =>{
+        return this.http.post('/infoq/getTagsTermsAgg', params);
+    }
+
+
+    getCatesTermsAgg = (params) =>{
+        return this.http.post('/infoq/getCatesTermsAgg', params);
+    }
+
     starsChange = (params: any) => {
         return this.http.post('/infoq/starsChange', { params });
     }

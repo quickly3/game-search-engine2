@@ -28,9 +28,24 @@ class InfoqController extends Controller
         return response()->json($resp);
     }
 
-    public function getAuthorTermsAgg(Request $request){
+    public function getAuthorTermsAgg(Request $request)
+    {
 
         $resp = InfoqService::getAuthorTermsAggByQueryBuilder($request);
+        return response()->json($resp);
+    }
+
+    public function getCatesTermsAgg(Request $request)
+    {
+
+        $resp = InfoqService::getFieldAggByQueryBuilder($request, 100, 'category');
+        return response()->json($resp);
+    }
+
+    public function getTagsTermsAgg(Request $request)
+    {
+
+        $resp = InfoqService::getFieldAggByQueryBuilder($request, 100, 'tag');
         return response()->json($resp);
     }
 
@@ -43,7 +58,7 @@ class InfoqController extends Controller
 
 
         $tag = $tag == "Postgresql" ? "PostgreSQL" : $tag;
-        $words_cloud = InfoqService::genWordsCloud($tag, $source ,$size);
+        $words_cloud = InfoqService::genWordsCloud($tag, $source, $size);
 
         return response()->json($words_cloud);
     }
@@ -57,17 +72,18 @@ class InfoqController extends Controller
         return response()->json($resp);
     }
 
-    public function autoComplete(Request $request){
+    public function autoComplete(Request $request)
+    {
         $text = $request->input("keywords");
 
         $es = new ElasticModel("article");
 
         $field = "title.auto_completion";
 
-        if(trim($text) == ""){
+        if (trim($text) == "") {
             $resp = [];
-        }else{
-            $resp = $es->source(["title"])->autoComplete($text,$field);
+        } else {
+            $resp = $es->source(["title"])->autoComplete($text, $field);
         }
 
         return response()->json($resp);
@@ -86,6 +102,4 @@ class InfoqController extends Controller
         $tags = InfoqService::getCategories($source);
         return response()->json($tags);
     }
-    
-
 }
