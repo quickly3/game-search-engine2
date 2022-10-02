@@ -88,7 +88,7 @@ class FeishuRobot extends Command
 
     public function sendDailyMessageToMe(){
         $info =new InfoqService();
-        $articles = $info::getLastDayInfoqArticle('infoq');
+        $articles = $info::getLastDayArticleByQuery('source:36kr',50);
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
         $title = "InfoQ 热门话题（{$yesterday}）";

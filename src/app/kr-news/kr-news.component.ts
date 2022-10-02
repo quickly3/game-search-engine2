@@ -1,19 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { GraphService } from "../api/graph.service";
 import * as json2md from "json2md";
-import { CopyToClipboard } from "../util/util";
 
 @Component({
   selector: "app-news",
-  templateUrl: "./news.component.html",
-  styleUrls: ["./news.component.scss"],
+  templateUrl: "./kr-news.component.html",
+  styleUrls: ["./kr-news.component.scss"],
 })
-export class NewsComponent implements OnInit {
+export class KrNewsComponent implements OnInit {
   private graphService: GraphService;
   MdData: any;
   MdText: any;
-  dHtml: any = {};
-  titles = [];
   showRawMd = "html";
 
   constructor(graphService: GraphService) {
@@ -21,49 +18,36 @@ export class NewsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDailyMd();
+    this.getDailyKr();
   }
 
-  getDailyMd() {
-    this.graphService.dailyMd().subscribe((resp: any) => {
+  getDailyKr() {
+    this.graphService.dailyKr().subscribe((resp: any) => {
       const dd: any[] = [{ h2: resp.title }];
       const dtext: any[] = [{ h2: resp.title }];
-      this.dHtml.title = resp.title;
-      this.dHtml.sources = [];
 
       for (const item of resp.data) {
         if (item.data.length > 0) {
-          const sourceData: any = {};
           dd.push({ h5: item.title });
           dtext.push({ h5: item.title });
-          dtext.push('')
 
-          sourceData.title = item.title;
-          sourceData.items = [];
-
-          this.titles.push(item.title);
-
-          const dd_ol = [];
           item.data.forEach((item2: any, i: any) => {
-            const itemLink = {
-              title: `${item2.title.trim()}`,
-              source: item2.url.trim(),
-            };
-            sourceData.items.push(itemLink);
-            dd_ol.push({
-              link: itemLink,
+            dd.push({
+              p: {
+                link: {
+                  title: `${i + 1}.${item2.title}`,
+                  source: item2.url,
+                },
+              },
             });
-            dtext.push([`${i + 1}.${item2.title}`,`${item2.url}`,``]);
+            dtext.push({
+              p: `${i + 1}.${item2.title}`,
+            });
           });
-          dd.push({
-            ol: dd_ol,
-          });
-
-          this.dHtml.sources.push(sourceData);
         }
       }
-      this.MdData = json2md(dd);
-      this.MdText = json2md(dtext);
+      this.MdData = json2md(dd).replace(/\n\n/g, "  \n");
+      this.MdText = json2md(dtext).replace(/\n\n/g, "  \n");
     });
   }
 
@@ -83,9 +67,5 @@ export class NewsComponent implements OnInit {
     selBox.select();
     document.execCommand("copy");
     document.body.removeChild(selBox);
-  }
-
-  copyText(id) {
-    CopyToClipboard(id);
   }
 }

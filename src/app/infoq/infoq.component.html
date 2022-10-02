@@ -148,6 +148,7 @@
               [(ngModel)]="tagInput"
               [focusFirst]="false"
               [ngbTypeahead]="searchTags"
+              (keydown)="tagOnKeyDown($event)"
               (focus)="tagsFocus$.next($any($event).target.value)"
               (click)="tagsClick$.next($any($event).target.value)"
               (selectItem)="selectTag2($event)"
@@ -192,6 +193,7 @@
               [(ngModel)]="categoryInput"
               [focusFirst]="false"
               [ngbTypeahead]="searchCategories"
+              (keydown)="cateOnKeyDown($event)"
               (focus)="categoriesFocus$.next($any($event).target.value)"
               (click)="categoriesClick$.next($any($event).target.value)"
               (selectItem)="selectCategory($event)"
@@ -406,10 +408,12 @@
                 <span
                   class="badge badge-primary article_tag"
                   *ngFor="let tag of daily_item.tag"
+                  (click)="selectTagTag(tag)"
                   >{{ tag }}</span>
                 <span class='delimiter' *ngIf="daily_item.category" > | </span>
                 <span
                   class="badge badge-success article_tag"
+                  (click)="selectCategoryTag(daily_item.category)"
                   >{{ daily_item.category }}</span
                 >
                 

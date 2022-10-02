@@ -29,37 +29,65 @@ class GraphController extends Controller
         $infoq = $info::getLastDayArticleByQuery('source:infoq');
         $oschina = $info::getLastDayArticleByQuery('source:oschina && tag:news');
         $cnblogs = $info::getLastDayArticleByQuery('source:cnblogs && tag:news');
+        $krs = $info::getLastDayArticleByQuery('source:36kr', 50);
 
 
-        $yesterday = date('Y-m-d',strtotime("-1 day"));
+
+        // $yesterday = date('Y-m-d',strtotime("-1 day"));
+
+        $yesterday = date('Y-m-d',strtotime("now"));
+
 
         $escn_title = isset($escn[0])?$escn[0]['summary']:'';
         $escn_title = str_replace("({$yesterday}）", '', $escn_title);
 
         $resp = [
             [
-                "title" => "掘金资讯",
-                "data" => $juejin
-            ],
-            [
                 "title" => "InfoQ 热门话题",
                 "data" => $infoq
+            ],
+            [
+                "title" => "博客园新闻",
+                "data" => $cnblogs
+            ],
+            [
+                "title" => "36氪新闻",
+                "data" => $krs
             ],
             [
                 "title" => "开源中国资讯",
                 "data" => $oschina
             ],
             [
+                "title" => "掘金资讯",
+                "data" => $juejin
+            ],
+            [
                 "title" => $escn_title,
                 "data" => $escn
             ],
+        ];
+        return [
+            "title" => "互联网摸鱼日报（{$yesterday}）",
+            "data" => $resp
+        ];
+    }
+
+    function dailyKr()
+    {
+        $info = new InfoqService();
+        $kr = $info::getLastDayArticleByQuery('source:36kr', 50);
+
+        $yesterday = date('Y-m-d',strtotime("-1 day"));
+
+        $resp = [
             [
-                "title" => "博客园新闻",
-                "data" => $cnblogs
+                "title" => "36Kr 新闻",
+                "data" => $kr
             ],
         ];
         return [
-            "title" => "IT资讯精选（{$yesterday}）",
+            "title" => "36Kr新闻 ({$yesterday}）",
             "data" => $resp
         ];
     }

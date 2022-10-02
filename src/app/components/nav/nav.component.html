@@ -52,6 +52,14 @@
       </li>
       <li
         class="nav-item"
+        [ngClass]="{ active: router.url.indexOf('/kr-news') > -1 }"
+      >
+        <a class="nav-link" href="#/kr-news"
+          >36氪新闻 <span class="sr-only">(current)</span></a
+        >
+      </li>
+      <li
+        class="nav-item"
         [ngClass]="{ active: router.url.indexOf('/github') > -1 }"
       >
         <a class="nav-link" href="#/github"

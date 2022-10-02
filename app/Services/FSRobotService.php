@@ -372,7 +372,7 @@ class FSRobotService
         }
     }
 
-    function sendGroupToFeishu($groups, $test = false){
+    function sendGroupToFeishu($groups, $test = false, $title = '互联网资讯'){
         $contents = [];
         foreach ($groups as $groupTitle => $articles) {
             if(empty($articles)){
@@ -399,7 +399,7 @@ class FSRobotService
         }
 
         $yesterday = date('Y-m-d',strtotime("-1 day"));
-        $title = "互联网资讯（{$yesterday}）";
+        $title = "{$title} （{$yesterday}）";
         $body = [
             "msg_type"=>"post",
             "content"=>[

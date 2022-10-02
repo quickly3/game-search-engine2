@@ -20,7 +20,9 @@ export class GraphService {
     dailyMd = () => {
         return this.http.get('/graph/dailyMd');
     }
-
+    dailyKr = () => {
+        return this.http.get('/graph/dailyKr');
+    }
     dailyGitHub = (params) => {
         return this.http.get('/graph/dailyGitHub', {params});
     }

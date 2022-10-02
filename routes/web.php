@@ -63,6 +63,8 @@ Route::get('graph/getLastDayData', 'GraphController@getLastDayData');
 
 
 Route::get('graph/dailyMd', 'GraphController@dailyMd');
+Route::get('graph/dailyKr', 'GraphController@dailyKr');
+
 Route::get('graph/dailyGitHub', 'GraphController@dailyGitHub');
 
 Route::post('graph/getTagsAgg', 'GraphController@getTagsAgg');
