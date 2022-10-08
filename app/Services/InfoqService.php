@@ -489,7 +489,17 @@ class InfoqService
         ];
     }
 
+    public static function getFieldAggByQueryBuilder(Request $request, $size = 1000, $field)
+    {
+        $query = SELF::articlesQueryBuilder($request);
+        $query_string = $query['query_string'];
 
+        $article  = new ArticleService();
+        return [
+            'data' => $article->getFieldTermsAgg($query, $field),
+            'query_string' => $query_string
+        ];
+    }
 
     public static function escapeElasticReservedChars($string)
     {

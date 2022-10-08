@@ -462,6 +462,12 @@
       <div *ngIf="curSubNav.name === 'bar'" class='graph'>
         <app-horizontal-bar dataId="dataHoz" [clickBarFunc]='clickHorizontalBar' [data]='authorAggs'></app-horizontal-bar>
       </div>
+      <div *ngIf="curSubNav.name === 'tags'" class='graph'>
+        <app-horizontal-bar dataId="dataHoz" [clickBarFunc]='clickHorizontalBarForTags' [data]='tagsAggs'></app-horizontal-bar>
+      </div>
+      <div *ngIf="curSubNav.name === 'cates'" class='graph'>
+        <app-horizontal-bar dataId="dataHoz" [clickBarFunc]='clickHorizontalBarForCates' [data]='catesAggs'></app-horizontal-bar>
+      </div>
     </div>
   </div>
 </div>

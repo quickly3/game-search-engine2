@@ -18,7 +18,6 @@ export default class HorizontalBarComponent {
     ngOnChanges(): void {
         this.mainSelector = `figure#${this.dataId}`;
         if (this.data && this.data.length > 0){
-
             const _option = this.option?this.option:{
                 x: d => d.value,
                 y: d => d.name,

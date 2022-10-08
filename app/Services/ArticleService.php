@@ -75,7 +75,7 @@ class ArticleService
         return $items;
     }
 
-    public static function getHistogram($query = ['query_string'=>['query'=>"*:*"]],$calendar_interval = "month")
+    public static function getHistogram($query = ['query_string' => ['query' => "*:*"]], $calendar_interval = "month")
     {
         $es = new ElasticModel("article", "article");
         $params = [
@@ -87,7 +87,7 @@ class ArticleService
                         "date_histogram" => [
                             "field" => "created_at",
                             "calendar_interval" => $calendar_interval,
-                            "format"=> "yyyy-MM-dd"
+                            "format" => "yyyy-MM-dd"
                         ]
                     ]
                 ],
@@ -109,7 +109,7 @@ class ArticleService
         return $items;
     }
 
-    public static function getAuthorTermsAgg($query = ['query_string'=>['query'=>"*:*"]])
+    public static function getAuthorTermsAgg($query = ['query_string' => ['query' => "*:*"]])
     {
         $es = new ElasticModel("article", "article");
         $params = [
@@ -135,7 +135,33 @@ class ArticleService
     }
 
 
-    public static function getWordsCloud($query = ['query_string'=>['query'=>"*:*"]], $size = 1000)
+    public static function getFieldTermsAgg($query = ['query_string' => ['query' => "*:*"]], $field)
+    {
+        $es = new ElasticModel("article", "article");
+        $params = [
+            "index" => "article",
+            "body" =>  [
+                "query" => $query,
+                "aggs" => [
+                    "author_terms" => [
+                        "terms" => [
+                            "field" => $field,
+                            "size" => 100
+                        ]
+                    ]
+                ],
+                "size" => 0
+            ]
+        ];
+
+        $resp = $es->client->search($params);
+
+        $buckets = $resp['aggregations']['author_terms']['buckets'];
+        return $buckets;
+    }
+
+
+    public static function getWordsCloud($query = ['query_string' => ['query' => "*:*"]], $size = 1000)
     {
         $es = new ElasticModel("article", "article");
 
@@ -164,10 +190,10 @@ class ArticleService
         }, $cloud_words);
 
 
-        $stop_words = file(app_path().'/Services/stopwords.txt');
-        $stop_words = array_map(function($word){
+        $stop_words = file(app_path() . '/Services/stopwords.txt');
+        $stop_words = array_map(function ($word) {
             return trim($word);
-        },$stop_words);
+        }, $stop_words);
 
         $cloud_words = array_filter($cloud_words, function ($item) use ($stop_words) {
 
@@ -187,6 +213,4 @@ class ArticleService
         $cloud_words = array_merge($cloud_words, []);
         return $cloud_words;
     }
-
-
 }
