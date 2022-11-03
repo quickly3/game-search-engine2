@@ -60,9 +60,10 @@ class TestSpider(scrapy.Spider):
         to_next = True
         for item in items:
             t = item['templateMaterial']
+            if 'widgetTitle' not in t:
+                continue
 
             doc = {}
-
             doc['title'] = t['widgetTitle']
             doc['url'] = self.domin + '/p/' + str(t['itemId'])
 
