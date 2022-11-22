@@ -36,7 +36,7 @@ export class NewsComponent implements OnInit {
           const sourceData: any = {};
           dd.push({ h3: item.title });
           dtext.push({ h3: item.title });
-          dtext.push('')
+          dtext.push("");
 
           sourceData.title = item.title;
           sourceData.items = [];
@@ -53,7 +53,7 @@ export class NewsComponent implements OnInit {
             dd_ol.push({
               link: itemLink,
             });
-            dtext.push([`${i + 1}.${item2.title}`,`${item2.url}`,``]);
+            dtext.push({ p: [`${i + 1}.${item2.title}`, `${item2.url}`, ``] });
           });
           dd.push({
             ol: dd_ol,
