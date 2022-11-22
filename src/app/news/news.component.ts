@@ -14,7 +14,7 @@ export class NewsComponent implements OnInit {
   MdText: any;
   dHtml: any = {};
   titles = [];
-  showRawMd = "html";
+  showRawMd = "text";
 
   constructor(graphService: GraphService) {
     this.graphService = graphService;
@@ -34,8 +34,8 @@ export class NewsComponent implements OnInit {
       for (const item of resp.data) {
         if (item.data.length > 0) {
           const sourceData: any = {};
-          dd.push({ h5: item.title });
-          dtext.push({ h5: item.title });
+          dd.push({ h3: item.title });
+          dtext.push({ h3: item.title });
           dtext.push('')
 
           sourceData.title = item.title;
