@@ -60,7 +60,7 @@ class AliSpider(scrapy.Spider):
 
             title_h4 = item.css('.aw-question-content h4')
             title = title_h4.css('a::text').extract_first()
-            title = title.replace("\n", "").strip(" ")
+            title = title.replace("\n", "").strip()
             
             mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2})", title)
             _date = None
