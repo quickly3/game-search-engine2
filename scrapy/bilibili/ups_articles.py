@@ -113,6 +113,7 @@ class TestSpider(scrapy.Spider):
             self.itemsImport(vlist, option)
             yield self.getNextQuery(option)
         else :
+            pp.pprint(response.text)
             print('Next vlist 2')
             yield self.getNextQuery(option, True)
 
