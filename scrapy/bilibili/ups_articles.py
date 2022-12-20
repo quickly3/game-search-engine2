@@ -102,7 +102,7 @@ class TestSpider(scrapy.Spider):
         except ValueError as e:
             print('Error vlist')
         
-        if len(vlist) > 0:
+        if vlist and len(vlist) > 0:
             self.itemsImport(vlist, option)
             yield self.getNextQuery(option)
         else :
