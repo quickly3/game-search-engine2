@@ -107,12 +107,13 @@ class TestSpider(scrapy.Spider):
         try:
             vlist = _.get(json.loads(response.text), 'data.list.vlist')
         except ValueError as e:
-            print('Error vlist')
+            print('Error vlist 1')
         
         if vlist and len(vlist) > 0:
             self.itemsImport(vlist, option)
             yield self.getNextQuery(option)
         else :
+            print('Next vlist 2')
             yield self.getNextQuery(option, True)
 
     def itemsImport(self, items, option):
