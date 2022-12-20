@@ -95,7 +95,7 @@ class TestSpider(scrapy.Spider):
         mid = self.getNextMid()
         option = {
             "mid": mid,
-            "pn": 11
+            "pn": 1
         }
         start_url = self.baseUrl + self.getParams(option)
 
