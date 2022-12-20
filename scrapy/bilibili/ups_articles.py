@@ -23,10 +23,16 @@ class TestSpider(scrapy.Spider):
     total = 0
     mids = []
 
+    custom_settings = {
+        "CONCURRENT_REQUESTS": 1,
+        "DOWNLOAD_DELAY" : 1,
+        "RETRY_TIMES": 0
+    }
+
     params = {
         "refresh__": "true",
         "mid": "517327498",
-        "ps": "10",
+        "ps": "30",
         "tid": "0",
         "pn": 1,
         "keyword": "",
