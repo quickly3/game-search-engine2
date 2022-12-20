@@ -44,6 +44,7 @@ const sourceList = [
     { title: 'github', source_class: 'icon-github', text: 'GitHub' },
     { title: 'jianshu', source_class: 'icon-jianshu', text: '简书' },
     { title: 'infoq', source_class: 'icon-infoq', text: '极客帮' },
+    { title: 'bilibili', source_class: 'icon-bilibili', text: '极客帮' },
     { title: 'juejin', source_class: 'icon-juejin', text: '掘金' },
     { title: 'cnblogs', source_class: 'icon-cnblogs', text: '博客园' },
     { title: 'csdn', source_class: 'icon-csdn', text: 'CSDN' },

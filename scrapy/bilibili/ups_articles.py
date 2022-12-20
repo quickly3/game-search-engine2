@@ -8,6 +8,7 @@ import pydash as _
 import pprint
 from pytz import timezone
 from urllib.parse import urlencode
+import csv
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -20,11 +21,12 @@ class TestSpider(scrapy.Spider):
     source = 'bilibili'
     current = 0
     total = 0
+    mids = []
 
     params = {
         "refresh__": "true",
         "mid": "517327498",
-        "ps": "30",
+        "ps": "10",
         "tid": "0",
         "pn": 1,
         "keyword": "",
@@ -60,15 +62,29 @@ class TestSpider(scrapy.Spider):
         return urlencode(self.params)
 
     def getNextMid(self, mid = False):
-        if not mid :
-            mid = 517327498
-        else: 
-            mid = 123
+        if len(self.mids) > 0:
+            mid = self.mids.pop()
+        else:
+            return False
+        # if not mid :
+        #     mid = 517327498
+        # else: 
+        #     mid = 123
 
         self.headers['referer'] = self.refer_url_t.replace('{mid}',str(mid))
         return mid
 
     def start_requests(self):
+
+        csv_reader = csv.DictReader(
+            open('ups.csv', 'r', encoding='utf-8'), delimiter=',')
+
+        for data in csv_reader:
+            mid = data['url'].replace('https://space.bilibili.com/', '')
+            self.mids.append(mid)
+
+        self.mids.reverse()
+
         self.es = EsClient()
         mid = self.getNextMid()
         option = {
@@ -98,6 +114,7 @@ class TestSpider(scrapy.Spider):
             doc = {}
 
             doc['title'] = item['title']
+            print(doc['title'])
             doc['url'] = self.domin + item['bvid']
             doc['author'] = item['author']
             doc['author_url'] = self.author_url_t.replace('{mid}', str(option['mid']))
@@ -110,17 +127,16 @@ class TestSpider(scrapy.Spider):
             doc['created_year'] = date_time_obj.strftime("%Y")
 
             doc['view_count'] = item['play']
-            # doc['digg_count'] = item['description']
+            doc['length'] = item['length']
             doc['comment_count'] = item['comment']
-            # doc['collect_count'] = item['video_review']
 
-            break
-        #     bulk.append(
-        #         {"index": {"_index": "article"}})
-        #     bulk.append(doc)
+            # break
+            bulk.append(
+                {"index": {"_index": "article"}})
+            bulk.append(doc)
 
-        # if len(bulk) > 0:
-        #     resp = self.es.client.bulk(body=bulk)
+        if len(bulk) > 0:
+            resp = self.es.client.bulk(body=bulk)
 
     def getNextQuery(self, option, next_up = False):
         option['pn'] =  option['pn'] + 1
@@ -128,6 +144,8 @@ class TestSpider(scrapy.Spider):
         if next_up:
             option['mid'] = self.getNextMid(option['mid'])
             option['pn'] = 1
+            if not option['mid']:
+                return False
 
         url = self.baseUrl + self.getParams(option)
         return scrapy.Request(url, headers=self.headers, callback=lambda response, option=option: self.parse(response, option))

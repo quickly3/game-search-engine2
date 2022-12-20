@@ -198,6 +198,7 @@ class AuthorService
         $keywords = $request->input("keywords", "");
         $sortBy = $request->input("sortBy", "");
         $size = $request->input("size", 20);
+        $source = strtolower($request->input("source", "all"));
 
         $es = new ElasticModel("author", "author");
 
@@ -205,6 +206,10 @@ class AuthorService
             $query_string = "user_name:\"{$keywords}\" || user_name:*$keywords* ";
         }else{
             $query_string = "*:*";
+        }
+
+        if ($source != "all") {
+            $query_string .= " && source:{$source}";
         }
 
         $data = $es;

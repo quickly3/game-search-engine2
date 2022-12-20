@@ -8,6 +8,11 @@ import pandas as pd
 import ssl
 import time
 from datetime import datetime
+import sys
+
+sys.path.append('..')
+from es.es_client import EsClient
+
 
 ssl._create_default_https_context = ssl._create_unverified_context
 pp = pprint.PrettyPrinter(indent=4)
@@ -51,10 +56,11 @@ csv_reader = csv.DictReader(
 output = []
 
 jump = True
-jump_to = '385805493'
+jump_to = '24478119'
+
+es = EsClient()
 
 for data in csv_reader:
-    pp.pprint(data)
     header = {
         'Accept': '*/*',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
@@ -62,7 +68,7 @@ for data in csv_reader:
     mid = data['url'].replace('https://space.bilibili.com/', '')
 
     if jump:
-        print('Jump Id:', mid)
+        # print('Jump Id:', mid)
         if jump_to == mid:
             jump = False
         continue
@@ -132,6 +138,34 @@ for data in csv_reader:
 
     if most_cate:
         up['most_cate'] = most_cate['name']
+
+    bulk = []
+    doc = {}
+
+    doc['user_id'] = up['id']
+    doc['user_name'] = up['name']
+    doc['avatar_large'] = up['face']
+    doc['description'] = up['offical_desc']
+    doc['blog_address'] = up['space']
+    doc['post_article_count'] = up['total']
+    doc['digg_article_count'] = up['likes']
+    doc['view_article_count'] = up['archive']
+    if up['offical_title']:
+        doc['titles'] = up['offical_title'].split("、")
+    doc['sign'] = up['sign']
+
+    doc['follower_count'] = up['follower']
+    doc['followee_count'] = up['following']
+
+    doc['nameplate'] = up['nameplate']
+    doc['source'] = 'bilibili'
+
+    bulk.append(
+        {"index": {"_index": "author"}})
+    bulk.append(doc)
+
+    if len(bulk) > 0:
+        resp = es.client.bulk(body=bulk)
 
     output.append(up)
     time.sleep(1)

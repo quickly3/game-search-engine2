@@ -26,6 +26,15 @@ PUT author_20211004
       "blog_address" : {
         "type" : "keyword"
       },
+      "titles" : {
+        "type" : "keyword"
+      },
+      "sign" : {
+        "type" : "keyword"
+      },
+      "nameplate" : {
+        "type" : "keyword"
+      },
       "blog_move_priority" : {
         "type" : "boolean"
       },
