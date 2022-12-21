@@ -72,6 +72,16 @@ class TestSpider(scrapy.Spider):
             mid = self.mids.pop()
         else:
             return False
+
+        crawled = False
+
+        while True:
+            count = self.es.getAuthorCount('bilibili',mid)
+
+            if count == 0:
+                break
+            mid = self.mids.pop()
+
         # if not mid :
         #     mid = 517327498
         # else: 

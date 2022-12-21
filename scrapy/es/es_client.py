@@ -57,6 +57,19 @@ class EsClient:
         ids = list(map(lambda x:x['_source']['tech_team']['org_id'], resp['hits']['hits']))
         return ids
 
+    def getAuthorCount(self,source,id):
+        query = {
+            "query": {
+                "query_string": {
+                    "query": "source:"+source+" && source_id:\""+id+"\""
+                }
+            }
+        }
+
+        resp = self.client.count(index="article", body=query)
+        print(resp)
+        return resp
+
     def articleExisted(self,url):
         query = {
             "query": {
