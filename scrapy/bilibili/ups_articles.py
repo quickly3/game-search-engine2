@@ -15,6 +15,7 @@ pp = pprint.PrettyPrinter(indent=4)
 sys.path.append('..')
 from es.es_client import EsClient
 
+
 class TestSpider(scrapy.Spider):
     name = 'ups_articles'
     domin = 'https://www.bilibili.com/video/'
@@ -25,7 +26,7 @@ class TestSpider(scrapy.Spider):
 
     custom_settings = {
         "CONCURRENT_REQUESTS": 1,
-        "DOWNLOAD_DELAY" : 1,
+        "DOWNLOAD_DELAY": 1,
         "RETRY_TIMES": 0
     }
 
@@ -39,6 +40,8 @@ class TestSpider(scrapy.Spider):
         "order": "pubdate",
         "order_avoided": "true",
     }
+
+    handle_httpstatus_list = [504]
 
     author_url_t = 'https://space.bilibili.com/{mid}'
     refer_url_t = 'https://space.bilibili.com/{mid}/video'
@@ -59,7 +62,7 @@ class TestSpider(scrapy.Spider):
         "X-PJAX": "true",
         "X-PJAX-Container": ".search-container",
         "X-Requested-With": "XMLHttpRequest",
-        "Referer":""
+        "Referer": ""
     }
 
     def getParams(self, option):
@@ -67,7 +70,7 @@ class TestSpider(scrapy.Spider):
         self.params['pn'] = option['pn']
         return urlencode(self.params)
 
-    def getNextMid(self, mid = False):
+    def getNextMid(self, mid=False):
         if len(self.mids) > 0:
             mid = self.mids.pop()
         else:
@@ -76,7 +79,9 @@ class TestSpider(scrapy.Spider):
         crawled = False
 
         while True:
-            count = self.es.getAuthorCount('bilibili',mid)
+            count = self.es.getAuthorCount('bilibili', mid)
+            print(mid)
+            print(count)
 
             if count == 0:
                 break
@@ -84,10 +89,9 @@ class TestSpider(scrapy.Spider):
 
         # if not mid :
         #     mid = 517327498
-        # else: 
+        # else:
         #     mid = 123
-
-        self.headers['referer'] = self.refer_url_t.replace('{mid}',str(mid))
+        self.headers['referer'] = self.refer_url_t.replace('{mid}', str(mid))
         return mid
 
     def start_requests(self):
@@ -112,17 +116,21 @@ class TestSpider(scrapy.Spider):
         yield scrapy.Request(start_url, headers=self.headers, callback=lambda response, option=option: self.parse(response, option))
 
     def parse(self, response, option):
+
+        if response.status != 200:
+            yield self.getNextQuery(option, True)
+
         vlist = []
         # pp.pprint(response.text)
         try:
             vlist = _.get(json.loads(response.text), 'data.list.vlist')
         except ValueError as e:
             print('Error vlist 1')
-        
+
         if vlist and len(vlist) > 0:
             self.itemsImport(vlist, option)
             yield self.getNextQuery(option)
-        else :
+        else:
             pp.pprint(response.text)
             print('Next vlist 2')
             yield self.getNextQuery(option, True)
@@ -135,8 +143,10 @@ class TestSpider(scrapy.Spider):
             doc['title'] = item['title']
             print(doc['title'])
             doc['url'] = self.domin + item['bvid']
+            doc['sub_id'] = item['aid']
             doc['author'] = item['author']
-            doc['author_url'] = self.author_url_t.replace('{mid}', str(option['mid']))
+            doc['author_url'] = self.author_url_t.replace(
+                '{mid}', str(option['mid']))
             doc['source_id'] = option['mid']
             doc['source'] = self.source
             doc['summary'] = item['description']
@@ -157,8 +167,8 @@ class TestSpider(scrapy.Spider):
         if len(bulk) > 0:
             resp = self.es.client.bulk(body=bulk)
 
-    def getNextQuery(self, option, next_up = False):
-        option['pn'] =  option['pn'] + 1
+    def getNextQuery(self, option, next_up=False):
+        option['pn'] = option['pn'] + 1
 
         if next_up:
             option['mid'] = self.getNextMid(option['mid'])

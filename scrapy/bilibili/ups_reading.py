@@ -55,12 +55,14 @@ csv_reader = csv.DictReader(
 
 output = []
 
-jump = True
+jump = False
 jump_to = '24478119'
 
 es = EsClient()
 
+curr_data = 0
 for data in csv_reader:
+    curr_data+=1
     header = {
         'Accept': '*/*',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
@@ -76,7 +78,7 @@ for data in csv_reader:
     url = 'https://api.bilibili.com/x/space/acc/info?mid={mid}&token=&platform=web&jsonp=jsonp'
     url = url.replace('{mid}', str(mid))
 
-    print(url)
+    print(url, curr_data, 1267)
     rq = request.Request(url=url, headers=header, method='GET')
     resp = request.urlopen(rq)
     info = json.loads(resp.read())

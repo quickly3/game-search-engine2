@@ -41,6 +41,9 @@ PUT article_20220118
       "source_id": {
         "type": "keyword"
       },
+      "sub_id": {
+        "type": "keyword"
+      },
       "source_score": {
         "type": "integer"
       },

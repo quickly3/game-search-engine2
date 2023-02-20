@@ -50,6 +50,8 @@ scrapy/juejin/*.csv
 scrapy/cnblogs/*.txt
 scrapy/cnblogs/*.csv
 
+scrapy/oschina/*.csv
+
 
 
 *.mp3

@@ -3,6 +3,7 @@ from elasticsearch import logger as es_logger
 from dotenv import load_dotenv
 import os
 import logging
+import pydash as _
 
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 
@@ -17,8 +18,7 @@ class EsClient:
         es_pwd = os.getenv("ES_PWD")
         ES_HOST = os.getenv("ES_HOST")
         ES_PORT = os.getenv("ES_PORT")
-        host = ES_HOST+":"+ES_PORT;
-
+        host = ES_HOST+":"+ES_PORT
 
         self.client = Elasticsearch(host, http_auth=(es_user, es_pwd))
 
@@ -37,9 +37,24 @@ class EsClient:
         result = self.formatResp(resp)
         return result
 
-    def index(self,doc):
+    def getDocsByQuery(self, query):
+        query = {
+            "query": {
+                "query_string": {
+                    "query": query
+                }
+            },
+            "size": 1000,
+            "_source": ["url", "source", "sub_id"]
+        }
+
+        resp = self.client.search(index="article", body=query, scroll='2m')
+        # result = self.formatResp(resp)
+        return resp
+
+    def index(self, doc):
         self.client.index(index="article", document=doc)
-    
+
     def getTeamIds(self):
         query = {
             "query": {
@@ -54,10 +69,11 @@ class EsClient:
         }
 
         resp = self.client.search(index="author", body=query)
-        ids = list(map(lambda x:x['_source']['tech_team']['org_id'], resp['hits']['hits']))
+        ids = list(
+            map(lambda x: x['_source']['tech_team']['org_id'], resp['hits']['hits']))
         return ids
 
-    def getAuthorCount(self,source,id):
+    def getAuthorCount(self, source, id):
         query = {
             "query": {
                 "query_string": {
@@ -67,10 +83,11 @@ class EsClient:
         }
 
         resp = self.client.count(index="article", body=query)
-        print(resp)
-        return resp
+        count = _.get(resp, 'count')
 
-    def articleExisted(self,url):
+        return count or 0
+
+    def articleExisted(self, url):
         query = {
             "query": {
                 "query_string": {
@@ -81,7 +98,6 @@ class EsClient:
 
         resp = self.client.count(index="article", body=query)
         return resp['count'] > 0
-
 
     def getAuthors(self):
         fisrt_query = {
@@ -118,20 +134,20 @@ class EsClient:
 
             if 'after_key' in result:
                 after_key = result['after_key']
-                while result :
+                while result:
                     result = self.getAuthorsByAfterKey(after_key)
                     if result:
                         list = list + result['hits']
                         if 'after_key' in result:
                             after_key = result['after_key']
                         else:
-                            break;
+                            break
 
         return list
 
     def getAuthorsByAfterKey(self, after_key):
         after_query = {
-            "track_total_hits":True,
+            "track_total_hits": True,
             "query": {
                 "query_string": {
                     "query": "source:juejin"
@@ -151,7 +167,7 @@ class EsClient:
                                 }
                             }
                         ],
-                        "after":after_key
+                        "after": after_key
                     }
                 }
             }
@@ -173,14 +189,15 @@ class EsClient:
 
     def formatCompositeTermsAgg(self, resp):
         result = {}
-        buckets = resp['aggregations']['author_buckets'];
+        buckets = resp['aggregations']['author_buckets']
 
         if len(buckets) > 0:
             if 'after_key' in buckets:
-                result['after_key'] =  buckets['after_key']
+                result['after_key'] = buckets['after_key']
 
-            result['hits'] = list(map(lambda x:dict(author_url=x['key']['author_url'], doc_count=x['doc_count']) ,buckets['buckets']))
-            return result;
+            result['hits'] = list(map(lambda x: dict(
+                author_url=x['key']['author_url'], doc_count=x['doc_count']), buckets['buckets']))
+            return result
         else:
             return False
 
