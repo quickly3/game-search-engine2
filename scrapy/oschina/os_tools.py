@@ -48,7 +48,6 @@ class TestSpider(scrapy.Spider):
                     dfSg.to_csv(self.output, mode='a',
                                 encoding='utf-8', index=False, header=False)
 
-
 if __name__ == "__main__":
     process = CrawlerProcess()
     process.crawl(TestSpider)

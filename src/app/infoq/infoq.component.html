@@ -413,8 +413,9 @@
                 <span class='delimiter' *ngIf="daily_item.category" > | </span>
                 <span
                   class="badge badge-success article_tag"
-                  (click)="selectCategoryTag(daily_item.category)"
-                  >{{ daily_item.category }}</span
+                  *ngFor="let category of daily_item.category"
+                  (click)="selectCategoryTag(category)"
+                  >{{ category }}</span
                 >
                 
               </div>
