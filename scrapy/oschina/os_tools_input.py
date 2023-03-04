@@ -46,6 +46,7 @@ for data in csv_reader:
     
 
     doc['category'] = doc['category'].split(',')
+    doc['category'].append('Software')
 
     if doc['location'] != '' and doc['location'] != '不详':
         doc['category'].append(doc['location'])
@@ -64,10 +65,11 @@ for data in csv_reader:
     bulk.append(doc)
     count+=1
 
-    if count == 10:
+    if count == 50:
         resp = es.client.bulk(body=bulk)
         count = 0
-        bulk = []
-        continue
-
-    resp = es.client.bulk(body=bulk)
+        bulk = []   
+        print(str(csv_reader.line_num) + '/61509')
+    
+    if csv_reader.line_num == 61509:
+        es.client.bulk(body=bulk)
