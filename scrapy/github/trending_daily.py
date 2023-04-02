@@ -59,7 +59,7 @@ class TestSpider(scrapy.Spider):
             yield scrapy.Request(url = url2, callback=lambda response, option=option : self.parse(response, option))
                    
     def parse(self, response, option):
-        articles = response.xpath('//html/body/div[4]/main/div[3]/div/div[2]/article')
+        articles = response.xpath("//*[@class='Box-row']")
 
         parsed_url = urlparse(response.request.url)
         captured_value = parse_qs(parsed_url.query)
