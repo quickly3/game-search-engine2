@@ -131,7 +131,7 @@ class GraphController extends Controller
             ]
         ];
         return [
-            "title" => "GitHub Trending{$yesterday}）",
+            "title" => "GitHub Trending（{$yesterday}）",
             "data" => $resp
         ];
     }

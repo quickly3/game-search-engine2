@@ -1,9 +1,13 @@
 <app-nav></app-nav>
-<div class="container-fluid" >
+<div class="container-fluid">
   <div class="search-header">
     <div class="search-input row">
-      <div class="col-md-2 icon-zone"  #collapse="ngbCollapse" [(ngbCollapse)]="hideSearchZone">
-        <img src="/favicon.ico" class="icon" alt="">
+      <div
+        class="col-md-2 icon-zone"
+        #collapse="ngbCollapse"
+        [(ngbCollapse)]="hideSearchZone"
+      >
+        <img src="/favicon.ico" class="icon" alt="" />
         <span class="web-title">Search Gank</span>
       </div>
       <div class="col-md-6">
@@ -19,10 +23,14 @@
             #instance="ngbTypeahead"
             placeholder="搜索"
           />
-            <fa-icon class="searchIcon" [icon]="faSearch" (click)="keywordSearch()"></fa-icon>
+          <fa-icon
+            class="searchIcon"
+            [icon]="faSearch"
+            (click)="keywordSearch()"
+          ></fa-icon>
         </div>
       </div>
-      <div class="col-md-4 search-mode" >
+      <div class="col-md-4 search-mode">
         <div ngbDropdown class="d-inline-block sort-by">
           <button
             class="btn btn-outline-primary btn-sm"
@@ -65,7 +73,16 @@
         <span class="text-secondary" style="font-size: 14px">{{
           displayModel.label
         }}</span>
-        <fa-icon *ngIf="isMobile" class="ml-4" [ngClass]="{'text-secondary':hideSearchZone,'text-primary':!hideSearchZone}" [icon]="faWrench" (click)="toggleSearchZone()"></fa-icon>
+        <fa-icon
+          *ngIf="isMobile"
+          class="ml-4"
+          [ngClass]="{
+            'text-secondary': hideSearchZone,
+            'text-primary': !hideSearchZone
+          }"
+          [icon]="faWrench"
+          (click)="toggleSearchZone()"
+        ></fa-icon>
       </div>
     </div>
   </div>
@@ -75,15 +92,30 @@
       <div class="col-md-6 content-type-nav">
         <ul class="nav">
           <li class="nav-item" *ngFor="let subNavItem of subNavItems">
-            <a class="nav-link" [ngClass]="{ active:curSubNav.name === subNavItem.name}" data-bs-toggle="tab" (click)="subNavChange(subNavItem)" href="javascript:void(0)"><fa-icon class='sub-nav-icon' [icon]="subNavItem.icon"></fa-icon>{{subNavItem.text}}</a>
-            <div *ngIf="curSubNav.name === subNavItem.name" class="sub-nav-bottom"></div>
+            <a
+              class="nav-link"
+              [ngClass]="{ active: curSubNav.name === subNavItem.name }"
+              data-bs-toggle="tab"
+              (click)="subNavChange(subNavItem)"
+              href="javascript:void(0)"
+              ><fa-icon class="sub-nav-icon" [icon]="subNavItem.icon"></fa-icon
+              >{{ subNavItem.text }}</a
+            >
+            <div
+              *ngIf="curSubNav.name === subNavItem.name"
+              class="sub-nav-bottom"
+            ></div>
           </li>
-        </ul>      
+        </ul>
       </div>
       <div class="col-md-4"></div>
     </div>
   </div>
-  <div *ngIf="showOldTags" class="tags" [ngClass]="{ 'tags-switch': !showMore }">
+  <div
+    *ngIf="showOldTags"
+    class="tags"
+    [ngClass]="{ 'tags-switch': !showMore }"
+  >
     <div
       class="custom-control custom-radio"
       *ngFor="let tag of tags"
@@ -104,7 +136,11 @@
     <a *ngIf="showMore" href="javascript:;">close</a>
   </div>
   <div class="row">
-    <div class="col-md-2" #collapse="ngbCollapse" [(ngbCollapse)]="hideSearchZone">
+    <div
+      class="col-md-2"
+      #collapse="ngbCollapse"
+      [(ngbCollapse)]="hideSearchZone"
+    >
       <div class="option-title">
         <span class="initSearch" (click)="initSearch()">清空搜索条件</span>
       </div>
@@ -130,7 +166,13 @@
         <span>关键词关系:</span>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="flexCheckDefault" (change)="search()" [(ngModel)]="this.queryParams.and_operator">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="flexCheckDefault"
+          (change)="search()"
+          [(ngModel)]="this.queryParams.and_operator"
+        />
         <label class="form-check-label" for="flexCheckDefault">
           ”且“关系
         </label>
@@ -140,7 +182,7 @@
       </div>
       <div class="option-zone source-selector">
         <div class="d-flex flex-row bd-highlight mb-3">
-          <div class="left-input"> 
+          <div class="left-input">
             <input
               id="typeahead-basic"
               type="text"
@@ -165,19 +207,22 @@
               <fa-icon class="fz-10" [icon]="faTags"></fa-icon>
             </button>
           </div>
-          <app-tags-modal 
-            [opened]="tagsModalOpened" 
-            (closed)="tagsModalClosed($event)" 
-            [tags]="allTags" 
+          <app-tags-modal
+            [opened]="tagsModalOpened"
+            (closed)="tagsModalClosed($event)"
+            [tags]="allTags"
             [inputSelectedTags]="queryParams.selectTags"
           ></app-tags-modal>
         </div>
         <div>
-            <span *ngFor="let tag of queryParams.selectTags" class="badge badge-success tags-badge" (click)="removeSelectTag(tag)">
-              {{tag}}
-              <fa-icon class="closeBadge" [icon]="faTimes">
-              </fa-icon>
-            </span>
+          <span
+            *ngFor="let tag of queryParams.selectTags"
+            class="badge badge-success tags-badge"
+            (click)="removeSelectTag(tag)"
+          >
+            {{ tag }}
+            <fa-icon class="closeBadge" [icon]="faTimes"> </fa-icon>
+          </span>
         </div>
       </div>
       <div class="option-title mb-1">
@@ -185,7 +230,7 @@
       </div>
       <div class="option-zone source-selector">
         <div class="d-flex flex-row bd-highlight mb-3">
-          <div class="left-input"> 
+          <div class="left-input">
             <input
               id="typeahead-basic"
               type="text"
@@ -210,19 +255,22 @@
               <fa-icon class="fz-10" [icon]="faTags"></fa-icon>
             </button>
           </div>
-          <app-tags-modal 
-            [opened]="categoriesModalOpened" 
-            (closed)="categoriesModalClosed($event)" 
-            [tags]="allCategories" 
+          <app-tags-modal
+            [opened]="categoriesModalOpened"
+            (closed)="categoriesModalClosed($event)"
+            [tags]="allCategories"
             [inputSelectedTags]="queryParams.selectCategories"
           ></app-tags-modal>
         </div>
         <div>
-            <span *ngFor="let category of queryParams.selectCategories" class="badge badge-success tags-badge" (click)="removeSelectCategory(category)" >
-              {{category}}
-              <fa-icon class="closeBadge" [icon]="faTimes">
-              </fa-icon>
-            </span>
+          <span
+            *ngFor="let category of queryParams.selectCategories"
+            class="badge badge-success tags-badge"
+            (click)="removeSelectCategory(category)"
+          >
+            {{ category }}
+            <fa-icon class="closeBadge" [icon]="faTimes"> </fa-icon>
+          </span>
         </div>
       </div>
       <div class="option-title">
@@ -293,39 +341,39 @@
       </div>
       <div class="option-zone source-selector">
         <div class="d-flex justify-content-between mb-1">
-          <input 
-            type="number" 
-            class="form-control form-control-sm width-50" 
-            min="0" 
+          <input
+            type="number"
+            class="form-control form-control-sm width-50"
+            min="0"
             placeholder="阅读数"
             [(ngModel)]="queryParams.view_count"
-            (ngModelChange)="countModified($event,'view_count')"
+            (ngModelChange)="countModified($event, 'view_count')"
           />
-          <input 
-            type="number" 
-            class="form-control form-control-sm width-50" 
-            min="0" 
+          <input
+            type="number"
+            class="form-control form-control-sm width-50"
+            min="0"
             placeholder="点赞数"
             [(ngModel)]="queryParams.digg_count"
-            (ngModelChange)="countModified($event,'digg_count')"
+            (ngModelChange)="countModified($event, 'digg_count')"
           />
         </div>
         <div class="d-flex justify-content-between">
-          <input 
-            type="number" 
-            class="form-control form-control-sm width-50" 
-            min="0" 
+          <input
+            type="number"
+            class="form-control form-control-sm width-50"
+            min="0"
             placeholder="评论数"
             [(ngModel)]="queryParams.comment_count"
-            (ngModelChange)="countModified($event,'comment_count')"
+            (ngModelChange)="countModified($event, 'comment_count')"
           />
           <input
-            type="number" 
-            class="form-control form-control-sm width-50" 
-            min="0" 
+            type="number"
+            class="form-control form-control-sm width-50"
+            min="0"
             placeholder="收藏数"
             [(ngModel)]="queryParams.collect_count"
-            (ngModelChange)="countModified($event,'collect_count')"
+            (ngModelChange)="countModified($event, 'collect_count')"
           />
         </div>
       </div>
@@ -342,7 +390,7 @@
       </div> -->
     </div>
     <div class="col-md-10">
-      <div *ngIf="curSubNav.name === 'articles'" class='articles'>
+      <div *ngIf="curSubNav.name === 'articles'" class="articles">
         <div class="search-resp">
           找到 <strong>{{ totalNumber }}</strong> 条结果 （用时约
           <strong>{{ took }}</strong> ms） 当前第
@@ -353,8 +401,8 @@
         <div class="articleList">
           <div
             class="daily_item_title_model row"
-            [ngClass]="{'mb-1':!showTitleOnly}"
-            *ngFor="let daily_item of articleList"
+            [ngClass]="{ 'mb-1': !showTitleOnly }"
+            *ngFor="let daily_item of articleList ; let i = index"
             routerLinkActive="active"
           >
             <div
@@ -381,10 +429,12 @@
               <div>
                 <a
                   class="title_a"
+                  id="title-{{i}}"
                   [href]="daily_item.url"
                   target="_blank"
                   [innerHtml]="daily_item.title"
                 ></a>
+                <fa-icon [icon]="faCopy" class="author searchCopy" (click)="copyTitle(i)"></fa-icon>
               </div>
               <div class="summary" [innerHtml]="daily_item.summary"></div>
               <div>
@@ -403,21 +453,24 @@
                   *ngIf="daily_item.author_url"
                   target="_blank"
                   href="{{ daily_item.author_url }}"
-                  ><fa-icon class="author authorSeatch" [icon]="faLink"></fa-icon
+                  ><fa-icon
+                    class="author authorSeatch"
+                    [icon]="faLink"
+                  ></fa-icon
                 ></a>
                 <span
                   class="badge badge-primary article_tag"
-                  *ngFor="let tag of daily_item.tag"
+                  *ngFor="let tag of daily_item.tag ; let i = index"
                   (click)="selectTagTag(tag)"
-                  >{{ tag }}</span>
-                <span class='delimiter' *ngIf="daily_item.category" > | </span>
+                  >{{ tag }}</span
+                >
+                <span class="delimiter" *ngIf="daily_item.category"> | </span>
                 <span
                   class="badge badge-success article_tag"
                   *ngFor="let category of daily_item.category"
                   (click)="selectCategoryTag(category)"
                   >{{ category }}</span
                 >
-                
               </div>
               <div class="link">
                 <fa-icon class="user_icon" [icon]="faEye"></fa-icon>
@@ -425,9 +478,13 @@
                 <fa-icon class="user_icon" [icon]="faThumbsUp"></fa-icon>
                 <span class="user_count">{{ daily_item.digg_count || 0 }}</span>
                 <fa-icon class="user_icon" [icon]="faComment"></fa-icon>
-                <span class="user_count">{{ daily_item.comment_count || 0 }}</span>
+                <span class="user_count">{{
+                  daily_item.comment_count || 0
+                }}</span>
                 <fa-icon class="user_icon" [icon]="faStar"></fa-icon>
-                <span class="user_count">{{ daily_item.collect_count || 0 }}</span>              
+                <span class="user_count">{{
+                  daily_item.collect_count || 0
+                }}</span>
                 <span class="text-secondary">{{
                   daily_item.url | slice: 0:100
                 }}</span>
@@ -449,25 +506,48 @@
           ></ngb-pagination>
         </div>
       </div>
-      <div *ngIf="curSubNav.name === 'charts'" class='graph'>
-        <app-density-calendar dataId="histogramData" [data]='histogramData'></app-density-calendar>
+      <div *ngIf="curSubNav.name === 'charts'" class="graph">
+        <app-density-calendar
+          dataId="histogramData"
+          [data]="histogramData"
+        ></app-density-calendar>
       </div>
-      <div *ngIf="curSubNav.name === 'cloud'" class='graph'>
+      <div *ngIf="curSubNav.name === 'cloud'" class="graph">
         <div>
-          <span class="badge rounded-pill bg-success cloud-word-badge" *ngFor="let word of selectCloudWords" (click)="removeSelectCloudWord(word)">{{word}} 
+          <span
+            class="badge rounded-pill bg-success cloud-word-badge"
+            *ngFor="let word of selectCloudWords"
+            (click)="removeSelectCloudWord(word)"
+            >{{ word }}
             <fa-icon class="closeBadge" [icon]="faTimes"></fa-icon>
           </span>
         </div>
-        <app-word-cloud dataId="cloudData" [clickTextFunc]='clickCloudText' [words]='cloudData'></app-word-cloud>
+        <app-word-cloud
+          dataId="cloudData"
+          [clickTextFunc]="clickCloudText"
+          [words]="cloudData"
+        ></app-word-cloud>
       </div>
-      <div *ngIf="curSubNav.name === 'bar'" class='graph'>
-        <app-horizontal-bar dataId="dataHoz" [clickBarFunc]='clickHorizontalBar' [data]='authorAggs'></app-horizontal-bar>
+      <div *ngIf="curSubNav.name === 'bar'" class="graph">
+        <app-horizontal-bar
+          dataId="dataHoz"
+          [clickBarFunc]="clickHorizontalBar"
+          [data]="authorAggs"
+        ></app-horizontal-bar>
       </div>
-      <div *ngIf="curSubNav.name === 'tags'" class='graph'>
-        <app-horizontal-bar dataId="dataHoz" [clickBarFunc]='clickHorizontalBarForTags' [data]='tagsAggs'></app-horizontal-bar>
+      <div *ngIf="curSubNav.name === 'tags'" class="graph">
+        <app-horizontal-bar
+          dataId="dataHoz"
+          [clickBarFunc]="clickHorizontalBarForTags"
+          [data]="tagsAggs"
+        ></app-horizontal-bar>
       </div>
-      <div *ngIf="curSubNav.name === 'cates'" class='graph'>
-        <app-horizontal-bar dataId="dataHoz" [clickBarFunc]='clickHorizontalBarForCates' [data]='catesAggs'></app-horizontal-bar>
+      <div *ngIf="curSubNav.name === 'cates'" class="graph">
+        <app-horizontal-bar
+          dataId="dataHoz"
+          [clickBarFunc]="clickHorizontalBarForCates"
+          [data]="catesAggs"
+        ></app-horizontal-bar>
       </div>
     </div>
   </div>

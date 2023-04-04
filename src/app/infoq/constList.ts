@@ -68,7 +68,11 @@ const sourceList = [
         source_class: 'icon-36kr',
         text: '36氪',
     },
-
+    {
+        title: 'chatgpt',
+        source_class: 'icon-ai',
+        text: 'ai',
+    },
 
 ];
 

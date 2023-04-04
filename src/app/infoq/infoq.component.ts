@@ -43,9 +43,11 @@ import {
   faCloud,
   faTag,
   faStarOfLife,
+  faCopy
 } from '@fortawesome/free-solid-svg-icons';
 
 import constList from './constList';
+import { CopyToClipboard } from '../util/util';
 
 @Component({
   selector: 'infoq',
@@ -61,6 +63,7 @@ export class InfoqComponent {
   faLink = faLink;
   faThumbsUp = faThumbsUp;
   faComment = faComment;
+  faCopy=faCopy;
   faStar = faStar;
   faEye = faEye;
   faTimes = faTimes;
@@ -369,6 +372,10 @@ export class InfoqComponent {
       this.search();
     }
   };
+
+  copyTitle = (i) => {
+    CopyToClipboard(`title-${i}`)
+  }
 
   selectCategoriesModal = () => {
     this.categoriesModalOpened = true;
