@@ -1,1 +1,7 @@
-patterns
+patterns: 模式、规律、图案
+vulnerabilities: 漏洞、弱点、易受攻击性
+semantic: 语义的、语义学的、语义上的
+eradicating: 根除、消除、彻底摧毁
+specify: 指定、具体说明、详细说明
+potentially
+integrations

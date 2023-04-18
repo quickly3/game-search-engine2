@@ -71,8 +71,8 @@ class TestSpider(scrapy.Spider):
 
         bulk = []
         for art in articles:
-            project_name = art.xpath('string(./h1/a)').get();
-            url = art.xpath('./h1/a/@href').get();
+            project_name = art.xpath('string(./h2/a)').get();
+            url = art.xpath('./h2/a/@href').get();
             url = self.domin + url;
 
             regRex = re.compile('(\/[^/]+)?$')
@@ -140,9 +140,11 @@ class TestSpider(scrapy.Spider):
             bulk.append(
                 {"index": {"_index": "article"}})
             bulk.append(doc)
+            # pp.pprint(doc)
 
         self.total += len(bulk)
         if len(bulk) > 0:
+            # print(len(bulk))
             self.es.client.bulk( body=bulk)
 
 if __name__ == "__main__":
