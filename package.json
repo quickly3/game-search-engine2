@@ -36,6 +36,7 @@
     "@types/extract-domain": "^2.3.1",
     "@types/lodash": "^4.14.176",
     "@types/selenium-webdriver": "^4.0.15",
+    "alibabacloud-nls": "^1.0.3",
     "bootstrap": "^4.6.1",
     "bootstrap-icons": "^1.7.2",
     "bootswatch": "^4.6.1",

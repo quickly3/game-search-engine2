@@ -1,0 +1,12 @@
+<speak>
+  相传北宋年间，
+  <say-as interpret-as="date">1121-10-10</say-as>，
+  <say-as interpret-as="address">开封城</say-as>
+  郊外的早晨笼罩在一片
+  <sub alias="双十一">11.11</sub>
+  前买买买的欢乐海洋中。一支运货的骡队刚进入城门
+  <soundEvent src="http://nls.alicdn.com/sound-event/bell.wav"/>
+  一个肤白貌美
+  <phoneme alphabet="py" ph="de5">地</phoneme>
+  姑娘便拦下第一排的小哥<say-as interpret-as="name">阿发。</say-as>
+</speak>
