@@ -1,0 +1,14 @@
+{
+  "name": "tts-ws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tts-ws-node.js",
+  "scripts": {},
+  "author": "iflytek",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "log4node": "^0.1.6",
+    "ws": "^7.1.2"
+  }
+}

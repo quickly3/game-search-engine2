@@ -1,12 +1,4 @@
-<speak>
-  相传北宋年间，
-  <say-as interpret-as="date">1121-10-10</say-as>，
-  <say-as interpret-as="address">开封城</say-as>
-  郊外的早晨笼罩在一片
-  <sub alias="双十一">11.11</sub>
-  前买买买的欢乐海洋中。一支运货的骡队刚进入城门
-  <soundEvent src="http://nls.alicdn.com/sound-event/bell.wav"/>
-  一个肤白貌美
-  <phoneme alphabet="py" ph="de5">地</phoneme>
-  姑娘便拦下第一排的小哥<say-as interpret-as="name">阿发。</say-as>
+<speak voice="zhimiao_emo" rate="0.5">
+    <emotion category="affectionate" intensity="1.0">今天天气真不错！那边的那个大哥哥，要一起来玩嘛~</emotion>
+    <emotion category="happy" intensity="1.0">我们一起学猫叫，一起喵喵 喵喵 喵</emotion>
 </speak>
