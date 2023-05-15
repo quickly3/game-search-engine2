@@ -283,11 +283,11 @@ class AuthorService
                 },1);
 
 
-                if(isset($author['user_name']) && $match_tags[$author['user_name']]){
+                if(isset($author['user_name']) && array_key_exists($author['user_name'], $match_tags)){
                     $author['article_tags'] = $match_tags[$author['user_name']];
                 }
 
-                if(isset($author['user_name']) && $author_cates[$author['user_name']]){
+                if(isset($author['user_name']) && array_key_exists($author['user_name'], $author_cates)){
                     $author['article_cates'] = $author_cates[$author['user_name']];
                 }
             }
