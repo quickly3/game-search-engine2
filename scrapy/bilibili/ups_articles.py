@@ -9,6 +9,7 @@ import pprint
 from pytz import timezone
 from urllib.parse import urlencode
 import csv
+import os;
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -128,8 +129,12 @@ class TestSpider(scrapy.Spider):
             print('Error vlist 1')
 
         if vlist and len(vlist) > 0:
-            self.itemsImport(vlist, option)
-            yield self.getNextQuery(option)
+
+            # last = self.es.getAuthorLast('bilibili')
+            print(option)
+            os._exit(0)
+            # self.itemsImport(vlist, option)
+            # yield self.getNextQuery(option)
         else:
             pp.pprint(response.text)
             print('Next vlist 2')

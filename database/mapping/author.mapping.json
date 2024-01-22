@@ -330,7 +330,7 @@ PUT author_20211004
         "type" : "long"
       },
       "user_id" : {
-        "type" : "keyword"
+        "type" : "long"
       },
       "user_name" : {
         "type" : "keyword"

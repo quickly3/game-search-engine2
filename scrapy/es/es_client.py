@@ -176,6 +176,28 @@ class EsClient:
         result = self.formatCompositeTermsAgg(resp)
         return result
 
+    def getAuthorLast(self, source, author):
+        fisrt_query = {
+            "query": {
+                "query_string": {
+                    "query": "source:{source} && author:{author}".format(source, author)
+                }
+            },
+            "size": 1,
+            "sort": [
+                {
+                    "created_at": {
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+        resp = self.client.search(index="article", body=fisrt_query)
+        
+        list = self.formatResp(resp)
+
+        return list[0]
+
     def getDocsNext(self, scroll_id):
         resp = self.client.scroll(scroll_id=scroll_id, scroll='2m')
         result = self.formatResp(resp)

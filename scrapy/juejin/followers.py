@@ -61,7 +61,8 @@ class TestSpider(scrapy.Spider):
             tag_list = list(map(lambda x:{
                 "source":"juejin", 
                 "user_id":user_id, 
-                "followee_id":x["user_id"]
+                # "followee_id":x["user_id"]
+                "follower_id":x["user_id"]
             }, data))
 
             bulk = []

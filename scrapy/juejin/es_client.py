@@ -70,7 +70,7 @@ class EsClient:
         return resp['count'] > 0
 
 
-    def getAuthors(self):
+    def getAuthors(self,field = 'author_url'):
         fisrt_query = {
             "query": {
                 "query_string": {
@@ -86,7 +86,7 @@ class EsClient:
                             {
                                 "author_url": {
                                     "terms": {
-                                        "field": "author_url"
+                                        "field": field
                                     }
                                 }
                             }
@@ -98,7 +98,7 @@ class EsClient:
         resp = self.client.search(index="article", body=fisrt_query)
         result = self.formatCompositeTermsAgg(resp)
         list = []
-
+        
         if result:
             list = result['hits']
             print(len(list))
@@ -106,9 +106,10 @@ class EsClient:
             if 'after_key' in result:
                 after_key = result['after_key']
                 while result :
-                    result = self.getAuthorsByAfterKey(after_key)
+                    result = self.getAuthorsByAfterKey(after_key, field)
                     if result:
                         list = list + result['hits']
+                        print(len(list))
                         if 'after_key' in result:
                             after_key = result['after_key']
                         else:
@@ -116,7 +117,7 @@ class EsClient:
 
         return list
 
-    def getAuthorsByAfterKey(self, after_key):
+    def getAuthorsByAfterKey(self, after_key, field):
         after_query = {
             "track_total_hits":True,
             "query": {
@@ -133,7 +134,7 @@ class EsClient:
                             {
                                 "author_url": {
                                     "terms": {
-                                        "field": "author_url"
+                                        "field": field
                                     }
                                 }
                             }
@@ -145,6 +146,194 @@ class EsClient:
         }
         resp = self.client.search(index="article", body=after_query)
         result = self.formatCompositeTermsAgg(resp)
+        return result
+
+    def getAuthorsFromFollowees(self):
+        fisrt_query = {
+            "query": {
+                "query_string": {
+                    "query": "source:juejin"
+                }
+            },
+            "size": 0,
+            "aggs": {
+                "author_buckets": {
+                    "composite": {
+                        "size": 1000,
+                        "sources": [
+                            {
+                                "followee_id": {
+                                    "terms": {
+                                        "field": 'followee_id'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+        resp = self.client.search(index="followees", body=fisrt_query)
+        result = self.formatCompositeTermsAgg2(resp)
+        list = []
+        
+        if result:
+            list = result['hits']
+            print(len(list))
+            if 'after_key' in result:
+                after_key = result['after_key']
+                while result :
+                    result = self.getAuthorsByAfterKeyFromFollowees(after_key)
+                    if result:
+                        list = list + result['hits']
+                        print(len(list))
+                        if 'after_key' in result:
+                            after_key = result['after_key']
+                        else:
+                            break;
+
+        return list
+
+
+    def getAuthorsFromFollowers(self):
+        fisrt_query = {
+            "query": {
+                "query_string": {
+                    "query": "source:juejin"
+                }
+            },
+            "size": 0,
+            "aggs": {
+                "author_buckets": {
+                    "composite": {
+                        "size": 1000,
+                        "sources": [
+                            {
+                                "followee_id": {
+                                    "terms": {
+                                        "field": 'followee_id'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+
+        print('body', fisrt_query)
+        resp = self.client.search(index="followers", body=fisrt_query)
+        result = self.formatCompositeTermsAgg2(resp)
+        list = []
+        
+        if result:
+            list = result['hits']
+            print(len(list))
+            if 'after_key' in result:
+                after_key = result['after_key']
+                while result :
+                    result = self.getAuthorsByAfterKeyFromFollowers(after_key)
+                    if result:
+                        list = list + result['hits']
+                        print(len(list))
+                        if 'after_key' in result:
+                            after_key = result['after_key']
+                        else:
+                            break;
+
+        return list
+
+    def getAuthorsByAfterKey(self, after_key, field):
+        after_query = {
+            "track_total_hits":True,
+            "query": {
+                "query_string": {
+                    "query": "source:juejin"
+                }
+            },
+            "size": 0,
+            "aggs": {
+                "author_buckets": {
+                    "composite": {
+                        "size": 1000,
+                        "sources": [
+                            {
+                                "author_url": {
+                                    "terms": {
+                                        "field": field
+                                    }
+                                }
+                            }
+                        ],
+                        "after":after_key
+                    }
+                }
+            }
+        }
+        resp = self.client.search(index="article", body=after_query)
+        result = self.formatCompositeTermsAgg(resp)
+        return result
+
+    def getAuthorsByAfterKeyFromFollowees(self, after_key):
+        after_query = {
+            "track_total_hits":True,
+            "query": {
+                "query_string": {
+                    "query": "source:juejin"
+                }
+            },
+            "size": 0,
+            "aggs": {
+                "author_buckets": {
+                    "composite": {
+                        "size": 1000,
+                        "sources": [
+                            {
+                                "followee_id": {
+                                    "terms": {
+                                        "field": 'followee_id'
+                                    }
+                                }
+                            }
+                        ],
+                        "after":after_key
+                    }
+                }
+            }
+        }
+        resp = self.client.search(index="followees", body=after_query)
+        result = self.formatCompositeTermsAgg2(resp)
+        return result
+
+    def getAuthorsByAfterKeyFromFollowers(self, after_key):
+        after_query = {
+            "track_total_hits":True,
+            "query": {
+                "query_string": {
+                    "query": "source:juejin"
+                }
+            },
+            "size": 0,
+            "aggs": {
+                "author_buckets": {
+                    "composite": {
+                        "size": 1000,
+                        "sources": [
+                            {
+                                "followee_id": {
+                                    "terms": {
+                                        "field": 'followee_id'
+                                    }
+                                }
+                            }
+                        ],
+                        "after":after_key
+                    }
+                }
+            }
+        }
+        resp = self.client.search(index="followers", body=after_query)
+        result = self.formatCompositeTermsAgg2(resp)
         return result
 
     def getDocsNext(self, scroll_id):
@@ -167,6 +356,19 @@ class EsClient:
                 result['after_key'] =  buckets['after_key']
 
             result['hits'] = list(map(lambda x:dict(author_url=x['key']['author_url'], doc_count=x['doc_count']) ,buckets['buckets']))
+            return result;
+        else:
+            return False
+        
+    def formatCompositeTermsAgg2(self, resp):
+        result = {}
+        buckets = resp['aggregations']['author_buckets'];
+
+        if len(buckets) > 0:
+            if 'after_key' in buckets:
+                result['after_key'] =  buckets['after_key']
+
+            result['hits'] = list(map(lambda x:dict(followee_id=x['key']['followee_id'], doc_count=x['doc_count']) ,buckets['buckets']))
             return result;
         else:
             return False

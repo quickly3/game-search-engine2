@@ -5,19 +5,19 @@ import os
 
 if __name__ == "__main__":
 
-    file = 'authors1.csv'
+    file = 'authors3.csv'
 
     if os.path.exists(file):
         os.remove(file)
 
     es = EsClient()
-    toCSV = es.getAuthors()
+    toCSV = es.getAuthorsFromFollowers()
     toCSV = sorted(toCSV, key=lambda k: k['doc_count'], reverse=True)
 
-    keys = toCSV[0].keys()
+    toCSV2 = list(map(lambda x: {'followee_id': x['followee_id']}, toCSV))
+    keys = toCSV2[0].keys()
 
-    with open(file, 'w', newline='')  as output_file:
+    with open(file, 'w', newline='') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
-        dict_writer.writerows(toCSV)
-
+        dict_writer.writerows(toCSV2)
